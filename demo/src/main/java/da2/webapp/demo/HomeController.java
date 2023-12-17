@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Controller
+@RequestMapping(path="/")
 public class HomeController {
     private final HomeService homeService;
 
