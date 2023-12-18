@@ -1,4 +1,4 @@
-package da2.webapp.demo;
+package da2.webapp.demo.controllers;
 
 import org.springframework.stereotype.Service;
 
