@@ -10,30 +10,30 @@ import java.util.List;
 @Service
 public class UserService {
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository repository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository repository) {
 
-        this.userRepository = userRepository;
+        this.repository = repository;
     }
 
-    public User saveUser(User user) {
-        return userRepository.save(user);
+    public User addUser(User user) {
+        return repository.save(user);
     }
 
-    public List<User> saveUsers(List<User> users) {
-        return userRepository.saveAll(users);
+    public List<User> addUsers(List<User> users) {
+        return repository.saveAll(users);
     }
 
     public List<User> getUsers() {
-        return userRepository.findAll();
+        return repository.findAll();
     }
 
     public User getUserById(int id) {
-        return userRepository.findById(id).orElse(null);
+        return repository.findById(id).orElse(null);
     }
 
     public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+        return repository.findByEmail(email);
     }
 }
