@@ -1,11 +1,27 @@
 package da2.webapp.demo.controllers;
 
+import da2.webapp.demo.models.SecurityUser;
 import da2.webapp.demo.services.HomeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+//@EnableMethodSecurity
+@EnableMethodSecurity
 @Controller
 @RequestMapping(path="/")
 public class HomeController {
@@ -17,7 +33,28 @@ public class HomeController {
     }
 
     @GetMapping("/")
-    public String index() {
+    public String index(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        String email = auth.getName();
+//        Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>) auth.getAuthorities();
+//        List<GrantedAuthority> roles = new ArrayList<GrantedAuthority>(authorities);
+//        String role = roles.get(0).toString();
+        SecurityUser u = (SecurityUser) auth.getPrincipal();
+        model.addAttribute("email", u.getUsername());
+        model.addAttribute("name", u.getName());
+        model.addAttribute("role", u.getRole());
         return homeService.index();
+    }
+
+    @PreAuthorize("hasRole('MANAGER')")
+    @GetMapping("/manager")
+    public String indexManager() {
+        return "Manager_page";
+    }
+
+    @PreAuthorize("hasRole('EMPLOYEE')")
+    @GetMapping("/employee")
+    public String indexEmployee() {
+        return "Employee_page";
     }
 }

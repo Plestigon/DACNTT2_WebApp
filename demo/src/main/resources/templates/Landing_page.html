@@ -63,10 +63,10 @@
             <a href="#about">About</a>
             <a href="#career">Career</a>
             <a href="#business">Bussiness Opportunities</a>
-            <a href="/login">Login</a>
+            <a href="/logout">Logout</a>
         </div>
-
-        <h1 align="center">COMPANY NAME</h1>
+        &lt;
+        <h1 align="center" th:text="'LOGGED IN AS: ' + ${role} +' '+ ${name} + ' (' + ${email} + ')'"></h1>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
             Pellentesque ultrices justo sit amet mi placerat gravida. Proin egestas, arcu at sodales pulvinar, mauris massa vehicula purus, sit amet scelerisque tortor 
             orci non orci. Praesent euismod ultrices quam, id elementum mi elementum vel. Aenean id ornare arcu, a auctor nibh. 
