@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<style>
+    .sidebar {
+        margin: 0;
+        padding: 0;
+        width: 200px;
+        background-color: #f1f1f1;
+        position: fixed;
+        height: 100%;
+        overflow: auto;
+    }
+
+    .sidebar a {
+        display: block;
+        color: black;
+        padding: 16px;
+        text-decoration: none;
+    }
+
+    .sidebar a.active {
+        background-color: #0468aa;
+        color: white;
+    }
+
+    .sidebar a:hover:not(.active) {
+        background-color: #0468aa;
+        color: white;
+    }
+
+    div.content {
+        margin-left: 200px;
+        padding: 1px 16px;
+        height: 1000px;
+    }
+
+    @media screen and (max-width: 700px) {
+        .sidebar {
+            width: 100%;
+            height: auto;
+            position: relative;
+        }
+        .sidebar a {float: left;}
+        div.content {margin-left: 0;}
+    }
+
+    @media screen and (max-width: 400px) {
+        .sidebar a {
+            text-align: center;
+            float: none;
+        }
+    }
+    p{
+        font-size: 32px;
+        margin-left:200px;
+    }
+
+</style>
+<body>
+<div class="sidebar">
+    <a href="/">Home</a>
+    <a href="#news">News</a>
+    <a href="#about">About</a>
+    <a class="active" href="#career_opp">Career</a>
+    <a href="#business">Business Opportunities</a>
+    <a href="/login">Login</a>
+</div>
+
+<h1 align="center" th:text="|LOGGED IN AS: ${role} ${name} (${email})|"></h1>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    Pellentesque ultrices justo sit amet mi placerat gravida. Proin egestas, arcu at sodales pulvinar, mauris massa vehicula purus, sit amet scelerisque tortor
+    orci non orci. Praesent euismod ultrices quam, id elementum mi elementum vel. Aenean id ornare arcu, a auctor nibh.
+    In suscipit sit amet sem sed dictum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer hendrerit justo vel felis hendrerit consequat.
+    Phasellus tincidunt fringilla gravida. Duis eu ante sit amet ex ultrices accumsan eu sed turpis. Nam gravida quis dolor nec blandit.
+</p>
+
+</body>
+</html>
