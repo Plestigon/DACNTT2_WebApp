@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,26 +36,33 @@ public class HomeController {
     @GetMapping("/")
     public String index(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        String email = auth.getName();
-//        Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>) auth.getAuthorities();
-//        List<GrantedAuthority> roles = new ArrayList<GrantedAuthority>(authorities);
-//        String role = roles.get(0).toString();
-        SecurityUser u = (SecurityUser) auth.getPrincipal();
-        model.addAttribute("email", u.getUsername());
-        model.addAttribute("name", u.getName());
-        model.addAttribute("role", u.getRole());
-        return homeService.index();
+        String email = auth.getName();
+        Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>) auth.getAuthorities();
+        List<GrantedAuthority> roles = new ArrayList<GrantedAuthority>(authorities);
+        String role = roles.get(0).toString();
+        if (!role.equals("ROLE_ANONYMOUS")) {
+            SecurityUser u = (SecurityUser) auth.getPrincipal();
+            model.addAttribute("email", u.getUsername());
+            model.addAttribute("name", u.getName());
+            model.addAttribute("role", u.getRole());
+            return switch (u.getRole()) {
+                case "MANAGER" -> "Manager_page";
+                case "EMPLOYEE" -> "Employee_page";
+                default -> "redirect:/error";
+            };
+        }
+        return "Landing_page";
     }
 
     @PreAuthorize("hasRole('MANAGER')")
-    @GetMapping("/manager")
+    @GetMapping("/finances")
     public String indexManager() {
-        return "Manager_page";
+        return "Finances";
     }
 
     @PreAuthorize("hasRole('EMPLOYEE')")
-    @GetMapping("/employee")
+    @GetMapping("/complaints")
     public String indexEmployee() {
-        return "Employee_page";
+        return "Complaints_Form";
     }
 }
