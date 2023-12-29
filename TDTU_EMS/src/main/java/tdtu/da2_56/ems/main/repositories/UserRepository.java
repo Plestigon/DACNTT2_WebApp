@@ -1,0 +1,12 @@
+package tdtu.da2_56.ems.main.repositories;
+
+import tdtu.da2_56.ems.main.models.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+@Repository
+public interface UserRepository extends JpaRepository<User, Integer> {
+    Optional<User> findByEmail(String email);
+}
