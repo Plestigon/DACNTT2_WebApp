@@ -3,6 +3,8 @@ package tdtu_ems.main.models;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import tdtu_ems.userservice.models.Department;
+import tdtu_ems.userservice.models.User;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -56,5 +58,9 @@ public class SecurityUser implements UserDetails {
 
     public String getRole() {
         return user.getRole();
+    }
+
+    public Department getDepartment() {
+        return user.getDepartment();
     }
 }

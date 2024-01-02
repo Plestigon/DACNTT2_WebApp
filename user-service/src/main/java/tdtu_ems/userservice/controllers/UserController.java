@@ -1,9 +1,9 @@
-package tdtu_ems.main.controllers;
+package tdtu_ems.userservice.controllers;
 
-import tdtu_ems.main.models.User;
-import tdtu_ems.main.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import tdtu_ems.userservice.models.User;
+import tdtu_ems.userservice.services.UserService;
 
 import java.util.List;
 

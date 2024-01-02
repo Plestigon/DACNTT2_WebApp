@@ -1,4 +1,4 @@
-package tdtu_ems.main.models;
+package tdtu_ems.userservice.models;
 
 import jakarta.persistence.*;
 
@@ -7,16 +7,24 @@ import jakarta.persistence.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
     private int id;
-    @Column(name="email")
     private String email;
-    @Column(name="password")
     private String password;
-    @Column(name="name")
     private String name;
-    @Column(name="role")
     private String role;
+    @ManyToOne
+    @JoinColumn(name = "department")
+    private Department department;
+
+    public User() {}
+
+    public User(String email, String password, String name, String role, Department department) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.role = role;
+        this.department = department;
+    }
 
     public int getId() {
         return id;
@@ -58,14 +66,24 @@ public class User {
         this.role = role;
     }
 
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", username='" + name + '\'' +
+                ", name='" + name + '\'' +
                 ", role='" + role + '\'' +
+                ", department_id=" + department.getId() +
+                ", department=" + department.getShortName() +
                 '}';
     }
 }

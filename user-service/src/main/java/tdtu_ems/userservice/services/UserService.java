@@ -1,16 +1,16 @@
-package tdtu_ems.main.services;
+package tdtu_ems.userservice.services;
 
-import tdtu_ems.main.models.User;
-import tdtu_ems.main.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tdtu_ems.userservice.models.User;
+import tdtu_ems.userservice.repositories.UserRepository;
 
 import java.util.List;
 
 @Service
 public class UserService {
     @Autowired
-    private UserRepository repository;
+    private final UserRepository repository;
 
     public UserService(UserRepository repository) {
 

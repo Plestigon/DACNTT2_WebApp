@@ -1,12 +1,14 @@
-package tdtu_ems.main.repositories;
+package tdtu_ems.userservice.repositories;
 
-import tdtu_ems.main.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import tdtu_ems.userservice.models.User;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findByEmail(String email);
+
 }
