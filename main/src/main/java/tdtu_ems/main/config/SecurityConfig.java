@@ -1,4 +1,4 @@
-package tdtu_ems.main.system;
+package tdtu_ems.main.config;
 
 import tdtu_ems.main.services.JpaUserDetailsService;
 import org.springframework.context.annotation.Bean;
