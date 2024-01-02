@@ -1,4 +1,4 @@
-package tdtuems.departmentservice;
+package tdtu_ems.departmentservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

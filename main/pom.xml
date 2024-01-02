@@ -8,10 +8,10 @@
 		<version>3.2.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>da2.webapp</groupId>
+	<groupId>tdtu_ems</groupId>
 	<artifactId>main</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>demo</name>
+	<name>main</name>
 	<description>Demo project for DACNTT2</description>
 	<properties>
 		<java.version>17</java.version>

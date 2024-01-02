@@ -1,10 +1,10 @@
-package tdtu_ems.main;
+package tdtu_ems.departmentservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DemoApplicationTests {
+class DepartmentServiceApplicationTests {
 
 	@Test
 	void contextLoads() {
