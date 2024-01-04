@@ -2,28 +2,29 @@ package tdtu_ems.userservice.models;
 
 import jakarta.persistence.*;
 
-@Entity
+//@Entity
 @Table(name="users")
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String email;
     private String password;
     private String name;
     private String role;
-    @ManyToOne
-    @JoinColumn(name = "department")
-    private Department department;
+//    @ManyToOne
+//    @JoinColumn(name = "department")
+    private int departmentId;
+//    private Department department;
 
     public User() {}
 
-    public User(String email, String password, String name, String role, Department department) {
+    public User(String email, String password, String name, String role, int departmentId) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.role = role;
-        this.department = department;
+        this.departmentId = departmentId;
     }
 
     public int getId() {
@@ -66,13 +67,21 @@ public class User {
         this.role = role;
     }
 
-    public Department getDepartment() {
-        return department;
+    public int getDepartmentId() {
+        return departmentId;
     }
 
-    public void setDepartment(Department department) {
-        this.department = department;
+    public void setDepartmentId(int departmentId) {
+        this.departmentId = departmentId;
     }
+
+//    public Department getDepartment() {
+//        return department;
+//    }
+//
+//    public void setDepartment(Department department) {
+//        this.department = department;
+//    }
 
     @Override
     public String toString() {
@@ -82,8 +91,8 @@ public class User {
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", role='" + role + '\'' +
-                ", department_id=" + department.getId() +
-                ", department=" + department.getShortName() +
+                ", department_id=" + departmentId +
+//                ", department=" + (department != null ? department.getShortName() : "") +
                 '}';
     }
 }

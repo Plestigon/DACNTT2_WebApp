@@ -6,6 +6,7 @@ import tdtu_ems.userservice.models.User;
 import tdtu_ems.userservice.services.UserService;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 public class UserController {
@@ -18,21 +19,27 @@ public class UserController {
 
     @GetMapping("/users")
     public List<User> getUsers() {
-        return userService.getUsers();
+        List<User> users = null;
+        try {
+            users = userService.getUsers();
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return users;
     }
 
-    @GetMapping("/user/{id}")
-    public User getUserById(@PathVariable int id) {
-        return userService.getUserById(id);
-    }
-
-    @GetMapping("/user")
-    public User getUserByEmail(@RequestParam String email) {
-        return userService.getUserByEmail(email);
-    }
-
-    @PostMapping("/add-user")
-    public User addUser(@RequestBody User user) {
-        return userService.addUser(user);
-    }
+//    @GetMapping("/user/{id}")
+//    public User getUserById(@PathVariable int id) {
+//        return userService.getUserById(id);
+//    }
+//
+//    @GetMapping("/user")
+//    public User getUserByEmail(@RequestParam String email) {
+//        return userService.getUserByEmail(email);
+//    }
+//
+//    @PostMapping("/add-user")
+//    public User addUser(@RequestBody User user) {
+//        return userService.addUser(user);
+//    }
 }
