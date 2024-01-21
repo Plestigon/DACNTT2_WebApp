@@ -12,14 +12,12 @@ public class User {
     private String password;
     private String name;
     private String role;
-//    @ManyToOne
-//    @JoinColumn(name = "department")
     private int departmentId;
-//    private Department department;
 
     public User() {}
 
-    public User(String email, String password, String name, String role, int departmentId) {
+    public User(int id, String email, String password, String name, String role, int departmentId) {
+        this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
@@ -82,17 +80,4 @@ public class User {
 //    public void setDepartment(Department department) {
 //        this.department = department;
 //    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", role='" + role + '\'' +
-                ", department_id=" + departmentId +
-//                ", department=" + (department != null ? department.getShortName() : "") +
-                '}';
-    }
 }

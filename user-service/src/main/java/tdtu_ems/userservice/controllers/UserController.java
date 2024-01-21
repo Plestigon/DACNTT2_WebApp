@@ -1,7 +1,9 @@
 package tdtu_ems.userservice.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import tdtu_ems.userservice.models.User;
 import tdtu_ems.userservice.services.UserService;
 
@@ -18,28 +20,46 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public List<User> getUsers() {
+    public List<User> getUsers() throws ExecutionException, InterruptedException {
         List<User> users = null;
-        try {
-            users = userService.getUsers();
-        } catch (ExecutionException | InterruptedException e) {
-            throw new RuntimeException(e);
+        users = userService.getUsers();
+        if (users == null || users.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         return users;
     }
 
-//    @GetMapping("/user/{id}")
-//    public User getUserById(@PathVariable int id) {
-//        return userService.getUserById(id);
-//    }
-//
-//    @GetMapping("/user")
-//    public User getUserByEmail(@RequestParam String email) {
-//        return userService.getUserByEmail(email);
-//    }
-//
-//    @PostMapping("/add-user")
-//    public User addUser(@RequestBody User user) {
-//        return userService.addUser(user);
-//    }
+    @GetMapping("/user/id/{id}")
+    public User getUserById(@PathVariable int id) throws ExecutionException, InterruptedException {
+        User user = userService.getUserById(id);
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        return user;
+    }
+
+
+    @GetMapping("/users/department/{shortName}")
+    public List<User> getUsersByDepartment(@PathVariable String shortName) throws ExecutionException, InterruptedException {
+        List<User> response = userService.getUsersByDepartment(shortName);
+        if (response == null || response.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        return response;
+    }
+
+    @GetMapping("/user/email/{email}")
+    public User getUserByEmail(@PathVariable String email) throws ExecutionException, InterruptedException {
+        return userService.getUserByEmail(email);
+    }
+
+    @PostMapping("/add-user")
+    public String addUser(@RequestBody User user) throws ExecutionException, InterruptedException {
+        return userService.addUser(user);
+    }
+
+    @PostMapping("/remove-user")
+    public String removeUser(@RequestParam int id) throws ExecutionException, InterruptedException {
+        return userService.removeUser(id);
+    }
 }
