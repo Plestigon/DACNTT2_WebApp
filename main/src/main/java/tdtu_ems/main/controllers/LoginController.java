@@ -5,10 +5,10 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 public class LoginController {
-//    private final UserService userService;
+//    private final EmployeeService userService;
 //
 //    @Autowired
-//    public LoginController(UserService userService) {
+//    public LoginController(EmployeeService userService) {
 //        this.userService = userService;
 //    }
 
@@ -26,7 +26,7 @@ public class LoginController {
 //            model.addAttribute("message", "ERROR: Data is null");
 //            return "Login";
 //        }
-//        User user = userService.getUserByEmail(data.getEmail());
+//        Employee user = userService.getUserByEmail(data.getEmail());
 //        if (user != null) {
 //            if (Objects.equals(user.getPassword(), data.getPassword())) {
 //                model.addAttribute("message", "Logged in!");

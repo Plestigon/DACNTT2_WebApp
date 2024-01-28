@@ -1,10 +1,10 @@
-package tdtu_ems.userservice.models;
+package tdtu_ems.employee_service.models;
 
 //import jakarta.persistence.*;
 
 //@Entity
 //@Table(name="users")
-public class User {
+public class Employee {
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -14,9 +14,9 @@ public class User {
     private String role;
     private int departmentId;
 
-    public User() {}
+    public Employee() {}
 
-    public User(int id, String email, String password, String name, String role, int departmentId) {
+    public Employee(int id, String email, String password, String name, String role, int departmentId) {
         this.id = id;
         this.email = email;
         this.password = password;

@@ -1,4 +1,4 @@
-package tdtu_ems.userservice.models;
+package tdtu_ems.employee_service.models;
 
 import java.util.List;
 
@@ -6,15 +6,15 @@ public class Department {
     private int id;
     private String shortName;
     private String longName;
-    private List<Integer> userIds;
+    private List<Integer> employeeIds;
 
     public Department(){}
 
-    public Department(int id, String shortName, String longName, List<Integer> userIds) {
+    public Department(int id, String shortName, String longName, List<Integer> employeeIds) {
         this.id = id;
         this.shortName = shortName;
         this.longName = longName;
-        this.userIds = userIds;
+        this.employeeIds = employeeIds;
     }
 
     public int getId() {
@@ -41,11 +41,11 @@ public class Department {
         this.longName = longName;
     }
 
-    public List<Integer> getUserIds() {
-        return userIds;
+    public List<Integer> getEmployeeIds() {
+        return employeeIds;
     }
 
-    public void setUserIds(List<Integer> userIds) {
-        this.userIds = userIds;
+    public void setEmployeeIds(List<Integer> employeeIds) {
+        this.employeeIds = employeeIds;
     }
 }

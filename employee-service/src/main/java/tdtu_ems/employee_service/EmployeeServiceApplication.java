@@ -1,4 +1,4 @@
-package tdtu_ems.userservice;
+package tdtu_ems.employee_service;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
@@ -9,15 +9,14 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Objects;
 
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class })
-public class UserServiceApplication {
+public class EmployeeServiceApplication {
 
 	public static void main(String[] args) throws IOException {
-		ClassLoader classLoader = UserServiceApplication.class.getClassLoader();
+		ClassLoader classLoader = EmployeeServiceApplication.class.getClassLoader();
 		File file = new File(Objects.requireNonNull(classLoader.getResource("serviceAccountKey.json")).getFile());
 		FileInputStream serviceAccount =
 				new FileInputStream(file.getAbsolutePath());
@@ -28,7 +27,7 @@ public class UserServiceApplication {
 				.build();
 
 		FirebaseApp.initializeApp(options);
-        SpringApplication.run(UserServiceApplication.class, args);
+        SpringApplication.run(EmployeeServiceApplication.class, args);
 	}
 
 }

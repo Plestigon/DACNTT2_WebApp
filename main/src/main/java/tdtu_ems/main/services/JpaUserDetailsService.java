@@ -7,7 +7,7 @@
 //import org.springframework.security.core.userdetails.UserDetailsService;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
 //import org.springframework.stereotype.Service;
-//import tdtu_ems.userservice.models.User;
+//import tdtu_ems.userservice.models.Employee;
 //
 //import java.util.Optional;
 //
@@ -22,11 +22,11 @@
 //
 //    @Override
 //    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-//        User user = webClient.get()
+//        Employee user = webClient.get()
 //                .uri("http://localhost:8081/user",
 //                        uriBuilder -> uriBuilder.queryParam("email", email).build())
 //                .retrieve()
-//                .bodyToMono(User.class)
+//                .bodyToMono(Employee.class)
 //                .block();
 //        if (user == null) {
 //            throw new UsernameNotFoundException("Email not found: " + email);

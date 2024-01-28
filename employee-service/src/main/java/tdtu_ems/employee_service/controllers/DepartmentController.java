@@ -1,11 +1,11 @@
-package tdtu_ems.userservice.controllers;
+package tdtu_ems.employee_service.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import tdtu_ems.userservice.models.Department;
-import tdtu_ems.userservice.services.DepartmentService;
+import tdtu_ems.employee_service.models.Department;
+import tdtu_ems.employee_service.services.DepartmentService;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -23,15 +23,6 @@ public class DepartmentController {
     public List<Department> getDepartments() throws ExecutionException, InterruptedException {
         List<Department> response = departmentService.getDepartments();
         if (response == null || response.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
-        return response;
-    }
-
-    @GetMapping("/department/{shortName}")
-    public Department getDepartmentByShortName(@PathVariable String shortName) throws ExecutionException, InterruptedException {
-        Department response = departmentService.getDepartmentByShortName(shortName);
-        if (response == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         return response;

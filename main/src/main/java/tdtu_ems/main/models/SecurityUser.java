@@ -4,15 +4,15 @@
 //import org.springframework.security.core.authority.SimpleGrantedAuthority;
 //import org.springframework.security.core.userdetails.UserDetails;
 //import tdtu_ems.userservice.models.Department;
-//import tdtu_ems.userservice.models.User;
+//import tdtu_ems.userservice.models.Employee;
 //
 //import java.util.Arrays;
 //import java.util.Collection;
 //
 //public class SecurityUser implements UserDetails {
-//    private final User user;
+//    private final Employee user;
 //
-//    public SecurityUser(User user) {
+//    public SecurityUser(Employee user) {
 //        this.user = user;
 //    }
 //
