@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import tdtu_ems.employee_service.models.Employee;
+import tdtu_ems.main.models.Employee;
 import tdtu_ems.employee_service.services.EmployeeService;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class EmployeeController {
         return employees;
     }
 
-    @GetMapping("/employee/id/{id}")
+    @GetMapping("/employee/{id}")
     public Employee getEmployeeById(@PathVariable int id) throws ExecutionException, InterruptedException {
         Employee employee = employeeService.getEmployeeById(id);
         if (employee == null) {

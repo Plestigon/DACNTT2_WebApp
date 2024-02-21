@@ -1,4 +1,4 @@
-package tdtu_ems.employee_service.services;
+package tdtu_ems.department_service.services;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
@@ -6,7 +6,7 @@ import com.google.firebase.cloud.FirestoreClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import tdtu_ems.employee_service.models.Department;
+import tdtu_ems.main.models.Department;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ public class DepartmentService {
 
     public DepartmentService() {
         db = FirestoreClient.getFirestore();
-        logger = LoggerFactory.getLogger(EmployeeService.class);
+        logger = LoggerFactory.getLogger(DepartmentService.class);
     }
 
     public String addDepartment(Department department) throws ExecutionException, InterruptedException {
@@ -62,49 +62,5 @@ public class DepartmentService {
                 .whereEqualTo("shortName", shortName).get().get();
         List<QueryDocumentSnapshot> documents = query.getDocuments();
         return documents.isEmpty() ? null : documents.get(0).toObject(Department.class);
-    }
-
-    public String addEmployeeToDepartment(int employeeId, int departmentId) throws ExecutionException, InterruptedException {
-        Department department = getDepartmentById(departmentId);
-        if (department != null) {
-            List<Integer> employeeIds = new ArrayList<>();
-            if (department.getEmployeeIds() != null) {
-                employeeIds = department.getEmployeeIds();
-                if (employeeIds.contains(employeeId)) {
-                    String msg = "This employeeId already exist in this Department.";
-                    logger.error("addEmployeeToDepartment: " + msg);
-                    return msg;
-                }
-            }
-            employeeIds.add(employeeId);
-            ApiFuture<WriteResult> result = db.collection("departments")
-                    .document(String.valueOf(departmentId)).update("employeeIds", employeeIds);
-            return result.get().toString();
-        }
-        String msg = "Department Not Found.";
-        logger.error("addEmployeeToDepartment: " + msg);
-        return msg;
-    }
-
-    public String removeEmployeeFromDepartment(int employeeId, int departmentId) throws ExecutionException, InterruptedException {
-        Department department = getDepartmentById(departmentId);
-        if (department != null) {
-            List<Integer> employeeIds = new ArrayList<>();
-            if (department.getEmployeeIds() != null) {
-                employeeIds = department.getEmployeeIds();
-                if (!employeeIds.contains(employeeId)) {
-                    String msg = "This employeeId does not exist in this Department.";
-                    logger.error("removeEmployeeFromDepartment: " + msg);
-                    return msg;
-                }
-                employeeIds.remove(Integer.valueOf(employeeId));
-            }
-            ApiFuture<WriteResult> result = db.collection("departments")
-                    .document(String.valueOf(departmentId)).update("employeeIds", employeeIds);
-            return result.get().toString();
-        }
-        String msg = "Department Not Found.";
-        logger.error("addEmployeeToDepartment: " + msg);
-        return msg;
     }
 }

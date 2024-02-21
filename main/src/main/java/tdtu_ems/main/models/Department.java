@@ -1,4 +1,4 @@
-package tdtu_ems.employee_service.models;
+package tdtu_ems.main.models;
 
 import java.util.List;
 

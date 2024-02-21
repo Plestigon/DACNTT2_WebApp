@@ -1,11 +1,11 @@
-package tdtu_ems.employee_service.controllers;
+package tdtu_ems.department_service.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import tdtu_ems.employee_service.models.Department;
-import tdtu_ems.employee_service.services.DepartmentService;
+import tdtu_ems.main.models.Department;
+import tdtu_ems.department_service.services.DepartmentService;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -28,7 +28,7 @@ public class DepartmentController {
         return response;
     }
 
-    @GetMapping("/department/id/{id}")
+    @GetMapping("/department/{id}")
     public Department getDepartmentById(@PathVariable int id) throws ExecutionException, InterruptedException {
         Department response = departmentService.getDepartmentById(id);
         if (response == null) {

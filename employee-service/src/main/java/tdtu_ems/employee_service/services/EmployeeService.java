@@ -6,8 +6,8 @@ import com.google.firebase.cloud.FirestoreClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import tdtu_ems.employee_service.models.Department;
-import tdtu_ems.employee_service.models.Employee;
+import tdtu_ems.main.models.Department;
+import tdtu_ems.main.models.Employee;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +18,10 @@ import java.util.concurrent.ExecutionException;
 public class EmployeeService {
     private final Firestore db;
     private final Logger logger;
-    private final DepartmentService departmentService;
 
-    public EmployeeService(DepartmentService departmentService) {
+    public EmployeeService() {
         db = FirestoreClient.getFirestore();
         logger = LoggerFactory.getLogger(EmployeeService.class);
-        this.departmentService = departmentService;
     }
 
     public String addEmployee(Employee employee) throws ExecutionException, InterruptedException {
@@ -40,10 +38,10 @@ public class EmployeeService {
         long id = Objects.requireNonNull(idTracerDoc.get().get().getLong("id")) + 1;
         employee.setId((int) id);
         ApiFuture<WriteResult> result = employeesDb.document(String.valueOf(id)).set(employee);
-        logger.info("addEmployee update id_tracer: " +
-                idTracerDoc.update("id", id).get().getUpdateTime());
+        ApiFuture<WriteResult> resultUpdId = idTracerDoc.update("id", id);
+        logger.info("addEmployee update id_tracer: " + resultUpdId.get().getUpdateTime());
         //Add employee to department's employee list
-        logger.info(departmentService.addEmployeeToDepartment((int) id, employee.getDepartmentId()));
+        logger.info("addEmployeeToDepartment: " + addEmployeeToDepartment((int) id, employee.getDepartmentId()));
         return result.get().getUpdateTime().toString();
     }
 
@@ -56,7 +54,7 @@ public class EmployeeService {
         }
         ApiFuture<WriteResult> result = db.collection("employees").document(String.valueOf(id)).delete();
         //Remove employee from department's employee list
-        logger.info(departmentService.removeEmployeeFromDepartment(id, employee.getDepartmentId()));
+        logger.info("removeEmployeeFromDepartment: " + removeEmployeeFromDepartment(id, employee.getDepartmentId()));
         return result.get().getUpdateTime().toString();
     }
 
@@ -102,12 +100,65 @@ public class EmployeeService {
         return documents.isEmpty() ? null : documents.get(0).toObject(Employee.class);
     }
 
-    public List<Employee> getEmployeesByDepartment(String shortName) throws ExecutionException, InterruptedException {
-        Department department = departmentService.getDepartmentByShortName(shortName);
-        if (department == null || department.getEmployeeIds() == null) {
-            logger.error("getemployeesByDepartment: " + "Department not found");
-            return null;
+//    public List<Employee> getEmployeesByDepartment(String shortName) throws ExecutionException, InterruptedException {
+//        Department department = departmentService.getDepartmentByShortName(shortName);
+//        if (department == null || department.getEmployeeIds() == null) {
+//            logger.error("getemployeesByDepartment: " + "Department not found");
+//            return null;
+//        }
+//        return getEmployeesByIds(department.getEmployeeIds());
+//    }
+
+    public Department getDepartmentById(int id) throws ExecutionException, InterruptedException {
+        DocumentSnapshot data = db.collection("departments").document(String.valueOf(id)).get().get();
+        Department department = null;
+        if (data.exists()) {
+            department = data.toObject(Department.class);
         }
-        return getEmployeesByIds(department.getEmployeeIds());
+        return department;
+    }
+
+    public String addEmployeeToDepartment(int employeeId, int departmentId) throws ExecutionException, InterruptedException {
+        Department department = getDepartmentById(departmentId);
+        if (department != null) {
+            List<Integer> employeeIds = new ArrayList<>();
+            if (department.getEmployeeIds() != null) {
+                employeeIds = department.getEmployeeIds();
+                if (employeeIds.contains(employeeId)) {
+                    String msg = "This employeeId already exist in this Department.";
+                    logger.error("addEmployeeToDepartment: " + msg);
+                    return msg;
+                }
+            }
+            employeeIds.add(employeeId);
+            ApiFuture<WriteResult> result = db.collection("departments")
+                    .document(String.valueOf(departmentId)).update("employeeIds", employeeIds);
+            return result.get().toString();
+        }
+        String msg = "Department Not Found.";
+        logger.error("addEmployeeToDepartment: " + msg);
+        return msg;
+    }
+
+    public String removeEmployeeFromDepartment(int employeeId, int departmentId) throws ExecutionException, InterruptedException {
+        Department department = getDepartmentById(departmentId);
+        if (department != null) {
+            List<Integer> employeeIds = new ArrayList<>();
+            if (department.getEmployeeIds() != null) {
+                employeeIds = department.getEmployeeIds();
+                if (!employeeIds.contains(employeeId)) {
+                    String msg = "This employeeId does not exist in this Department.";
+                    logger.error("removeEmployeeFromDepartment: " + msg);
+                    return msg;
+                }
+                employeeIds.remove(Integer.valueOf(employeeId));
+            }
+            ApiFuture<WriteResult> result = db.collection("departments")
+                    .document(String.valueOf(departmentId)).update("employeeIds", employeeIds);
+            return result.get().toString();
+        }
+        String msg = "Department Not Found.";
+        logger.error("addEmployeeToDepartment: " + msg);
+        return msg;
     }
 }
