@@ -19,7 +19,7 @@ public class DepartmentController {
         this.departmentService = departmentService;
     }
 
-    @GetMapping("/departments")
+    @GetMapping("/department/get")
     public List<Department> getDepartments() throws ExecutionException, InterruptedException {
         List<Department> response = departmentService.getDepartments();
         if (response == null || response.isEmpty()) {
@@ -28,7 +28,7 @@ public class DepartmentController {
         return response;
     }
 
-    @GetMapping("/department/{id}")
+    @GetMapping("/department/get/{id}")
     public Department getDepartmentById(@PathVariable int id) throws ExecutionException, InterruptedException {
         Department response = departmentService.getDepartmentById(id);
         if (response == null) {
@@ -37,12 +37,12 @@ public class DepartmentController {
         return response;
     }
 
-    @PostMapping("/add-department")
+    @PostMapping("/department/add")
     public String addDepartment(@RequestBody Department department) throws ExecutionException, InterruptedException {
         return departmentService.addDepartment(department);
     }
 
-    @PostMapping("/remove-department")
+    @PostMapping("/department/remove")
     public String removeDepartment(@RequestParam int id) throws ExecutionException, InterruptedException {
         return departmentService.removeDepartment(id);
     }

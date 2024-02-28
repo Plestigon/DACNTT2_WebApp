@@ -5,6 +5,7 @@ import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 import tdtu_ems.main.models.Department;
 import tdtu_ems.main.models.Employee;
@@ -160,5 +161,10 @@ public class EmployeeService {
         String msg = "Department Not Found.";
         logger.error("addEmployeeToDepartment: " + msg);
         return msg;
+    }
+
+    @RabbitListener(queues = {"${rabbitmq.queue.name}"})
+    public void consume(String message) {
+        logger.info("Received message in EmployeeService: " + message);
     }
 }
