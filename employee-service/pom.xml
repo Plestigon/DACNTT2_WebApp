@@ -8,7 +8,7 @@
 		<version>3.2.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>tdtu_ems</groupId>
+	<groupId>tdtu.ems</groupId>
 	<artifactId>employee-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>employee-service</name>
@@ -35,7 +35,7 @@
 		</dependency>
 
         <dependency>
-            <groupId>tdtu_ems</groupId>
+            <groupId>tdtu.ems</groupId>
             <artifactId>main</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>

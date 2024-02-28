@@ -28,7 +28,7 @@
 			<scope>test</scope>
 		</dependency>
         <dependency>
-            <groupId>tdtu_ems</groupId>
+            <groupId>tdtu.ems</groupId>
             <artifactId>main</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
