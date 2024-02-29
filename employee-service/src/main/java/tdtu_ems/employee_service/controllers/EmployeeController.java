@@ -19,7 +19,7 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @GetMapping("/employee/get")
+    @GetMapping("/employees/get")
     public List<Employee> getEmployees() throws ExecutionException, InterruptedException {
         List<Employee> employees = null;
         employees = employeeService.getEmployees();
@@ -29,7 +29,7 @@ public class EmployeeController {
         return employees;
     }
 
-    @GetMapping("/employee/get/{id}")
+    @GetMapping("/employees/get/{id}")
     public Employee getEmployeeById(@PathVariable int id) throws ExecutionException, InterruptedException {
         Employee employee = employeeService.getEmployeeById(id);
         if (employee == null) {
@@ -38,12 +38,12 @@ public class EmployeeController {
         return employee;
     }
 
-    @PostMapping("/employee/add")
+    @PostMapping("/employees/add")
     public String addEmployee(@RequestBody Employee employee) throws ExecutionException, InterruptedException {
         return employeeService.addEmployee(employee);
     }
 
-    @PostMapping("/employee/remove")
+    @PostMapping("/employees/remove")
     public String removeEmployee(@RequestParam int id) throws ExecutionException, InterruptedException {
         return employeeService.removeEmployee(id);
     }

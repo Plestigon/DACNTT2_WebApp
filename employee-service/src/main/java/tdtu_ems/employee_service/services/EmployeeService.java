@@ -35,12 +35,12 @@ public class EmployeeService {
             return msg;
         }
         //endregion
-        DocumentReference idTracerDoc = db.collection("id_tracer").document("employees");
+        DocumentReference idTracerDoc = db.collection("idTracer").document("employees");
         long id = Objects.requireNonNull(idTracerDoc.get().get().getLong("id")) + 1;
         employee.setId((int) id);
         ApiFuture<WriteResult> result = employeesDb.document(String.valueOf(id)).set(employee);
         ApiFuture<WriteResult> resultUpdId = idTracerDoc.update("id", id);
-        logger.info("addEmployee update id_tracer: " + resultUpdId.get().getUpdateTime());
+        logger.info("addEmployee update idTracer: " + resultUpdId.get().getUpdateTime());
         //Add employee to department's employee list
         logger.info("addEmployeeToDepartment: " + addEmployeeToDepartment((int) id, employee.getDepartmentId()));
         return result.get().getUpdateTime().toString();

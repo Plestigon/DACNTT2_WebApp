@@ -1,13 +1,14 @@
 package tdtu_ems.main.models;
 
 import java.util.Date;
+import java.util.List;
 
 public class ProjectUpdate {
     private int id;
     private int writerId;
     private String comment;
     private Date createTime;
-    private int checkedIds;
+    private List<Integer> checkedIds;
 
     public ProjectUpdate() {}
 
@@ -49,11 +50,11 @@ public class ProjectUpdate {
         this.createTime = createTime;
     }
 
-    public int getCheckedIds() {
+    public List<Integer> getCheckedIds() {
         return checkedIds;
     }
 
-    public void setCheckedIds(int checkedIds) {
+    public void setCheckedIds(List<Integer> checkedIds) {
         this.checkedIds = checkedIds;
     }
 }

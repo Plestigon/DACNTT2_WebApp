@@ -10,15 +10,17 @@ public class Project {
     private List<Integer> memberIds;
     private int status;
     private Date dueDate;
+    private String description;
     private List<Integer> projectUpdateIds;
 
     public Project() {}
 
-    public Project(String name, int ownerId, int status, Date dueDate) {
+    public Project(String name, int ownerId, int status, Date dueDate, String description) {
         this.name = name;
         this.ownerId = ownerId;
         this.status = status;
         this.dueDate = dueDate;
+        this.description = description;
     }
 
     public int getId() {
@@ -67,6 +69,14 @@ public class Project {
 
     public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public List<Integer> getProjectUpdateIds() {
