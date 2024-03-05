@@ -24,12 +24,12 @@ public class DepartmentService {
     }
 
     public String addDepartment(Department department) throws ExecutionException, InterruptedException {
-        DocumentReference idTracerDoc = db.collection("id_tracer").document("departments");
+        DocumentReference idTracerDoc = db.collection("idTracer").document("departments");
         long id = Objects.requireNonNull(idTracerDoc.get().get().getLong("id")) + 1;
         department.setId((int) id);
         ApiFuture<WriteResult> result = db.collection("departments")
                 .document(String.valueOf(id)).set(department);
-        logger.info("addDepartment update id_tracer: " +
+        logger.info("addDepartment update idTracer: " +
                 idTracerDoc.update("id", id).get().getUpdateTime());
         return result.get().getUpdateTime().toString();
     }

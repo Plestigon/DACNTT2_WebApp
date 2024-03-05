@@ -5,6 +5,7 @@ import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 import tdtu_ems.main.models.Department;
 import tdtu_ems.main.models.Employee;
@@ -34,12 +35,12 @@ public class EmployeeService {
             return msg;
         }
         //endregion
-        DocumentReference idTracerDoc = db.collection("id_tracer").document("employees");
+        DocumentReference idTracerDoc = db.collection("idTracer").document("employees");
         long id = Objects.requireNonNull(idTracerDoc.get().get().getLong("id")) + 1;
         employee.setId((int) id);
         ApiFuture<WriteResult> result = employeesDb.document(String.valueOf(id)).set(employee);
         ApiFuture<WriteResult> resultUpdId = idTracerDoc.update("id", id);
-        logger.info("addEmployee update id_tracer: " + resultUpdId.get().getUpdateTime());
+        logger.info("addEmployee update idTracer: " + resultUpdId.get().getUpdateTime());
         //Add employee to department's employee list
         logger.info("addEmployeeToDepartment: " + addEmployeeToDepartment((int) id, employee.getDepartmentId()));
         return result.get().getUpdateTime().toString();
@@ -160,5 +161,10 @@ public class EmployeeService {
         String msg = "Department Not Found.";
         logger.error("addEmployeeToDepartment: " + msg);
         return msg;
+    }
+
+    @RabbitListener(queues = {"${rabbitmq.queue.name}"})
+    public void consume(String message) {
+        logger.info("Received message in EmployeeService: " + message);
     }
 }
