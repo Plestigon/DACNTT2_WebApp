@@ -1,85 +1,136 @@
 <!DOCTYPE html>
-<html>
-    <style>
-        .sidebar {
-            margin: 0;
-            padding: 0;
-            width: 200px;
-            background-color: #f1f1f1;
-            position: fixed;
-            height: 100%;
-            overflow: auto;
-        }          
 
-        .sidebar a {
-            display: block;
-            color: black;
-            padding: 16px;
-            text-decoration: none;
-        }
+<html lang="en">
+<head>
+    <title>Bootstrap Tutorial Sample Page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.css">
+</head>
+<body>
 
-        .sidebar a.active {
-            background-color: #0468aa;
-            color: white;
-        }
-
-        .sidebar a:hover:not(.active) {
-            background-color: #0468aa;
-            color: white;
-        }
-
-        div.content {
-            margin-left: 200px;
-            padding: 1px 16px;
-            height: 1000px;
-        }          
-
-        @media screen and (max-width: 700px) {
-        .sidebar {
-              width: 100%;
-              height: auto;
-              position: relative;
-            }
-            .sidebar a {float: left;}
-            div.content {margin-left: 0;}
-        }
-        
-        @media screen and (max-width: 400px) {
-        .sidebar a {
-              text-align: center;
-              float: none;
-            }
-        }
-        p{
-            font-size: 32px;
-            margin-left:200px;
-        }
-          
-    </style>
-    <body>
-        <div class="sidebar">
-            <a id="home" class="active" href="#home">Home</a>
-            <a id="news" href="#news">News</a>
-            <a id="about" href="#about">About</a>
-            <a id="career" href="#career">Career</a>
-            <a id="bo" href="#business">Bussiness Opportunities</a>
-            <a id="login"  href="#login" >Login</a>
+<!--Nav bar-->
+<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Company Name</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Finance
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="Operations.html" role="button" aria-expanded="false">
+                        Operations
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Human Resources
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Schedule
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </li>
+            </ul>
         </div>
+    </div>
+</nav>
 
-        <h1 align="center">COMPANY NAME</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-            Pellentesque ultrices justo sit amet mi placerat gravida. Proin egestas, arcu at sodales pulvinar, mauris massa vehicula purus, sit amet scelerisque tortor 
-            orci non orci. Praesent euismod ultrices quam, id elementum mi elementum vel. Aenean id ornare arcu, a auctor nibh. 
-            In suscipit sit amet sem sed dictum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer hendrerit justo vel felis hendrerit consequat. 
-            Phasellus tincidunt fringilla gravida. Duis eu ante sit amet ex ultrices accumsan eu sed turpis. Nam gravida quis dolor nec blandit.
-        </p>
+<h1 style= "text-align:center; font-size: 60px">Your go-to work platform</h1>
+<h1 style= "text-align:center; font-size: 40px">Run all your work on one platform </h1>
 
-    </body>
-    
-    <script type="text/javascript">
-        document.getElementById("login").onclick = function () {
-            location.href = "file:///D:/Class/DACNTT2_WebApp/Login.html#login";
-        };
-    </script>
-    
+<!--Cards-->
+<div class="container">
+    <div class="card-group">
+        <div class="flip-card" style="max-width: 18rem;">
+            <div class="flip-card-inner">
+                <div class="flip-card-front bg-success">
+                    <img src="assets/Stocks.png" class="card-img-top" alt="..." style="width: 12rem;">
+                    <h3>Finance</h3>
+                </div>
+                <div class="flip-card-back bg-success">
+                        <h5 class="card-title">Finance</h5>
+                        <p class="card-text">Manage the company's finance.</p>
+                    <a href="#" class="btn btn-primary stretched-link bg-success border-0">Go to finance</a>
+                </div>
+            </div>
+        </div>
+        <div class="flip-card" style="max-width: 18rem;">
+            <div class="flip-card-inner">
+                <div class="flip-card-front bg-info">
+                    <img src="assets/Cog.png" class="card-img-top" alt="..." style="width: 12rem;">
+                    <h3>Operations</h3>
+                </div>
+                <div class="flip-card-back bg-info">
+                    <h5 class="card-title">Operations</h5>
+                    <p class="card-text">Manage the company's Operations.</p>
+                    <a href="Operations.html" class="btn btn-primary stretched-link bg-info border-0">Go to Operations</a>
+                </div>
+            </div>
+        </div>
+        <div class="flip-card" style="max-width: 18rem;">
+            <div class="flip-card-inner">
+                <div class="flip-card-front bg-danger">
+                    <img src="assets/HR.png" class="card-img-top" alt="..." style="width: 12rem;">
+                    <h3>Human Resources</h3>
+                </div>
+                <div class="flip-card-back bg-danger">
+                    <h5 class="card-title">Human Resources</h5>
+                    <p class="card-text">Manage the company's human resources.</p>
+                    <a href="#" class="btn btn-primary stretched-link bg-danger border-0">Go to Human Resources</a>
+                </div>
+            </div>
+        </div>
+        <div class="flip-card" style="max-width: 18rem;">
+            <div class="flip-card-inner">
+                <div class="flip-card-front bg-warning">
+                    <img src="assets/Calendar.png" class="card-img-top" alt="..." style="width: 12rem;">
+                    <h3>Schedule</h3>
+                </div>
+                <div class="flip-card-back bg-warning">
+                    <h5 class="card-title">Schedule</h5>
+                    <p class="card-text">Manage the company's schedule.</p>
+                    <a href="#" class="btn btn-primary stretched-link bg-warning border-0">Go to Schedule</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Background image -->
+<!--<div-->
+<!--    class="background-image"-->
+<!--    style="background-image: url('assets/corporate-background-.webp')">-->
+<!--</div>-->
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="js/bootstrap.min.js"></script>
+
+</body>
 </html>
