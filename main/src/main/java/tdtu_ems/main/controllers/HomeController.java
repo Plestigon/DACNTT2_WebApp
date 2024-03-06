@@ -47,7 +47,7 @@ public class HomeController {
 //                default -> "redirect:/error";
 //            };
 //        }
-        return "Landing_page";
+        return "Home/Landing_page";
     }
 
 //    @PreAuthorize("hasRole('MANAGER')")
