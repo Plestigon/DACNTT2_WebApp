@@ -2,7 +2,7 @@
 
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Bootstrap Tutorial Sample Page</title>
+    <title th:text="${title}"></title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/static/css/bootstrap.css">
@@ -63,16 +63,16 @@
         <input type="text" style="border: 0">
     </div>
 </form>
-<button type="button" class="btn btn-primary" onclick="addRow()">
+<button type="button" class="btn btn-primary" id="new-prj-btn">
     New project
 </button>
 
-<button type="button" class="btn btn-primary">
+<button type="button" class="btn btn-primary" id="del-prj-btn">
     Delete project
 </button>
 
 
-<table class="table table-hover table-collapsed table-bordered border-dark">
+<table class="table table-hover table-collapsed table-bordered border-dark" id="project-table">
     <thead>
     <tr>
         <th scope="col">Project</th>
@@ -83,30 +83,22 @@
     </tr>
     </thead>
     <tbody>
-
-
+    <tr>
+        <td>Project</td>
+        <td>Owner</td>
+        <td>Status</td>
+        <td>Due date</td>
+        <td>People</td>
+    </tr>
     </tbody>
 </table>
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="/static/js/jquery-3.7.1.min.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/operations.js"></script>
 </body>
 
-<script>
-    const tableObj = document.getElementById("table");
-    const cellCount = tableObj.rows[0].cells.length;
-
-    function addRow(){
-        const rowLength = tableObj.rows.length;
-        const newRow = tableObj.insertRow(rowLength);
-
-        for(let i =0; i<cellCount; i++){
-            const newCell = newRow.insertCell(i);
-            newRow.cells[0].innerHTML = rowLength;
-        }
-    }
-
-</script>
 </html>

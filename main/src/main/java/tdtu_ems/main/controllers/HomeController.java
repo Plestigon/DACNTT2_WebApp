@@ -28,6 +28,7 @@ public class HomeController {
     public HomeController(HomeService homeService) {
         this.homeService = homeService;
     }
+    private final String HOME_PAGE_TITLE = "Your go-to work platform";
 
     @GetMapping("/")
     public String index(Model model) {
@@ -47,6 +48,7 @@ public class HomeController {
 //                default -> "redirect:/error";
 //            };
 //        }
+        model.addAttribute("title", HOME_PAGE_TITLE + " - Home");
         return "Home/Landing_page";
     }
 
