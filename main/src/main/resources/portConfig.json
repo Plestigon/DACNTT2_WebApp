@@ -2,5 +2,6 @@
   "main": 8080,
   "employee-service": 8081,
   "department-service": 8082,
-  "operation-management-service": 8083
+  "operation-management-service": 8083,
+  "discovery-server": 8761
 }

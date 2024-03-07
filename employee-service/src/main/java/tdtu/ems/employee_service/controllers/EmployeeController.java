@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @RestController
+@RequestMapping("/api/employees")
 public class EmployeeController {
     private final EmployeeService employeeService;
 
@@ -19,7 +20,7 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @GetMapping("/employees/get")
+    @GetMapping("/get")
     public List<Employee> getEmployees() throws ExecutionException, InterruptedException {
         List<Employee> employees = null;
         employees = employeeService.getEmployees();
@@ -29,7 +30,7 @@ public class EmployeeController {
         return employees;
     }
 
-    @GetMapping("/employees/get/{id}")
+    @GetMapping("/get/{id}")
     public Employee getEmployeeById(@PathVariable int id) throws ExecutionException, InterruptedException {
         Employee employee = employeeService.getEmployeeById(id);
         if (employee == null) {
@@ -38,12 +39,12 @@ public class EmployeeController {
         return employee;
     }
 
-    @PostMapping("/employees/add")
+    @PostMapping("/add")
     public String addEmployee(@RequestBody Employee employee) throws ExecutionException, InterruptedException {
         return employeeService.addEmployee(employee);
     }
 
-    @PostMapping("/employees/remove")
+    @PostMapping("/remove")
     public String removeEmployee(@RequestParam int id) throws ExecutionException, InterruptedException {
         return employeeService.removeEmployee(id);
     }
