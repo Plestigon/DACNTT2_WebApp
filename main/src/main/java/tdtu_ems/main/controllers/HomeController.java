@@ -66,11 +66,6 @@ public class HomeController {
 
     @GetMapping("/profile")
     public String profile(Model model) {
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        SecurityUser u = (SecurityUser) auth.getPrincipal();
-//        model.addAttribute("email", u.getUsername());
-//        model.addAttribute("name", u.getName());
-//        model.addAttribute("role", u.getRole());
         return "Profile_Page";
     }
 }
