@@ -1,4 +1,4 @@
-package tdtu.ems.main.general;
+package tdtu.ems.core_service.utils;
 
 import org.slf4j.LoggerFactory;
 
@@ -8,7 +8,7 @@ public class Logger<T> {
 
     public Logger(Class<T> type) {
         this.type = type;
-        logger = LoggerFactory.getLogger(type);;
+        logger = LoggerFactory.getLogger(type);
     }
 
     public void Info(String functionName, String message) {

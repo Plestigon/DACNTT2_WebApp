@@ -1,4 +1,4 @@
-package tdtu.ems.employee_service.repository;
+package tdtu.ems.employee_service.repositories;
 
 import tdtu.ems.employee_service.models.Employee;
 

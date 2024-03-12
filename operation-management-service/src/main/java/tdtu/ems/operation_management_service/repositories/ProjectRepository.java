@@ -1,37 +1,41 @@
-package tdtu.ems.operation_management_service.services;
+package tdtu.ems.operation_management_service.repositories;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 import tdtu.ems.core_service.utils.Logger;
 import tdtu.ems.operation_management_service.models.Project;
 import tdtu.ems.operation_management_service.models.ProjectUpdate;
-import tdtu.ems.operation_management_service.repositories.ProjectRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Service
-public class ProjectService implements IProjectService {
-    private final ProjectRepository _projectRepository;
+@Repository
+public class ProjectRepository implements IProjectRepository {
     private final Firestore _db;
-    private final Logger<ProjectService> _logger;
+    private final Logger<ProjectRepository> _logger;
 
-    public ProjectService(ProjectRepository projectRepository) {
-        _projectRepository = projectRepository;
+    public ProjectRepository() {
         _db = FirestoreClient.getFirestore();
-        _logger = new Logger<>(ProjectService.class);
+        _logger = new Logger<>(ProjectRepository.class);
     }
 
     @Override
     public List<Project> getProjects() {
-        List<Project> projects = _projectRepository.getProjects();
-        if (projects == null || projects.isEmpty()) {
+        try {
+            CollectionReference projectsDb = _db.collection("projects");
+            List<Project> projects = new ArrayList<>();
+            for (DocumentSnapshot data : projectsDb.get().get().getDocuments()) {
+                projects.add(data.toObject(Project.class));
+            }
+            _logger.Error("getProjects", "test");
+            return projects;
+        }
+        catch (Exception e) {
             return null;
         }
-        return null;
     }
 
     @Override

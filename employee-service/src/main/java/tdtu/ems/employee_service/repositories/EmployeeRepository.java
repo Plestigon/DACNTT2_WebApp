@@ -1,4 +1,4 @@
-package tdtu.ems.employee_service.repository;
+package tdtu.ems.employee_service.repositories;
 
 import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.DocumentSnapshot;

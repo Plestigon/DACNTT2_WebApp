@@ -1,4 +1,4 @@
-package tdtu.ems.operation_management_service.config;
+package tdtu.ems.operation_management_service.configs;
 
 import com.google.api.client.util.Value;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
