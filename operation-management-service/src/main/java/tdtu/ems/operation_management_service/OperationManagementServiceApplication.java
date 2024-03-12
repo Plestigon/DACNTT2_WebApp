@@ -17,18 +17,22 @@ import java.util.Objects;
 @EnableDiscoveryClient
 public class OperationManagementServiceApplication {
 
-	public static void main(String[] args) throws IOException {
-		ClassLoader classLoader = OperationManagementServiceApplication.class.getClassLoader();
-		File file = new File(Objects.requireNonNull(classLoader.getResource("serviceAccountKey.json")).getFile());
-		FileInputStream serviceAccount =
-				new FileInputStream(file.getAbsolutePath());
+	public static void main(String[] args) {
+		try {
+			ClassLoader classLoader = OperationManagementServiceApplication.class.getClassLoader();
+			File file = new File(Objects.requireNonNull(classLoader.getResource("serviceAccountKey.json")).getFile());
+			FileInputStream serviceAccount =
+					new FileInputStream(file.getAbsolutePath());
 
-		FirebaseOptions options = new FirebaseOptions.Builder()
-				.setCredentials(GoogleCredentials.fromStream(serviceAccount))
-				.setDatabaseUrl("https://ems-dacntt2-default-rtdb.asia-southeast1.firebasedatabase.app")
-				.build();
+			FirebaseOptions options = new FirebaseOptions.Builder()
+					.setCredentials(GoogleCredentials.fromStream(serviceAccount))
+					.setDatabaseUrl("https://ems-dacntt2-default-rtdb.asia-southeast1.firebasedatabase.app")
+					.build();
 
-		FirebaseApp.initializeApp(options);
+			FirebaseApp.initializeApp(options);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 		SpringApplication.run(OperationManagementServiceApplication.class, args);
 	}
 

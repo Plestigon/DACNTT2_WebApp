@@ -2,9 +2,10 @@ package tdtu.ems.employee_service.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import tdtu.ems.employee_service.services.EmployeeService;
+import tdtu.ems.employee_service.services.IEmployeeService;
 import tdtu.ems.main.models.Employee;
 
 import java.util.List;
@@ -13,39 +14,55 @@ import java.util.concurrent.ExecutionException;
 @RestController
 @RequestMapping("/api/employees")
 public class EmployeeController {
-    private final EmployeeService employeeService;
+    private final IEmployeeService _employeeService;
 
     @Autowired
     public EmployeeController(EmployeeService employeeService) {
-        this.employeeService = employeeService;
+        _employeeService = employeeService;
     }
 
-    @GetMapping("/get")
-    public List<Employee> getEmployees() throws ExecutionException, InterruptedException {
-        List<Employee> employees = null;
-        employees = employeeService.getEmployees();
+    @GetMapping("/")
+    public ResponseEntity<List<Employee>> getEmployees() throws ExecutionException, InterruptedException {
+        List<Employee> employees = _employeeService.getEmployees();
         if (employees == null || employees.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-        return employees;
+        return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
-    @GetMapping("/get/{id}")
-    public Employee getEmployeeById(@PathVariable int id) throws ExecutionException, InterruptedException {
-        Employee employee = employeeService.getEmployeeById(id);
-        if (employee == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    @GetMapping("/{id}")
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable int id) {
+        try {
+            Employee employee = _employeeService.getEmployeeById(id);
+            if (employee == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(employee, HttpStatus.OK);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        return employee;
     }
 
-    @PostMapping("/add")
-    public String addEmployee(@RequestBody Employee employee) throws ExecutionException, InterruptedException {
-        return employeeService.addEmployee(employee);
+    @PostMapping("/")
+    public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
+        try {
+            Employee added = _employeeService.addEmployee(employee);
+            if (added == null) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            return new ResponseEntity<>(employee, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    @PostMapping("/remove")
-    public String removeEmployee(@RequestParam int id) throws ExecutionException, InterruptedException {
-        return employeeService.removeEmployee(id);
+    @DeleteMapping("/{id}")
+    public String removeEmployee(@PathVariable int id) {
+        try {
+            String result = _employeeService.removeEmployee(id);
+            return result;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

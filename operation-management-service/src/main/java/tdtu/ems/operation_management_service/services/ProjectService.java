@@ -3,9 +3,8 @@ package tdtu.ems.operation_management_service.services;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import tdtu.ems.main.general.Logger;
 import tdtu.ems.main.models.Project;
 import tdtu.ems.main.models.ProjectUpdate;
 
@@ -17,11 +16,11 @@ import java.util.concurrent.ExecutionException;
 @Service
 public class ProjectService {
     private final Firestore db;
-    private final Logger logger;
+    private final Logger<ProjectService> _logger;
 
     public ProjectService() {
         db = FirestoreClient.getFirestore();
-        logger = LoggerFactory.getLogger(ProjectService.class);
+        _logger = new Logger<>(ProjectService.class);
     }
 
     public List<Project> getProjects() throws ExecutionException, InterruptedException {
@@ -30,6 +29,7 @@ public class ProjectService {
         for (DocumentSnapshot data : projectsDb.get().get().getDocuments()) {
             projects.add(data.toObject(Project.class));
         }
+        _logger.Error("getProjects", "test");
         return projects;
     }
 
@@ -95,7 +95,7 @@ public class ProjectService {
         ApiFuture<WriteResult> result = projectUpdatesDb.document(String.valueOf(projectUpdateId)).set(projectUpdate);
         ApiFuture<WriteResult> updateIdResult = idTracer.update("id", projectUpdateId);
         //Add projectUpdate to project
-        logger.info("addProjectUpdateToProject: " +
+        _logger.Info("addProjectUpdateToProject",
                 addProjectUpdateToProject((int) projectUpdateId, projectId));
         return result.get().getUpdateTime().toString();
     }
