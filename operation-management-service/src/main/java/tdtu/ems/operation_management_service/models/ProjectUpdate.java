@@ -1,4 +1,4 @@
-package tdtu.ems.main.models;
+package tdtu.ems.operation_management_service.models;
 
 import java.util.Date;
 import java.util.List;

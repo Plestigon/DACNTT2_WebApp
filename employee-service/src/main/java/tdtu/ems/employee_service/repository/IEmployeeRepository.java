@@ -1,6 +1,6 @@
 package tdtu.ems.employee_service.repository;
 
-import tdtu.ems.main.models.Employee;
+import tdtu.ems.employee_service.models.Employee;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;

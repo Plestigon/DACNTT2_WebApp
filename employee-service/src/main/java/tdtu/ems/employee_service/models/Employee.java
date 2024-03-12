@@ -1,4 +1,4 @@
-package tdtu.ems.main.models;
+package tdtu.ems.employee_service.models;
 
 //import jakarta.persistence.*;
 

@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tdtu.ems.employee_service.services.EmployeeService;
 import tdtu.ems.employee_service.services.IEmployeeService;
-import tdtu.ems.main.models.Employee;
+import tdtu.ems.employee_service.models.Employee;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;

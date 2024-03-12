@@ -4,9 +4,9 @@ import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.stereotype.Service;
-import tdtu.ems.main.general.Logger;
-import tdtu.ems.main.models.Project;
-import tdtu.ems.main.models.ProjectUpdate;
+import tdtu.ems.operation_management_service.config.Logger;
+import tdtu.ems.operation_management_service.models.Project;
+import tdtu.ems.operation_management_service.models.ProjectUpdate;
 
 import java.util.ArrayList;
 import java.util.List;

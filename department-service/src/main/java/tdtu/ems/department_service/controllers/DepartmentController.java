@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import tdtu.ems.main.models.Department;
+import tdtu.ems.department_service.models.Department;
 import tdtu.ems.department_service.services.DepartmentService;
 
 import java.util.List;

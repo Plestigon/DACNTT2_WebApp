@@ -6,7 +6,7 @@ import com.google.firebase.cloud.FirestoreClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import tdtu.ems.main.models.Department;
+import tdtu.ems.department_service.models.Department;
 
 import java.util.ArrayList;
 import java.util.List;

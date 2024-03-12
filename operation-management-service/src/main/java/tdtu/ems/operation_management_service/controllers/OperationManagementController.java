@@ -4,8 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
-import tdtu.ems.main.models.Project;
-import tdtu.ems.main.models.ProjectUpdate;
+import tdtu.ems.operation_management_service.models.Project;
+import tdtu.ems.operation_management_service.models.ProjectUpdate;
 import tdtu.ems.operation_management_service.services.ProjectService;
 
 import java.util.List;

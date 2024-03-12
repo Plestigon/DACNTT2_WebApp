@@ -6,13 +6,15 @@ import com.google.cloud.firestore.Firestore;
 import com.google.firebase.cloud.FirestoreClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 import tdtu.ems.employee_service.services.EmployeeService;
-import tdtu.ems.main.models.Employee;
+import tdtu.ems.employee_service.models.Employee;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+@Repository
 public class EmployeeRepository implements IEmployeeRepository {
     private final Firestore _db;
     private final Logger _logger;
