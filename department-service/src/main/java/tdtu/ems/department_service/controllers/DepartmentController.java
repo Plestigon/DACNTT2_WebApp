@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @RestController
-@RequestMapping("/api/departments")
+@RequestMapping("/api")
 public class DepartmentController {
     private final DepartmentService departmentService;
 
@@ -20,7 +20,7 @@ public class DepartmentController {
         this.departmentService = departmentService;
     }
 
-    @GetMapping("/")
+    @GetMapping("/departments")
     public List<Department> getDepartments() throws ExecutionException, InterruptedException {
         List<Department> response = departmentService.getDepartments();
         if (response == null || response.isEmpty()) {
@@ -29,7 +29,7 @@ public class DepartmentController {
         return response;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/departments/{id}")
     public Department getDepartmentById(@PathVariable int id) throws ExecutionException, InterruptedException {
         Department response = departmentService.getDepartmentById(id);
         if (response == null) {
@@ -38,12 +38,12 @@ public class DepartmentController {
         return response;
     }
 
-    @PostMapping("/")
+    @PostMapping("/departments")
     public String addDepartment(@RequestBody Department department) throws ExecutionException, InterruptedException {
         return departmentService.addDepartment(department);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/departments/{id}")
     public String deleteDepartment(@PathVariable int id) throws ExecutionException, InterruptedException {
         return departmentService.removeDepartment(id);
     }

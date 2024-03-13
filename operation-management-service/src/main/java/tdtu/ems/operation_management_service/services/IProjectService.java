@@ -15,4 +15,5 @@ public interface IProjectService {
     ProjectUpdate getProjectUpdateById(int id);
     String addProjectUpdate(ProjectUpdate projectUpdate, int projectId);
     String addProjectUpdateToProject(int projectUpdateId, int projectId);
+    Object test();
 }

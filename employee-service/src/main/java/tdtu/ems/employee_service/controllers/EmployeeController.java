@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @RestController
-@RequestMapping("/api/employees")
+@RequestMapping("/api")
 public class EmployeeController {
     private final IEmployeeService _employeeService;
 
@@ -21,7 +21,7 @@ public class EmployeeController {
         _employeeService = employeeService;
     }
 
-    @GetMapping("/")
+    @GetMapping("/employees")
     public ResponseEntity<List<Employee>> getEmployees() throws ExecutionException, InterruptedException {
         List<Employee> employees = _employeeService.getEmployees();
         if (employees == null || employees.isEmpty()) {
@@ -30,7 +30,7 @@ public class EmployeeController {
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/employees/{id}")
     public ResponseEntity<Employee> getEmployeeById(@PathVariable int id) {
         try {
             Employee employee = _employeeService.getEmployeeById(id);
@@ -43,7 +43,7 @@ public class EmployeeController {
         }
     }
 
-    @PostMapping("/")
+    @PostMapping("/employees")
     public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
         try {
             Employee added = _employeeService.addEmployee(employee);
@@ -56,7 +56,7 @@ public class EmployeeController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/employees/{id}")
     public String removeEmployee(@PathVariable int id) {
         try {
             String result = _employeeService.removeEmployee(id);

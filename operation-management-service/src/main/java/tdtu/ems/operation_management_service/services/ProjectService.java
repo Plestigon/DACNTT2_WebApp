@@ -4,6 +4,8 @@ import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 import tdtu.ems.core_service.utils.Logger;
 import tdtu.ems.operation_management_service.models.Project;
 import tdtu.ems.operation_management_service.models.ProjectUpdate;
@@ -12,15 +14,19 @@ import tdtu.ems.operation_management_service.repositories.ProjectRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @Service
 public class ProjectService implements IProjectService {
     private final ProjectRepository _projectRepository;
     private final Firestore _db;
     private final Logger<ProjectService> _logger;
+    private final WebClient.Builder _webClient;
 
-    public ProjectService(ProjectRepository projectRepository) {
+    public ProjectService(ProjectRepository projectRepository, WebClient.Builder webClient) {
         _projectRepository = projectRepository;
+        _webClient = webClient;
         _db = FirestoreClient.getFirestore();
         _logger = new Logger<>(ProjectService.class);
     }
@@ -155,5 +161,16 @@ public class ProjectService implements IProjectService {
         catch (Exception e) {
             return null;
         }
+    }
+
+    @Override
+    public Object test() {
+        Object res = null;
+        res = _webClient.build().get()
+                .uri("http://employee-service/api/employees")
+                .retrieve()
+                .bodyToMono(Object.class)
+                .block();
+        return res;
     }
 }
