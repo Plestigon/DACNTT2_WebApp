@@ -8,8 +8,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class Configs {
-    @Value("${server.port}")
-    private String portNumber;
 
     @Bean
     @LoadBalanced
