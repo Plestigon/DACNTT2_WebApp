@@ -41,7 +41,6 @@ function loadData() {
         contentType : "application/json",
         url: "http://localhost:8079/operations/projects",
         success: function (data) {
-            console.log("data: ", data);
             projects = data;
         },
         error: function (error) {
@@ -49,19 +48,20 @@ function loadData() {
         },
         async: false
     });
-    console.log("end load data");
     console.log(projects);
     projects.forEach(project => loadRow(project));
 }
 
 function loadRow(project) {
     console.log("load row: ");
+    var dueDate = new Date(project.dueDate).toLocaleString("en-GB");
+    var status = (project.status == 1 ? "open" : "closed");
     $("#project-table tbody").append(`
         <tr>
             <td>${project.name}</td>
             <td>${project.ownerId}</td>
-            <td>${project.status}</td>
-            <td>${project.dueDate}</td>
+            <td>${status}</td>
+            <td>${dueDate}</td>
             <td>${project.description}</td>
             <td>
                 <button type="button" class="btn btn-primary del-prj-btn">
