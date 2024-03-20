@@ -6,6 +6,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/static/css/bootstrap.css">
+
+    <link href="https://cdn.datatables.net/v/dt/dt-2.0.2/datatables.min.css" rel="stylesheet">
+
+    <script src="https://cdn.datatables.net/v/dt/dt-2.0.2/datatables.min.js"></script>
+
+    <script defer src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script defer src="https://cdn.datatables.net/2.0.2/js/dataTables.js"></script>
+    <script defer src="https://cdn.datatables.net/2.0.2/js/dataTables.bootstrap5.js"></script>
+
 </head>
 <body>
 <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
@@ -58,44 +68,57 @@
     </div>
 </nav>
 
-<form>
-    <div class="mb-3 border-0">
-        <input type="text" style="border: 0">
-    </div>
-</form>
-<button type="button" class="btn btn-primary" id="new-prj-btn">
-    New project
-</button>
+<!--Operation Information Form-->
+    <form id="OperationForm" style="display: none">
+        <label >Project Name:</label><br>
+        <input type="text" id="fname" name="fname"><br>
+        <label for="lname">Last name:</label><br>
+        <input type="text" id="lname" name="lname">
+    </form>
+
+<a>
+    <button id="ButtonForm" type="button" value ="Add Child" style="display: none" onclick="addChild();"></button>
+</a>
 
 
+<div class="container">
+    <form>
+        <div class="mb-3 border-0">
+            <input type="text" style="border: 0">
+        </div>
+    </form>
+    <button type="button" class="btn btn-primary" id="new-prj-btn">
+        New project
+    </button>
 
-
-<table class="table table-hover table-collapsed table-bordered border-dark" id="project-table">
+    <table class="table-clickable table table-hover table-collapsed table-striped table-bordered border-dark" id="project-table">
     <thead>
-    <tr>
-        <th scope="col">Project</th>
-        <th scope="col">Owner</th>
-        <th scope="col">Status</th>
-        <th scope="col">Due date</th>
-        <th scope="col">Description</th>
-        <th scope="col"></th>
-    </tr>
+        <tr>
+            <th scope="col">Project</th>
+            <th scope="col">Owner</th>
+            <th scope="col">Status</th>
+            <th scope="col">Due date</th>
+            <th scope="col">Description</th>
+            <th scope="col">Placeholder</th>
+        </tr>
     </thead>
     <tbody>
-<!--    <tr>-->
-<!--        <td>Project 1</td>-->
-<!--        <td>Owner 1</td>-->
-<!--        <td>Status 1</td>-->
-<!--        <td>Due date 1</td>-->
-<!--        <td>People 1</td>-->
-<!--        <td>-->
-<!--            <button type="button" class="btn btn-primary del-prj-btn">-->
-<!--                Delete project-->
-<!--            </button>-->
-<!--        </td>-->
-<!--    </tr>-->
+    <tr data-href="ButtonForm">
+        <td>Project 1</td>
+        <td>Owner 1</td>
+        <td>Status 1</td>
+        <td>Due date 1</td>
+        <td>People 1</td>
+        <td>
+            <button type="button" class="btn btn-primary del-prj-btn">
+                Delete project
+            </button>
+        </td>
+    </tr>
     </tbody>
-</table>
+    </table>
+</div>
+
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

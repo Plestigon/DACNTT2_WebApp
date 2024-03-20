@@ -2137,6 +2137,11 @@ progress {
     -webkit-overflow-scrolling: touch;
   }
 }
+
+.OperationForm{
+  display: none;
+}
+
 .form-label {
   margin-bottom: 0.5rem;
 }
