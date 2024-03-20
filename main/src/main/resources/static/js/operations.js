@@ -29,19 +29,51 @@ function init() {
         deletePrj();
     });
     console.log("row count:d " + rowCount);
-    //loadData();
+    loadData();
 }
 
 function loadData() {
+    console.log("start load data");
+    var projects = [];
     $.ajax({
         type: "GET",
         dataType:"json",
         contentType : "application/json",
-        url: "/getdata",
-        success: function (data, status, xhr) {
-            console.log("data: ", data);
-        }
+        url: "http://localhost:8079/operations/projects",
+        success: function (data) {
+            projects = data;
+        },
+        error: function (error) {
+            console.log(error);
+        },
+        async: false
     });
+    console.log(projects);
+    projects.forEach(project => loadRow(project));
+}
+
+function loadRow(project) {
+    console.log("load row: ");
+    var dueDate = new Date(project.dueDate).toLocaleString("en-GB");
+    var status = (project.status == 1 ? "open" : "closed");
+    $("#project-table tbody").append(`
+        <tr>
+            <td>${project.name}</td>
+            <td>${project.ownerId}</td>
+            <td>${status}</td>
+            <td>${dueDate}</td>
+            <td>${project.description}</td>
+            <td>
+                <button type="button" class="btn btn-primary del-prj-btn">
+                    Delete project
+                </button>
+            </td>
+        </tr>
+    `);
+        $(".del-prj-btn").on("click", function() {
+            $(this).parent().parent().remove();
+            //deletePrj();
+        });
 }
 
 function addRow(rowCount) {
