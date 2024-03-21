@@ -43,6 +43,7 @@ public class ProjectService implements IProjectService {
 
     @Override
     public String addProject(Project project) {
+        project.setStatus(1);
         return _projectRepository.addProject(project);
     }
 

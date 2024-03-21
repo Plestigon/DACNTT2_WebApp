@@ -30,7 +30,6 @@ public class ProjectRepository implements IProjectRepository {
             for (DocumentSnapshot data : projectsDb.get().get().getDocuments()) {
                 projects.add(data.toObject(Project.class));
             }
-            _logger.Error("getProjects", "test");
             return projects;
         }
         catch (Exception e) {

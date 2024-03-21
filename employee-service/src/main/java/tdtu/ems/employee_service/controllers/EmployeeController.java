@@ -23,11 +23,14 @@ public class EmployeeController {
 
     @GetMapping("/employees")
     public ResponseEntity<List<Employee>> getEmployees() throws ExecutionException, InterruptedException {
-        List<Employee> employees = _employeeService.getEmployees();
-        if (employees == null || employees.isEmpty()) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        List<Employee> employees = null;
+        try {
+            employees = _employeeService.getEmployees();
+            return new ResponseEntity<>(employees, HttpStatus.OK);
         }
-        return new ResponseEntity<>(employees, HttpStatus.OK);
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/employees/{id}")
@@ -39,7 +42,7 @@ public class EmployeeController {
             }
             return new ResponseEntity<>(employee, HttpStatus.OK);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

@@ -1,45 +1,20 @@
-//const tableObj = document.getElementById("table");
-//const cellCount = tableObj.rows[0].cells.length;
-//
-//function addRow(){
-//    const rowLength = tableObj.rows.length;
-//    const newRow = tableObj.insertRow(rowLength);
-//
-//    for(let i =0; i<cellCount; i++){
-//        const newCell = newRow.insertCell(i);
-//        newRow.cells[0].innerHTML = rowLength;
-//    }
-//}
-var rowCount = -1;
-
-
 $(document).ready(function() {
     init();
 });
 
 function init() {
     rowCount = $("#project-table tbody tr").length;
-    console.log("row count: " + rowCount);
     //New project button
-    $("#new-prj-btn").on("click", function() {
-        //rowCount = rowCount+1;
-        //addRow(rowCount);
-        addProjectButtonOnClick();
+    $("#newPrjBtn").on("click", function() {
+        $("#newPrjFormContainer").show();
     });
-    console.log("row count:s " + rowCount);
-    //Delete button
-    $(".del-prj-btn").on("click", function() {
-        rowCount = rowCount-1;
-        deleteProjectButtonOnClick();
-    });
-    console.log("row count:d " + rowCount);
     //Load data
     loadTableData();
-    initNewProjectForm();
     //Clickable table
     $(".table-clickable tbody tr").on("click", function() {
         tableRowOnClick();
     });
+    initNewProjectForm();
 }
 
 function initNewProjectForm() {
@@ -50,13 +25,42 @@ function initNewProjectForm() {
     var defaultDueDate = `${year}-${month}-${day}T23:59`;
     $("#newPrjDueDate").val(defaultDueDate);
     console.log("date: " + $("#newPrjDueDate").val());
+    //New project submit button
     $("#newPrjBtnSubmit").on("click", function() {
         pushNewProject();
     });
+    //New project cancel button
     $("#newPrjBtnCancel").on("click", function() {
-        $("#newPrjForm").hide();
+        $("#newPrjFormContainer").hide();
     });
-    //$("#newPrjOwner").
+    //Init owner select list
+    var employees = [];
+    $.ajax({
+        type: "GET",
+        dataType:"json",
+        contentType : "application/json",
+        url: "http://localhost:8079/operations/employees",
+        success: function (data) {
+            employees = data;
+        },
+        error: function (error) {
+            console.log(error);
+        },
+        async: false
+    });
+    console.log(employees);
+    $("#newPrjOwner").empty();
+    employees.forEach(function (owner) {
+        $("#newPrjOwner").append(`
+            <option value="${owner.id}">${owner.name}</option>
+        `);
+    });
+    $("#newPrjOwner").val(employees[0].id);
+    //Form submit
+    $("#newPrjForm").submit(function(event) {
+        event.preventDefault();
+        pushNewProject();
+    })
 }
 
 function loadTableData() {
@@ -76,6 +80,11 @@ function loadTableData() {
     });
     console.log(projects);
     projects.forEach(project => loadTableRow(project));
+    //Delete button
+    $(".delete-prj-btn").on("click", function() {
+        var id = $(this).data("project-id");
+        deleteProjectButtonOnClick(id);
+    });
 }
 
 function loadTableRow(project) {
@@ -90,49 +99,56 @@ function loadTableRow(project) {
             <td>${dueDate}</td>
             <td>${project.description}</td>
             <td>
-                <button type="button" class="btn btn-primary del-prj-btn">
+                <button type="button" class="btn btn-primary delete-prj-btn" data-project-id="${project.id}">
                     Delete project
                 </button>
             </td>
         </tr>
     `);
-        $(".del-prj-btn").on("click", function() {
-            $(this).parent().parent().remove();
-            //deleteProjectButtonOnClick();
-        });
 }
 
 function pushNewProject() {
-    console.log("Push");
-}
-
-function addRow(rowCount) {
-    console.log("addrow" + rowCount);
-    $("#project-table tbody").append(`
-            <tr>
-                <td>Project ${rowCount}</td>
-                <td>Owner ${rowCount}</td>
-                <td>Status ${rowCount}</td>
-                <td>Due date ${rowCount}</td>
-                <td>People ${rowCount}</td>
-                <td>
-                    <button type="button" class="btn btn-primary del-prj-btn">
-                        Delete project
-                    </button>
-                </td>
-            </tr>
-    `);
-    $(".del-prj-btn").on("click", function() {
-        console.log("deleterow" + rowCount);
-        $(this).parent().parent().remove();
-        //deleteProjectButtonOnClick();
+    var projectDto = {
+        name: $("#newPrjName").val(),
+        description: $("#newPrjDescription").val(),
+        ownerId: $("#newPrjOwner").val(),
+        dueDate: $("#newPrjDueDate").val()
+    };
+    console.log(JSON.stringify(projectDto));
+    $.ajax({
+        type: "POST",
+        contentType : "application/json",
+        url: "http://localhost:8079/operations/project",
+        data: JSON.stringify(projectDto),
+        success: function (result) {
+            console.log(result);
+            alert("New project created successfully!");
+            location.reload();
+        },
+        error: function (error) {
+            console.log(error);
+        },
+        async: false
     });
 }
 
-function deleteProjectButtonOnClick() {
-    console.log("deleterow" + rowCount);
-    var ind = $(this).parent().parent().index();
-    $("#project-table tbody tr:eq(" + ind + ")").remove();
+function deleteProjectButtonOnClick(id) {
+    if (confirm("Are you sure you want to delete project with id \"" + id + "\"?")) {
+        $.ajax({
+            type: "DELETE",
+            contentType : "application/json",
+            url: "http://localhost:8079/operations/project?id=" + id,
+            success: function (result) {
+                console.log(result);
+                alert("Project deleted successfully!");
+                location.reload();
+            },
+            error: function (error) {
+                console.log(error);
+            },
+            async: false
+        });
+    }
 }
 
 
@@ -144,13 +160,6 @@ function tableRowOnClick() {
 //            window.location.href = this.dataset.href;
 //        });
 //    }
-    console.log(window.location.href);
+//    console.log(window.location.href);
 }
 
-function addProjectButtonOnClick() {
-    console.log(document.getElementById('newPrjForm').style.display);
-    console.log(document.getElementById('newPrjForm').style.display == "none");
-    if (document.getElementById('newPrjForm').style.display == "none") {
-        document.getElementById('newPrjForm').style.display = 'block';
-    }
-}

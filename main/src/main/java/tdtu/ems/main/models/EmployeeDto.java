@@ -1,21 +1,24 @@
-package tdtu.ems.employee_service.models;
+package tdtu.ems.main.models;
 
-public class Employee {
+public class EmployeeDto {
     private int id;
     private String email;
-    private String password;
     private String name;
     private String role;
     private int departmentId;
+    private String departmentShort;
+    private String departmentLong;
 
-    public Employee() {}
+    public EmployeeDto() {}
 
-    public Employee(String email, String password, String name, String role, int departmentId) {
+    public EmployeeDto(int id, String email, String name, String role, int departmentId, String departmentShort, String departmentLong) {
+        this.id = id;
         this.email = email;
-        this.password = password;
         this.name = name;
         this.role = role;
         this.departmentId = departmentId;
+        this.departmentShort = departmentShort;
+        this.departmentLong = departmentLong;
     }
 
     public int getId() {
@@ -32,14 +35,6 @@ public class Employee {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getName() {
@@ -66,11 +61,19 @@ public class Employee {
         this.departmentId = departmentId;
     }
 
-//    public Department getDepartment() {
-//        return department;
-//    }
-//
-//    public void setDepartment(Department department) {
-//        this.department = department;
-//    }
+    public String getDepartmentShort() {
+        return departmentShort;
+    }
+
+    public void setDepartmentShort(String departmentShort) {
+        this.departmentShort = departmentShort;
+    }
+
+    public String getDepartmentLong() {
+        return departmentLong;
+    }
+
+    public void setDepartmentLong(String departmentLong) {
+        this.departmentLong = departmentLong;
+    }
 }

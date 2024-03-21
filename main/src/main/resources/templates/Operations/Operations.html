@@ -7,14 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/static/css/bootstrap.css">
 
-    <link href="https://cdn.datatables.net/v/dt/dt-2.0.2/datatables.min.css" rel="stylesheet">
+<!--    <link href="https://cdn.datatables.net/v/dt/dt-2.0.2/datatables.min.css" rel="stylesheet">-->
 
-    <script src="https://cdn.datatables.net/v/dt/dt-2.0.2/datatables.min.js"></script>
+<!--    <script src="https://cdn.datatables.net/v/dt/dt-2.0.2/datatables.min.js"></script>-->
 
-    <script defer src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script defer src="https://cdn.datatables.net/2.0.2/js/dataTables.js"></script>
-    <script defer src="https://cdn.datatables.net/2.0.2/js/dataTables.bootstrap5.js"></script>
+<!--    <script defer src="https://code.jquery.com/jquery-3.7.1.js"></script>-->
+<!--    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>-->
+<!--    <script defer src="https://cdn.datatables.net/2.0.2/js/dataTables.js"></script>-->
+<!--    <script defer src="https://cdn.datatables.net/2.0.2/js/dataTables.bootstrap5.js"></script>-->
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -75,20 +75,20 @@
 </nav>
 
 <!--#region New Project Form-->
-<div class="d-flex justify-content-center my-1" id="newPrjForm" style="display: none !important;">
+<div class="container justify-content-center my-1" id="newPrjFormContainer" style="display: none;">
     <div class="card shadow h-100 px-3 py-3" style="width: 80%; max-width: 500px; background-color: #EEEEEE;">
         <p class="h4 text-center">Create New Project</p>
-        <form>
+        <form class="newPrjForm">
             <div class="row my-2">
                 <div class="col-12">
                     <label for="newPrjName">Project name</label>
-                    <input type="text" class="form-control" id="newPrjName" placeholder="New project's name">
+                    <input type="text" class="form-control" id="newPrjName" placeholder="New project's name" required>
                 </div>
             </div>
             <div class="row my-2">
                 <div class="col-12">
                     <label for="newPrjDescription">Project description</label>
-                    <input type="text" class="form-control" id="newPrjDescription" placeholder="New project's description">
+                    <input type="text" class="form-control" id="newPrjDescription" placeholder="New project's description" required>
                 </div>
             </div>
             <div class="row my-2">
@@ -108,7 +108,7 @@
             </div>
             <div class="row my-3 mx-1">
                 <div class="col-6">
-                    <button type="button" class="btn btn-primary w-100" id="newPrjBtnSubmit">Submit</button>
+                    <button type="submit" class="btn btn-primary w-100" id="newPrjBtnSubmit">Submit</button>
                 </div>
                 <div class="col-6">
                     <button type="button" class="btn btn-secondary w-100" id="newPrjBtnCancel">Cancel</button>
@@ -120,7 +120,7 @@
 <!--#endregion New Project Form-->
 
 <div class="container pt-3">
-    <button type="button" class="btn btn-primary" id="new-prj-btn">
+    <button type="button" class="btn btn-primary" id="newPrjBtn">
         New project
     </button>
 
@@ -143,7 +143,7 @@
 <!--        <td>Due date 1</td>-->
 <!--        <td>People 1</td>-->
 <!--        <td>-->
-<!--            <button type="button" class="btn btn-primary del-prj-btn">-->
+<!--            <button type="button" class="btn btn-primary delete-prj-btn">-->
 <!--                Delete project-->
 <!--            </button>-->
 <!--        </td>-->

@@ -1,14 +1,16 @@
 package tdtu.ems.main.controllers;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
+import tdtu.ems.main.models.EmployeeDto;
 import tdtu.ems.main.models.ProjectDto;
 
+import java.net.http.HttpResponse;
 import java.util.List;
 
 @Controller
@@ -38,5 +40,51 @@ public class OperationManagementController {
                 .collectList()
                 .block();
         return res;
+    }
+
+    @RequestMapping(value = "/employees", method = RequestMethod.GET)
+    @ResponseBody
+    public List<EmployeeDto> getEmployees() {
+        List<EmployeeDto> res = null;
+        res = _webClient.build().get()
+                .uri("http://employee-service/api/employees")
+                .retrieve()
+                .bodyToFlux(EmployeeDto.class)
+                .collectList()
+                .block();
+        return res;
+    }
+
+    @RequestMapping(value = "/project", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<String> createProject(@RequestBody ProjectDto project) {
+        String res = null;
+        try {
+            res = _webClient.build().post()
+                    .uri("http://operation-management-service/api/operations/projects")
+                    .bodyValue(project)
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("OK", HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/project", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseEntity<String> deleteProject(@RequestParam("id") String id) {
+        String res = null;
+        try {
+            res = _webClient.build().delete()
+                    .uri("http://operation-management-service/api/operations/projects/" + id)
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 }
