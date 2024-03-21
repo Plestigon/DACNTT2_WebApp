@@ -16,6 +16,12 @@
     <script defer src="https://cdn.datatables.net/2.0.2/js/dataTables.js"></script>
     <script defer src="https://cdn.datatables.net/2.0.2/js/dataTables.bootstrap5.js"></script>
 
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="/static/js/jquery-3.7.1.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/operations.js"></script>
+
 </head>
 <body>
 <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
@@ -68,64 +74,84 @@
     </div>
 </nav>
 
-<!--Operation Information Form-->
-    <form id="OperationForm" style="display: none">
-        <label >Project Name:</label><br>
-        <input type="text" id="fname" name="fname"><br>
-        <label for="lname">Last name:</label><br>
-        <input type="text" id="lname" name="lname">
-    </form>
+<!--#region New Project Form-->
+<div class="d-flex justify-content-center my-1" id="newPrjForm" style="display: none !important;">
+    <div class="card shadow h-100 px-3 py-3" style="width: 80%; max-width: 500px; background-color: #EEEEEE;">
+        <p class="h4 text-center">Create New Project</p>
+        <form>
+            <div class="row my-2">
+                <div class="col-12">
+                    <label for="newPrjName">Project name</label>
+                    <input type="text" class="form-control" id="newPrjName" placeholder="New project's name">
+                </div>
+            </div>
+            <div class="row my-2">
+                <div class="col-12">
+                    <label for="newPrjDescription">Project description</label>
+                    <input type="text" class="form-control" id="newPrjDescription" placeholder="New project's description">
+                </div>
+            </div>
+            <div class="row my-2">
+                <div class="col-6">
+                    <label for="newPrjOwner">Owner</label>
+                    <select class="form-select" id="newPrjOwner">
+                        <option selected value="0">Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+                <div class="col-6">
+                    <label for="newPrjDueDate">Due date</label>
+                    <input type="datetime-local" class="form-control" id="newPrjDueDate">
+                </div>
+            </div>
+            <div class="row my-3 mx-1">
+                <div class="col-6">
+                    <button type="button" class="btn btn-primary w-100" id="newPrjBtnSubmit">Submit</button>
+                </div>
+                <div class="col-6">
+                    <button type="button" class="btn btn-secondary w-100" id="newPrjBtnCancel">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--#endregion New Project Form-->
 
-<a>
-    <button id="ButtonForm" type="button" value ="Add Child" style="display: none" onclick="addChild();"></button>
-</a>
-
-
-<div class="container">
-    <form>
-        <div class="mb-3 border-0">
-            <input type="text" style="border: 0">
-        </div>
-    </form>
+<div class="container pt-3">
     <button type="button" class="btn btn-primary" id="new-prj-btn">
         New project
     </button>
 
-    <table class="table-clickable table table-hover table-collapsed table-striped table-bordered border-dark" id="project-table">
-    <thead>
+    <table class="table-clickable table table-hover table-collapsed" id="project-table">
+    <thead class="table-light">
         <tr>
             <th scope="col">Project</th>
             <th scope="col">Owner</th>
             <th scope="col">Status</th>
             <th scope="col">Due date</th>
             <th scope="col">Description</th>
-            <th scope="col">Placeholder</th>
+            <th scope="col"><!--Button row--></th>
         </tr>
     </thead>
     <tbody>
     <tr data-href="ButtonForm">
-        <td>Project 1</td>
-        <td>Owner 1</td>
-        <td>Status 1</td>
-        <td>Due date 1</td>
-        <td>People 1</td>
-        <td>
-            <button type="button" class="btn btn-primary del-prj-btn">
-                Delete project
-            </button>
-        </td>
+<!--        <td>Project 1</td>-->
+<!--        <td>Owner 1</td>-->
+<!--        <td>Status 1</td>-->
+<!--        <td>Due date 1</td>-->
+<!--        <td>People 1</td>-->
+<!--        <td>-->
+<!--            <button type="button" class="btn btn-primary del-prj-btn">-->
+<!--                Delete project-->
+<!--            </button>-->
+<!--        </td>-->
     </tr>
     </tbody>
     </table>
 </div>
 
-
-
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="/static/js/jquery-3.7.1.min.js"></script>
-<script src="/static/js/bootstrap.min.js"></script>
-<script src="/static/js/operations.js"></script>
 </body>
 
 </html>

@@ -11,29 +11,55 @@
 //    }
 //}
 var rowCount = -1;
+
+
 $(document).ready(function() {
-    console.log("ready!");
     init();
 });
 
 function init() {
     rowCount = $("#project-table tbody tr").length;
     console.log("row count: " + rowCount);
+    //New project button
     $("#new-prj-btn").on("click", function() {
-        rowCount = rowCount+1;
-        addRow(rowCount);
+        //rowCount = rowCount+1;
+        //addRow(rowCount);
+        addProjectButtonOnClick();
     });
     console.log("row count:s " + rowCount);
+    //Delete button
     $(".del-prj-btn").on("click", function() {
         rowCount = rowCount-1;
-        deletePrj();
+        deleteProjectButtonOnClick();
     });
     console.log("row count:d " + rowCount);
-    loadData();
+    //Load data
+    loadTableData();
+    initNewProjectForm();
+    //Clickable table
+    $(".table-clickable tbody tr").on("click", function() {
+        tableRowOnClick();
+    });
 }
 
-function loadData() {
-    console.log("start load data");
+function initNewProjectForm() {
+    var today = new Date();
+    var year = today.getFullYear();
+    var month = today.getMonth()+1; if (month < 10) {month = "0" + month};
+    var day = today.getDate(); if (day < 10) {day = "0" + day};
+    var defaultDueDate = `${year}-${month}-${day}T23:59`;
+    $("#newPrjDueDate").val(defaultDueDate);
+    console.log("date: " + $("#newPrjDueDate").val());
+    $("#newPrjBtnSubmit").on("click", function() {
+        pushNewProject();
+    });
+    $("#newPrjBtnCancel").on("click", function() {
+        $("#newPrjForm").hide();
+    });
+    //$("#newPrjOwner").
+}
+
+function loadTableData() {
     var projects = [];
     $.ajax({
         type: "GET",
@@ -49,10 +75,10 @@ function loadData() {
         async: false
     });
     console.log(projects);
-    projects.forEach(project => loadRow(project));
+    projects.forEach(project => loadTableRow(project));
 }
 
-function loadRow(project) {
+function loadTableRow(project) {
     console.log("load row: ");
     var dueDate = new Date(project.dueDate).toLocaleString("en-GB");
     var status = (project.status == 1 ? "open" : "closed");
@@ -72,8 +98,12 @@ function loadRow(project) {
     `);
         $(".del-prj-btn").on("click", function() {
             $(this).parent().parent().remove();
-            //deletePrj();
+            //deleteProjectButtonOnClick();
         });
+}
+
+function pushNewProject() {
+    console.log("Push");
 }
 
 function addRow(rowCount) {
@@ -95,11 +125,11 @@ function addRow(rowCount) {
     $(".del-prj-btn").on("click", function() {
         console.log("deleterow" + rowCount);
         $(this).parent().parent().remove();
-        //deletePrj();
+        //deleteProjectButtonOnClick();
     });
 }
 
-function deletePrj() {
+function deleteProjectButtonOnClick() {
     console.log("deleterow" + rowCount);
     var ind = $(this).parent().parent().index();
     $("#project-table tbody tr:eq(" + ind + ")").remove();
@@ -107,14 +137,20 @@ function deletePrj() {
 
 
 //Clickable table
-const tableRows = document.querySelectorAll(".table-clickable tbody tr");
-for (const tableRow of tableRows) {
-    tableRow.addEventListener("click", function () {
-        window.location.href = this.dataset.href;
-    });
+function tableRowOnClick() {
+//    const tableRows = document.querySelectorAll(".table-clickable tbody tr");
+//    for (const tableRow of tableRows) {
+//        tableRow.addEventListener("click", function () {
+//            window.location.href = this.dataset.href;
+//        });
+//    }
+    console.log(window.location.href);
 }
 
-
-function addChild() {
-    document.getElementById('OperationForm').style.display = 'block';
+function addProjectButtonOnClick() {
+    console.log(document.getElementById('newPrjForm').style.display);
+    console.log(document.getElementById('newPrjForm').style.display == "none");
+    if (document.getElementById('newPrjForm').style.display == "none") {
+        document.getElementById('newPrjForm').style.display = 'block';
+    }
 }
