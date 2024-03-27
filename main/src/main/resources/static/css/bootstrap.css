@@ -290,6 +290,13 @@ table {
   border-collapse: collapse;
 }
 
+divadj {
+  resize: both;
+  overflow: auto;
+  display:block;
+
+}
+
 caption {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
@@ -311,6 +318,10 @@ th {
   border-color: inherit;
   border-style: solid;
   border-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 0;
 }
 
 label {
@@ -590,6 +601,10 @@ progress {
   border-radius: 0.25rem;
   max-width: 100%;
   height: auto;
+}
+.overlay{
+  z-index: 10000;
+  position: absolute;
 }
 
 .figure {
@@ -2768,6 +2783,10 @@ textarea.form-control-lg {
   color: #fff;
   background-color: rgba(25, 135, 84, 0.9);
   border-radius: 0.25rem;
+}
+.dimmer{
+  box-shadow: 0 0 0 100vmax rgba(0, 0, 0, .3);
+  pointer-events: none;
 }
 
 .was-validated :valid ~ .valid-feedback,

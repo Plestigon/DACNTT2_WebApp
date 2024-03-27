@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavaScriptLibraryMappings">
-    <file url="file://$PROJECT_DIR$/api-gateway" libraries="{datatables}" />
-    <file url="file://$PROJECT_DIR$/core-service" libraries="{dataTables, dataTables.bootstrap5, datatables, jquery-3.3.1.slim, popper.js, twitter-bootstrap}" />
-    <file url="file://$PROJECT_DIR$/department-service" libraries="{dataTables, dataTables.bootstrap5, datatables, jquery-3.3.1.slim, popper.js, twitter-bootstrap}" />
-    <file url="file://$PROJECT_DIR$/discovery-server" libraries="{dataTables, dataTables.bootstrap5, datatables, jquery-3.3.1.slim, popper.js, twitter-bootstrap}" />
-    <file url="file://$PROJECT_DIR$/employee-service" libraries="{dataTables, dataTables.bootstrap5, datatables, jquery-3.3.1.slim, popper.js, twitter-bootstrap}" />
-    <file url="file://$PROJECT_DIR$/main" libraries="{dataTables, dataTables.bootstrap5, datatables, jquery-3.3.1.slim, jquery-3.7.1, popper.js, twitter-bootstrap}" />
-    <file url="file://$PROJECT_DIR$/operation-management-service" libraries="{dataTables, dataTables.bootstrap5, datatables, jquery-3.3.1.slim, popper.js, twitter-bootstrap}" />
+    <file url="file://$PROJECT_DIR$/main" libraries="{bootstrap-icons, font-awesome}" />
   </component>
 </project>

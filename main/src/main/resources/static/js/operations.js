@@ -163,3 +163,4 @@ function tableRowOnClick() {
 //    console.log(window.location.href);
 }
 
+// Set add project button to active on click

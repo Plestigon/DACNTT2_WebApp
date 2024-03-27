@@ -21,10 +21,12 @@
     <script src="/static/js/jquery-3.7.1.min.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
     <script src="/static/js/operations.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
 
 </head>
 <body>
-<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">Company Name</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -75,8 +77,8 @@
 </nav>
 
 <!--#region New Project Form-->
-<div class="container justify-content-center my-1" id="newPrjFormContainer" style="display: none;">
-    <div class="card shadow h-100 px-3 py-3" style="width: 80%; max-width: 500px; background-color: #EEEEEE;">
+<div class="container justify-content-center my-1 overlay" id="newPrjFormContainer" style="display: none;">
+    <div class="card shadow h-100 px-3 py-3 overlay" style="width: 80%; max-width: 500px; background-color: #EEEEEE;">
         <p class="h4 text-center">Create New Project</p>
         <form class="newPrjForm">
             <div class="row my-2">
@@ -120,8 +122,7 @@
 <!--#endregion New Project Form-->
 
 <div class="container pt-3">
-    <button type="button" class="btn btn-primary" id="newPrjBtn">
-        New project
+    <button onclick="onclickeventbutton()" type="button" class="btn btn-outline-primary bi bi-plus-circle" id="newPrjBtn">
     </button>
 
     <table class="table-clickable table table-hover table-collapsed" id="project-table">
@@ -131,26 +132,27 @@
             <th scope="col">Owner</th>
             <th scope="col">Status</th>
             <th scope="col">Due date</th>
-            <th scope="col">Description</th>
+            <th scope="col" >Description</th>
             <th scope="col"><!--Button row--></th>
         </tr>
     </thead>
     <tbody>
     <tr data-href="ButtonForm">
-<!--        <td>Project 1</td>-->
-<!--        <td>Owner 1</td>-->
-<!--        <td>Status 1</td>-->
-<!--        <td>Due date 1</td>-->
-<!--        <td>People 1</td>-->
-<!--        <td>-->
-<!--            <button type="button" class="btn btn-primary delete-prj-btn">-->
-<!--                Delete project-->
-<!--            </button>-->
-<!--        </td>-->
+        <td>Project 1</td>
+        <td>Owner 1</td>
+        <td>Status 1</td>
+        <td>Due date 1</td>
+        <td>Description 1 Description 1 Description 1 Description 1 Description 1 Description 1 Description 1 Description 1 </td>
+        <td>
+            <button type="button" class="btn btn-primary bi bi-trash delete-prj-btn" style="float: right">
+            </button>
+        </td>
     </tr>
     </tbody>
     </table>
 </div>
+
+
 
 </body>
 
