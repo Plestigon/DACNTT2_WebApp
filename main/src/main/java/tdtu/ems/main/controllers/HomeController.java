@@ -45,7 +45,7 @@ public class HomeController {
 //            };
 //        }
         model.addAttribute("title", HOME_PAGE_TITLE + " - Home");
-        return "Home/Landing_page";
+        return "index";
     }
 
 //    @PreAuthorize("hasRole('MANAGER')")
