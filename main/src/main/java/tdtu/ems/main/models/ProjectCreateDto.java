@@ -3,35 +3,19 @@ package tdtu.ems.main.models;
 import java.util.Date;
 import java.util.List;
 
-public class ProjectDto {
-    private int id;
+public class ProjectCreateDto {
     private String name;
     private int ownerId;
-    private String ownerName;
     private List<Integer> memberIds;
-    private int status;
     private Date dueDate;
     private String description;
-    private List<Integer> projectUpdateIds;
 
-    public ProjectDto() {}
-
-    public ProjectDto(int id, String name, int ownerId, String ownerName, int status, Date dueDate, String description) {
-        this.id = id;
+    public ProjectCreateDto(String name, int ownerId, List<Integer> memberIds, Date dueDate, String description) {
         this.name = name;
         this.ownerId = ownerId;
-        this.ownerName = ownerName;
-        this.status = status;
+        this.memberIds = memberIds;
         this.dueDate = dueDate;
         this.description = description;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -58,14 +42,6 @@ public class ProjectDto {
         this.memberIds = memberIds;
     }
 
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
     public Date getDueDate() {
         return dueDate;
     }
@@ -80,21 +56,5 @@ public class ProjectDto {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public List<Integer> getProjectUpdateIds() {
-        return projectUpdateIds;
-    }
-
-    public void setProjectUpdateIds(List<Integer> projectUpdateIds) {
-        this.projectUpdateIds = projectUpdateIds;
-    }
-
-    public String getOwnerName() {
-        return ownerName;
-    }
-
-    public void setOwnerName(String ownerName) {
-        this.ownerName = ownerName;
     }
 }

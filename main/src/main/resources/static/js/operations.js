@@ -91,16 +91,17 @@ function loadTableRow(project) {
     console.log("load row: ");
     var dueDate = new Date(project.dueDate).toLocaleString("en-GB");
     var status = (project.status == 1 ? "open" : "closed");
+    //Table row format
     $("#project-table tbody").append(`
         <tr>
             <td>${project.name}</td>
-            <td>${project.ownerId}</td>
+            <td>${project.ownerName}</td>
             <td>${status}</td>
             <td>${dueDate}</td>
             <td>${project.description}</td>
             <td>
-                <button type="button" class="btn btn-primary delete-prj-btn" data-project-id="${project.id}">
-                    Delete project
+                <button type="button" class="btn btn-primary bi bi-trash delete-prj-btn" data-project-id="${project.id}"
+                style="float: right">
                 </button>
             </td>
         </tr>

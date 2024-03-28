@@ -7,10 +7,9 @@ import org.springframework.stereotype.Repository;
 import tdtu.ems.core_service.utils.Logger;
 import tdtu.ems.operation_management_service.models.Project;
 import tdtu.ems.operation_management_service.models.ProjectUpdate;
+import tdtu.ems.operation_management_service.models.ProjectWithData;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Repository
 public class ProjectRepository implements IProjectRepository {
@@ -33,6 +32,29 @@ public class ProjectRepository implements IProjectRepository {
             return projects;
         }
         catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    public List<ProjectWithData> getProjectsWithData() {
+        try {
+            CollectionReference projectsDb = _db.collection("projects");
+            CollectionReference employeesDb = _db.collection("employees");
+            List<ProjectWithData> projects = new ArrayList<>();
+            for (DocumentSnapshot data : projectsDb.get().get().getDocuments()) {
+                Project prj = data.toObject(Project.class);
+                if (prj != null) {
+                    ProjectWithData prjWithData = new ProjectWithData(prj) ;
+                    DocumentSnapshot ownerData = employeesDb.document(String.valueOf(prjWithData.getOwnerId())).get().get();
+                    prjWithData.setOwnerName(ownerData.getString("name"));
+                    projects.add(prjWithData);
+                }
+            }
+            return projects;
+        }
+        catch (Exception e) {
+            _logger.Error("getProjectsWithData", e.getMessage());
             return null;
         }
     }

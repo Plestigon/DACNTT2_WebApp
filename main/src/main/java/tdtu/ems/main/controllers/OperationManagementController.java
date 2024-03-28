@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import tdtu.ems.main.models.EmployeeDto;
+import tdtu.ems.main.models.ProjectCreateDto;
 import tdtu.ems.main.models.ProjectDto;
 
 import java.net.http.HttpResponse;
@@ -57,7 +58,7 @@ public class OperationManagementController {
 
     @RequestMapping(value = "/project", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> createProject(@RequestBody ProjectDto project) {
+    public ResponseEntity<String> createProject(@RequestBody ProjectCreateDto project) {
         String res = null;
         try {
             res = _webClient.build().post()

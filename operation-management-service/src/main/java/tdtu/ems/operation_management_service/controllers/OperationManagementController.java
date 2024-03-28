@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import tdtu.ems.operation_management_service.models.Project;
 import tdtu.ems.operation_management_service.models.ProjectUpdate;
+import tdtu.ems.operation_management_service.models.ProjectWithData;
 import tdtu.ems.operation_management_service.services.ProjectService;
 
 import java.util.List;
@@ -20,8 +21,8 @@ public class OperationManagementController {
     }
 
     @GetMapping("/operations/projects")
-    public ResponseEntity<List<Project>> getProjects() {
-        List<Project> response = null;
+    public ResponseEntity<List<ProjectWithData>> getProjects() {
+        List<ProjectWithData> response = null;
         try {
             response = _projectService.getProjects();
             return new ResponseEntity<>(response, HttpStatus.OK);

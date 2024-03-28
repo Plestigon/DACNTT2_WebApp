@@ -23,6 +23,17 @@ public class Project {
         this.description = description;
     }
 
+    public Project(Project p) {
+        this.id = p.id;
+        this.name = p.name;
+        this.ownerId = p.ownerId;
+        this.memberIds = p.memberIds;
+        this.status = p.status;
+        this.dueDate = p.dueDate;
+        this.description = p.description;
+        this.projectUpdateIds = p.projectUpdateIds;
+    }
+
     public int getId() {
         return id;
     }

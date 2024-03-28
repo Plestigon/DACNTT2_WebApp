@@ -9,9 +9,11 @@ import reactor.core.publisher.Mono;
 import tdtu.ems.core_service.utils.Logger;
 import tdtu.ems.operation_management_service.models.Project;
 import tdtu.ems.operation_management_service.models.ProjectUpdate;
+import tdtu.ems.operation_management_service.models.ProjectWithData;
 import tdtu.ems.operation_management_service.repositories.ProjectRepository;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -30,8 +32,9 @@ public class ProjectService implements IProjectService {
     }
 
     @Override
-    public List<Project> getProjects() {
-        List<Project> result = _projectRepository.getProjects();
+    public List<ProjectWithData> getProjects() {
+        List<ProjectWithData> result = _projectRepository.getProjectsWithData();
+        result.sort(Comparator.comparing(ProjectWithData::getId));
         return result;
     }
 
