@@ -1,4 +1,4 @@
-package tdtu.ems.finance_service.configs.models;
+package tdtu.ems.finance_service.models;
 
 import java.util.List;
 import tdtu.ems.core_service.models.Enums;

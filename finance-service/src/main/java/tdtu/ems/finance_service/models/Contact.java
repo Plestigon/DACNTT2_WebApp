@@ -1,4 +1,4 @@
-package tdtu.ems.finance_service.configs.models;
+package tdtu.ems.finance_service.models;
 
 public class Contact {
     private int id;
