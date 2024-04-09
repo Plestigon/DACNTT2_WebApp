@@ -11,7 +11,6 @@ public class Enums {
     public enum DealStage {
         Null,
         Discovery,
-        Demo,
         Proposal,
         Negotiate,
         Lost,

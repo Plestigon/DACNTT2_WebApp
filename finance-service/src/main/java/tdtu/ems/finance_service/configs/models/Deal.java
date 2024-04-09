@@ -3,6 +3,7 @@ package tdtu.ems.finance_service.configs.models;
 import tdtu.ems.core_service.models.Enums;
 
 import java.util.Date;
+import java.util.List;
 
 public class Deal {
     private int id;
@@ -10,19 +11,19 @@ public class Deal {
     private int associate;
     private int contact;
     private double dealValue;
-    private Date startDate;
     private Date closeDate;
+    private List<DealStageDetail> dealStageDetails;
 
     public Deal() {}
 
-    public Deal(int id, Enums.DealStage stage, int associate, int contact, double dealValue, Date startDate, Date closeDate) {
+    public Deal(int id, Enums.DealStage stage, int associate, int contact, double dealValue, Date closeDate, List<DealStageDetail> dealStageDetails) {
         this.id = id;
         this.stage = stage;
         this.associate = associate;
         this.contact = contact;
         this.dealValue = dealValue;
-        this.startDate = startDate;
         this.closeDate = closeDate;
+        this.dealStageDetails = dealStageDetails;
     }
 
     public int getId() {
@@ -65,19 +66,19 @@ public class Deal {
         this.dealValue = dealValue;
     }
 
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
     public Date getCloseDate() {
         return closeDate;
     }
 
     public void setCloseDate(Date closeDate) {
         this.closeDate = closeDate;
+    }
+
+    public List<DealStageDetail> getDealStageDetails() {
+        return dealStageDetails;
+    }
+
+    public void setDealStageDetails(List<DealStageDetail> dealStageDetails) {
+        this.dealStageDetails = dealStageDetails;
     }
 }

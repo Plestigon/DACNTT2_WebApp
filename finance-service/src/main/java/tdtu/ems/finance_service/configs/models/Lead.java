@@ -9,16 +9,18 @@ public class Lead {
     private String company;
     private String title;
     private String email;
+    private String phoneNumber;
 
     public Lead() {}
 
-    public Lead(int id, String name, Enums.LeadStatus status, String company, String title, String email) {
+    public Lead(int id, String name, Enums.LeadStatus status, String company, String title, String email, String phoneNumber) {
         this.id = id;
         this.name = name;
         this.status = status;
         this.company = company;
         this.title = title;
         this.email = email;
+        this.phoneNumber = phoneNumber;
     }
 
     public int getId() {
@@ -67,5 +69,13 @@ public class Lead {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }
