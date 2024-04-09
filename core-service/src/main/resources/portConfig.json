@@ -4,5 +4,6 @@
   "employee-service": 8081,
   "department-service": 8082,
   "operation-management-service": 8083,
+  "finance-service": 8084,
   "discovery-server": 8761
 }
