@@ -9,6 +9,7 @@
         <module name="operation-management-service" />
         <module name="discovery-server" />
         <module name="department-service" />
+        <module name="finance-service" />
         <module name="api-gateway" />
         <module name="main" />
         <module name="core-service" />
@@ -26,6 +27,7 @@
       <module name="department-service" options="-parameters" />
       <module name="discovery-server" options="-parameters" />
       <module name="employee-service" options="-parameters" />
+      <module name="finance-service" options="-parameters" />
       <module name="main" options="-parameters" />
       <module name="operation-management-service" options="-parameters" />
     </option>
