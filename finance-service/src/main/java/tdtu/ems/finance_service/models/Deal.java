@@ -6,17 +6,17 @@ import java.util.Date;
 import java.util.List;
 
 public class Deal {
-    private int id;
-    private Enums.DealStage stage;
-    private int associate;
-    private int contact;
-    private double dealValue;
-    private Date closeDate;
-    private List<DealStageDetail> dealStageDetails;
+    protected int id;
+    protected Enums.DealStage stage;
+    protected int associate;
+    protected int contact;
+    protected double dealValue;
+    protected Date closeDate;
+    protected List<Integer> dealStageDetails;
 
     public Deal() {}
 
-    public Deal(int id, Enums.DealStage stage, int associate, int contact, double dealValue, Date closeDate, List<DealStageDetail> dealStageDetails) {
+    public Deal(int id, Enums.DealStage stage, int associate, int contact, double dealValue, Date closeDate, List<Integer> dealStageDetails) {
         this.id = id;
         this.stage = stage;
         this.associate = associate;
@@ -74,11 +74,11 @@ public class Deal {
         this.closeDate = closeDate;
     }
 
-    public List<DealStageDetail> getDealStageDetails() {
+    public List<Integer> getDealStageDetails() {
         return dealStageDetails;
     }
 
-    public void setDealStageDetails(List<DealStageDetail> dealStageDetails) {
+    public void setDealStageDetails(List<Integer> dealStageDetails) {
         this.dealStageDetails = dealStageDetails;
     }
 }

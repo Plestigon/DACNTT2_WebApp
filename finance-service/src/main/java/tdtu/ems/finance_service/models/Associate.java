@@ -4,13 +4,13 @@ import java.util.List;
 import tdtu.ems.core_service.models.Enums;
 
 public class Associate {
-    private int id;
-    private String name;
-    private String domain;
-    private List<Integer> contacts;
-    private List<Integer> deals;
-    private Enums.Priority priority;
-    private String description;
+    protected int id;
+    protected String name;
+    protected String domain;
+    protected List<Integer> contacts;
+    protected List<Integer> deals;
+    protected Enums.Priority priority;
+    protected String description;
 
     public Associate() {}
 
