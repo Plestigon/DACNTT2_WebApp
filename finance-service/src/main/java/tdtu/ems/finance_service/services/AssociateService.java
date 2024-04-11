@@ -31,10 +31,17 @@ public class AssociateService implements IAssociateService {
         List<Associate> associates = _associateRepository.getAssociates();
         for (Associate associate : associates) {
             List<Contact> contacts = _contactRepository.getContactsByIds(associate.getContacts());
-            List<DealResult> deals = _dealRepository.getDealsByIds(associate.getDeals());
+            contacts.sort(Comparator.comparing(Contact::getName));
+            List<Deal> deals = _dealRepository.getDealsByIds(associate.getDeals());
+            deals.sort(Comparator.comparing(Deal::getId));
             result.add(new AssociateResult(associate, contacts, deals));
         }
         result.sort(Comparator.comparing(Associate::getId));
         return result;
+    }
+
+    @Override
+    public String addAssociate(Associate entry) {
+        return _associateRepository.addAssociate(entry);
     }
 }

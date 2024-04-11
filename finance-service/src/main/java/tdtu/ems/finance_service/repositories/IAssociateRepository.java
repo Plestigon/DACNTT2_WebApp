@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface IAssociateRepository {
     List<Associate> getAssociates();
+    String addAssociate(Associate entry);
 }

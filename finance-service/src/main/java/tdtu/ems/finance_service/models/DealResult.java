@@ -1,8 +1,5 @@
 package tdtu.ems.finance_service.models;
 
-import tdtu.ems.core_service.models.Enums;
-
-import java.util.Date;
 import java.util.List;
 
 public class DealResult extends Deal {

@@ -21,4 +21,9 @@ public class ContactService implements IContactService {
         result.sort(Comparator.comparing(Contact::getName));
         return result;
     }
+
+    @Override
+    public String addContact(Contact entry) {
+        return _contactRepository.addContact(entry);
+    }
 }

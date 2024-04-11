@@ -1,13 +1,11 @@
 package tdtu.ems.finance_service.models;
 
-import tdtu.ems.core_service.models.Enums;
-
 import java.util.Date;
 import java.util.List;
 
 public class Deal {
     protected int id;
-    protected Enums.DealStage stage;
+    protected int stage;
     protected int associate;
     protected int contact;
     protected double dealValue;
@@ -16,7 +14,7 @@ public class Deal {
 
     public Deal() {}
 
-    public Deal(int id, Enums.DealStage stage, int associate, int contact, double dealValue, Date closeDate, List<Integer> dealStageDetails) {
+    public Deal(int id, int stage, int associate, int contact, double dealValue, Date closeDate, List<Integer> dealStageDetails) {
         this.id = id;
         this.stage = stage;
         this.associate = associate;
@@ -34,11 +32,11 @@ public class Deal {
         this.id = id;
     }
 
-    public Enums.DealStage getStage() {
+    public int getStage() {
         return stage;
     }
 
-    public void setStage(Enums.DealStage stage) {
+    public void setStage(int stage) {
         this.stage = stage;
     }
 

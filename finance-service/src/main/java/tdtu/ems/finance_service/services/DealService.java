@@ -1,7 +1,7 @@
 package tdtu.ems.finance_service.services;
 
 import org.springframework.stereotype.Service;
-import tdtu.ems.finance_service.models.DealResult;
+import tdtu.ems.finance_service.models.Deal;
 import tdtu.ems.finance_service.repositories.DealRepository;
 
 import java.util.List;
@@ -15,8 +15,13 @@ public class DealService implements IDealService {
     }
 
     @Override
-    public List<DealResult> getDealsByIds(List<Integer> ids) {
-        List<DealResult> result = _dealRepository.getDealsByIds(ids);
+    public List<Deal> getDealsByIds(List<Integer> ids) {
+        List<Deal> result = _dealRepository.getDealsByIds(ids);
         return result;
+    }
+
+    @Override
+    public String addDeal(Deal entry) {
+        return _dealRepository.addDeal(entry);
     }
 }

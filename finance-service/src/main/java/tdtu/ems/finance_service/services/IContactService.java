@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface IContactService {
     List<Contact> getContactsByIds(List<Integer> ids);
+    String addContact(Contact entry);
 }

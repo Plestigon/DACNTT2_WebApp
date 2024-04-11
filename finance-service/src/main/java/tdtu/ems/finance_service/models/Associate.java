@@ -1,7 +1,6 @@
 package tdtu.ems.finance_service.models;
 
 import java.util.List;
-import tdtu.ems.core_service.models.Enums;
 
 public class Associate {
     protected int id;
@@ -9,12 +8,12 @@ public class Associate {
     protected String domain;
     protected List<Integer> contacts;
     protected List<Integer> deals;
-    protected Enums.Priority priority;
+    protected int priority;
     protected String description;
 
     public Associate() {}
 
-    public Associate(int id, String name, String domain, List<Integer> contacts, List<Integer> deals, Enums.Priority priority, String description) {
+    public Associate(int id, String name, String domain, List<Integer> contacts, List<Integer> deals, int priority, String description) {
         this.id = id;
         this.name = name;
         this.domain = domain;
@@ -64,11 +63,11 @@ public class Associate {
         this.deals = deals;
     }
 
-    public Enums.Priority getPriority() {
+    public int getPriority() {
         return priority;
     }
 
-    public void setPriority(Enums.Priority priority) {
+    public void setPriority(int priority) {
         this.priority = priority;
     }
 

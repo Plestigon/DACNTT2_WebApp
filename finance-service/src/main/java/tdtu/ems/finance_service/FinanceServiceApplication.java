@@ -5,19 +5,21 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Objects;
+
+import tdtu.ems.core_service.configs.FirestoreConfig;
 
 @SpringBootApplication
+@EnableDiscoveryClient
 public class FinanceServiceApplication {
 
 	public static void main(String[] args) {
 		try {
-			ClassLoader classLoader = FinanceServiceApplication.class.getClassLoader();
-			File file = new File(Objects.requireNonNull(classLoader.getResource("serviceAccountKey.json")).getFile());
+			File file = FirestoreConfig.getKeyFile();
 			FileInputStream serviceAccount =
 					new FileInputStream(file.getAbsolutePath());
 
