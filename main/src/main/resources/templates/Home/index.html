@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${title}"></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="/static/css/bootstrap.css" th:href="@{/static/css/bootstrap.css}">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="/static/js/jquery-3.7.1.min.js" th:src="@{/js/jquery-3.7.1.min.js}"></script>
+    <script src="/static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+<body>
+
+<!--Nav bar-->
+<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Company Name</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="../Home/index.html" th:href="@{/}">Home</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Finance
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/operations/index}" role="button" aria-expanded="false">
+                        Operations
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Human Resources
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Schedule
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<h1 style= "text-align:center; font-size: 60px">Your go-to work platform</h1>
+<h1 style= "text-align:center; font-size: 40px">Run all your work on one platform </h1>
+
+<!--Cards-->
+<div class="container">
+    <div class="card-group">
+        <div class="flip-card" style="max-width: 18rem;">
+            <div class="flip-card-inner">
+                <div class="flip-card-front bg-success">
+                    <img src="/static/assets/Stocks.png" class="card-img-top" alt="..." style="width: 12rem;">
+                    <h3>Finance</h3>
+                </div>
+                <div class="flip-card-back bg-success">
+                        <h5 class="card-title">Finance</h5>
+                        <p class="card-text">Manage the company's finance.</p>
+                    <a href="#" class="btn btn-primary stretched-link bg-success border-0">Go to finance</a>
+                </div>
+            </div>
+        </div>
+        <div class="flip-card" style="max-width: 18rem;">
+            <div class="flip-card-inner">
+                <div class="flip-card-front bg-info">
+                    <img src="/static/assets/Cog.png" class="card-img-top" alt="..." style="width: 12rem;">
+                    <h3>Operations</h3>
+                </div>
+                <div class="flip-card-back bg-info">
+                    <h5 class="card-title">Operations</h5>
+                    <p class="card-text">Manage the company's Operations.</p>
+                    <a href="/Operations/Operations.html" th:href="@{/operations/index}" class="btn btn-primary stretched-link bg-info border-0">Go to Operations</a>
+                </div>
+            </div>
+        </div>
+        <div class="flip-card" style="max-width: 18rem;">
+            <div class="flip-card-inner">
+                <div class="flip-card-front bg-danger">
+                    <img src="/static/assets/HR.png" class="card-img-top" alt="..." style="width: 12rem;">
+                    <h3>Human Resources</h3>
+                </div>
+                <div class="flip-card-back bg-danger">
+                    <h5 class="card-title">Human Resources</h5>
+                    <p class="card-text">Manage the company's human resources.</p>
+                    <a href="#" class="btn btn-primary stretched-link bg-danger border-0">Go to Human Resources</a>
+                </div>
+            </div>
+        </div>
+        <div class="flip-card" style="max-width: 18rem;">
+            <div class="flip-card-inner">
+                <div class="flip-card-front bg-warning">
+                    <img src="/static/assets/Calendar.png" class="card-img-top" alt="..." style="width: 12rem;">
+                    <h3>Schedule</h3>
+                </div>
+                <div class="flip-card-back bg-warning">
+                    <h5 class="card-title">Schedule</h5>
+                    <p class="card-text">Manage the company's schedule.</p>
+                    <a href="#" class="btn btn-primary stretched-link bg-warning border-0">Go to Schedule</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Background image -->
+<!--<div-->
+<!--    class="background-image"-->
+<!--    style="background-image: url('assets/corporate-background-.webp')">-->
+<!--</div>-->
+
+
+</body>
+</html>
