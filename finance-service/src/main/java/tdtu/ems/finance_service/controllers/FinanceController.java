@@ -3,10 +3,7 @@ package tdtu.ems.finance_service.controllers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tdtu.ems.finance_service.models.Associate;
-import tdtu.ems.finance_service.models.AssociateResult;
-import tdtu.ems.finance_service.models.Contact;
-import tdtu.ems.finance_service.models.Deal;
+import tdtu.ems.finance_service.models.*;
 import tdtu.ems.finance_service.services.AssociateService;
 import tdtu.ems.finance_service.services.ContactService;
 import tdtu.ems.finance_service.services.DealService;
@@ -39,9 +36,21 @@ public class FinanceController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/finance/contacts")
+    public ResponseEntity<List<Contact>> getContacts(@RequestParam List<Integer> entry) {
+        List<Contact> response = _contactService.getContactsByIds(entry);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @PostMapping("/finance/contact")
     public ResponseEntity<String> addContact(@RequestBody Contact entry) {
         String response = _contactService.addContact(entry);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/finance/deals")
+    public ResponseEntity<List<Deal>> getDeals(@RequestParam List<Integer> entry) {
+        List<Deal> response = _dealService.getDealsByIds(entry);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

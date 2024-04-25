@@ -26,7 +26,7 @@ public class HomeController {
     }
     private final String HOME_PAGE_TITLE = "Your go-to work platform";
 
-    @GetMapping("/home")
+    @GetMapping("/")
     public String index(Model model) {
 //        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 //        String email = auth.getName();

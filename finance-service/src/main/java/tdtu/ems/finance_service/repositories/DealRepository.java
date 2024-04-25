@@ -32,7 +32,9 @@ public class DealRepository implements IDealRepository {
             List<Deal> deals = new ArrayList<>();
             for (int id : ids) {
                 Deal deal = dealsDb.document(String.valueOf(id)).get().get().toObject(Deal.class);
-                deals.add(deal);
+                if (deal != null) {
+                    deals.add(deal);
+                }
             }
             return deals;
         }
