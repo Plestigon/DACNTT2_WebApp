@@ -18,7 +18,7 @@ public class ContactService implements IContactService {
     @Override
     public List<Contact> getContactsByIds(List<Integer> ids) {
         List<Contact> result = _contactRepository.getContactsByIds(ids);
-        result.sort(Comparator.comparing(Contact::getName));
+        result.sort(Comparator.comparing(Contact::getId));
         return result;
     }
 

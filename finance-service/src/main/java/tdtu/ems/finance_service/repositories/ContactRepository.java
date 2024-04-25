@@ -29,7 +29,9 @@ public class ContactRepository implements IContactRepository {
             List<Contact> contacts = new ArrayList<>();
             for (int id : ids) {
                 Contact contact = contactsDb.document(String.valueOf(id)).get().get().toObject(Contact.class);
-                contacts.add(contact);
+                if (contact != null) {
+                    contacts.add(contact);
+                }
             }
             return contacts;
         }
