@@ -1,6 +1,6 @@
 {
-  "main": 8079,
-  "api-gateway": 8080,
+  "main": 8080,
+  "api-gateway": 8079,
   "employee-service": 8081,
   "department-service": 8082,
   "operation-management-service": 8083,

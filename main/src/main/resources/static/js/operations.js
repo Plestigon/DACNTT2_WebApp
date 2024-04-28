@@ -39,7 +39,7 @@ function initNewProjectForm() {
         type: "GET",
         dataType:"json",
         contentType : "application/json",
-        url: "http://localhost:8079/operations/employees",
+        url: "http://localhost:8080/operations/employees",
         success: function (data) {
             employees = data;
         },
@@ -69,7 +69,7 @@ function loadTableData() {
         type: "GET",
         dataType:"json",
         contentType : "application/json",
-        url: "http://localhost:8079/operations/projects",
+        url: "http://localhost:8080/operations/projects",
         success: function (data) {
             projects = data;
         },
@@ -119,7 +119,7 @@ function pushNewProject() {
     $.ajax({
         type: "POST",
         contentType : "application/json",
-        url: "http://localhost:8079/operations/project",
+        url: "http://localhost:8080/operations/project",
         data: JSON.stringify(projectDto),
         success: function (result) {
             console.log(result);
@@ -138,7 +138,7 @@ function deleteProjectButtonOnClick(id) {
         $.ajax({
             type: "DELETE",
             contentType : "application/json",
-            url: "http://localhost:8079/operations/project?id=" + id,
+            url: "http://localhost:8080/operations/project?id=" + id,
             success: function (result) {
                 console.log(result);
                 alert("Project deleted successfully!");
