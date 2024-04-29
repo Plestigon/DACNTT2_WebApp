@@ -1,23 +1,15 @@
 package tdtu.ems.operation_management_service.services;
 
-import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.*;
-import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 import tdtu.ems.core_service.utils.Logger;
 import tdtu.ems.operation_management_service.models.Project;
+import tdtu.ems.operation_management_service.models.ProjectResult;
 import tdtu.ems.operation_management_service.models.ProjectUpdate;
-import tdtu.ems.operation_management_service.models.ProjectWithData;
 import tdtu.ems.operation_management_service.repositories.ProjectRepository;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 @Service
 public class ProjectService implements IProjectService {
@@ -32,9 +24,9 @@ public class ProjectService implements IProjectService {
     }
 
     @Override
-    public List<ProjectWithData> getProjects() {
-        List<ProjectWithData> result = _projectRepository.getProjectsWithData();
-        result.sort(Comparator.comparing(ProjectWithData::getId));
+    public List<ProjectResult> getProjects() {
+        List<ProjectResult> result = _projectRepository.getProjectsHandled();
+        result.sort(Comparator.comparing(ProjectResult::getId));
         return result;
     }
 

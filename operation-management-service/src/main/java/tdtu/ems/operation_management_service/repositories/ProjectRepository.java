@@ -6,8 +6,8 @@ import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.stereotype.Repository;
 import tdtu.ems.core_service.utils.Logger;
 import tdtu.ems.operation_management_service.models.Project;
+import tdtu.ems.operation_management_service.models.ProjectResult;
 import tdtu.ems.operation_management_service.models.ProjectUpdate;
-import tdtu.ems.operation_management_service.models.ProjectWithData;
 
 import java.util.*;
 
@@ -37,18 +37,17 @@ public class ProjectRepository implements IProjectRepository {
     }
 
     @Override
-    public List<ProjectWithData> getProjectsWithData() {
+    public List<ProjectResult> getProjectsHandled() {
         try {
             CollectionReference projectsDb = _db.collection("projects");
             CollectionReference employeesDb = _db.collection("employees");
-            List<ProjectWithData> projects = new ArrayList<>();
+            List<ProjectResult> projects = new ArrayList<>();
             for (DocumentSnapshot data : projectsDb.get().get().getDocuments()) {
                 Project prj = data.toObject(Project.class);
                 if (prj != null) {
-                    ProjectWithData prjWithData = new ProjectWithData(prj) ;
-                    DocumentSnapshot ownerData = employeesDb.document(String.valueOf(prjWithData.getOwnerId())).get().get();
-                    prjWithData.setOwnerName(ownerData.getString("name"));
-                    projects.add(prjWithData);
+                    DocumentSnapshot ownerData = employeesDb.document(String.valueOf(prj.getOwnerId())).get().get();
+                    ProjectResult prjRes = new ProjectResult(prj, ownerData.getString("name"));
+                    projects.add(prjRes);
                 }
             }
             return projects;

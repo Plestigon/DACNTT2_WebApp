@@ -3,10 +3,9 @@ package tdtu.ems.operation_management_service.controllers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.reactive.function.client.WebClient;
 import tdtu.ems.operation_management_service.models.Project;
+import tdtu.ems.operation_management_service.models.ProjectResult;
 import tdtu.ems.operation_management_service.models.ProjectUpdate;
-import tdtu.ems.operation_management_service.models.ProjectWithData;
 import tdtu.ems.operation_management_service.services.ProjectService;
 
 import java.util.List;
@@ -21,8 +20,8 @@ public class OperationManagementController {
     }
 
     @GetMapping("/operations/projects")
-    public ResponseEntity<List<ProjectWithData>> getProjects() {
-        List<ProjectWithData> response = null;
+    public ResponseEntity<List<ProjectResult>> getProjects() {
+        List<ProjectResult> response = null;
         try {
             response = _projectService.getProjects();
             return new ResponseEntity<>(response, HttpStatus.OK);

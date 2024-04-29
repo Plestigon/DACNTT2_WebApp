@@ -1,7 +1,6 @@
 package tdtu.ems.main.controllers;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,9 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import tdtu.ems.main.models.EmployeeDto;
 import tdtu.ems.main.models.ProjectCreateDto;
-import tdtu.ems.main.models.ProjectDto;
+import tdtu.ems.main.models.ProjectResult;
 
-import java.net.http.HttpResponse;
 import java.util.List;
 
 @Controller
@@ -32,12 +30,12 @@ public class OperationManagementController {
 
     @RequestMapping(value = "/projects", method = RequestMethod.GET)
     @ResponseBody
-    public List<ProjectDto> getProjects() {
-        List<ProjectDto> res = null;
+    public List<ProjectResult> getProjects() {
+        List<ProjectResult> res = null;
         res = _webClient.build().get()
                 .uri("http://operation-management-service/api/operations/projects")
                 .retrieve()
-                .bodyToFlux(ProjectDto.class)
+                .bodyToFlux(ProjectResult.class)
                 .collectList()
                 .block();
         return res;

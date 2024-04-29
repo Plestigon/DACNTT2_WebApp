@@ -1,29 +1,42 @@
-package tdtu.ems.main.models;
+package tdtu.ems.operation_management_service.models;
 
-import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class ProjectDto {
+public class ProjectResult {
     private int id;
     private String name;
     private int ownerId;
     private String ownerName;
     private List<Integer> memberIds;
-    private int status;
-    private Date dueDate;
+    private String status;
+    private String dueDate;
     private String description;
     private List<Integer> projectUpdateIds;
 
-    public ProjectDto() {}
-
-    public ProjectDto(int id, String name, int ownerId, String ownerName, int status, Date dueDate, String description) {
+    public ProjectResult(int id, String name, int ownerId, String ownerName, List<Integer> memberIds, String status, String dueDate, String description, List<Integer> projectUpdateIds) {
         this.id = id;
         this.name = name;
         this.ownerId = ownerId;
         this.ownerName = ownerName;
+        this.memberIds = memberIds;
         this.status = status;
         this.dueDate = dueDate;
         this.description = description;
+        this.projectUpdateIds = projectUpdateIds;
+    }
+
+    public ProjectResult(Project p, String ownerName) {
+        this.id = p.getId();
+        this.name = p.getName();
+        this.ownerId = p.getOwnerId();
+        this.ownerName = ownerName;
+        this.memberIds = p.getMemberIds();
+        this.status = p.getStatus() == 1 ? "open" : "closed";
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+        this.dueDate = formatter.format(p.getDueDate());
+        this.description = p.getDescription();
+        this.projectUpdateIds = p.getProjectUpdateIds();
     }
 
     public int getId() {
@@ -50,6 +63,14 @@ public class ProjectDto {
         this.ownerId = ownerId;
     }
 
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
+
     public List<Integer> getMemberIds() {
         return memberIds;
     }
@@ -58,19 +79,19 @@ public class ProjectDto {
         this.memberIds = memberIds;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public Date getDueDate() {
+    public String getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(Date dueDate) {
+    public void setDueDate(String dueDate) {
         this.dueDate = dueDate;
     }
 
@@ -88,13 +109,5 @@ public class ProjectDto {
 
     public void setProjectUpdateIds(List<Integer> projectUpdateIds) {
         this.projectUpdateIds = projectUpdateIds;
-    }
-
-    public String getOwnerName() {
-        return ownerName;
-    }
-
-    public void setOwnerName(String ownerName) {
-        this.ownerName = ownerName;
     }
 }
