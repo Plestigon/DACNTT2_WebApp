@@ -1,7 +1,7 @@
 import * as React from "react";
 import '../css/home.css';
 import { Link } from "react-router-dom";
-import ResponsiveAppBar from './AppBar'
+import ResponsiveAppBar from '../AppBar'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';

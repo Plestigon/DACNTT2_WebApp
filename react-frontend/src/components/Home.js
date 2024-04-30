@@ -3,7 +3,7 @@ import '../css/home.css';
 import { Link } from "react-router-dom";
 import ResponsiveAppBar from '../components/AppBar'
  
-const Home = () => {
+function Home() {
     return (
     <div>
         <ResponsiveAppBar/>
