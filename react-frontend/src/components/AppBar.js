@@ -13,6 +13,10 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate, Link } from "react-router-dom";
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -43,7 +47,7 @@ function ResponsiveAppBar() {
   }
 
   return (
-    <AppBar position="static">
+    <Navbar bg="primary" data-bs-theme="dark" position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -120,7 +124,7 @@ function ResponsiveAppBar() {
           >
             LOGO
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Nav className="me-auto">
             {/* {pages.map((page) => (
               <Button
                 key={page}
@@ -137,9 +141,49 @@ function ResponsiveAppBar() {
             >
                 Home
             </Button> */}
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/operations">Operations</Link></li>
-          </Box>
+            <Nav.Link to="/">Home</Nav.Link>
+
+
+            <NavDropdown title="Finances" id="finances">
+              <NavDropdown.Item href="#action/3.1">Activities</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.2">
+                Contacts
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.3">Accounts</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.4">Contacts</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.5">Deals</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.6">Leads</NavDropdown.Item>
+            </NavDropdown>
+
+            <Nav.Link to="/">Operations</Nav.Link>
+
+
+            <NavDropdown title="Human Resources" id="basic-nav-dropdown">
+              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.2">
+                Another action
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="#action/3.4">
+                Separated link
+              </NavDropdown.Item>
+            </NavDropdown>
+
+            <NavDropdown title="Human Resources" id="basic-nav-dropdown">
+              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.2">
+                Another action
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="#action/3.4">
+                Separated link
+              </NavDropdown.Item>
+            </NavDropdown>
+
+
+          </Nav>
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
@@ -172,7 +216,7 @@ function ResponsiveAppBar() {
           </Box>
         </Toolbar>
       </Container>
-    </AppBar>
+    </Navbar>
   );
 }
 export default ResponsiveAppBar;
