@@ -10,6 +10,7 @@ import tdtu.ems.operation_management_service.models.ProjectResult;
 import tdtu.ems.operation_management_service.models.ProjectUpdate;
 
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 @Repository
 public class ProjectRepository implements IProjectRepository {
@@ -37,7 +38,7 @@ public class ProjectRepository implements IProjectRepository {
     }
 
     @Override
-    public List<ProjectResult> getProjectsHandled() {
+    public List<ProjectResult> getProjectResults() {
         try {
             CollectionReference projectsDb = _db.collection("projects");
             CollectionReference employeesDb = _db.collection("employees");
@@ -70,6 +71,31 @@ public class ProjectRepository implements IProjectRepository {
             return project;
         }
         catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    public ProjectResult getProjectResultById(int id) {
+        try {
+            CollectionReference projectsDb = _db.collection("projects");
+            CollectionReference employeesDb = _db.collection("employees");
+            DocumentSnapshot data = projectsDb.document(String.valueOf(id)).get().get();
+            if (data.exists()) {
+                Project project = data.toObject(Project.class);
+                if (project != null) {
+                    DocumentSnapshot ownerData = employeesDb.document(String.valueOf(project.getOwnerId())).get().get();
+                    ProjectResult result = new ProjectResult(project, ownerData.getString("name"));
+                    return result;
+                }
+                _logger.Error("getProjectResultById", "Project is null.");
+                return null;
+            }
+            _logger.Error("getProjectResultById", "Data does not exist.");
+            return null;
+        }
+        catch (Exception e) {
+            _logger.Error("getProjectResultById", e.getMessage());
             return null;
         }
     }
@@ -113,6 +139,19 @@ public class ProjectRepository implements IProjectRepository {
             return result.get().getUpdateTime().toString();
         }
         catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    public String updateProjectStatus(int id, int status) {
+        try {
+            CollectionReference projectsDb = _db.collection("projects");
+            ApiFuture<WriteResult> result = projectsDb.document(String.valueOf(id)).update("status", status);
+            return result.get().getUpdateTime().toString();
+        }
+        catch (Exception e) {
+            _logger.Error("updateProjectStatus", e.getMessage());
             return null;
         }
     }

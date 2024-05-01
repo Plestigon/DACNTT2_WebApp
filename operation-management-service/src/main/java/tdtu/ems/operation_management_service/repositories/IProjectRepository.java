@@ -8,11 +8,13 @@ import java.util.List;
 
 public interface IProjectRepository {
     List<Project> getProjects();
-    List<ProjectResult> getProjectsHandled();
+    List<ProjectResult> getProjectResults();
     Project getProjectById(int id);
+    ProjectResult getProjectResultById(int id);
     String addProject(Project project);
     String removeProject(int id);
     String editProject(Project project);
+    String updateProjectStatus(int id, int status);
     List<ProjectUpdate> getProjectUpdates(int projectId);
     ProjectUpdate getProjectUpdateById(int id);
     String addProjectUpdate(ProjectUpdate projectUpdate, int projectId);

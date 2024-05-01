@@ -30,6 +30,17 @@ public class OperationManagementController {
         }
     }
 
+    @GetMapping("/operations/project")
+    public ResponseEntity<ProjectResult> getProjectById(@RequestParam int id) {
+        ProjectResult response = null;
+        try {
+            response = _projectService.getProjectById(id);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping("/operations/projects")
     public ResponseEntity<String> addProject(@RequestBody Project project) {
         String response = null;
@@ -63,6 +74,17 @@ public class OperationManagementController {
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/operations/project/{id}/update")
+    public ResponseEntity<String> updateProjectStatus(@PathVariable int id, @RequestParam int status) {
+        String response = null;
+        try {
+            response = _projectService.updateProjectStatus(id, status);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

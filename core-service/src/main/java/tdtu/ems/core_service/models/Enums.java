@@ -23,4 +23,12 @@ public class Enums {
         Rejected,
         Contacted
     }
+
+    public enum ProjectStatus {
+        Not_Started,
+        In_Progress,
+        Finished,
+        Stopped,
+        Cancelled
+    }
 }

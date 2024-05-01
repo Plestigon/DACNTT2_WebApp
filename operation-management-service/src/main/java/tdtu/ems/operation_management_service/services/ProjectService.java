@@ -25,14 +25,14 @@ public class ProjectService implements IProjectService {
 
     @Override
     public List<ProjectResult> getProjects() {
-        List<ProjectResult> result = _projectRepository.getProjectsHandled();
+        List<ProjectResult> result = _projectRepository.getProjectResults();
         result.sort(Comparator.comparing(ProjectResult::getId));
         return result;
     }
 
     @Override
-    public Project getProjectById(int id) {
-        Project result =  _projectRepository.getProjectById(id);
+    public ProjectResult getProjectById(int id) {
+        ProjectResult result =  _projectRepository.getProjectResultById(id);
         return result;
     }
 
@@ -50,6 +50,12 @@ public class ProjectService implements IProjectService {
     @Override
     public String editProject(Project project) {
         return _projectRepository.editProject(project);
+    }
+
+    @Override
+    public String updateProjectStatus(int id, int status) {
+        String result = _projectRepository.updateProjectStatus(id, status);
+        return result;
     }
 
     @Override

@@ -8,10 +8,11 @@ import java.util.List;
 
 public interface IProjectService {
     List<ProjectResult> getProjects();
-    Project getProjectById(int id);
+    ProjectResult getProjectById(int id);
     String addProject(Project project);
     String removeProject(int id);
     String editProject(Project project);
+    String updateProjectStatus(int id, int status);
     List<ProjectUpdate> getProjectUpdates(int projectId);
     ProjectUpdate getProjectUpdateById(int id);
     String addProjectUpdate(ProjectUpdate projectUpdate, int projectId);

@@ -1,12 +1,14 @@
 import React from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import ResponsiveAppBar from '../AppBar';
+import NavigationBar from '../NavigationBar';
 import { useEffect, useState } from 'react';
 import NewProjectModal from "./NewProjectModal";
+import { useNavigate } from 'react-router-dom';
  
 function Operations() {
     const[projects,setProjects] = useState([]);
     const[newPrjModalShow, setNewPrjModalShow] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(()=>{
         fetchProjectData();
@@ -47,9 +49,13 @@ function Operations() {
         }
     }
 
+    function projectDetails(id) {
+        navigate('/operations/project/' + id);
+    }
+
     return (
     <div>
-        <ResponsiveAppBar/>
+        <NavigationBar/>
         <div class="container pt-3">
             <button type="button" class="btn btn-outline-primary my-2" id="newPrjBtn" onClick={() => setNewPrjModalShow(true)}>
                 <i class="bi bi-plus-circle me-2"></i>Create New Project
@@ -79,7 +85,7 @@ function Operations() {
                     </td>
                 </tr> */}
                 {projects.map(p=>(
-                    <tr key={p.id}>
+                    <tr key={p.id} onClick={() => projectDetails(p.id)}>
                         <td>{p.name}</td>
                         <td>{p.ownerName}</td>
                         <td>{p.status}</td>

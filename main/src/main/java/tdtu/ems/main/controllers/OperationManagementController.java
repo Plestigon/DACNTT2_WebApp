@@ -6,16 +6,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
+import tdtu.ems.core_service.models.Enums;
 import tdtu.ems.main.models.EmployeeDto;
 import tdtu.ems.main.models.ProjectCreateDto;
 import tdtu.ems.main.models.ProjectResult;
+import tdtu.ems.main.models.SelectOptionsResult;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
 @RequestMapping("/operations")
 public class OperationManagementController {
     private final String OPERATIONS_PAGE_TITLE = "Operations Management";
+    private final String PROJECT_PAGE_TITLE = "Project";
     private WebClient.Builder _webClient;
 
     public OperationManagementController(WebClient.Builder webClient) {
@@ -26,6 +31,18 @@ public class OperationManagementController {
     public String index(Model model) {
         model.addAttribute("title", OPERATIONS_PAGE_TITLE);
         return "Operations/Operations";
+    }
+
+    @GetMapping("/project")
+    @ResponseBody
+    public ProjectResult getProject(@RequestParam int id) {
+        ProjectResult res = null;
+        res = _webClient.build().get()
+                .uri("http://operation-management-service/api/operations/project?id=" + id)
+                .retrieve()
+                .bodyToMono(ProjectResult.class)
+                .block();
+        return res;
     }
 
     @RequestMapping(value = "/projects", method = RequestMethod.GET)
@@ -85,5 +102,32 @@ public class OperationManagementController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>("OK", HttpStatus.OK);
+    }
+
+    @GetMapping("/project/statuses")
+    @ResponseBody
+    public ResponseEntity<List<SelectOptionsResult>> getProjectStatuses() {
+        var statuses = Enums.ProjectStatus.values();
+        List<SelectOptionsResult> res = new ArrayList<>();
+        for(Enums.ProjectStatus status : statuses) {
+            res.add(new SelectOptionsResult(status.name().replace('_', ' '), status.ordinal()));
+        }
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
+    @PostMapping("/project/{id}/update")
+    @ResponseBody
+    public ResponseEntity<String> updateProjectStatus(@PathVariable int id, @RequestParam int status) {
+        try {
+            String res = _webClient.build().post()
+                    .uri("http://operation-management-service/api/operations/project/" + id + "/update?status=" + status)
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

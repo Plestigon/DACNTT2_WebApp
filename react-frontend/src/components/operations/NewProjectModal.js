@@ -24,7 +24,7 @@ function NewProjectModal(props) {
         .then((result)=>{
             var data = [];
             result.forEach(o => {
-                data.push({value: o.id, label: o.name});
+                data.push({label: o.name, value: o.id});
             });
             setOptions(data);
             handleInputChange({label: "Select project's owner", value: 0});

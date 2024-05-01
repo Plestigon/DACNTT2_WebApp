@@ -1,5 +1,4 @@
 import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -8,11 +7,10 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-import { useNavigate, Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
@@ -21,8 +19,8 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-function ResponsiveAppBar() {
-  let navigate = useNavigate();
+function NavigationBar() {
+  // let navigate = useNavigate();
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -42,9 +40,9 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
-  const redirect = (path) => {
-    navigate(path);
-  }
+  // const redirect = (path) => {
+  //   navigate(path);
+  // }
 
   return (
     <Navbar bg="primary" data-bs-theme="dark" position="static">
@@ -141,7 +139,7 @@ function ResponsiveAppBar() {
             >
                 Home
             </Button> */}
-            <Nav.Link to="/">Home</Nav.Link>
+            <Nav.Link as={Link} to="/">Home</Nav.Link>
 
 
             <NavDropdown title="Finances" id="finances">
@@ -155,7 +153,7 @@ function ResponsiveAppBar() {
               <NavDropdown.Item href="#action/3.6">Leads</NavDropdown.Item>
             </NavDropdown>
 
-            <Nav.Link to="/">Operations</Nav.Link>
+            <Nav.Link as={Link} to="/operations">Operations</Nav.Link>
 
 
             <NavDropdown title="Human Resources" id="basic-nav-dropdown">
@@ -219,4 +217,4 @@ function ResponsiveAppBar() {
     </Navbar>
   );
 }
-export default ResponsiveAppBar;
+export default NavigationBar;

@@ -1,12 +1,12 @@
 import React from "react";
 import '../css/home.css';
 import { Link } from "react-router-dom";
-import ResponsiveAppBar from '../components/AppBar'
+import NavigationBar from "./NavigationBar";
  
 function Home() {
     return (
     <div>
-        <ResponsiveAppBar/>
+        <NavigationBar/>
         <h1 style={{textAlign:'center', fontSize: '60px'}}>Your go-to work platform</h1>
         <h1 style={{textAlign:'center', fontSize: '40px'}}>Run all your work on one platform </h1>
 

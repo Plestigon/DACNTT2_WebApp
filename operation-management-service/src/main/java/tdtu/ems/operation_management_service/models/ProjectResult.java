@@ -1,6 +1,9 @@
 package tdtu.ems.operation_management_service.models;
 
+import tdtu.ems.core_service.models.Enums;
+
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class ProjectResult {
@@ -9,18 +12,20 @@ public class ProjectResult {
     private int ownerId;
     private String ownerName;
     private List<Integer> memberIds;
-    private String status;
-    private String dueDate;
+    private int status;
+    private String statusName;
+    private Date dueDate;
     private String description;
     private List<Integer> projectUpdateIds;
 
-    public ProjectResult(int id, String name, int ownerId, String ownerName, List<Integer> memberIds, String status, String dueDate, String description, List<Integer> projectUpdateIds) {
+    public ProjectResult(int id, String name, int ownerId, String ownerName, List<Integer> memberIds, int status, String statusName, Date dueDate, String description, List<Integer> projectUpdateIds) {
         this.id = id;
         this.name = name;
         this.ownerId = ownerId;
         this.ownerName = ownerName;
         this.memberIds = memberIds;
         this.status = status;
+        this.statusName = statusName;
         this.dueDate = dueDate;
         this.description = description;
         this.projectUpdateIds = projectUpdateIds;
@@ -32,9 +37,9 @@ public class ProjectResult {
         this.ownerId = p.getOwnerId();
         this.ownerName = ownerName;
         this.memberIds = p.getMemberIds();
-        this.status = p.getStatus() == 1 ? "open" : "closed";
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
-        this.dueDate = formatter.format(p.getDueDate());
+        this.status = p.getStatus();
+        this.statusName = Enums.ProjectStatus.values()[p.getStatus()].name().replace("_", " ");
+        this.dueDate = p.getDueDate();
         this.description = p.getDescription();
         this.projectUpdateIds = p.getProjectUpdateIds();
     }
@@ -79,19 +84,27 @@ public class ProjectResult {
         this.memberIds = memberIds;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public String getDueDate() {
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
+    }
+
+    public Date getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(String dueDate) {
+    public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
     }
 
