@@ -165,6 +165,40 @@ const ProjectInfo = () => {
             <Button onClick={handleCancelEditClick} className="btn-secondary" style={{width: '150px', height: '50px', display: inputDisabled ? "none" : "block"}} >Cancel Editing</Button>
         </div>
     </div>
+    
+    <div class="mt-5">
+    <Container>
+        <Row>
+            Updates
+        </Row>
+        <Row>
+            <div class="row my-1">
+                <div class="card w-50" style={{minWidth: '500px'}}>
+                    <div class="row">
+                        <div class="col-8">minh @27-06-2024 20:00</div>
+                        <div class="col-4 text-end"><i class="bi bi-eye"></i><i class="bi bi-check"></i>3</div>
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <div style={{width: '80%'}}>message messagemessagemessagemessage messagemessagemessagemessage</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row my-1">
+                <div class="card w-50" style={{minWidth: '500px'}}>
+                    <div class="row">
+                        <div class="col-8">minh @27-06-2024 20:00</div>
+                        <div class="col-4 text-end"><i class="bi bi-eye"></i><i class="bi bi-check"></i>3</div>
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <div style={{width: '80%'}}>message messagemessagemessagemessage messagemessagemessagemessage</div>
+                    </div>
+                </div>
+            </div>
+        </Row>
+    </Container>
+    </div>
 </div>
 );
 };
