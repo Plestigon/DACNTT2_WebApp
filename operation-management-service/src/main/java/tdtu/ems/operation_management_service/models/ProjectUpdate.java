@@ -8,7 +8,6 @@ public class ProjectUpdate {
     private int writerId;
     private String comment;
     private Date createTime;
-    private List<Integer> checkedIds;
 
     public ProjectUpdate() {}
 
@@ -50,11 +49,4 @@ public class ProjectUpdate {
         this.createTime = createTime;
     }
 
-    public List<Integer> getCheckedIds() {
-        return checkedIds;
-    }
-
-    public void setCheckedIds(List<Integer> checkedIds) {
-        this.checkedIds = checkedIds;
-    }
 }

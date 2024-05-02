@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tdtu.ems.employee_service.models.ProjectUpdateEmployeeDataResult;
 import tdtu.ems.employee_service.services.EmployeeService;
 import tdtu.ems.employee_service.services.IEmployeeService;
 import tdtu.ems.employee_service.models.Employee;
@@ -66,6 +67,16 @@ public class EmployeeController {
             return result;
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("/employees/project-update-data")
+    public ResponseEntity<ProjectUpdateEmployeeDataResult> getProjectUpdateEmployeeData(@RequestParam int writerId, @RequestParam List<Integer> checkedIds) {
+        try {
+            ProjectUpdateEmployeeDataResult res = _employeeService.getProjectUpdateEmployeeData(writerId, checkedIds);
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

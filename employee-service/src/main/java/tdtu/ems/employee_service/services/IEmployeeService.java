@@ -1,6 +1,7 @@
 package tdtu.ems.employee_service.services;
 
 import tdtu.ems.employee_service.models.Employee;
+import tdtu.ems.employee_service.models.ProjectUpdateEmployeeDataResult;
 
 import java.util.List;
 
@@ -11,7 +12,5 @@ public interface IEmployeeService {
     Employee getEmployeeById(int id);
     List<Employee> getEmployeesByIds(List<Integer> employeeIds);
     Employee getEmployeeByEmail(String email);
-//    Department getDepartmentById(int id);
-//    String addEmployeeToDepartment(int employeeId, int departmentId);
-//    String removeEmployeeFromDepartment(int employeeId, int departmentId);
+    ProjectUpdateEmployeeDataResult getProjectUpdateEmployeeData(int writerId, List<Integer> checkIds);
 }

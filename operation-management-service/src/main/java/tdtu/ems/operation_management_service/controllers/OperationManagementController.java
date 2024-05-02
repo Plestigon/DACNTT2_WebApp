@@ -7,6 +7,7 @@ import tdtu.ems.core_service.models.BaseResponse;
 import tdtu.ems.operation_management_service.models.Project;
 import tdtu.ems.operation_management_service.models.ProjectResult;
 import tdtu.ems.operation_management_service.models.ProjectUpdate;
+import tdtu.ems.operation_management_service.models.ProjectUpdateResult;
 import tdtu.ems.operation_management_service.services.ProjectService;
 
 import java.util.List;
@@ -89,9 +90,9 @@ public class OperationManagementController {
         }
     }
 
-    @GetMapping("/operations/projects/updates")
-    public ResponseEntity<List<ProjectUpdate>> getProjectUpdates(@RequestParam int projectId) {
-        List<ProjectUpdate> response = null;
+    @GetMapping("/operations/project/updates/{projectId}")
+    public ResponseEntity<List<ProjectUpdateResult>> getProjectUpdates(@PathVariable int projectId) {
+        List<ProjectUpdateResult> response = null;
         try {
             response = _projectService.getProjectUpdates(projectId);
             return new ResponseEntity<>(response, HttpStatus.OK);
@@ -100,7 +101,7 @@ public class OperationManagementController {
         }
     }
 
-    @PostMapping("/operations/projects/updates")
+    @PostMapping("/operations/project/updates")
     public ResponseEntity<String> addProjectUpdate(@RequestBody ProjectUpdate projectUpdate, @RequestParam int projectId) {
         String response = null;
         try {

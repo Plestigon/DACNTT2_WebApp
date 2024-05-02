@@ -12,6 +12,7 @@ import tdtu.ems.main.models.*;
 import tdtu.ems.main.models.operations.ProjectCreateDto;
 import tdtu.ems.main.models.operations.ProjectEditDto;
 import tdtu.ems.main.models.operations.ProjectResult;
+import tdtu.ems.main.models.operations.ProjectUpdateResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -145,6 +146,23 @@ public class OperationManagementController {
         }
         catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/project/updates/{projectId}")
+    @ResponseBody
+    public ResponseEntity<List<ProjectUpdateResult>> getProjectUpdates(@PathVariable int projectId) {
+        try {
+            List<ProjectUpdateResult> res = _webClient.build().get()
+                    .uri("http://operation-management-service/api/operations/project/updates/" + projectId)
+                    .retrieve()
+                    .bodyToFlux(ProjectUpdateResult.class)
+                    .collectList()
+                    .block();
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

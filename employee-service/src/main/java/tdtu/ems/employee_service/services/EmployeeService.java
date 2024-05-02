@@ -3,9 +3,10 @@ package tdtu.ems.employee_service.services;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import tdtu.ems.core_service.utils.Logger;
+import tdtu.ems.employee_service.models.ProjectUpdateEmployeeDataResult;
 import tdtu.ems.employee_service.repositories.EmployeeRepository;
 import tdtu.ems.employee_service.models.Employee;
 
@@ -17,12 +18,12 @@ import java.util.Objects;
 public class EmployeeService implements IEmployeeService {
     private final EmployeeRepository _employeeRepository;
     private final Firestore _db;
-    private final Logger _logger;
+    private final Logger<EmployeeService> _logger;
 
     public EmployeeService(EmployeeRepository employeeRepository) {
         _employeeRepository = employeeRepository;
         _db = FirestoreClient.getFirestore();
-        _logger = LoggerFactory.getLogger(EmployeeService.class);
+        _logger = new Logger<>(EmployeeService.class);
     }
 
     @Override
@@ -40,7 +41,7 @@ public class EmployeeService implements IEmployeeService {
             employee.setId((int) id);
             ApiFuture<WriteResult> result = employeesDb.document(String.valueOf(id)).set(employee);
             ApiFuture<WriteResult> resultUpdId = idTracerDoc.update("id", id);
-            _logger.info("addEmployee update idTracer: " + resultUpdId.get().getUpdateTime());
+            _logger.Info("addEmployee", "update idTracer: " + resultUpdId.get().getUpdateTime());
             //Add employee to department's employee list
             //_logger.info("addEmployeeToDepartment: " + addEmployeeToDepartment((int) id, employee.getDepartmentId()));
             return getEmployeeById((int) id);
@@ -55,7 +56,7 @@ public class EmployeeService implements IEmployeeService {
             Employee employee = getEmployeeById(id);
             if (employee == null) {
                 String msg = "Employee not found";
-                _logger.error("removeEmployee: " + msg);
+                _logger.Error("removeEmployee: ", msg);
                 return msg;
             }
             ApiFuture<WriteResult> result = _db.collection("employees").document(String.valueOf(id)).delete();
@@ -74,7 +75,7 @@ public class EmployeeService implements IEmployeeService {
             return _employeeRepository.getEmployees();
         }
         catch (Exception e) {
-            _logger.error(e.toString());
+            _logger.Error("getEmployees", e.toString());
             return null;
         }
     }
@@ -128,6 +129,11 @@ public class EmployeeService implements IEmployeeService {
         catch (Exception e) {
             return null;
         }
+    }
+
+    @Override
+    public ProjectUpdateEmployeeDataResult getProjectUpdateEmployeeData(int writerId, List<Integer> checkIds) {
+        return _employeeRepository.getProjectUpdateEmployeeData(writerId, checkIds);
     }
 
 //    public List<Employee> getEmployeesByDepartment(String shortName) throws ExecutionException, InterruptedException {

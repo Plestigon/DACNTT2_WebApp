@@ -6,7 +6,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Select from 'react-select';
-import { handleDate } from "../../utils/DateHelper";
+import { handleDate, dateFormat } from "../../utils/DateHelper";
 import "react-datepicker/dist/react-datepicker.css";
 import { Button } from "react-bootstrap";
   
@@ -22,6 +22,7 @@ const ProjectInfo = () => {
         statusName: '',
         description: ''
     });
+    const [prjUpdates, setPrjUpdates] = useState([]);
     const [inputDisabled, setInputDisabled] = useState(true);
 
     const loadProjectData = useCallback(() => {
@@ -56,6 +57,19 @@ const ProjectInfo = () => {
         })
         .catch (e => {
             console.log("ERROR_loadProjectData_statuses: " + e);
+        })
+
+        //Get project updates
+        fetch("http://localhost:8080/operations/project/updates/" + params.id,{
+            method:"GET"
+        })
+        .then(result=>result.json())
+        .then((result)=>{
+            console.log(result);
+            setPrjUpdates(result);
+        })
+        .catch (e => {
+            console.log("ERROR_loadProjectData_updates: " + e);
         })
     }, [params])
 
@@ -171,32 +185,22 @@ const ProjectInfo = () => {
         <Row>
             Updates
         </Row>
-        <Row>
-            <div class="row my-1">
-                <div class="card w-50" style={{minWidth: '500px'}}>
-                    <div class="row">
-                        <div class="col-8">minh @27-06-2024 20:00</div>
-                        <div class="col-4 text-end"><i class="bi bi-eye"></i><i class="bi bi-check"></i>3</div>
-                    </div>
-                    <hr/>
-                    <div class="row">
-                        <div style={{width: '80%'}}>message messagemessagemessagemessage messagemessagemessagemessage</div>
-                    </div>
-                </div>
-            </div>
-            <div class="row my-1">
-                <div class="card w-50" style={{minWidth: '500px'}}>
-                    <div class="row">
-                        <div class="col-8">minh @27-06-2024 20:00</div>
-                        <div class="col-4 text-end"><i class="bi bi-eye"></i><i class="bi bi-check"></i>3</div>
-                    </div>
-                    <hr/>
-                    <div class="row">
-                        <div style={{width: '80%'}}>message messagemessagemessagemessage messagemessagemessagemessage</div>
+        {prjUpdates.map(p => 
+            <Row>
+                <div class="row my-1">
+                    <div class="card w-50" style={{minWidth: '500px'}}>
+                        <div class="row">
+                            <div class="col-6">{p.writerName}</div>
+                            <div class="col-6 text-end">@{dateFormat(p.createTime)}</div>
+                        </div>
+                        <hr/>
+                        <div class="row">
+                            <div style={{width: '80%'}}>{p.comment}</div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </Row>
+            </Row>
+        )}
     </Container>
     </div>
 </div>

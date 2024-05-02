@@ -10,6 +10,7 @@ import tdtu.ems.core_service.utils.Logger;
 import tdtu.ems.operation_management_service.models.Project;
 import tdtu.ems.operation_management_service.models.ProjectResult;
 import tdtu.ems.operation_management_service.models.ProjectUpdate;
+import tdtu.ems.operation_management_service.models.ProjectUpdateResult;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -167,16 +168,23 @@ public class ProjectRepository implements IProjectRepository {
     }
 
     @Override
-    public List<ProjectUpdate> getProjectUpdates(int projectId) {
+    public List<ProjectUpdateResult> getProjectUpdates(int projectId) {
+        CollectionReference employeesDb = _db.collection("employees");
         try {
             List<Integer> projectUpdateIds = getProjectById(projectId).getProjectUpdateIds();
-            List<ProjectUpdate> projectUpdates = new ArrayList<>();
+            List<ProjectUpdateResult> res = new ArrayList<>();
             for (int i : projectUpdateIds) {
-                projectUpdates.add(getProjectUpdateById(i));
+                ProjectUpdate pu = getProjectUpdateById(i);
+                String writerName = "<SYSTEM>";
+                if (pu.getWriterId() > 0) {
+                    writerName = employeesDb.document(String.valueOf(pu.getWriterId())).get().get().getString("name");
+                }
+                res.add(new ProjectUpdateResult(pu, writerName));
             }
-            return projectUpdates;
+            return res;
         }
         catch (Exception e) {
+            _logger.Error("getProjectUpdates", e.getMessage());
             return null;
         }
     }
