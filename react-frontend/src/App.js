@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Routes, Route, Navigate, } from "react-router-dom";
 import Home from './components/Home';
 import Operations from './components/operations/Operations';
-import ProjectInfo from './components/operations/ProjectsInfo';
+import ProjectInfo from './components/operations/ProjectInfo';
 
 function App() {
   return (

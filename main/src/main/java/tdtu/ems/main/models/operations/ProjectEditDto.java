@@ -1,19 +1,16 @@
-package tdtu.ems.main.models;
+package tdtu.ems.main.models.operations;
 
 import java.util.Date;
-import java.util.List;
 
-public class ProjectCreateDto {
+public class ProjectEditDto {
+    private int id;
     private String name;
-    private int ownerId;
-    private List<Integer> memberIds;
     private Date dueDate;
     private String description;
 
-    public ProjectCreateDto(String name, int ownerId, List<Integer> memberIds, Date dueDate, String description) {
+    public ProjectEditDto(int id, String name, Date dueDate, String description) {
+        this.id = id;
         this.name = name;
-        this.ownerId = ownerId;
-        this.memberIds = memberIds;
         this.dueDate = dueDate;
         this.description = description;
     }
@@ -24,22 +21,6 @@ public class ProjectCreateDto {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(int ownerId) {
-        this.ownerId = ownerId;
-    }
-
-    public List<Integer> getMemberIds() {
-        return memberIds;
-    }
-
-    public void setMemberIds(List<Integer> memberIds) {
-        this.memberIds = memberIds;
     }
 
     public Date getDueDate() {
@@ -56,5 +37,13 @@ public class ProjectCreateDto {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

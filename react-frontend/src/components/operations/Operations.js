@@ -3,7 +3,8 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import NavigationBar from '../NavigationBar';
 import { useEffect, useState } from 'react';
 import NewProjectModal from "./NewProjectModal";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { dateFormat } from "../../utils/DateHelper";
  
 function Operations() {
     const[projects,setProjects] = useState([]);
@@ -50,7 +51,9 @@ function Operations() {
     }
 
     function projectDetails(id) {
-        navigate('/operations/project/' + id);
+        // navigate('/operations/project/' + id);
+        var win = window.open('/operations/project/' + id, '_blank');
+        win.focus();
     }
 
     return (
@@ -86,10 +89,15 @@ function Operations() {
                 </tr> */}
                 {projects.map(p=>(
                     <tr key={p.id} onClick={() => projectDetails(p.id)}>
-                        <td>{p.name}</td>
+                        <td>
+                            {/* <Link to={'/operations/project/' + p.id} className="text-decoration-none" 
+                        style={{display: 'inline-block', height: '100%', width: '100%'}}> */}
+                            {p.name}
+                            {/* </Link> */}
+                            </td>
                         <td>{p.ownerName}</td>
-                        <td>{p.status}</td>
-                        <td>{p.dueDate}</td>
+                        <td>{p.statusName}</td>
+                        <td>{dateFormat(p.dueDate)}</td>
                         <td>{p.description}</td>
                         <td><button type="button" class="btn btn-primary bi bi-trash delete-prj-btn"
                             onClick={() => deleteProject(p.id)}></button></td>

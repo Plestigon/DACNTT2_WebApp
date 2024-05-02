@@ -12,7 +12,7 @@ function NewProjectModal(props) {
         owner: 0,
         ownerName: '',
         dueDate: getDefaultDueDate(),
-        desc: ''
+        description: ''
     });
     const [options, setOptions] = useState([]);
 
@@ -63,9 +63,9 @@ function NewProjectModal(props) {
                 'ownerId': inputs.owner,
                 'memberIds': [],
                 'dueDate': inputs.dueDate,
-                'description': inputs.desc
+                'description': inputs.description
             }),
-            headers: { "Content-type": "application/json; charset=UTF-8" },
+            headers: { "Content-type": "application/json; charset=UTF-8" }
         })
         .then((result)=>{
             if (result.ok) {
@@ -109,7 +109,7 @@ function NewProjectModal(props) {
                 <div class="row my-2">
                     <div class="col-12">
                         <label htmlFor="newPrjDescription">Project description</label>
-                        <textarea type="text" class="form-control" rows='3' id="newPrjDescription" name="desc" value={inputs.desc} onChange={handleInputChange}
+                        <textarea type="text" class="form-control" rows='3' id="newPrjDescription" name="desc" value={inputs.description} onChange={handleInputChange}
                         placeholder="New project's description" required/>
                     </div>
                 </div>

@@ -2,6 +2,7 @@ package tdtu.ems.operation_management_service.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import tdtu.ems.core_service.models.BaseResponse;
 import tdtu.ems.core_service.utils.Logger;
 import tdtu.ems.operation_management_service.models.Project;
 import tdtu.ems.operation_management_service.models.ProjectResult;
@@ -48,7 +49,7 @@ public class ProjectService implements IProjectService {
     }
 
     @Override
-    public String editProject(Project project) {
+    public BaseResponse editProject(Project project) {
         return _projectRepository.editProject(project);
     }
 

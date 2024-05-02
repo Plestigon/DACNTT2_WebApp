@@ -3,6 +3,7 @@ package tdtu.ems.operation_management_service.controllers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tdtu.ems.core_service.models.BaseResponse;
 import tdtu.ems.operation_management_service.models.Project;
 import tdtu.ems.operation_management_service.models.ProjectResult;
 import tdtu.ems.operation_management_service.models.ProjectUpdate;
@@ -66,14 +67,14 @@ public class OperationManagementController {
         }
     }
 
-    @PutMapping("/operations/projects")
-    public ResponseEntity<String> editProject(@RequestBody Project project) {
-        String response = null;
+    @PostMapping("/operations/project/edit")
+    public BaseResponse editProject(@RequestBody Project project) {
+        BaseResponse response = null;
         try {
             response = _projectService.editProject(project);
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            return response;
         } catch (Exception e) {
-            return new ResponseEntity<>(e.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new BaseResponse(null, 500, e.getMessage());
         }
     }
 

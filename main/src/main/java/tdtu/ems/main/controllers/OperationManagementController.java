@@ -6,14 +6,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
+import tdtu.ems.core_service.models.BaseResponse;
 import tdtu.ems.core_service.models.Enums;
-import tdtu.ems.main.models.EmployeeDto;
-import tdtu.ems.main.models.ProjectCreateDto;
-import tdtu.ems.main.models.ProjectResult;
-import tdtu.ems.main.models.SelectOptionsResult;
+import tdtu.ems.main.models.*;
+import tdtu.ems.main.models.operations.ProjectCreateDto;
+import tdtu.ems.main.models.operations.ProjectEditDto;
+import tdtu.ems.main.models.operations.ProjectResult;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -86,6 +86,23 @@ public class OperationManagementController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>("OK", HttpStatus.OK);
+    }
+
+    @PostMapping("/project/edit")
+    @ResponseBody
+    public ResponseEntity<BaseResponse> editProject(@RequestBody ProjectEditDto project) {
+        BaseResponse res = null;
+        try {
+            res = _webClient.build().post()
+                    .uri("http://operation-management-service/api/operations/project/edit")
+                    .bodyValue(project)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/project", method = RequestMethod.DELETE)

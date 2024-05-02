@@ -3,7 +3,9 @@ package tdtu.ems.operation_management_service.repositories;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
+import jakarta.ws.rs.NotFoundException;
 import org.springframework.stereotype.Repository;
+import tdtu.ems.core_service.models.BaseResponse;
 import tdtu.ems.core_service.utils.Logger;
 import tdtu.ems.operation_management_service.models.Project;
 import tdtu.ems.operation_management_service.models.ProjectResult;
@@ -132,14 +134,22 @@ public class ProjectRepository implements IProjectRepository {
     }
 
     @Override
-    public String editProject(Project project) {
+    public BaseResponse editProject(Project entry) {
         try {
             CollectionReference projectsDb = _db.collection("projects");
-            ApiFuture<WriteResult> result = projectsDb.document(String.valueOf(project.getId())).set(project);
-            return result.get().getUpdateTime().toString();
+            Project existing = projectsDb.document(String.valueOf(entry.getId())).get().get().toObject(Project.class);
+            if (existing != null) {
+                existing.setName(entry.getName());
+                existing.setDueDate(entry.getDueDate());
+                existing.setDescription(entry.getDescription());
+                ApiFuture<WriteResult> result = projectsDb.document(String.valueOf(entry.getId())).set(existing);
+                return new BaseResponse(null, 200, result.get().getUpdateTime().toString());
+            }
+            return new BaseResponse(null, 404, "Project not found");
         }
         catch (Exception e) {
-            return null;
+            _logger.Error("editProject", e.getMessage());
+            return new BaseResponse(null, 500, e.getMessage());
         }
     }
 

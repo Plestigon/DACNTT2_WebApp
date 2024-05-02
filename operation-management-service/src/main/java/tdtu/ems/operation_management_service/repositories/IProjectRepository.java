@@ -1,5 +1,6 @@
 package tdtu.ems.operation_management_service.repositories;
 
+import tdtu.ems.core_service.models.BaseResponse;
 import tdtu.ems.operation_management_service.models.Project;
 import tdtu.ems.operation_management_service.models.ProjectResult;
 import tdtu.ems.operation_management_service.models.ProjectUpdate;
@@ -13,7 +14,7 @@ public interface IProjectRepository {
     ProjectResult getProjectResultById(int id);
     String addProject(Project project);
     String removeProject(int id);
-    String editProject(Project project);
+    BaseResponse editProject(Project project);
     String updateProjectStatus(int id, int status);
     List<ProjectUpdate> getProjectUpdates(int projectId);
     ProjectUpdate getProjectUpdateById(int id);

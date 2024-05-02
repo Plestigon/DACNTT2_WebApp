@@ -1,4 +1,4 @@
-package tdtu.ems.main.models;
+package tdtu.ems.main.models.operations;
 
 import java.util.Date;
 import java.util.List;

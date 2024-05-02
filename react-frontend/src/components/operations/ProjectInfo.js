@@ -20,8 +20,9 @@ const ProjectInfo = () => {
         dueDate: '',
         status: -1,
         statusName: '',
-        desc: ''
+        description: ''
     });
+    const [inputDisabled, setInputDisabled] = useState(true);
 
     const loadProjectData = useCallback(() => {
         fetch("http://localhost:8080/operations/project?id=" + params.id,{
@@ -29,7 +30,7 @@ const ProjectInfo = () => {
         })
         .then(result=>result.json())
         .then((result)=>{
-            console.log(result);
+            // console.log(result);
             var formattedDate = handleDate(result.dueDate);
             setInputs({
                 name: result.name,
@@ -38,7 +39,7 @@ const ProjectInfo = () => {
                 dueDate: formattedDate,
                 status: result.status,
                 statusName: result.statusName,
-                desc: result.description
+                description: result.description
             })
         })
         .catch (e => {
@@ -67,24 +68,58 @@ const ProjectInfo = () => {
             const name = e.target.name;
             const value = e.target.value;
             setInputs(prevState => ({...prevState, [name]: value}));
+            console.log(inputs);
         }
         else {
             setInputs(prevState => ({...prevState, 'status': e.value, 'statusName': e.label}));
-            updateStatus(e.value);
+            handleUpdateStatus(e.value);
         }
     }
 
-    function updateStatus(status) {
+    function handleUpdateStatus(status) {
         fetch("http://localhost:8080/operations/project/" + params.id + "/update?status=" + status,{
             method:"POST"
         })
         .then((result)=>{
             if (result.ok) {
                 alert("Project status updated successfully!");
+                window.location.reload();
             }
         })
         .catch (e => {
             console.log("ERROR_updateStatus: " + e);
+        })
+    }
+
+    function handleEditClick() {
+        setInputDisabled(false);
+    }
+
+    function handleCancelEditClick() {
+        window.location.reload(); 
+    }
+
+    function handleEditSubmit() {
+        console.log(inputs);
+        fetch("http://localhost:8080/operations/project/edit",{
+            method:"POST",
+            body: JSON.stringify({
+                'id': params.id,
+                'name': inputs.name,
+                'dueDate': inputs.dueDate,
+                'description': inputs.description
+            }),
+            headers: { "Content-type": "application/json; charset=UTF-8" }
+        })
+        .then((result)=>{
+            console.log(result);
+            if (result.ok) {
+                alert("Project updated successfully!");
+                window.location.reload();
+            }
+        })
+        .catch (e => {
+            console.log("ERROR_handleEditSubmit: " + e);
         })
     }
 
@@ -93,12 +128,12 @@ const ProjectInfo = () => {
 <NavigationBar/>
     <div class="mt-5">
         <div class="row d-flex justify-content-end pe-5">
-            <Button className="" style={{width: '50px', height: '50px'}}><i class="bi bi-pencil-square"></i></Button>
+            <Button onClick={handleEditClick} className="" style={{width: '50px', height: '50px'}}><i class="bi bi-pencil-square"></i></Button>
         </div>
         <Container>
         <Row>
         <label>
-            Project Name: <input name="ProjName" class="form-control" defaultValue="Project Name" disabled />
+            Project Name: <input name="name" class="form-control" value={inputs.name} onChange={handleInputChange} disabled={inputDisabled} />
         </label>
         </Row>
         <br></br>
@@ -106,7 +141,7 @@ const ProjectInfo = () => {
             <Row>
                 <Col>
                     <label>
-                    Owner:<input name="Owner" class="form-control" defaultValue="Project Owner" disabled></input>
+                    Owner:<input name="owner" class="form-control" value={inputs.ownerName} disabled/>
                     </label>
                 </Col>
                 <Col>
@@ -115,16 +150,20 @@ const ProjectInfo = () => {
                 <Col>
                 Due Date:
                 <input type="datetime-local" class="form-control" name="dueDate" value={inputs.dueDate} 
-                onChange={(e) => handleInputChange(e)} disabled/>
+                onChange={(e) => handleInputChange(e)}  disabled={inputDisabled}/>
                 </Col>
             </Row>
             <div class="my-4 mx-1">
             <Row>
                 Description:
-                <textarea class="form-control" name="descriptions" rows={4} cols={40} value={inputs.desc} disabled />
+                <textarea class="form-control" name="description" rows={4} cols={40} value={inputs.description} onChange={handleInputChange} disabled={inputDisabled} />
             </Row>
             </div>
         </Container>
+        <div class="row d-flex justify-content-end pe-5">
+            <Button onClick={handleEditSubmit} className="btn-warning me-3" style={{width: '150px', height: '50px', display: inputDisabled ? "none" : "block"}} >Submit</Button>
+            <Button onClick={handleCancelEditClick} className="btn-secondary" style={{width: '150px', height: '50px', display: inputDisabled ? "none" : "block"}} >Cancel Editing</Button>
+        </div>
     </div>
 </div>
 );
