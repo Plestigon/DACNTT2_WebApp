@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/operations")
+@RequestMapping("/")
 public class OperationManagementController {
     private final String OPERATIONS_PAGE_TITLE = "Operations Management";
     private final String PROJECT_PAGE_TITLE = "Project";
@@ -29,13 +29,13 @@ public class OperationManagementController {
         _webClient = webClient;
     }
 
-    @GetMapping("/index")
+    @GetMapping("operations/index")
     public String index(Model model) {
         model.addAttribute("title", OPERATIONS_PAGE_TITLE);
         return "Operations/Operations";
     }
 
-    @GetMapping("/project")
+    @GetMapping("operations/project")
     @ResponseBody
     public ProjectResult getProject(@RequestParam int id) {
         ProjectResult res = null;
@@ -47,7 +47,7 @@ public class OperationManagementController {
         return res;
     }
 
-    @RequestMapping(value = "/projects", method = RequestMethod.GET)
+    @RequestMapping(value = "operations/projects", method = RequestMethod.GET)
     @ResponseBody
     public List<ProjectResult> getProjects() {
         List<ProjectResult> res = null;
@@ -60,7 +60,7 @@ public class OperationManagementController {
         return res;
     }
 
-    @GetMapping("/employees")
+    @GetMapping("operations/employees")
     @ResponseBody
     public List<EmployeeDto> getEmployees(@RequestParam(required = false) List<Integer> ids) {
         List<EmployeeDto> res = null;
@@ -77,7 +77,24 @@ public class OperationManagementController {
         return res;
     }
 
-    @RequestMapping(value = "/project", method = RequestMethod.POST)
+    @GetMapping("operations/employees/to-add")
+    @ResponseBody
+    public List<EmployeeDto> getEmployeesToAdd(@RequestParam List<Integer> ids) {
+        List<EmployeeDto> res = null;
+        String query = "";
+        if (ids != null && !ids.isEmpty()) {
+            query = "?ids=" + ids.stream().map(String::valueOf).collect(Collectors.joining(","));
+        }
+        res = _webClient.build().get()
+                .uri("http://employee-service/api/employees/except" + query)
+                .retrieve()
+                .bodyToFlux(EmployeeDto.class)
+                .collectList()
+                .block();
+        return res;
+    }
+
+    @RequestMapping(value = "operations/project", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> createProject(@RequestBody ProjectCreateDto project) {
         String res = null;
@@ -94,7 +111,7 @@ public class OperationManagementController {
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 
-    @PostMapping("/project/edit")
+    @PostMapping("operations/project/edit")
     @ResponseBody
     public ResponseEntity<BaseResponse> editProject(@RequestBody ProjectEditDto project) {
         try {
@@ -110,7 +127,7 @@ public class OperationManagementController {
         }
     }
 
-    @RequestMapping(value = "/project", method = RequestMethod.DELETE)
+    @RequestMapping(value = "operations/project", method = RequestMethod.DELETE)
     @ResponseBody
     public ResponseEntity<String> deleteProject(@RequestParam("id") String id) {
         String res = null;
@@ -126,7 +143,7 @@ public class OperationManagementController {
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 
-    @GetMapping("/project/statuses")
+    @GetMapping("operations/project/statuses")
     @ResponseBody
     public ResponseEntity<List<SelectOptionsResult>> getProjectStatuses() {
         var statuses = Enums.ProjectStatus.values();
@@ -137,7 +154,7 @@ public class OperationManagementController {
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
-    @PostMapping("/project/{id}/update")
+    @PostMapping("operations/project/{id}/update")
     @ResponseBody
     public ResponseEntity<BaseResponse> updateProjectStatus(@PathVariable int id, @RequestParam int status) {
         try {
@@ -153,7 +170,7 @@ public class OperationManagementController {
         }
     }
 
-    @GetMapping("/project/updates/{projectId}")
+    @GetMapping("operations/project/updates/{projectId}")
     @ResponseBody
     public ResponseEntity<List<ProjectUpdateResult>> getProjectUpdates(@PathVariable int projectId) {
         try {
@@ -167,6 +184,38 @@ public class OperationManagementController {
         }
         catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("operations/project/{projectId}/member")
+    @ResponseBody
+    public ResponseEntity<BaseResponse> addMember(@PathVariable int projectId, @RequestParam int memberId) {
+        try {
+            BaseResponse res = _webClient.build().post()
+                    .uri("http://operation-management-service/api/operations/project/" + projectId + "/member?memberId=" + memberId)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("operations/project/{projectId}/member")
+    @ResponseBody
+    public ResponseEntity<BaseResponse> removeMember(@PathVariable int projectId, @RequestParam int memberId) {
+        try {
+            BaseResponse res = _webClient.build().delete()
+                    .uri("http://operation-management-service/api/operations/project/" + projectId + "/member?memberId=" + memberId)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

@@ -9,6 +9,7 @@ import Select from 'react-select';
 import { handleDate, dateFormat } from "../../utils/DateHelper";
 import "react-datepicker/dist/react-datepicker.css";
 import { Button } from "react-bootstrap";
+import AddMemberModal from "./AddMemberModal";
   
 const ProjectInfo = () => {
     const params = useParams();
@@ -26,82 +27,86 @@ const ProjectInfo = () => {
     const [prjUpdates, setPrjUpdates] = useState([]);
     const [members, setMembers] = useState([]);
     const [inputDisabled, setInputDisabled] = useState(true);
+    const [addMemberModalShow, setAddMemberModalShow] = useState(false);
 
-    useEffect(() => {
-        function loadProjectData() {
-            fetch("http://localhost:8080/operations/project?id=" + params.id,{
-                method:"GET"
+    const loadProjectData = useCallback(() => {
+        fetch("http://localhost:8080/operations/project?id=" + params.id,{
+            method:"GET"
+        })
+        .then(result=>result.json())
+        .then((result)=>{
+            // console.log(result);
+            var formattedDate = handleDate(result.dueDate);
+            setData({
+                name: result.name,
+                owner: result.ownerId,
+                ownerName: result.ownerName,
+                dueDate: formattedDate,
+                status: result.status,
+                statusName: result.statusName,
+                description: result.description,
+                memberIds: result.memberIds
             })
-            .then(result=>result.json())
-            .then((result)=>{
-                // console.log(result);
-                var formattedDate = handleDate(result.dueDate);
-                setData({
-                    name: result.name,
-                    owner: result.ownerId,
-                    ownerName: result.ownerName,
-                    dueDate: formattedDate,
-                    status: result.status,
-                    statusName: result.statusName,
-                    description: result.description,
-                    memberIds: result.memberIds
-                })
-            })
-            .catch (e => {
-                console.log("ERROR_loadProjectData: " + e);
-            })
+        })
+        .catch (e => {
+            console.log("ERROR_loadProjectData: " + e);
+        })
 
-            // Get status options
-            fetch("http://localhost:8080/operations/project/statuses",{
-                method:"GET"
-            })
-            .then(result=>result.json())
-            .then((result)=>{
-                setOptions(result);
-            })
-            .catch (e => {
-                console.log("ERROR_loadProjectData_statuses: " + e);
-            })
+        // Get status options
+        fetch("http://localhost:8080/operations/project/statuses",{
+            method:"GET"
+        })
+        .then(result=>result.json())
+        .then((result)=>{
+            setOptions(result);
+        })
+        .catch (e => {
+            console.log("ERROR_loadProjectData_statuses: " + e);
+        })
 
-            //Get project updates
-            fetch("http://localhost:8080/operations/project/updates/" + params.id,{
-                method:"GET"
-            })
-            .then(result=>result.json())
-            .then((result)=>{
-                // console.log(result);
-                setPrjUpdates(result);
-            })
-            .catch (e => {
-                console.log("ERROR_loadProjectData_updates: " + e);
-            })
-        }
-        loadProjectData();
+        //Get project updates
+        fetch("http://localhost:8080/operations/project/updates/" + params.id,{
+            method:"GET"
+        })
+        .then(result=>result.json())
+        .then((result)=>{
+            // console.log(result);
+            setPrjUpdates(result);
+        })
+        .catch (e => {
+            console.log("ERROR_loadProjectData_updates: " + e);
+        })
     }, [params])
-    
+
     useEffect(() => {
-        function loadMembers() {
-            //Get member list
+        loadProjectData();
+    }, [params, loadProjectData])
+    
+    const loadMembers = useCallback(() => {
+        //Get member list
+        console.log("load members");
+        if (data.memberIds.length > 0) {
+            var query = "";
             if (data.memberIds.length > 0) {
-                var query = "";
-                if (data.memberIds.length > 0) {
-                    query = "?ids=" + data.memberIds.join(",");
-                }
-                fetch("http://localhost:8080/operations/employees" + query,{
-                    method:"GET"
-                })
-                .then(result=>result.json())
-                .then((result)=>{
-                    console.log(result);
-                    setMembers(result);
-                })
-                .catch (e => {
-                    console.log("ERROR_loadMembers: " + e);
-                })
+                query = "?ids=" + data.memberIds.join(",");
             }
+            fetch("http://localhost:8080/operations/employees" + query,{
+                method:"GET"
+            })
+            .then(result=>result.json())
+            .then((result)=>{
+                // console.log(result);
+                setMembers(result);
+            })
+            .catch (e => {
+                console.log("ERROR_loadMembers: " + e);
+            })
         }
+    }, [data.memberIds]);
+
+    useEffect(() => {
         loadMembers();
-    }, [data.memberIds])
+    }, [data.memberIds, loadMembers])
 
     function handleInputChange(e) {
         if (e.target) {
@@ -165,6 +170,33 @@ const ProjectInfo = () => {
         .catch (e => {
             console.log("ERROR_handleEditSubmit: " + e);
         })
+    }
+
+    function handleAddMemberClick() {
+        setAddMemberModalShow(true);
+    }
+
+    function handleRemoveMember(memberId) {
+        console.log("remove " + memberId + " from " + params.id);
+        fetch("http://localhost:8080/operations/project/" + params.id + "/member?memberId=" + memberId,{
+            method:"DELETE"
+        })
+        .then(result=>result.json())
+        .then((result)=>{
+            console.log(result);
+            if (result.statusCode === 200) {
+                alert("Member removed successfully!");
+                reloadMembers();
+            }
+        })
+        .catch (e => {
+            console.log("handleRemoveMember: " + e);
+        })
+    }
+
+    function reloadMembers() {
+        loadMembers();
+        window.location.reload();
     }
 
     return (
@@ -237,7 +269,12 @@ const ProjectInfo = () => {
             )}
             </div>
         <div class="col-6 px-5">
-            <p class="h5"><i class="bi bi-person"></i> Members</p>
+            <div class="h5">
+                <i class="bi bi-person"></i> Members
+                <Button className="btn-primary ms-3" onClick={handleAddMemberClick}><i class="bi bi-person-plus"></i></Button>
+                <AddMemberModal show={addMemberModalShow} onHide={() => setAddMemberModalShow(false)}
+                projectid={params.id} members={members} reloadmembers={reloadMembers} close={() => setAddMemberModalShow(false)}/>
+            </div>
             <hr/>
             {members.map(m => 
                 <div class="row my-1" key={m.id}>
@@ -247,7 +284,7 @@ const ProjectInfo = () => {
                                 {m.name} ({m.email})
                             </div>
                             <div class="ms-auto">
-                                <Button className="btn btn-danger"><i class="bi bi-trash"></i></Button>
+                                <Button className="btn btn-danger" onClick={() => handleRemoveMember(m.id, m.name)}><i class="bi bi-trash"></i></Button>
                             </div>
                         </div>
                     </div>

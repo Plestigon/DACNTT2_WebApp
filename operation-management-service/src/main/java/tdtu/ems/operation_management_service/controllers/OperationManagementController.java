@@ -109,6 +109,28 @@ public class OperationManagementController {
         }
     }
 
+    @PostMapping("operations/project/{projectId}/member")
+    public BaseResponse addMember(@PathVariable int projectId, @RequestParam int memberId) {
+        try {
+            String res = _projectService.addMemberToProject(memberId, projectId);
+            return new BaseResponse(null, 200,"OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
+
+    @DeleteMapping("operations/project/{projectId}/member")
+    public BaseResponse removeMember(@PathVariable int projectId, @RequestParam int memberId) {
+        try {
+            String res = _projectService.removeMemberFromProject(memberId, projectId);
+            return new BaseResponse(null, 200,"OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
+
     @GetMapping("/test")
     public Object test() {
         Object res = null;

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 @Service
 public class EmployeeService implements IEmployeeService {
@@ -75,6 +76,18 @@ public class EmployeeService implements IEmployeeService {
         List<Employee> result = _employeeRepository.getEmployees(ids);
         result.sort(Comparator.comparing(Employee::getId));
         return result;
+    }
+
+    @Override
+    public List<Employee> getEmployeesExcept(List<Integer> ids) throws ExecutionException, InterruptedException {
+        try {
+            List<Employee> res = _employeeRepository.getEmployeesExcept(ids);
+            return res;
+        }
+        catch (Exception e) {
+            _logger.Error("getEmployeesExcept", e.getMessage());
+            throw e;
+        }
     }
 
     @Override

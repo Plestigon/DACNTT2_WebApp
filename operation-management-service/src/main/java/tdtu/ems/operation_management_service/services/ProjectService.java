@@ -138,6 +138,28 @@ public class ProjectService implements IProjectService {
     }
 
     @Override
+    public String addMemberToProject(int memberId, int projectId) throws ExecutionException, InterruptedException {
+        try {
+            return _projectRepository.addMemberToProject(memberId, projectId);
+        }
+        catch (Exception e) {
+            _logger.Error("addMemberToProject", e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    public String removeMemberFromProject(int memberId, int projectId) throws ExecutionException, InterruptedException {
+        try {
+            return _projectRepository.removeMemberFromProject(memberId, projectId);
+        }
+        catch (Exception e) {
+            _logger.Error("removeMemberFromProject", e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
     public Object test() {
         Object res = null;
         res = _webClient.build().get()

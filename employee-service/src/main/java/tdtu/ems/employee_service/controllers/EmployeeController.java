@@ -34,6 +34,18 @@ public class EmployeeController {
         }
     }
 
+    @GetMapping("/employees/except")
+    public ResponseEntity<List<Employee>> getEmployeesExcept(@RequestParam List<Integer> ids) {
+        List<Employee> employees = null;
+        try {
+            employees = _employeeService.getEmployeesExcept(ids);
+            return new ResponseEntity<>(employees, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping("/employees/{id}")
     public ResponseEntity<Employee> getEmployeeById(@PathVariable int id) {
         try {

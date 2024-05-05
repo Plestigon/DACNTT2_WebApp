@@ -22,4 +22,6 @@ public interface IProjectRepository {
     ProjectUpdate getProjectUpdateById(int id) throws ExecutionException, InterruptedException;
     int addProjectUpdate(ProjectUpdate projectUpdate, int projectId) throws ExecutionException, InterruptedException;
     String addProjectUpdateToProject(int projectUpdateId, int projectId) throws ExecutionException, InterruptedException;
+    String addMemberToProject(int memberId, int projectId) throws ExecutionException, InterruptedException;
+    String removeMemberFromProject(int memberId, int projectId) throws ExecutionException, InterruptedException;
 }

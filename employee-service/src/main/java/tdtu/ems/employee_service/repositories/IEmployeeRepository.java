@@ -8,5 +8,6 @@ import java.util.concurrent.ExecutionException;
 
 public interface IEmployeeRepository {
     List<Employee> getEmployees(List<Integer> ids);
+    List<Employee> getEmployeesExcept(List<Integer> ids) throws ExecutionException, InterruptedException;
     ProjectUpdateEmployeeDataResult getProjectUpdateEmployeeData(int writerId, List<Integer> checkIds);
 }

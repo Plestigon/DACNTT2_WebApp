@@ -184,6 +184,7 @@ public class ProjectRepository implements IProjectRepository {
         DocumentReference idTracer = _db.collection("idTracer").document("projectUpdates");
         long projectUpdateId = Objects.requireNonNull(idTracer.get().get().getLong("id")) + 1;
         projectUpdate.setId((int) projectUpdateId);
+        projectUpdate.setCreateTime(new Date());
         ApiFuture<WriteResult> result = projectUpdatesDb.document(String.valueOf(projectUpdateId)).set(projectUpdate);
 
         ApiFuture<WriteResult> updateIdResult = idTracer.update("id", projectUpdateId);
@@ -197,6 +198,34 @@ public class ProjectRepository implements IProjectRepository {
         projectUpdateIds.add(projectUpdateId);
         ApiFuture<WriteResult> result = _db.collection("projects").document(String.valueOf(projectId))
                 .update("projectUpdateIds", projectUpdateIds);
+        return result.get().getUpdateTime().toString();
+    }
+
+    @Override
+    public String addMemberToProject(int memberId, int projectId) throws ExecutionException, InterruptedException {
+        CollectionReference projectsDb = _db.collection("projects");
+        Project prj = projectsDb.document(String.valueOf(projectId)).get().get().toObject(Project.class);
+        if (prj == null) {
+            throw new NotFoundException();
+        }
+        if (!prj.getMemberIds().contains(memberId)) {
+            prj.getMemberIds().add(memberId);
+        }
+        ApiFuture<WriteResult> result = projectsDb.document(String.valueOf(projectId)).set(prj);
+        return result.get().getUpdateTime().toString();
+    }
+
+    @Override
+    public String removeMemberFromProject(int memberId, int projectId) throws ExecutionException, InterruptedException {
+        CollectionReference projectsDb = _db.collection("projects");
+        Project prj = projectsDb.document(String.valueOf(projectId)).get().get().toObject(Project.class);
+        if (prj == null) {
+            throw new NotFoundException();
+        }
+        if (prj.getMemberIds().contains(memberId)) {
+            prj.getMemberIds().remove(Integer.valueOf(memberId));
+        }
+        ApiFuture<WriteResult> result = projectsDb.document(String.valueOf(projectId)).set(prj);
         return result.get().getUpdateTime().toString();
     }
 }

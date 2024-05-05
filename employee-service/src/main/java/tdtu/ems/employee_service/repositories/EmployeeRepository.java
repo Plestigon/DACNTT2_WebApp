@@ -13,6 +13,7 @@ import tdtu.ems.employee_service.models.Employee;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 @Repository
@@ -47,6 +48,18 @@ public class EmployeeRepository implements IEmployeeRepository {
             _logger.Error("getEmployees", e.getMessage());
             return null;
         }
+    }
+
+    public List<Employee> getEmployeesExcept(List<Integer> ids) throws ExecutionException, InterruptedException {
+        CollectionReference employeesDb = _db.collection("employees");
+        List<Employee> employees = new ArrayList<>();
+        for (DocumentSnapshot data : employeesDb.get().get().getDocuments()) {
+            int id = Objects.requireNonNull(data.getLong("id")).intValue();
+            if (!ids.contains(id)) {
+                employees.add(data.toObject(Employee.class));
+            }
+        }
+        return employees;
     }
 
 //    @Override
