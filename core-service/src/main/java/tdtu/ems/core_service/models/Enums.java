@@ -25,10 +25,12 @@ public class Enums {
     }
 
     public enum ProjectStatus {
-        Not_Started,
-        In_Progress,
-        Finished,
-        Stopped,
-        Cancelled
+        NotStarted("Not Started"),
+        InProgress("In Progress"),
+        Finished("Finished"),
+        Stopped("Stopped"),
+        Cancelled("Cancelled");
+        public final String name;
+        ProjectStatus(String name) {this.name = name;}
     }
 }

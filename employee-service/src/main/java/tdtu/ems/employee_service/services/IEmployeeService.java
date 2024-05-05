@@ -8,9 +8,8 @@ import java.util.List;
 public interface IEmployeeService {
     Employee addEmployee(Employee employee);
     String removeEmployee(int id);
-    List<Employee> getEmployees();
+    List<Employee> getEmployees(List<Integer> ids);
     Employee getEmployeeById(int id);
-    List<Employee> getEmployeesByIds(List<Integer> employeeIds);
     Employee getEmployeeByEmail(String email);
     ProjectUpdateEmployeeDataResult getProjectUpdateEmployeeData(int writerId, List<Integer> checkIds);
 }

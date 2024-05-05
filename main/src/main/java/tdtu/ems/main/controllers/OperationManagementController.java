@@ -16,6 +16,7 @@ import tdtu.ems.main.models.operations.ProjectUpdateResult;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/operations")
@@ -59,12 +60,16 @@ public class OperationManagementController {
         return res;
     }
 
-    @RequestMapping(value = "/employees", method = RequestMethod.GET)
+    @GetMapping("/employees")
     @ResponseBody
-    public List<EmployeeDto> getEmployees() {
+    public List<EmployeeDto> getEmployees(@RequestParam(required = false) List<Integer> ids) {
         List<EmployeeDto> res = null;
+        String query = "";
+        if (ids != null && !ids.isEmpty()) {
+            query = "?ids=" + ids.stream().map(String::valueOf).collect(Collectors.joining(","));
+        }
         res = _webClient.build().get()
-                .uri("http://employee-service/api/employees")
+                .uri("http://employee-service/api/employees" + query)
                 .retrieve()
                 .bodyToFlux(EmployeeDto.class)
                 .collectList()
@@ -92,18 +97,17 @@ public class OperationManagementController {
     @PostMapping("/project/edit")
     @ResponseBody
     public ResponseEntity<BaseResponse> editProject(@RequestBody ProjectEditDto project) {
-        BaseResponse res = null;
         try {
-            res = _webClient.build().post()
+            BaseResponse res = _webClient.build().post()
                     .uri("http://operation-management-service/api/operations/project/edit")
                     .bodyValue(project)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();
+            return new ResponseEntity<>(res, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/project", method = RequestMethod.DELETE)
@@ -128,24 +132,24 @@ public class OperationManagementController {
         var statuses = Enums.ProjectStatus.values();
         List<SelectOptionsResult> res = new ArrayList<>();
         for(Enums.ProjectStatus status : statuses) {
-            res.add(new SelectOptionsResult(status.name().replace('_', ' '), status.ordinal()));
+            res.add(new SelectOptionsResult(status.name, status.ordinal()));
         }
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     @PostMapping("/project/{id}/update")
     @ResponseBody
-    public ResponseEntity<String> updateProjectStatus(@PathVariable int id, @RequestParam int status) {
+    public ResponseEntity<BaseResponse> updateProjectStatus(@PathVariable int id, @RequestParam int status) {
         try {
-            String res = _webClient.build().post()
+            BaseResponse res = _webClient.build().post()
                     .uri("http://operation-management-service/api/operations/project/" + id + "/update?status=" + status)
                     .retrieve()
-                    .bodyToMono(String.class)
+                    .bodyToMono(BaseResponse.class)
                     .block();
             return new ResponseEntity<>(res, HttpStatus.OK);
         }
         catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

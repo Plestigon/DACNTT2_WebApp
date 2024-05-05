@@ -4,6 +4,7 @@ import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import jakarta.ws.rs.NotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import tdtu.ems.core_service.models.BaseResponse;
 import tdtu.ems.core_service.utils.Logger;
@@ -120,121 +121,82 @@ public class ProjectRepository implements IProjectRepository {
     }
 
     @Override
-    public String removeProject(int id) {
-        try {
-            Project project = getProjectById(id);
-            if (project == null) {
-                return null;
-            }
-            ApiFuture<WriteResult> result = _db.collection("projects").document(String.valueOf(id)).delete();
-            return result.get().getUpdateTime().toString();
+    public String removeProject(int id) throws ExecutionException, InterruptedException {
+        Project project = getProjectById(id);
+        if (project == null) {
+            throw new NotFoundException();
         }
-        catch (Exception e) {
-            return null;
-        }
+        ApiFuture<WriteResult> result = _db.collection("projects").document(String.valueOf(id)).delete();
+        return result.get().getUpdateTime().toString();
     }
 
     @Override
-    public BaseResponse editProject(Project entry) {
-        try {
-            CollectionReference projectsDb = _db.collection("projects");
-            Project existing = projectsDb.document(String.valueOf(entry.getId())).get().get().toObject(Project.class);
-            if (existing != null) {
-                existing.setName(entry.getName());
-                existing.setDueDate(entry.getDueDate());
-                existing.setDescription(entry.getDescription());
-                ApiFuture<WriteResult> result = projectsDb.document(String.valueOf(entry.getId())).set(existing);
-                return new BaseResponse(null, 200, result.get().getUpdateTime().toString());
-            }
-            return new BaseResponse(null, 404, "Project not found");
+    public String editProject(Project entry) throws ExecutionException, InterruptedException {
+        CollectionReference projectsDb = _db.collection("projects");
+        Project existing = projectsDb.document(String.valueOf(entry.getId())).get().get().toObject(Project.class);
+        if (existing == null) {
+            throw new NotFoundException();
         }
-        catch (Exception e) {
-            _logger.Error("editProject", e.getMessage());
-            return new BaseResponse(null, 500, e.getMessage());
-        }
+        existing.setName(entry.getName());
+        existing.setDueDate(entry.getDueDate());
+        existing.setDescription(entry.getDescription());
+        ApiFuture<WriteResult> result = projectsDb.document(String.valueOf(entry.getId())).set(existing);
+        return result.get().getUpdateTime().toString();
     }
 
     @Override
-    public String updateProjectStatus(int id, int status) {
-        try {
-            CollectionReference projectsDb = _db.collection("projects");
-            ApiFuture<WriteResult> result = projectsDb.document(String.valueOf(id)).update("status", status);
-            return result.get().getUpdateTime().toString();
-        }
-        catch (Exception e) {
-            _logger.Error("updateProjectStatus", e.getMessage());
-            return null;
-        }
+    public String updateProjectStatus(int id, int status) throws ExecutionException, InterruptedException {
+        CollectionReference projectsDb = _db.collection("projects");
+        ApiFuture<WriteResult> result = projectsDb.document(String.valueOf(id)).update("status", status);
+        return result.get().getUpdateTime().toString();
     }
 
     @Override
-    public List<ProjectUpdateResult> getProjectUpdates(int projectId) {
+    public List<ProjectUpdateResult> getProjectUpdates(int projectId) throws ExecutionException, InterruptedException {
         CollectionReference employeesDb = _db.collection("employees");
-        try {
-            List<Integer> projectUpdateIds = getProjectById(projectId).getProjectUpdateIds();
-            List<ProjectUpdateResult> res = new ArrayList<>();
-            for (int i : projectUpdateIds) {
-                ProjectUpdate pu = getProjectUpdateById(i);
-                String writerName = "<SYSTEM>";
-                if (pu.getWriterId() > 0) {
-                    writerName = employeesDb.document(String.valueOf(pu.getWriterId())).get().get().getString("name");
-                }
-                res.add(new ProjectUpdateResult(pu, writerName));
+        List<Integer> projectUpdateIds = getProjectById(projectId).getProjectUpdateIds();
+        List<ProjectUpdateResult> res = new ArrayList<>();
+        for (int i : projectUpdateIds) {
+            ProjectUpdate pu = getProjectUpdateById(i);
+            String writerName = "<SYSTEM>";
+            if (pu.getWriterId() > 0) {
+                writerName = employeesDb.document(String.valueOf(pu.getWriterId())).get().get().getString("name");
             }
-            return res;
+            res.add(new ProjectUpdateResult(pu, writerName));
         }
-        catch (Exception e) {
-            _logger.Error("getProjectUpdates", e.getMessage());
-            return null;
-        }
+        return res;
     }
 
     @Override
-    public ProjectUpdate getProjectUpdateById(int id) {
-        try {
-            CollectionReference projectsDb = _db.collection("projectUpdates");
-            DocumentSnapshot data = projectsDb.document(String.valueOf(id)).get().get();
-            ProjectUpdate projectUpdate = null;
-            if (data.exists()) {
-                projectUpdate = data.toObject(ProjectUpdate.class);
-            }
-            return projectUpdate;
+    public ProjectUpdate getProjectUpdateById(int id) throws ExecutionException, InterruptedException {
+        CollectionReference projectsDb = _db.collection("projectUpdates");
+        DocumentSnapshot data = projectsDb.document(String.valueOf(id)).get().get();
+        ProjectUpdate projectUpdate = null;
+        if (data.exists()) {
+            projectUpdate = data.toObject(ProjectUpdate.class);
         }
-        catch (Exception e) {
-            return null;
-        }
+        return projectUpdate;
     }
 
     @Override
-    public String addProjectUpdate(ProjectUpdate projectUpdate, int projectId) {
-        try {
-            CollectionReference projectUpdatesDb = _db.collection("projectUpdates");
-            DocumentReference idTracer = _db.collection("idTracer").document("projectUpdates");
-            long projectUpdateId = Objects.requireNonNull(idTracer.get().get().getLong("id")) + 1;
-            projectUpdate.setId((int) projectUpdateId);
-            ApiFuture<WriteResult> result = projectUpdatesDb.document(String.valueOf(projectUpdateId)).set(projectUpdate);
-            ApiFuture<WriteResult> updateIdResult = idTracer.update("id", projectUpdateId);
-            //Add projectUpdate to project
-            _logger.Info("addProjectUpdateToProject",
-                    addProjectUpdateToProject((int) projectUpdateId, projectId));
-            return result.get().getUpdateTime().toString();
-        }
-        catch (Exception e) {
-            return null;
-        }
+    public int addProjectUpdate(ProjectUpdate projectUpdate, int projectId) throws ExecutionException, InterruptedException {
+        CollectionReference projectUpdatesDb = _db.collection("projectUpdates");
+        DocumentReference idTracer = _db.collection("idTracer").document("projectUpdates");
+        long projectUpdateId = Objects.requireNonNull(idTracer.get().get().getLong("id")) + 1;
+        projectUpdate.setId((int) projectUpdateId);
+        ApiFuture<WriteResult> result = projectUpdatesDb.document(String.valueOf(projectUpdateId)).set(projectUpdate);
+
+        ApiFuture<WriteResult> updateIdResult = idTracer.update("id", projectUpdateId);
+
+        return (int)projectUpdateId;
     }
 
     @Override
-    public String addProjectUpdateToProject(int projectUpdateId, int projectId) {
-        try {
-            List<Integer> projectUpdateIds = getProjectById(projectId).getProjectUpdateIds();
-            projectUpdateIds.add(projectUpdateId);
-            ApiFuture<WriteResult> result = _db.collection("projects").document(String.valueOf(projectId))
-                    .update("projectUpdateIds", projectUpdateIds);
-            return result.get().getUpdateTime().toString();
-        }
-        catch (Exception e) {
-            return null;
-        }
+    public String addProjectUpdateToProject(int projectUpdateId, int projectId) throws ExecutionException, InterruptedException {
+        List<Integer> projectUpdateIds = getProjectById(projectId).getProjectUpdateIds();
+        projectUpdateIds.add(projectUpdateId);
+        ApiFuture<WriteResult> result = _db.collection("projects").document(String.valueOf(projectId))
+                .update("projectUpdateIds", projectUpdateIds);
+        return result.get().getUpdateTime().toString();
     }
 }

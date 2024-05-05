@@ -70,23 +70,21 @@ public class OperationManagementController {
 
     @PostMapping("/operations/project/edit")
     public BaseResponse editProject(@RequestBody Project project) {
-        BaseResponse response = null;
         try {
-            response = _projectService.editProject(project);
-            return response;
+            String response = _projectService.editProject(project);
+            return new BaseResponse(null, 200,"OK");
         } catch (Exception e) {
             return new BaseResponse(null, 500, e.getMessage());
         }
     }
 
     @PostMapping("/operations/project/{id}/update")
-    public ResponseEntity<String> updateProjectStatus(@PathVariable int id, @RequestParam int status) {
-        String response = null;
+    public BaseResponse updateProjectStatus(@PathVariable int id, @RequestParam int status) {
         try {
-            response = _projectService.updateProjectStatus(id, status);
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            String response = _projectService.updateProjectStatus(id, status);
+            return new BaseResponse(null, 200,"OK");
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new BaseResponse(null, 500, e.getMessage());
         }
     }
 
@@ -102,13 +100,12 @@ public class OperationManagementController {
     }
 
     @PostMapping("/operations/project/updates")
-    public ResponseEntity<String> addProjectUpdate(@RequestBody ProjectUpdate projectUpdate, @RequestParam int projectId) {
-        String response = null;
+    public BaseResponse addProjectUpdate(@RequestBody ProjectUpdate projectUpdate, @RequestParam int projectId) {
         try {
-            response = _projectService.addProjectUpdate(projectUpdate, projectId);
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            int response = _projectService.addProjectUpdate(projectUpdate, projectId);
+            return new BaseResponse(null, 200,"OK");
         } catch (Exception e) {
-            return new ResponseEntity<>(e.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new BaseResponse(null, 500, e.getMessage());
         }
     }
 

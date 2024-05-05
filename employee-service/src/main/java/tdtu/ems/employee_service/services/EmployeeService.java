@@ -11,6 +11,7 @@ import tdtu.ems.employee_service.repositories.EmployeeRepository;
 import tdtu.ems.employee_service.models.Employee;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -70,14 +71,10 @@ public class EmployeeService implements IEmployeeService {
     }
 
     @Override
-    public List<Employee> getEmployees() {
-        try {
-            return _employeeRepository.getEmployees();
-        }
-        catch (Exception e) {
-            _logger.Error("getEmployees", e.toString());
-            return null;
-        }
+    public List<Employee> getEmployees(List<Integer> ids) {
+        List<Employee> result = _employeeRepository.getEmployees(ids);
+        result.sort(Comparator.comparing(Employee::getId));
+        return result;
     }
 
     @Override
@@ -89,29 +86,6 @@ public class EmployeeService implements IEmployeeService {
                 employee = data.toObject(Employee.class);
             }
             return employee;
-        }
-        catch (Exception e) {
-            return null;
-        }
-    }
-
-    @Override
-    public List<Employee> getEmployeesByIds(List<Integer> employeeIds) {
-        try {
-            if (employeeIds.isEmpty()) {
-                return null;
-            }
-            QuerySnapshot query = _db.collection("employees")
-                    .whereIn("id", employeeIds).get().get();
-            List<QueryDocumentSnapshot> documents = query.getDocuments();
-            if (documents.isEmpty()) {
-                return null;
-            }
-            List<Employee> employees = new ArrayList<>();
-            for (DocumentSnapshot data : documents) {
-                employees.add(data.toObject(Employee.class));
-            }
-            return employees;
         }
         catch (Exception e) {
             return null;

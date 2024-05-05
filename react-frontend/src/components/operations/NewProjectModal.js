@@ -109,7 +109,7 @@ function NewProjectModal(props) {
                 <div class="row my-2">
                     <div class="col-12">
                         <label htmlFor="newPrjDescription">Project description</label>
-                        <textarea type="text" class="form-control" rows='3' id="newPrjDescription" name="desc" value={inputs.description} onChange={handleInputChange}
+                        <textarea type="text" class="form-control" rows='3' id="newPrjDescription" name="description" value={inputs.description} onChange={handleInputChange}
                         placeholder="New project's description" required/>
                     </div>
                 </div>

@@ -18,6 +18,7 @@ public class ProjectUpdateResult {
     }
 
     public ProjectUpdateResult(ProjectUpdate pd, String writerName) {
+        this.id = pd.getId();
         this.writerId = pd.getWriterId();
         this.writerName = writerName;
         this.comment = pd.getComment();

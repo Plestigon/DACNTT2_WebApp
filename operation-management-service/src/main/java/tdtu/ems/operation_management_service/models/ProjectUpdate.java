@@ -11,10 +11,9 @@ public class ProjectUpdate {
 
     public ProjectUpdate() {}
 
-    public ProjectUpdate(int writerId, String comment, Date createTime) {
+    public ProjectUpdate(int writerId, String comment) {
         this.writerId = writerId;
         this.comment = comment;
-        this.createTime = createTime;
     }
 
     public int getId() {

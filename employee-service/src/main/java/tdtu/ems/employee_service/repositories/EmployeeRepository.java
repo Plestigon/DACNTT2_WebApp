@@ -26,14 +26,41 @@ public class EmployeeRepository implements IEmployeeRepository {
     }
 
     @Override
-    public List<Employee> getEmployees() throws ExecutionException, InterruptedException {
+    public List<Employee> getEmployees(List<Integer> ids) {
         CollectionReference employeesDb = _db.collection("employees");
         List<Employee> employees = new ArrayList<>();
-        for (DocumentSnapshot data : employeesDb.get().get().getDocuments()) {
-            employees.add(data.toObject(Employee.class));
+        try {
+            if (ids == null || ids.isEmpty()) {
+                for (DocumentSnapshot data : employeesDb.get().get().getDocuments()) {
+                    employees.add(data.toObject(Employee.class));
+                }
+            }
+            else {
+                for (int id : ids) {
+                    employees.add(employeesDb.document(String.valueOf(id)).get().get().toObject(Employee.class));
+                }
+                _logger.Info("getEmployeesByIds", "TEST");
+            }
+            return employees;
         }
-        return employees;
+        catch (Exception e) {
+            _logger.Error("getEmployees", e.getMessage());
+            return null;
+        }
     }
+
+//    @Override
+//    public List<Employee> getEmployeesByIds(List<Integer> ids) {
+//        CollectionReference employeesDb = _db.collection("employees");
+//        List<Employee> employees = new ArrayList<>();
+//        try {
+//
+//        }
+//        catch (Exception e) {
+//            _logger.Error("getEmployeesByIds", e.getMessage());
+//            return null;
+//        }
+//    }
 
     @Override
     public ProjectUpdateEmployeeDataResult getProjectUpdateEmployeeData(int writerId, List<Integer> checkIds) {

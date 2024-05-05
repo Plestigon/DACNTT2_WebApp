@@ -38,7 +38,7 @@ public class ProjectResult {
         this.ownerName = ownerName;
         this.memberIds = p.getMemberIds();
         this.status = p.getStatus();
-        this.statusName = Enums.ProjectStatus.values()[p.getStatus()].name().replace("_", " ");
+        this.statusName = Enums.ProjectStatus.values()[p.getStatus()].name;
         this.dueDate = p.getDueDate();
         this.description = p.getDescription();
         this.projectUpdateIds = p.getProjectUpdateIds();

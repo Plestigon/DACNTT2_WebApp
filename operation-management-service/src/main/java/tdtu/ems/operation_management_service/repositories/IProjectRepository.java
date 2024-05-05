@@ -7,6 +7,7 @@ import tdtu.ems.operation_management_service.models.ProjectUpdate;
 import tdtu.ems.operation_management_service.models.ProjectUpdateResult;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public interface IProjectRepository {
     List<Project> getProjects();
@@ -14,11 +15,11 @@ public interface IProjectRepository {
     Project getProjectById(int id);
     ProjectResult getProjectResultById(int id);
     String addProject(Project project);
-    String removeProject(int id);
-    BaseResponse editProject(Project project);
-    String updateProjectStatus(int id, int status);
-    List<ProjectUpdateResult> getProjectUpdates(int projectId);
-    ProjectUpdate getProjectUpdateById(int id);
-    String addProjectUpdate(ProjectUpdate projectUpdate, int projectId);
-    String addProjectUpdateToProject(int projectUpdateId, int projectId);
+    String removeProject(int id) throws ExecutionException, InterruptedException;
+    String editProject(Project project) throws ExecutionException, InterruptedException;
+    String updateProjectStatus(int id, int status) throws ExecutionException, InterruptedException;
+    List<ProjectUpdateResult> getProjectUpdates(int projectId) throws ExecutionException, InterruptedException;
+    ProjectUpdate getProjectUpdateById(int id) throws ExecutionException, InterruptedException;
+    int addProjectUpdate(ProjectUpdate projectUpdate, int projectId) throws ExecutionException, InterruptedException;
+    String addProjectUpdateToProject(int projectUpdateId, int projectId) throws ExecutionException, InterruptedException;
 }

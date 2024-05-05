@@ -28,7 +28,8 @@ function Operations() {
         })
     }
     
-    function deleteProject(id) {
+    function deleteProject(e, id) {
+        e.stopPropagation();
         try {
             if (window.confirm("Are you sure you want to delete project with id \"" + id + "\"?")) {
                 fetch("http://localhost:8080/operations/project?id=" + id, {
@@ -100,7 +101,7 @@ function Operations() {
                         <td>{dateFormat(p.dueDate)}</td>
                         <td>{p.description}</td>
                         <td><button type="button" class="btn btn-primary bi bi-trash delete-prj-btn"
-                            onClick={() => deleteProject(p.id)}></button></td>
+                            onClick={(e) => deleteProject(e, p.id)}></button></td>
                     </tr>
                 ))}
             </tbody>

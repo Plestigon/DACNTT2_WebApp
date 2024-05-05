@@ -12,11 +12,11 @@ public class Logger<T> {
     }
 
     public void Info(String functionName, String message) {
-        logger.info(String.format("<INFO> [%1$s_%2$s] %3$s", type.toString(), functionName, message));
+        logger.info(String.format("<INFO> [%1$s_%2$s] %3$s", type.getSimpleName(), functionName, message));
     }
 
     public void Error(String functionName, String message) {
-        logger.error(String.format("<ERROR> [%1$s_%2$s] %3$s", type.toString(), functionName, message));
+        logger.error(String.format("<ERROR> [%1$s_%2$s] %3$s", type.getSimpleName(), functionName, message));
     }
 
     public Class<T> getType() {

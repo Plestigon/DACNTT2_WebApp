@@ -13,80 +13,109 @@ import { Button } from "react-bootstrap";
 const ProjectInfo = () => {
     const params = useParams();
     const [options, setOptions] = useState([]);
-    const [inputs, setInputs] = useState({
+    const [data, setData] = useState({
         name: '',
         owner: 0,
         ownerName: '',
         dueDate: '',
         status: -1,
         statusName: '',
-        description: ''
+        description: '',
+        memberIds: []
     });
     const [prjUpdates, setPrjUpdates] = useState([]);
+    const [members, setMembers] = useState([]);
     const [inputDisabled, setInputDisabled] = useState(true);
 
-    const loadProjectData = useCallback(() => {
-        fetch("http://localhost:8080/operations/project?id=" + params.id,{
-            method:"GET"
-        })
-        .then(result=>result.json())
-        .then((result)=>{
-            // console.log(result);
-            var formattedDate = handleDate(result.dueDate);
-            setInputs({
-                name: result.name,
-                owner: result.ownerId,
-                ownerName: result.ownerName,
-                dueDate: formattedDate,
-                status: result.status,
-                statusName: result.statusName,
-                description: result.description
-            })
-        })
-        .catch (e => {
-            console.log("ERROR_loadProjectData: " + e);
-        })
-
-        // Get status options
-        fetch("http://localhost:8080/operations/project/statuses",{
-            method:"GET"
-        })
-        .then(result=>result.json())
-        .then((result)=>{
-            setOptions(result);
-        })
-        .catch (e => {
-            console.log("ERROR_loadProjectData_statuses: " + e);
-        })
-
-        //Get project updates
-        fetch("http://localhost:8080/operations/project/updates/" + params.id,{
-            method:"GET"
-        })
-        .then(result=>result.json())
-        .then((result)=>{
-            console.log(result);
-            setPrjUpdates(result);
-        })
-        .catch (e => {
-            console.log("ERROR_loadProjectData_updates: " + e);
-        })
-    }, [params])
-
     useEffect(() => {
+        function loadProjectData() {
+            fetch("http://localhost:8080/operations/project?id=" + params.id,{
+                method:"GET"
+            })
+            .then(result=>result.json())
+            .then((result)=>{
+                // console.log(result);
+                var formattedDate = handleDate(result.dueDate);
+                setData({
+                    name: result.name,
+                    owner: result.ownerId,
+                    ownerName: result.ownerName,
+                    dueDate: formattedDate,
+                    status: result.status,
+                    statusName: result.statusName,
+                    description: result.description,
+                    memberIds: result.memberIds
+                })
+            })
+            .catch (e => {
+                console.log("ERROR_loadProjectData: " + e);
+            })
+
+            // Get status options
+            fetch("http://localhost:8080/operations/project/statuses",{
+                method:"GET"
+            })
+            .then(result=>result.json())
+            .then((result)=>{
+                setOptions(result);
+            })
+            .catch (e => {
+                console.log("ERROR_loadProjectData_statuses: " + e);
+            })
+
+            //Get project updates
+            fetch("http://localhost:8080/operations/project/updates/" + params.id,{
+                method:"GET"
+            })
+            .then(result=>result.json())
+            .then((result)=>{
+                // console.log(result);
+                setPrjUpdates(result);
+            })
+            .catch (e => {
+                console.log("ERROR_loadProjectData_updates: " + e);
+            })
+        }
         loadProjectData();
-    }, [params, loadProjectData]);
+    }, [params])
+    
+    useEffect(() => {
+        function loadMembers() {
+            //Get member list
+            if (data.memberIds.length > 0) {
+                var query = "";
+                if (data.memberIds.length > 0) {
+                    query = "?ids=" + data.memberIds.join(",");
+                }
+                fetch("http://localhost:8080/operations/employees" + query,{
+                    method:"GET"
+                })
+                .then(result=>result.json())
+                .then((result)=>{
+                    console.log(result);
+                    setMembers(result);
+                })
+                .catch (e => {
+                    console.log("ERROR_loadMembers: " + e);
+                })
+            }
+        }
+        loadMembers();
+    }, [data.memberIds])
 
     function handleInputChange(e) {
         if (e.target) {
             const name = e.target.name;
             const value = e.target.value;
-            setInputs(prevState => ({...prevState, [name]: value}));
-            console.log(inputs);
+            setData(prevState => ({...prevState, [name]: value}));
+            // console.log(data);
         }
         else {
-            setInputs(prevState => ({...prevState, 'status': e.value, 'statusName': e.label}));
-            handleUpdateStatus(e.value);
+            //Status select
+            if (e.value !== data.status) {
+                setData(prevState => ({...prevState, 'status': e.value, 'statusName': e.label}));
+                handleUpdateStatus(e.value);
+            }
         }
     }
 
@@ -94,8 +123,9 @@ const ProjectInfo = () => {
         fetch("http://localhost:8080/operations/project/" + params.id + "/update?status=" + status,{
             method:"POST"
         })
+        .then(result=>result.json())
         .then((result)=>{
-            if (result.ok) {
+            if (result.statusCode === 200) {
                 alert("Project status updated successfully!");
                 window.location.reload();
             }
@@ -114,20 +144,20 @@ const ProjectInfo = () => {
     }
 
     function handleEditSubmit() {
-        console.log(inputs);
+        console.log(data);
         fetch("http://localhost:8080/operations/project/edit",{
             method:"POST",
             body: JSON.stringify({
                 'id': params.id,
-                'name': inputs.name,
-                'dueDate': inputs.dueDate,
-                'description': inputs.description
+                'name': data.name,
+                'dueDate': data.dueDate,
+                'description': data.description
             }),
             headers: { "Content-type": "application/json; charset=UTF-8" }
         })
+        .then(result=>result.json())
         .then((result)=>{
-            console.log(result);
-            if (result.ok) {
+            if (result.statusCode === 200) {
                 alert("Project updated successfully!");
                 window.location.reload();
             }
@@ -141,67 +171,89 @@ const ProjectInfo = () => {
 <div>
 <NavigationBar/>
     <div class="mt-5">
-        <div class="row d-flex justify-content-end pe-5">
-            <Button onClick={handleEditClick} className="" style={{width: '50px', height: '50px'}}><i class="bi bi-pencil-square"></i></Button>
+        <div class="row w-100">
+            <Button onClick={handleEditClick} className="ms-auto me-5" style={{width: '50px', height: '50px'}}><i class="bi bi-pencil-square"></i></Button>
         </div>
         <Container>
-        <Row>
-        <label>
-            Project Name: <input name="name" class="form-control" value={inputs.name} onChange={handleInputChange} disabled={inputDisabled} />
-        </label>
-        </Row>
-        <br></br>
-
+            <Row>
+                <label>
+                    Project Name: <input name="name" class="form-control" value={data.name} onChange={handleInputChange} disabled={inputDisabled} />
+                </label>
+            </Row>
+            <br></br>
             <Row>
                 <Col>
-                    <label>
-                    Owner:<input name="owner" class="form-control" value={inputs.ownerName} disabled/>
+                    <label class="w-100">
+                    Owner:<input name="owner" class="form-control" value={data.ownerName} disabled/>
                     </label>
                 </Col>
                 <Col>
-                Status:<Select options={options} value={{label: inputs.statusName, value: inputs.status}} onChange={handleInputChange}/>
+                Status:<Select options={options} value={{label: data.statusName, value: data.status}} onChange={handleInputChange}/>
                 </Col>
                 <Col>
                 Due Date:
-                <input type="datetime-local" class="form-control" name="dueDate" value={inputs.dueDate} 
+                <input type="datetime-local" class="form-control" name="dueDate" value={data.dueDate} 
                 onChange={(e) => handleInputChange(e)}  disabled={inputDisabled}/>
                 </Col>
             </Row>
-            <div class="my-4 mx-1">
-            <Row>
+            <Row className="my-4 p-2">
                 Description:
-                <textarea class="form-control" name="description" rows={4} cols={40} value={inputs.description} onChange={handleInputChange} disabled={inputDisabled} />
+                <textarea class="form-control" name="description" rows={4} value={data.description} onChange={handleInputChange} disabled={inputDisabled} />
             </Row>
-            </div>
         </Container>
-        <div class="row d-flex justify-content-end pe-5">
-            <Button onClick={handleEditSubmit} className="btn-warning me-3" style={{width: '150px', height: '50px', display: inputDisabled ? "none" : "block"}} >Submit</Button>
-            <Button onClick={handleCancelEditClick} className="btn-secondary" style={{width: '150px', height: '50px', display: inputDisabled ? "none" : "block"}} >Cancel Editing</Button>
+        <div class="row w-100">
+            <Button onClick={handleEditSubmit} className="btn-warning ms-auto me-3" style={{width: '150px', height: '50px', display: inputDisabled ? "none" : "block"}} >Submit</Button>
+            <Button onClick={handleCancelEditClick} className="btn-secondary me-5" style={{width: '150px', height: '50px', display: inputDisabled ? "none" : "block"}} >Cancel Editing</Button>
         </div>
     </div>
     
-    <div class="mt-5">
-    <Container>
-        <Row>
-            Updates
-        </Row>
-        {prjUpdates.map(p => 
-            <Row>
-                <div class="row my-1">
-                    <div class="card w-50" style={{minWidth: '500px'}}>
-                        <div class="row">
-                            <div class="col-6">{p.writerName}</div>
-                            <div class="col-6 text-end">@{dateFormat(p.createTime)}</div>
+    <div class="row mt-2 mb-5" style={{marginLeft: '5%', marginRight: '5%'}}>
+        <div class="col-6">
+            <p class="h5"><i class="bi bi-card-text"></i> Updates</p>
+            <hr/>
+            <div class="row">
+                <div class="col-2">Comment</div>
+                <div class="col-10">
+                    <textarea class="form-control" rows={2} cols={10}/>
+                </div>
+            </div>
+            <div class="row w-100">
+                <Button className="ms-auto mt-2" style={{width: '150px'}}>Submit</Button>
+            </div>
+            <hr/>
+            {prjUpdates.map(p => 
+                <div class="row d-flex justify-content-center my-1" key={p.id}>
+                    <div class="card mx-3 p-2" style={{width: '90%'}}>
+                        <div class="d-flex">
+                            <div class="fw-bold">{p.writerName}</div>
+                            <div class="ms-auto fst-italic"><i class="bi bi-clock"></i> {dateFormat(p.createTime)}</div>
                         </div>
-                        <hr/>
-                        <div class="row">
-                            <div style={{width: '80%'}}>{p.comment}</div>
+                        <hr style={{marginTop: '1px', marginBottom: '3px'}}/>
+                        <div class="d-flex">
+                            <div class="mx-1">{p.comment}</div>
                         </div>
                     </div>
                 </div>
-            </Row>
-        )}
-    </Container>
+            )}
+            </div>
+        <div class="col-6 px-5">
+            <p class="h5"><i class="bi bi-person"></i> Members</p>
+            <hr/>
+            {members.map(m => 
+                <div class="row my-1" key={m.id}>
+                    <div class="card p-2" style={{width: '90%'}}>
+                        <div class="d-flex align-items-center">
+                            <div class="">
+                                {m.name} ({m.email})
+                            </div>
+                            <div class="ms-auto">
+                                <Button className="btn btn-danger"><i class="bi bi-trash"></i></Button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
     </div>
 </div>
 );

@@ -23,10 +23,10 @@ public class EmployeeController {
     }
 
     @GetMapping("/employees")
-    public ResponseEntity<List<Employee>> getEmployees() throws ExecutionException, InterruptedException {
+    public ResponseEntity<List<Employee>> getEmployees(@RequestParam(required = false) List<Integer> ids) {
         List<Employee> employees = null;
         try {
-            employees = _employeeService.getEmployees();
+            employees = _employeeService.getEmployees(ids);
             return new ResponseEntity<>(employees, HttpStatus.OK);
         }
         catch (Exception e) {
