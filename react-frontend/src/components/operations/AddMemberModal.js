@@ -44,10 +44,9 @@ function AddMemberModal(props) {
             .then(result=>result.json())
             .then((result)=>{
                 if (result.statusCode === 200) {
-                    alert("New member added successfully!");
-                    props.reloadmembers();
+                    console.log("New member added successfully!");
+                    props.reload();
                     props.close();
-                    //window.location.reload();
                 }
             })
             .catch (e => {

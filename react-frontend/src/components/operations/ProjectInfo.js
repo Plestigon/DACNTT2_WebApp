@@ -35,7 +35,7 @@ const ProjectInfo = () => {
         })
         .then(result=>result.json())
         .then((result)=>{
-            // console.log(result);
+            console.log(result);
             var formattedDate = handleDate(result.dueDate);
             setData({
                 name: result.name,
@@ -84,7 +84,6 @@ const ProjectInfo = () => {
     
     const loadMembers = useCallback(() => {
         //Get member list
-        console.log("load members");
         if (data.memberIds.length > 0) {
             var query = "";
             if (data.memberIds.length > 0) {
@@ -131,8 +130,8 @@ const ProjectInfo = () => {
         .then(result=>result.json())
         .then((result)=>{
             if (result.statusCode === 200) {
-                alert("Project status updated successfully!");
-                window.location.reload();
+                console.log("Project status updated successfully!");
+                loadProjectData();
             }
         })
         .catch (e => {
@@ -185,18 +184,13 @@ const ProjectInfo = () => {
         .then((result)=>{
             console.log(result);
             if (result.statusCode === 200) {
-                alert("Member removed successfully!");
-                reloadMembers();
+                console.log("Member removed successfully!");
+                loadProjectData();
             }
         })
         .catch (e => {
             console.log("handleRemoveMember: " + e);
         })
-    }
-
-    function reloadMembers() {
-        loadMembers();
-        window.location.reload();
     }
 
     return (
@@ -273,7 +267,7 @@ const ProjectInfo = () => {
                 <i class="bi bi-person"></i> Members
                 <Button className="btn-primary ms-3" onClick={handleAddMemberClick}><i class="bi bi-person-plus"></i></Button>
                 <AddMemberModal show={addMemberModalShow} onHide={() => setAddMemberModalShow(false)}
-                projectid={params.id} members={members} reloadmembers={reloadMembers} close={() => setAddMemberModalShow(false)}/>
+                projectid={params.id} members={members} reload={loadProjectData} close={() => setAddMemberModalShow(false)}/>
             </div>
             <hr/>
             {members.map(m => 
