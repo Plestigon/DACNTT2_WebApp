@@ -1,12 +1,12 @@
 package tdtu.ems.employee_service.repositories;
 
-import com.google.cloud.firestore.CollectionReference;
-import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.cloud.firestore.Firestore;
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import tdtu.ems.core_service.utils.Logger;
+import tdtu.ems.employee_service.models.EmployeeResult;
 import tdtu.ems.employee_service.models.ProjectUpdateEmployeeDataResult;
 import tdtu.ems.employee_service.services.EmployeeService;
 import tdtu.ems.employee_service.models.Employee;
@@ -26,37 +26,58 @@ public class EmployeeRepository implements IEmployeeRepository {
         _logger = new Logger<>(EmployeeRepository.class);
     }
 
-    @Override
-    public List<Employee> getEmployees(List<Integer> ids) {
+    public int addEmployee(Employee e) throws ExecutionException, InterruptedException {
         CollectionReference employeesDb = _db.collection("employees");
-        List<Employee> employees = new ArrayList<>();
-        try {
-            if (ids == null || ids.isEmpty()) {
-                for (DocumentSnapshot data : employeesDb.get().get().getDocuments()) {
-                    employees.add(data.toObject(Employee.class));
-                }
-            }
-            else {
-                for (int id : ids) {
-                    employees.add(employeesDb.document(String.valueOf(id)).get().get().toObject(Employee.class));
-                }
-                _logger.Info("getEmployeesByIds", "TEST");
-            }
-            return employees;
+        //region Check if email already used
+        QuerySnapshot query = employeesDb.whereEqualTo("email", e.getEmail()).get().get();
+        if (!query.getDocuments().isEmpty()) {
+            return -1;
         }
-        catch (Exception e) {
-            _logger.Error("getEmployees", e.getMessage());
-            return null;
-        }
+        //endregion
+        DocumentReference idTracerDoc = _db.collection("idTracer").document("employees");
+        long id = Objects.requireNonNull(idTracerDoc.get().get().getLong("id")) + 1;
+        e.setId((int) id);
+        ApiFuture<WriteResult> result = employeesDb.document(String.valueOf(id)).set(e);
+        ApiFuture<WriteResult> resultUpdId = idTracerDoc.update("id", id);
+        _logger.Info("addEmployee", "update idTracer: " + resultUpdId.get().getUpdateTime());
+        //Add employee to department's employee list
+        //_logger.info("addEmployeeToDepartment: " + addEmployeeToDepartment((int) id, employee.getDepartmentId()));
+        return (int) id;
     }
 
-    public List<Employee> getEmployeesExcept(List<Integer> ids) throws ExecutionException, InterruptedException {
+    @Override
+    public List<EmployeeResult> getEmployees(List<Integer> ids) throws ExecutionException, InterruptedException {
         CollectionReference employeesDb = _db.collection("employees");
-        List<Employee> employees = new ArrayList<>();
+        List<EmployeeResult> employees = new ArrayList<>();
+        if (ids == null || ids.isEmpty()) {
+            for (DocumentSnapshot data : employeesDb.get().get().getDocuments()) {
+                Employee e = data.toObject(Employee.class);
+                if (e != null) {
+                    employees.add(new EmployeeResult(e));
+                }
+            }
+        }
+        else {
+            for (int id : ids) {
+                Employee e = employeesDb.document(String.valueOf(id)).get().get().toObject(Employee.class);
+                if (e != null) {
+                    employees.add(new EmployeeResult(e));
+                }
+            }
+        }
+        return employees;
+    }
+
+    public List<EmployeeResult> getEmployeesExcept(List<Integer> ids) throws ExecutionException, InterruptedException {
+        CollectionReference employeesDb = _db.collection("employees");
+        List<EmployeeResult> employees = new ArrayList<>();
         for (DocumentSnapshot data : employeesDb.get().get().getDocuments()) {
             int id = Objects.requireNonNull(data.getLong("id")).intValue();
             if (!ids.contains(id)) {
-                employees.add(data.toObject(Employee.class));
+                Employee e = data.toObject(Employee.class);
+                if (e != null) {
+                    employees.add(new EmployeeResult(e));
+                }
             }
         }
         return employees;

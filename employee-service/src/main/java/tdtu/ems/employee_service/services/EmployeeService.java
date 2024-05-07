@@ -6,6 +6,7 @@ import com.google.firebase.cloud.FirestoreClient;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import tdtu.ems.core_service.utils.Logger;
+import tdtu.ems.employee_service.models.EmployeeResult;
 import tdtu.ems.employee_service.models.ProjectUpdateEmployeeDataResult;
 import tdtu.ems.employee_service.repositories.EmployeeRepository;
 import tdtu.ems.employee_service.models.Employee;
@@ -29,26 +30,12 @@ public class EmployeeService implements IEmployeeService {
     }
 
     @Override
-    public Employee addEmployee(Employee employee) {
+    public int addEmployee(Employee employee) throws ExecutionException, InterruptedException {
         try {
-            CollectionReference employeesDb = _db.collection("employees");
-            //region Check if email already used
-            QuerySnapshot query = employeesDb.whereEqualTo("email", employee.getEmail()).get().get();
-            if (!query.getDocuments().isEmpty()) {
-                return null;
-            }
-            //endregion
-            DocumentReference idTracerDoc = _db.collection("idTracer").document("employees");
-            long id = Objects.requireNonNull(idTracerDoc.get().get().getLong("id")) + 1;
-            employee.setId((int) id);
-            ApiFuture<WriteResult> result = employeesDb.document(String.valueOf(id)).set(employee);
-            ApiFuture<WriteResult> resultUpdId = idTracerDoc.update("id", id);
-            _logger.Info("addEmployee", "update idTracer: " + resultUpdId.get().getUpdateTime());
-            //Add employee to department's employee list
-            //_logger.info("addEmployeeToDepartment: " + addEmployeeToDepartment((int) id, employee.getDepartmentId()));
-            return getEmployeeById((int) id);
+            return _employeeRepository.addEmployee(employee);
         } catch (Exception e) {
-            return null;
+            _logger.Error("addEmployee", e.getMessage());
+            throw e;
         }
     }
 
@@ -72,16 +59,23 @@ public class EmployeeService implements IEmployeeService {
     }
 
     @Override
-    public List<Employee> getEmployees(List<Integer> ids) {
-        List<Employee> result = _employeeRepository.getEmployees(ids);
-        result.sort(Comparator.comparing(Employee::getId));
-        return result;
+    public List<EmployeeResult> getEmployees(List<Integer> ids) throws ExecutionException, InterruptedException {
+        try {
+            List<EmployeeResult> result = _employeeRepository.getEmployees(ids);
+            result.sort(Comparator.comparing(EmployeeResult::getId));
+            return result;
+        }
+        catch (Exception e) {
+            _logger.Error("getEmployees", e.getMessage());
+            throw e;
+        }
     }
 
     @Override
-    public List<Employee> getEmployeesExcept(List<Integer> ids) throws ExecutionException, InterruptedException {
+    public List<EmployeeResult> getEmployeesExcept(List<Integer> ids) throws ExecutionException, InterruptedException {
         try {
-            List<Employee> res = _employeeRepository.getEmployeesExcept(ids);
+            List<EmployeeResult> res = _employeeRepository.getEmployeesExcept(ids);
+            res.sort(Comparator.comparing(EmployeeResult::getId));
             return res;
         }
         catch (Exception e) {

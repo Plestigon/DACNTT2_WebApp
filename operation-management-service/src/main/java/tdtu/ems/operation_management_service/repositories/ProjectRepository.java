@@ -158,6 +158,7 @@ public class ProjectRepository implements IProjectRepository {
         List<ProjectUpdateResult> res = new ArrayList<>();
         for (int i : projectUpdateIds) {
             ProjectUpdate pu = getProjectUpdateById(i);
+            if (pu == null) continue;
             String writerName = "<SYSTEM>";
             if (pu.getWriterId() > 0) {
                 writerName = employeesDb.document(String.valueOf(pu.getWriterId())).get().get().getString("name");

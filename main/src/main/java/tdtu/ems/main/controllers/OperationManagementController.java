@@ -37,14 +37,19 @@ public class OperationManagementController {
 
     @GetMapping("operations/project")
     @ResponseBody
-    public ProjectResult getProject(@RequestParam int id) {
-        ProjectResult res = null;
-        res = _webClient.build().get()
-                .uri("http://operation-management-service/api/operations/project?id=" + id)
-                .retrieve()
-                .bodyToMono(ProjectResult.class)
-                .block();
-        return res;
+    public ResponseEntity<ProjectResult> getProject(@RequestParam int id) {
+        try {
+            ProjectResult res = null;
+            res = _webClient.build().get()
+                    .uri("http://operation-management-service/api/operations/project?id=" + id)
+                    .retrieve()
+                    .bodyToMono(ProjectResult.class)
+                    .block();
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @RequestMapping(value = "operations/projects", method = RequestMethod.GET)
@@ -67,9 +72,9 @@ public class OperationManagementController {
 
     @GetMapping("operations/employees")
     @ResponseBody
-    public ResponseEntity<List<EmployeeDto>> getEmployees(@RequestParam(required = false) List<Integer> ids) {
+    public ResponseEntity<List<EmployeeResult>> getEmployees(@RequestParam(required = false) List<Integer> ids) {
         try {
-            List<EmployeeDto> res = null;
+            List<EmployeeResult> res = null;
             String query = "";
             if (ids != null && !ids.isEmpty()) {
                 query = "?ids=" + ids.stream().map(String::valueOf).collect(Collectors.joining(","));
@@ -77,7 +82,7 @@ public class OperationManagementController {
             res = _webClient.build().get()
                     .uri("http://employee-service/api/employees" + query)
                     .retrieve()
-                    .bodyToFlux(EmployeeDto.class)
+                    .bodyToFlux(EmployeeResult.class)
                     .collectList()
                     .block();
             return new ResponseEntity<>(res, HttpStatus.OK);
@@ -89,9 +94,9 @@ public class OperationManagementController {
 
     @GetMapping("operations/employees/to-add")
     @ResponseBody
-    public ResponseEntity<List<EmployeeDto>> getEmployeesToAdd(@RequestParam List<Integer> ids) {
+    public ResponseEntity<List<EmployeeResult>> getEmployeesToAdd(@RequestParam List<Integer> ids) {
         try {
-            List<EmployeeDto> res = null;
+            List<EmployeeResult> res = null;
             String query = "";
             if (ids != null && !ids.isEmpty()) {
                 query = "?ids=" + ids.stream().map(String::valueOf).collect(Collectors.joining(","));
@@ -99,7 +104,7 @@ public class OperationManagementController {
             res = _webClient.build().get()
                     .uri("http://employee-service/api/employees/except" + query)
                     .retrieve()
-                    .bodyToFlux(EmployeeDto.class)
+                    .bodyToFlux(EmployeeResult.class)
                     .collectList()
                     .block();
             return new ResponseEntity<>(res, HttpStatus.OK);

@@ -78,7 +78,7 @@ public class ProjectService implements IProjectService {
                 return "Target status is the same as current status";
             }
             String res = _projectRepository.updateProjectStatus(id, status);
-            ProjectUpdate pu = new ProjectUpdate(0, "Project status changed to " + Enums.ProjectStatus.values()[status].name);
+            ProjectUpdate pu = new ProjectUpdate(0, "Project status changed to \"" + Enums.ProjectStatus.values()[status].name + "\"");
             addProjectUpdate(pu, id);
             return res;
         }
@@ -92,6 +92,7 @@ public class ProjectService implements IProjectService {
     public List<ProjectUpdateResult> getProjectUpdates(int projectId) throws ExecutionException, InterruptedException {
         try {
             List<ProjectUpdateResult> res = _projectRepository.getProjectUpdates(projectId);
+            res.sort(Comparator.comparing(ProjectUpdateResult::getCreateTime).reversed());
             return res;
         }
         catch (Exception e) {

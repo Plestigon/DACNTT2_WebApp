@@ -35,7 +35,7 @@ const ProjectInfo = () => {
         })
         .then(result=>result.json())
         .then((result)=>{
-            console.log(result);
+            // console.log(result);
             var formattedDate = handleDate(result.dueDate);
             setData({
                 name: result.name,
@@ -148,7 +148,7 @@ const ProjectInfo = () => {
     }
 
     function handleEditSubmit() {
-        console.log(data);
+        // console.log(data);
         fetch("http://localhost:8080/operations/project/edit",{
             method:"POST",
             body: JSON.stringify({
@@ -176,13 +176,13 @@ const ProjectInfo = () => {
     }
 
     function handleRemoveMember(memberId) {
-        console.log("remove " + memberId + " from " + params.id);
+        // console.log("remove " + memberId + " from " + params.id);
         fetch("http://localhost:8080/operations/project/" + params.id + "/member?memberId=" + memberId,{
             method:"DELETE"
         })
         .then(result=>result.json())
         .then((result)=>{
-            console.log(result);
+            // console.log(result);
             if (result.statusCode === 200) {
                 console.log("Member removed successfully!");
                 loadProjectData();

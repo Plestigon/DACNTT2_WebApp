@@ -1,11 +1,10 @@
-package tdtu.ems.employee_service.models;
+package tdtu.ems.main.models;
 
 import java.util.Date;
 
-public class Employee {
+public class EmployeeResult {
     private int id;
     private String email;
-    private String password;
     private String name;
     private int role;
     private String roleDetail;
@@ -14,14 +13,13 @@ public class Employee {
     private Date joinDate;
     private Date leaveDate;
 
-    public Employee() {}
+    public EmployeeResult() {}
 
-    public Employee(String email, String password, String name, int role, String roleDetail, int departmentId, String departmentName, Date joinDate, Date leaveDate) {
+    public EmployeeResult(int id, String email, String name, int role, int departmentId, String departmentName, Date joinDate, Date leaveDate) {
+        this.id = id;
         this.email = email;
-        this.password = password;
         this.name = name;
         this.role = role;
-        this.roleDetail = roleDetail;
         this.departmentId = departmentId;
         this.departmentName = departmentName;
         this.joinDate = joinDate;
@@ -52,12 +50,12 @@ public class Employee {
         this.name = name;
     }
 
-    public String getRoleDetail() {
-        return roleDetail;
+    public int getRole() {
+        return role;
     }
 
-    public void setRoleDetail(String roleDetail) {
-        this.roleDetail = roleDetail;
+    public void setRole(int role) {
+        this.role = role;
     }
 
     public int getDepartmentId() {
@@ -68,12 +66,20 @@ public class Employee {
         this.departmentId = departmentId;
     }
 
-    public int getRole() {
-        return role;
+    public String getRoleDetail() {
+        return roleDetail;
     }
 
-    public void setRole(int role) {
-        this.role = role;
+    public void setRoleDetail(String roleDetail) {
+        this.roleDetail = roleDetail;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
     }
 
     public Date getJoinDate() {
@@ -90,21 +96,5 @@ public class Employee {
 
     public void setLeaveDate(Date leaveDate) {
         this.leaveDate = leaveDate;
-    }
-
-    public String getDepartmentName() {
-        return departmentName;
-    }
-
-    public void setDepartmentName(String departmentName) {
-        this.departmentName = departmentName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tdtu.ems.core_service.models.BaseResponse;
+import tdtu.ems.employee_service.models.EmployeeResult;
 import tdtu.ems.employee_service.models.ProjectUpdateEmployeeDataResult;
 import tdtu.ems.employee_service.services.EmployeeService;
 import tdtu.ems.employee_service.services.IEmployeeService;
@@ -23,8 +25,8 @@ public class EmployeeController {
     }
 
     @GetMapping("/employees")
-    public ResponseEntity<List<Employee>> getEmployees(@RequestParam(required = false) List<Integer> ids) {
-        List<Employee> employees = null;
+    public ResponseEntity<List<EmployeeResult>> getEmployees(@RequestParam(required = false) List<Integer> ids) {
+        List<EmployeeResult> employees = null;
         try {
             employees = _employeeService.getEmployees(ids);
             return new ResponseEntity<>(employees, HttpStatus.OK);
@@ -35,8 +37,8 @@ public class EmployeeController {
     }
 
     @GetMapping("/employees/except")
-    public ResponseEntity<List<Employee>> getEmployeesExcept(@RequestParam List<Integer> ids) {
-        List<Employee> employees = null;
+    public ResponseEntity<List<EmployeeResult>> getEmployeesExcept(@RequestParam List<Integer> ids) {
+        List<EmployeeResult> employees = null;
         try {
             employees = _employeeService.getEmployeesExcept(ids);
             return new ResponseEntity<>(employees, HttpStatus.OK);
@@ -60,15 +62,15 @@ public class EmployeeController {
     }
 
     @PostMapping("/employees")
-    public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
+    public BaseResponse addEmployee(@RequestBody Employee employee) {
         try {
-            Employee added = _employeeService.addEmployee(employee);
-            if (added == null) {
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            int id = _employeeService.addEmployee(employee);
+            if (id == -1) {
+                return new BaseResponse(null, 400, "Email has already been used.");
             }
-            return new ResponseEntity<>(employee, HttpStatus.OK);
+            return new BaseResponse(id, 200, "OK");
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new BaseResponse(null, 500, e.getMessage());
         }
     }
 
