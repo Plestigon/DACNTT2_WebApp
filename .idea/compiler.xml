@@ -12,6 +12,7 @@
         <module name="finance-service" />
         <module name="api-gateway" />
         <module name="main" />
+        <module name="hr-service" />
         <module name="core-service" />
         <module name="employee-service" />
       </profile>
@@ -28,6 +29,7 @@
       <module name="discovery-server" options="-parameters" />
       <module name="employee-service" options="-parameters" />
       <module name="finance-service" options="-parameters" />
+      <module name="hr-service" options="-parameters" />
       <module name="main" options="-parameters" />
       <module name="operation-management-service" options="-parameters" />
     </option>

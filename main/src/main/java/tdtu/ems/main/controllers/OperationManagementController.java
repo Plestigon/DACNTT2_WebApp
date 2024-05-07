@@ -49,49 +49,64 @@ public class OperationManagementController {
 
     @RequestMapping(value = "operations/projects", method = RequestMethod.GET)
     @ResponseBody
-    public List<ProjectResult> getProjects() {
-        List<ProjectResult> res = null;
-        res = _webClient.build().get()
-                .uri("http://operation-management-service/api/operations/projects")
-                .retrieve()
-                .bodyToFlux(ProjectResult.class)
-                .collectList()
-                .block();
-        return res;
+    public ResponseEntity<List<ProjectResult>> getProjects() {
+        try {
+            List<ProjectResult> res = null;
+            res = _webClient.build().get()
+                    .uri("http://operation-management-service/api/operations/projects")
+                    .retrieve()
+                    .bodyToFlux(ProjectResult.class)
+                    .collectList()
+                    .block();
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("operations/employees")
     @ResponseBody
-    public List<EmployeeDto> getEmployees(@RequestParam(required = false) List<Integer> ids) {
-        List<EmployeeDto> res = null;
-        String query = "";
-        if (ids != null && !ids.isEmpty()) {
-            query = "?ids=" + ids.stream().map(String::valueOf).collect(Collectors.joining(","));
+    public ResponseEntity<List<EmployeeDto>> getEmployees(@RequestParam(required = false) List<Integer> ids) {
+        try {
+            List<EmployeeDto> res = null;
+            String query = "";
+            if (ids != null && !ids.isEmpty()) {
+                query = "?ids=" + ids.stream().map(String::valueOf).collect(Collectors.joining(","));
+            }
+            res = _webClient.build().get()
+                    .uri("http://employee-service/api/employees" + query)
+                    .retrieve()
+                    .bodyToFlux(EmployeeDto.class)
+                    .collectList()
+                    .block();
+            return new ResponseEntity<>(res, HttpStatus.OK);
         }
-        res = _webClient.build().get()
-                .uri("http://employee-service/api/employees" + query)
-                .retrieve()
-                .bodyToFlux(EmployeeDto.class)
-                .collectList()
-                .block();
-        return res;
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("operations/employees/to-add")
     @ResponseBody
-    public List<EmployeeDto> getEmployeesToAdd(@RequestParam List<Integer> ids) {
-        List<EmployeeDto> res = null;
-        String query = "";
-        if (ids != null && !ids.isEmpty()) {
-            query = "?ids=" + ids.stream().map(String::valueOf).collect(Collectors.joining(","));
+    public ResponseEntity<List<EmployeeDto>> getEmployeesToAdd(@RequestParam List<Integer> ids) {
+        try {
+            List<EmployeeDto> res = null;
+            String query = "";
+            if (ids != null && !ids.isEmpty()) {
+                query = "?ids=" + ids.stream().map(String::valueOf).collect(Collectors.joining(","));
+            }
+            res = _webClient.build().get()
+                    .uri("http://employee-service/api/employees/except" + query)
+                    .retrieve()
+                    .bodyToFlux(EmployeeDto.class)
+                    .collectList()
+                    .block();
+            return new ResponseEntity<>(res, HttpStatus.OK);
         }
-        res = _webClient.build().get()
-                .uri("http://employee-service/api/employees/except" + query)
-                .retrieve()
-                .bodyToFlux(EmployeeDto.class)
-                .collectList()
-                .block();
-        return res;
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @RequestMapping(value = "operations/project", method = RequestMethod.POST)
@@ -106,7 +121,7 @@ public class OperationManagementController {
                     .bodyToMono(String.class)
                     .block();
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
