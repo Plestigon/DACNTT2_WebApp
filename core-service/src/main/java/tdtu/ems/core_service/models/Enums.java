@@ -2,14 +2,14 @@ package tdtu.ems.core_service.models;
 
 public class Enums {
     public enum Priority {
-        Null,
-        High,
+        None,
+        Low,
         Medium,
-        Low
+        High
     }
 
     public enum DealStage {
-        Null,
+        None,
         Discovery,
         Proposal,
         Negotiate,
@@ -18,13 +18,14 @@ public class Enums {
     }
 
     public enum LeadStatus {
-        Null,
+        None,
         New,
         Rejected,
         Contacted
     }
 
     public enum ProjectStatus {
+        None("None"),
         NotStarted("Not Started"),
         InProgress("In Progress"),
         Finished("Finished"),
@@ -35,20 +36,63 @@ public class Enums {
     }
 
     public enum Role {
-        None("None", 0),
-        Intern("Intern", 1),
-        Employee("Employee", 2),
-        TeamLead("Team Lead", 3),
-        HR("Human Resources", 4),
-        HRH("Human Resources Head", 5),
-        BranchManager("Branch Manager", 6),
-        Owner("Owner", 7);
+        None("None"),
+        Intern("Intern"),
+        Employee("Employee"),
+        TeamLead("Team Lead"),
+        HR("Human Resources"),
+        HRH("Human Resources Head"),
+        BranchManager("Branch Manager"),
+        Owner("Owner");
 
         public final String name;
-        public final int ordinal;
-        Role(String name, int ordinal) {
+        Role(String name) {
             this.name = name;
-            this.ordinal = ordinal;
+        }
+    }
+
+    public enum ContractStatus {
+        None,
+        Inactive,
+        Active,
+        Ended
+    }
+
+    public enum FormStatus {
+        None("None"),
+        WaitingForApproval("Waiting For Approval"),
+        Approved("Approved"),
+        Rejected("Rejected");
+
+        public final String name;
+        FormStatus(String name) {
+            this.name = name;
+        }
+    }
+
+    public enum ContractType {
+        None("None"),
+        UnpaidInternship("Unpaid Internship"),
+        PaidInternship("Paid Internship"),
+        Probationary("Probationary"),
+        PartTimeEmployment("Part-time Employment"),
+        FullTimeEmployment("Full-time Employment");
+
+        public final String name;
+        ContractType(String name) {
+            this.name = name;
+        }
+    }
+
+    public enum FormType {
+        None("None"),
+        AnnualLeave("Annual Leave"),
+        UnpaidLeave("Unpaid Leave"),
+        Resignation("Resignation");
+
+        public final String name;
+        FormType(String name) {
+            this.name = name;
         }
     }
 }

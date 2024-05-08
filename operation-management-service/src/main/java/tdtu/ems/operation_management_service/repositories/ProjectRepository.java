@@ -154,7 +154,12 @@ public class ProjectRepository implements IProjectRepository {
     @Override
     public List<ProjectUpdateResult> getProjectUpdates(int projectId) throws ExecutionException, InterruptedException {
         CollectionReference employeesDb = _db.collection("employees");
-        List<Integer> projectUpdateIds = getProjectById(projectId).getProjectUpdateIds();
+        Project prj = getProjectById(projectId);
+        if (prj == null) {
+            _logger.Error("getProjectUpdates", "Project not found. id: " + projectId);
+            throw new NotFoundException();
+        }
+        List<Integer> projectUpdateIds = prj.getProjectUpdateIds();
         List<ProjectUpdateResult> res = new ArrayList<>();
         for (int i : projectUpdateIds) {
             ProjectUpdate pu = getProjectUpdateById(i);

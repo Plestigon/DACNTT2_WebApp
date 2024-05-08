@@ -1,11 +1,9 @@
 package tdtu.ems.finance_service.models;
 
-import tdtu.ems.core_service.models.Enums;
-
 public class Lead {
     private int id;
     private String name;
-    private Enums.LeadStatus status;
+    private int status;
     private String company;
     private String title;
     private String email;
@@ -13,7 +11,7 @@ public class Lead {
 
     public Lead() {}
 
-    public Lead(int id, String name, Enums.LeadStatus status, String company, String title, String email, String phoneNumber) {
+    public Lead(int id, String name, int status, String company, String title, String email, String phoneNumber) {
         this.id = id;
         this.name = name;
         this.status = status;
@@ -39,11 +37,11 @@ public class Lead {
         this.name = name;
     }
 
-    public Enums.LeadStatus getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Enums.LeadStatus status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

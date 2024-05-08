@@ -44,7 +44,7 @@ public class ProjectService implements IProjectService {
 
     @Override
     public String addProject(Project project) {
-        project.setStatus(0);
+        project.setStatus(1); //1: Not Started
         return _projectRepository.addProject(project);
     }
 
