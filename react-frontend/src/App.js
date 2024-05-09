@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route, Navigate, } from "react-router-dom";
 import Home from './components/Home';
 import Operations from './components/operations/Operations';
 import ProjectInfo from './components/operations/ProjectInfo';
+import SubmitForm from './components/hr/SubmitForm';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
         <Route path="/" element={<Home/>}/>
         <Route path="/operations" element={<Operations/>}/>
         <Route path="/operations/project/:id" element={<ProjectInfo/>} />
+        <Route path="/submit-form" element={<SubmitForm/>}/>
       </Routes>
       </BrowserRouter>
     </>

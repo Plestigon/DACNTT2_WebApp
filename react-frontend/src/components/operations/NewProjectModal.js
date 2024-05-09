@@ -113,7 +113,7 @@ function NewProjectModal(props) {
                         placeholder="New project's description" required/>
                     </div>
                 </div>
-                </form>
+            </form>
             </Modal.Body>
             <Modal.Footer className="d-flex justify-content-center">
                 <Button className="btn-primary w-25" onClick={handleSubmitProject}>Submit</Button>
