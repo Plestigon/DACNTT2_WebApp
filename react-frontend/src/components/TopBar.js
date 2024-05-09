@@ -42,7 +42,7 @@ function TopBar() {
 
 
   return (
-    <Navbar bg="secondary" data-bs-theme="dark" position="static" style={{marginLeft: '200px'}}>
+    <Navbar data-bs-theme="dark" position="static" style={{marginLeft: '200px', background: "#d9d9d9"}}>
       <Container maxWidth="xl">
         <div class="d-flex justify-content-end">
         <Toolbar disableGutters>
