@@ -98,7 +98,5 @@ import { useNavigate } from 'react-router-dom';
             </table>
         </div>
     </div>
-    );
-};
- 
+    ); 
 export default Operations;

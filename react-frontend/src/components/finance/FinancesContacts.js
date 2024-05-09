@@ -101,6 +101,5 @@ import { useNavigate } from 'react-router-dom';
         </div>
     </div>
     );
-};
  
 export default Operations;
