@@ -139,10 +139,23 @@ function NavigationBar() {
             >
                 Home
             </Button> */}
-            <Nav.Link as={Link} to="/">Home</Nav.Link>
+            <Nav.Link as={Link} to="/"><i class="bi bi-house"></i> Home</Nav.Link>
 
+            <NavDropdown title={<span><i class="bi bi-people"></i> Human Resources</span>} id="basic-nav-dropdown">
+              <NavDropdown.Item as={Link} to="/submit-form">Submit Form</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.2">
+                Another action
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="#action/3.4">
+                Separated link
+              </NavDropdown.Item>
+            </NavDropdown>
 
-            <NavDropdown title="Finances" id="finances">
+            <Nav.Link as={Link} to="/operations"><i class="bi bi-journal-check"></i> Operations</Nav.Link>
+
+            <NavDropdown title={<span><i class="bi bi-coin"></i> Finances</span>} id="finances">
               <NavDropdown.Item href="#action/3.1">Activities</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">
                 Contacts
@@ -152,34 +165,6 @@ function NavigationBar() {
               <NavDropdown.Item href="#action/3.5">Deals</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.6">Leads</NavDropdown.Item>
             </NavDropdown>
-
-            <Nav.Link as={Link} to="/operations">Operations</Nav.Link>
-
-
-            <NavDropdown title="Human Resources" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
-              </NavDropdown.Item>
-            </NavDropdown>
-
-            <NavDropdown title="Human Resources" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
-              </NavDropdown.Item>
-            </NavDropdown>
-
 
           </Nav>
 

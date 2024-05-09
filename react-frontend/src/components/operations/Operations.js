@@ -5,6 +5,9 @@ import { useEffect, useState } from 'react';
 import NewProjectModal from "./NewProjectModal";
 import { Link, useNavigate } from 'react-router-dom';
 import { dateFormat } from "../../utils/DateHelper";
+import TopBar from "../TopBar";
+import SideBar from "../SideBar";
+import '../../css/sidebar.css';
  
 function Operations() {
     const[projects,setProjects] = useState([]);
@@ -59,8 +62,9 @@ function Operations() {
 
     return (
     <div>
-        <NavigationBar/>
-        <div class="container pt-3">
+        <SideBar/>
+        <TopBar/>
+        <div class="content container pt-3 px-4">
             <button type="button" class="btn btn-outline-primary my-2" id="newPrjBtn" onClick={() => setNewPrjModalShow(true)}>
                 <i class="bi bi-plus-circle me-2"></i>Create New Project
             </button>
