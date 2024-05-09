@@ -82,7 +82,7 @@ import { useNavigate } from 'react-router-dom';
                         <button type="button" class="btn btn-primary bi bi-trash delete-prj-btn" style={{float: 'right'}}>
                         </button>
                     </td>
-                </tr> */}
+                </tr> */}   
                 {projects.map(p=>(
                     <tr key={p.id} onClick={() => projectDetails(p.id)}>
                         <td>{p.name}</td>
