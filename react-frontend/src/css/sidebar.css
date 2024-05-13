@@ -49,3 +49,26 @@
     background-color: #0d6efd;
     color: white;
   }
+
+
+  .nav-dropdown-container {
+    padding: 0.5rem 1rem;
+    }
+    
+    .nav-dropdown-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    }
+    
+    .nav-dropdown-content {
+    display: none;
+    flex-direction: column;
+    padding-left: 1rem;
+    }
+    
+    /* When the dropdown is open, display the content */
+    .nav-dropdown-container.active .nav-dropdown-content {
+    display: flex;
+    }

@@ -7,9 +7,22 @@ import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Typography from '@mui/material/Typography';
 import SubMenu from "./SubMenu";
-
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/js/dist/dropdown'
+import 'bootstrap/js/dist/collapse'
 
 function SideBar() {
+        const [isHRMenuOpen, setHRMenuOpen] = useState(false);
+        const [isFinanceMenuOpen, setFinanceMenuOpen] = useState(false);
+        
+        const toggleHRMenu = () => {
+        setHRMenuOpen(!isHRMenuOpen);
+        };
+        
+        const toggleFinanceMenu = () => {
+        setFinanceMenuOpen(!isFinanceMenuOpen);
+    };
+    
     return(
 <div>
     <div class="sidebar bg-primary">
@@ -37,21 +50,24 @@ function SideBar() {
         {/* <div class="w-100 mb-2" style={{borderBottom: '1px solid white'}}/> */}
         <Nav.Link as={Link} to="/"><i class="bi bi-house"></i> Home</Nav.Link>
 
-        <NavDropdown title={<span><i class="bi bi-people"></i> Human Resources</span>} id="basic-nav-dropdown">
-            <NavDropdown.Item as={Link} to="/submit-form">Submit Form</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.2">
-            Another action
-            </NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item href="#action/3.4">
-            Separated link
-            </NavDropdown.Item>
-        </NavDropdown>
+
+        <div className={`nav-dropdown-container ${isHRMenuOpen ? 'active' : ''}`}>
+            <div className="nav-dropdown-title" onClick={toggleHRMenu}>
+            <i className="bi bi-people"></i> Human Resources
+            </div>
+            {isHRMenuOpen && (
+            <div className="nav-dropdown-content">
+            <Nav.Link as={Link} to="/submit-form">Submit Form</Nav.Link>
+                <div as={Link} to="/submit-form">Placeholder 1</div>
+                <div as={Link} to="/submit-form">Placeholder 2</div>
+                <div as={Link} to="/submit-form">Placeholder 3</div>
+            </div>
+            )}
+        </div>
 
         <Nav.Link as={Link} to="/operations"><i class="bi bi-journal-check"></i> Operations</Nav.Link>
 
-        <NavDropdown title={<span><i class="bi bi-coin"></i> Finances</span>} id="finances">
+        <NavDropdown title={<span><i class="nav collapse ms-1 bi bi-coin"></i> Finances</span>} id="finances">
             <NavDropdown.Item href="#action/3.1">Activities</NavDropdown.Item>
             <NavDropdown.Item href="#action/3.2">
             Contacts
