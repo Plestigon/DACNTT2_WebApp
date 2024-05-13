@@ -6,6 +6,7 @@ import Home from './components/Home';
 import Operations from './components/operations/Operations';
 import ProjectInfo from './components/operations/ProjectInfo';
 import SubmitForm from './components/hr/SubmitForm';
+import HRSummary from './components/hr/HRSummary';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
         <Route path="/operations" element={<Operations/>}/>
         <Route path="/operations/project/:id" element={<ProjectInfo/>} />
         <Route path="/submit-form" element={<SubmitForm/>}/>
+        <Route path="/HRSummary" element={<HRSummary/>}/>
       </Routes>
       </BrowserRouter>
     </>

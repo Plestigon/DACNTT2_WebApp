@@ -50,33 +50,36 @@ function SideBar() {
         {/* <div class="w-100 mb-2" style={{borderBottom: '1px solid white'}}/> */}
         <Nav.Link as={Link} to="/"><i class="bi bi-house"></i> Home</Nav.Link>
 
+        <Nav.Link as={Link} to="/operations"><i class="bi bi-journal-check"></i> Operations</Nav.Link>
+
 
         <div className={`nav-dropdown-container ${isHRMenuOpen ? 'active' : ''}`}>
             <div className="nav-dropdown-title" onClick={toggleHRMenu}>
-            <i className="bi bi-people"></i> Human Resources
+            <i className="bi bi-people "></i> Human Resources
             </div>
             {isHRMenuOpen && (
             <div className="nav-dropdown-content">
             <Nav.Link as={Link} to="/submit-form">Submit Form</Nav.Link>
-                <div as={Link} to="/submit-form">Placeholder 1</div>
+            <Nav.Link as={Link} to="/HRSummary">Submit Form</Nav.Link>
                 <div as={Link} to="/submit-form">Placeholder 2</div>
                 <div as={Link} to="/submit-form">Placeholder 3</div>
             </div>
             )}
         </div>
 
-        <Nav.Link as={Link} to="/operations"><i class="bi bi-journal-check"></i> Operations</Nav.Link>
-
-        <NavDropdown title={<span><i class="nav collapse ms-1 bi bi-coin"></i> Finances</span>} id="finances">
-            <NavDropdown.Item href="#action/3.1">Activities</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.2">
-            Contacts
-            </NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.3">Accounts</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.4">Contacts</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.5">Deals</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.6">Leads</NavDropdown.Item>
-        </NavDropdown>
+        <div className={`nav-dropdown-container ${isFinanceMenuOpen ? 'active' : ''}`}>
+            <div className="nav-dropdown-title" onClick={toggleFinanceMenu}>
+            <i className="bi bi-coin"></i> Finance
+            </div>
+            {isFinanceMenuOpen && (
+            <div className="nav-dropdown-content">
+            <Nav.Link as={Link} to="/submit-form">Accounts</Nav.Link>
+                <div as={Link} to="/submit-form">Contacts</div>
+                <div as={Link} to="/submit-form">Deals</div>
+                <div as={Link} to="/submit-form">Leads</div>
+            </div>
+            )}
+        </div>
 
     </Nav>
 

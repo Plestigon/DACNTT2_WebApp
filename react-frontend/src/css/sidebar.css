@@ -55,17 +55,20 @@
     padding: 0.5rem 1rem;
     }
     
-    .nav-dropdown-title {
+    .nav-dropdown-title a:hover{
     display: flex;
     align-items: center;
     justify-content: space-between;
     cursor: pointer;
     }
     
-    .nav-dropdown-content {
+    .nav-dropdown-content a:hover{
     display: none;
     flex-direction: column;
     padding-left: 1rem;
+    background-color: #0d6efd;
+    color: white;
+
     }
     
     /* When the dropdown is open, display the content */
