@@ -20,7 +20,7 @@ export function error(msg) {
     toast.error(msg, {
         position: "bottom-right",
         theme: "colored",
-        autoClose: false
+        autoClose: 5000
     });
 }
 export function warning(msg) {
@@ -31,7 +31,10 @@ export function warning(msg) {
     });
 }
 export function loading(msg) {
-    return toast.loading(msg);
+    return toast.loading(msg, {
+        position: "top-center",
+        theme: "colored"
+    });
 }
 export function doneLoading(toastId, msg, type) {
     toast.update(toastId, {
