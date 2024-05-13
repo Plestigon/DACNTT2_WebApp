@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Select from 'react-select';
+import Notify, {success} from "../../utils/Notify";
 
 function AddMemberModal(props) {
     const [data, setData] = useState({
@@ -37,14 +38,14 @@ function AddMemberModal(props) {
     function handleInputChange(e) {
         //setData(prevState => ({...prevState, 'memberId': e.value, 'name': e.label}));
         if (e.value > 0) {
-            console.log("add " + e.value + " to " + props.projectid);
+            //console.log("add " + e.value + " to " + props.projectid);
             fetch("http://localhost:8080/operations/project/" + props.projectid + "/member?memberId=" + e.value,{
                 method:"POST"
             })
             .then(result=>result.json())
             .then((result)=>{
                 if (result.statusCode === 200) {
-                    console.log("New member added successfully!");
+                    success("Member added");
                     props.reload();
                     props.close();
                 }

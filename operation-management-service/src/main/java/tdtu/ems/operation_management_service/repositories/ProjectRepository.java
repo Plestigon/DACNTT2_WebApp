@@ -161,14 +161,16 @@ public class ProjectRepository implements IProjectRepository {
         }
         List<Integer> projectUpdateIds = prj.getProjectUpdateIds();
         List<ProjectUpdateResult> res = new ArrayList<>();
-        for (int i : projectUpdateIds) {
-            ProjectUpdate pu = getProjectUpdateById(i);
-            if (pu == null) continue;
-            String writerName = "<SYSTEM>";
-            if (pu.getWriterId() > 0) {
-                writerName = employeesDb.document(String.valueOf(pu.getWriterId())).get().get().getString("name");
+        if (projectUpdateIds != null) {
+            for (int i : projectUpdateIds) {
+                ProjectUpdate pu = getProjectUpdateById(i);
+                if (pu == null) continue;
+                String writerName = "<SYSTEM>";
+                if (pu.getWriterId() > 0) {
+                    writerName = employeesDb.document(String.valueOf(pu.getWriterId())).get().get().getString("name");
+                }
+                res.add(new ProjectUpdateResult(pu, writerName));
             }
-            res.add(new ProjectUpdateResult(pu, writerName));
         }
         return res;
     }
@@ -201,6 +203,9 @@ public class ProjectRepository implements IProjectRepository {
     @Override
     public String addProjectUpdateToProject(int projectUpdateId, int projectId) throws ExecutionException, InterruptedException {
         List<Integer> projectUpdateIds = getProjectById(projectId).getProjectUpdateIds();
+        if (projectUpdateIds == null) {
+            projectUpdateIds = new ArrayList<>();
+        }
         projectUpdateIds.add(projectUpdateId);
         ApiFuture<WriteResult> result = _db.collection("projects").document(String.valueOf(projectId))
                 .update("projectUpdateIds", projectUpdateIds);

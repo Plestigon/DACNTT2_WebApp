@@ -1,7 +1,6 @@
 import React, { useCallback } from "react";
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import NavigationBar from '../NavigationBar'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -10,6 +9,9 @@ import { handleDate, dateFormat } from "../../utils/DateHelper";
 import "react-datepicker/dist/react-datepicker.css";
 import { Button } from "react-bootstrap";
 import AddMemberModal from "./AddMemberModal";
+import SideBar from "../SideBar";
+import TopBar from "../TopBar";
+import Notify, {success} from "../../utils/Notify";
   
 const ProjectInfo = () => {
     const params = useParams();
@@ -84,7 +86,7 @@ const ProjectInfo = () => {
     
     const loadMembers = useCallback(() => {
         //Get member list
-        if (data.memberIds.length > 0) {
+        if (data.memberIds != null && data.memberIds.length > 0) {
             var query = "";
             if (data.memberIds.length > 0) {
                 query = "?ids=" + data.memberIds.join(",");
@@ -130,7 +132,7 @@ const ProjectInfo = () => {
         .then(result=>result.json())
         .then((result)=>{
             if (result.statusCode === 200) {
-                console.log("Project status updated successfully!");
+                success("Project status updated");
                 loadProjectData();
             }
         })
@@ -162,7 +164,7 @@ const ProjectInfo = () => {
         .then(result=>result.json())
         .then((result)=>{
             if (result.statusCode === 200) {
-                alert("Project updated successfully!");
+                success("Project updated");
                 window.location.reload();
             }
         })
@@ -184,7 +186,7 @@ const ProjectInfo = () => {
         .then((result)=>{
             // console.log(result);
             if (result.statusCode === 200) {
-                console.log("Member removed successfully!");
+                success("Member removed");
                 loadProjectData();
             }
         })
@@ -195,19 +197,22 @@ const ProjectInfo = () => {
 
     return (
 <div>
-<NavigationBar/>
-    <div class="mt-5">
+<Notify/>
+<SideBar/>
+<TopBar/>
+    <div class="content mt-5">
         <div class="row w-100">
-            <Button onClick={handleEditClick} className="ms-auto me-5" style={{width: '50px', height: '50px'}}><i class="bi bi-pencil-square"></i></Button>
+            <Button onClick={handleEditClick} className="ms-auto" style={{width: '50px', height: '50px', marginRight: '10%'}}
+            data-toggle="tooltip" data-placement="bottom" title="Edit project"><i class="bi bi-pencil-square"></i></Button>
         </div>
         <Container>
-            <Row>
+            <Row style={{marginLeft: '10%', marginRight: '10%'}}>
                 <label>
                     Project Name: <input name="name" class="form-control" value={data.name} onChange={handleInputChange} disabled={inputDisabled} />
                 </label>
             </Row>
             <br></br>
-            <Row>
+            <Row style={{marginLeft: '10%', marginRight: '10%'}}>
                 <Col>
                     <label class="w-100">
                     Owner:<input name="owner" class="form-control" value={data.ownerName} disabled/>
@@ -222,7 +227,7 @@ const ProjectInfo = () => {
                 onChange={(e) => handleInputChange(e)}  disabled={inputDisabled}/>
                 </Col>
             </Row>
-            <Row className="my-4 p-2">
+            <Row className="my-4 p-2" style={{marginLeft: '10%', marginRight: '10%'}}>
                 Description:
                 <textarea class="form-control" name="description" rows={4} value={data.description} onChange={handleInputChange} disabled={inputDisabled} />
             </Row>
@@ -231,9 +236,8 @@ const ProjectInfo = () => {
             <Button onClick={handleEditSubmit} className="btn-warning ms-auto me-3" style={{width: '150px', height: '50px', display: inputDisabled ? "none" : "block"}} >Submit</Button>
             <Button onClick={handleCancelEditClick} className="btn-secondary me-5" style={{width: '150px', height: '50px', display: inputDisabled ? "none" : "block"}} >Cancel Editing</Button>
         </div>
-    </div>
-    
-    <div class="row mt-2 mb-5" style={{marginLeft: '5%', marginRight: '5%'}}>
+
+        <div class="row mt-2 mb-5" style={{marginLeft: '5%', marginRight: '5%'}}>
         <div class="col-6">
             <p class="h5"><i class="bi bi-card-text"></i> Updates</p>
             <hr/>
@@ -285,6 +289,9 @@ const ProjectInfo = () => {
                 </div>
             )}
         </div>
+    </div>
+    
+    
     </div>
 </div>
 );
