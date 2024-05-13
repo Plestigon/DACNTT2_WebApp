@@ -1,100 +1,134 @@
 /* The side navigation menu */
 .sidebar {
-    margin: 0;
-    padding: 0;
-    width: 200px;
-    background-color: #f1f1f1;
-    position: fixed;
-    height: 100%;
-    overflow: auto;
-  }
-  
-  /* Sidebar links */
-  .sidebar a {
-    display: block;
-    color: white;
-    padding: 16px;
-    text-decoration: none;
-  }
-  
-  /* Active/current link */
-  .sidebar a.active {
-    background-color: #0704aa;
-    color: white;
-  }
-  
-  /* Links on mouse-over */
-  .sidebar a:hover:not(.active) {
-    background-color: #538ae2;
-    color: white;
-  }
-  
-  /* Page content. The value of the margin-left property should match the value of the sidebar's width property */
-  div.content {
-    margin-left: 200px;
-    padding: 1px 16px;
-    /* height: 1000px; */
-  }
-  
-  .sidebar .nav-link, .sidebar .nav-item {
-    width: 100%;
-  }
+  margin: 0;
+  padding: 0;
+  width: 200px;
+  background-color: #f1f1f1;
+  position: fixed;
+  height: 100%;
+  overflow: auto;
+}
 
-  .sidebar .dropdown-menu, .sidebar .dropdown-item {
-    background-color: white;
-    color: black;
-  }
+/* Sidebar links */
+.sidebar a {
+  display: block;
+  color: white;
+  padding: 16px;
+  text-decoration: none;
+}
 
-  .sidebar .sidebar-top a:hover {
-    background-color: #0d6efd;
-    color: white;
-  }
+/* Active/current link */
+.sidebar a.active {
+  background-color: #0704aa;
+  color: white;
+}
+
+/* Links on mouse-over */
+.sidebar a:hover:not(.active) {
+  background-color: #538ae2;
+  color: white;
+}
+
+/* Page content. The value of the margin-left property should match the value of the sidebar's width property */
+div.content {
+  margin-left: 200px;
+  padding: 1px 16px;
+  width: auto;
+  /* height: 1000px; */
+}
+
+.sidebar .nav-link, .sidebar .nav-item {
+  width: 100%;
+}
+
+.sidebar .dropdown-menu, .sidebar .dropdown-item {
+  background-color: white;
+  color: black;
+}
+
+.sidebar .sidebar-top a:hover {
+  background-color: #0d6efd;
+  color: white;
+}
 
 
-  .nav-dropdown-container {
-    padding: 0.5rem 1rem;
-    }
-    
-    .nav-dropdown-title {
-      margin: 0;
-      padding: 0;
+.nav-dropdown-container {
+  /* padding: 0.5rem 1rem; */
+  display: block;
+  color: white;
+  padding: 16px;
+  text-decoration: none;
+  width: 100%;
+}
   
-      width: 100%;
-      background-color: #f1f1f1;
-    cursor: pointer; 
-    background-color: #0d6efd;
-    color: white;
-    }
-    
-    .nav-dropdown-title:hover {
-        background-color: #538ae2;
-      color: white;
+.nav-dropdown-title {
+  /* margin: 0;
+  padding: 0;
 
-    }
-    
-    .nav-dropdown-content {
-    max-height: 0; 
-    overflow: hidden;
-    flex-direction: column;
-    padding-left: 1rem;
-    opacity: 0;
-    transition: opacity 0.3s, max-height 0.3s ease-out;
-    }
-    
-    .nav-dropdown-content a {
-    cursor: pointer; 
-    padding: 1px 16px;
-    text-decoration: none; 
-    color: white; 
-    }
-    
-    .nav-dropdown-content a:hover {
-      background-color: #538ae2;
-      color: white;
-    }
-    
-    .nav-dropdown-container.active .nav-dropdown-content {
-    max-height: 500px; 
-    transition: opacity 0.3s, max-height 0.3s ease-in; ;
-    opacity: 1;
-    }
+  width: 100%;
+  background-color: #f1f1f1; */
+  cursor: pointer; 
+  /* background-color: #0d6efd;
+  color: white; */
+}
+  
+.nav-dropdown-container:hover {
+  background-color: #538ae2;
+  color: white;
+}
+
+.nav-dropdown-content {
+  display: block;
+  /* background-color: #2a7ffd; */
+  color: white;
+  max-height: 0; 
+  opacity: 0;
+  width: 100%;
+  overflow: hidden;
+  flex-direction: column;
+  transition: opacity 0.3s, max-height 0.3s ease-out;
+  animation: slideUp 100ms ease-in-out forwards;
+  transform-origin: top center;
+}
+
+.nav-dropdown-content.active {
+  max-height: 500px; 
+  opacity: 1;
+  transition: opacity 0.5s, max-height 0.5s ease-in;
+  animation: slideDown 300ms ease-in-out forwards;
+  transform-origin: top center;
+}
+@keyframes slideDown {
+  0% {
+      transform: scaleY(0)
+  }
+  80% {
+      transform: scaleY(1.1)
+  }
+  100% {
+      transform: scaleY(1)
+  }
+}
+@keyframes slideUp {
+  0% {
+      transform: scaleY(1)
+  }
+  80% {
+      transform: scaleY(0.5)
+  }
+  100% {
+      transform: scaleY(0)
+  }
+}
+
+.nav-dropdown-content a {
+  cursor: pointer; 
+  padding: 5px 50px;
+  text-decoration: none; 
+  color: white; 
+}
+
+.nav-dropdown-content a:hover {
+  background-color: #538ae2;
+  color: white;
+}

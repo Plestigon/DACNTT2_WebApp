@@ -12,14 +12,14 @@ import 'bootstrap/js/dist/dropdown'
 import 'bootstrap/js/dist/collapse'
 
 function SideBar() {
-        const [isHRMenuOpen, setHRMenuOpen] = useState(false);
-        const [isFinanceMenuOpen, setFinanceMenuOpen] = useState(false);
-        
-        const toggleHRMenu = () => {
+    const [isHRMenuOpen, setHRMenuOpen] = useState(false);
+    const [isFinanceMenuOpen, setFinanceMenuOpen] = useState(false);
+    
+    const toggleHRMenu = () => {
         setHRMenuOpen(!isHRMenuOpen);
-        };
-        
-        const toggleFinanceMenu = () => {
+    };
+    
+    const toggleFinanceMenu = () => {
         setFinanceMenuOpen(!isFinanceMenuOpen);
     };
     
@@ -53,31 +53,27 @@ function SideBar() {
         <Nav.Link as={Link} to="/operations"><i class="bi bi-journal-check"></i> Operations</Nav.Link>
 
 
-        <div className={`nav-dropdown-container ${isHRMenuOpen ? 'active' : ''}`}>
+        <div className="nav-dropdown-container">
             <div className="nav-dropdown-title" onClick={toggleHRMenu}>
-            <i className="bi bi-people "></i> Human Resources
+            <i className="bi bi-people "></i> Human Resources <i className={isHRMenuOpen ? "bi bi-caret-up-fill" : "bi bi-caret-down-fill"}></i>
             </div>
-            {isHRMenuOpen && (
-            <div className="nav-dropdown-content">
+        </div>
+        <div className={`nav-dropdown-content ${isHRMenuOpen ? 'active' : ''}`}>
             <Nav.Link as={Link} to="/submit-form">Submit Form</Nav.Link>
-            <Nav.Link as={Link} to="/HRSummary">HR Summary</Nav.Link>
-            <Nav.Link as={Link} to="/MyContracts">My Contracts</Nav.Link>
-            </div>
-            )}
+            <Nav.Link as={Link} to="/hr/summary">HR Summary</Nav.Link>
+            <Nav.Link as={Link} to="/hr/contracts">My Contracts</Nav.Link>
         </div>
 
-        <div className={`nav-dropdown-container ${isFinanceMenuOpen ? 'active' : ''}`}>
+        <div className="nav-dropdown-container">
             <div className="nav-dropdown-title" onClick={toggleFinanceMenu}>
-            <i className="bi bi-coin"></i> Finance
+            <i className="bi bi-coin"></i> Finance <i className={isHRMenuOpen ? "bi bi-caret-up-fill" : "bi bi-caret-down-fill"}></i>
             </div>
-            {isFinanceMenuOpen && (
-            <div className="nav-dropdown-content">
+        </div>
+        <div className={`nav-dropdown-content ${isFinanceMenuOpen ? 'active' : ''}`}>
             <Nav.Link as={Link} to="/submit-form">Accounts</Nav.Link>
-                <div as={Link} to="/submit-form">Contacts</div>
-                <div as={Link} to="/submit-form">Deals</div>
-                <div as={Link} to="/submit-form">Leads</div>
-            </div>
-            )}
+            <Nav.Link as={Link} to="/submit-form">Contacts</Nav.Link>
+            <Nav.Link as={Link} to="/submit-form">Deals</Nav.Link>
+            <Nav.Link as={Link} to="/submit-form">Leads</Nav.Link>
         </div>
 
     </Nav>

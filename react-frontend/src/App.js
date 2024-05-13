@@ -34,8 +34,8 @@ function App() {
         <Route path="/operations" element={<Operations/>}/>
         <Route path="/operations/project/:id" element={<ProjectInfo/>} />
         <Route path="/submit-form" element={<SubmitForm/>}/>
-        <Route path="/HRSummary" element={<HRSummary/>}/>
-        <Route path='/MyContracts' element={<MyContracts/>}/>
+        <Route path="/hr/summary" element={<HRSummary/>}/>
+        <Route path="/hr/contracts" element={<MyContracts/>}/>
       </Routes>
       </BrowserRouter>
     </>
