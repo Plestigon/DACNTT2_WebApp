@@ -1,29 +1,29 @@
 import React from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import NavigationBar from '../NavigationBar';
 import { useEffect, useState } from 'react';
 import NewProjectModal from "./NewProjectModal";
-import { Link, useNavigate } from 'react-router-dom';
 import { dateFormat } from "../../utils/DateHelper";
 import TopBar from "../TopBar";
 import SideBar from "../SideBar";
 import '../../css/sidebar.css';
+import Notify, {success, loading, dismiss} from "../../utils/Notify";
  
 function Operations() {
     const[projects,setProjects] = useState([]);
     const[newPrjModalShow, setNewPrjModalShow] = useState(false);
-    const navigate = useNavigate();
 
     useEffect(()=>{
         fetchProjectData();
     }, [])
 
     function fetchProjectData() {
+        const toastId = loading("Loading project data...");
         fetch("http://localhost:8080/operations/projects",{
             method:"GET"
         })
         .then(result=>result.json())
         .then((result)=>{
+            dismiss(toastId);
             setProjects(result);
         })
         .catch (e => {
@@ -40,7 +40,7 @@ function Operations() {
                 })
                 .then((response) => {
                     if (response.ok) {
-                        alert("Deleted successfully!");
+                        success("Project deleted");
                         fetchProjectData();
                     }
                     else {
@@ -62,6 +62,7 @@ function Operations() {
 
     return (
     <div>
+        <Notify/>
         <SideBar/>
         <TopBar/>
         <div class="content container pt-3 px-4">

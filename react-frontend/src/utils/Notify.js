@@ -1,22 +1,52 @@
 import React from 'react';
-import {NotificationContainer, NotificationManager} from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export function info(msg) {
-    NotificationManager.info(msg);
+    toast.info(msg, {
+        position: "bottom-right",
+        theme: "colored",
+        autoClose: 2000
+    });
 }
 export function success(msg) {
-    NotificationManager.success(msg);
+    toast.success(msg, {
+        position: "bottom-right",
+        theme: "colored",
+        autoClose: 2000
+    });
 }
 export function error(msg) {
-    NotificationManager.error(msg, '', 10000);
+    toast.error(msg, {
+        position: "bottom-right",
+        theme: "colored",
+        autoClose: false
+    });
 }
 export function warning(msg) {
-    NotificationManager.warning(msg, '', 10000);
+    toast.warning(msg, {
+        position: "bottom-right",
+        theme: "colored",
+        autoClose: 2000
+    });
 }
+export function loading(msg) {
+    return toast.loading(msg);
+}
+export function doneLoading(toastId, msg, type) {
+    toast.update(toastId, {
+        render: msg,
+        type: type,
+        isLoading: false
+    });
+}
+export function dismiss(toastId) {
+    toast.dismiss(toastId);
+}
+
 function Notify() {
     return (
-        <NotificationContainer/>
+        <ToastContainer/>
     )
 }
   
