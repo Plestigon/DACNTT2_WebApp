@@ -168,8 +168,8 @@ public class OperationManagementController {
     public ResponseEntity<List<SelectOptionsResult>> getProjectStatuses() {
         var statuses = Enums.ProjectStatus.values();
         List<SelectOptionsResult> res = new ArrayList<>();
-        for(Enums.ProjectStatus status : statuses) {
-            res.add(new SelectOptionsResult(status.name, status.ordinal()));
+        for(int i = 1; i < statuses.length; i++) {
+            res.add(new SelectOptionsResult(statuses[i].name, statuses[i].ordinal()));
         }
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
