@@ -57,7 +57,7 @@ function AddMemberModal(props) {
     }
 
     return (
-        <Modal {...props} size="md" aria-labelledby="contained-modal-title-vcenter" centered>
+        <Modal show={props.show} onHide={props.onHide} size="md" aria-labelledby="contained-modal-title-vcenter" centered>
             <Modal.Header closeButton>
                 <Modal.Title class="w-100" id="contained-modal-title-vcenter">
                     <p class="h4 text-center">Select member to add</p>

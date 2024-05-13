@@ -6,7 +6,7 @@ import { dateFormat } from "../../utils/DateHelper";
 import TopBar from "../TopBar";
 import SideBar from "../SideBar";
 import '../../css/sidebar.css';
-import Notify, {success, loading, dismiss} from "../../utils/Notify";
+import Notify, {success, error, loading, dismiss} from "../../utils/Notify";
  
 function Operations() {
     const[projects,setProjects] = useState([]);
@@ -28,6 +28,7 @@ function Operations() {
         })
         .catch (e => {
             console.log("ERROR_fetchProjectData: " + e);
+            error("Load project data failed");
         })
     }
     

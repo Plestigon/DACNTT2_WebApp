@@ -16,8 +16,8 @@ function SubmitForm() {
     // console.log(defaultStartDate);
     // console.log(defaultEndDate);
     const [inputs, setInputs] = useState({
-        type: 1,
-        typeName: 'Annual Leave',
+        type: 0,
+        typeName: '',
         createDate: '',
         startDate: getDefaultStartDate(),
         endDate: getDefaultEndDate(),
@@ -28,6 +28,7 @@ function SubmitForm() {
         // {label: 'Unpaid Leave', value: 2},
         // {label: 'Resignation', value: 3}
     ]);
+    const [disableDates, setDisableDates] = useState(false);
 
     useEffect(() => {
         function loadFormTypes() {
@@ -37,9 +38,10 @@ function SubmitForm() {
             .then(result=>result.json())
             .then((result)=>{
                 setOptions(result);
+                setInputs(prevState => ({...prevState, type: result[0].value, typeName: result[0].label}))
             })
             .catch (e => {
-                console.log("ERROR_loadProjectData_statuses: " + e);
+                console.log("ERROR_loadFormTypes: " + e);
             })
         }
         loadFormTypes();
@@ -49,19 +51,44 @@ function SubmitForm() {
         if (e.target) {
             const name = e.target.name;
             const value = e.target.value;
+            if (name === 'startDate') {
+                var startDate = new Date(value);
+                var endDate = new Date(inputs.endDate);
+                var tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                if (startDate < tomorrow) {
+                    error("Invalid Start date");
+                    return;
+                }
+                if (endDate <= startDate) {
+                    error("Start date must be smaller than End date");
+                    return;
+                }
+            }
             if (name === 'endDate') {
                 var startDate = new Date(inputs.startDate);
                 var endDate = new Date(value);
                 if (endDate <= startDate) {
-                    error("End date must be greater than Start date!");
+                    error("End date must be greater than Start date");
                     return;
                 }
             }
             setInputs(prevState => ({...prevState, [name]: value}));
-            info(value);
         }
         else {
+            if (e.label === 'Resignation') {
+                setDisableDates(true);
+            }
+            else if (disableDates) {
+                setDisableDates(false);
+            }
             setInputs(prevState => ({...prevState, 'type': e.value, 'typeName': e.label}));
+        }
+    }
+
+    function handleSubmit() {
+        if (inputs.typeName === 'Resignation') {
+            setInputs(prevState => ({...prevState, 'startDate': '', 'endDate': ''}));
         }
     }
 
@@ -80,16 +107,16 @@ function SubmitForm() {
                     options={options}/>
                 </div>
             </div>
-            <div class="row my-2">
+            <div class="row my-2" hidden={disableDates}>
                 <div class="col-6">
                     <label className="my-2">Start Date</label>
                     <input type="date" class="form-control" id="" name="startDate" value={inputs.startDate} onChange={handleInputChange}
-                    placeholder="New project's name" required/>
+                    placeholder="--/--/----" required/>
                 </div>
                 <div class="col-6">
                     <label className="my-2">End Date</label>
                     <input type="date" class="form-control" id="" name="endDate" value={inputs.endDate} onChange={handleInputChange}
-                    placeholder="Reasonings" required/>
+                    placeholder="--/--/----" required/>
                 </div>
             </div>
             
@@ -97,7 +124,7 @@ function SubmitForm() {
                 <div class="col-12">
                     <label htmlFor="newPrjDescription" className="my-2">Reason</label>
                     <textarea type="text" class="form-control" rows='3' id="newPrjDescription" name="description" value={inputs.description} onChange={handleInputChange}
-                    placeholder="New project's description" required/>
+                    placeholder="Reason" required/>
                 </div>
             </div>
         </form>
