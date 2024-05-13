@@ -60,9 +60,8 @@ function SideBar() {
             {isHRMenuOpen && (
             <div className="nav-dropdown-content">
             <Nav.Link as={Link} to="/submit-form">Submit Form</Nav.Link>
-            <Nav.Link as={Link} to="/HRSummary">Submit Form</Nav.Link>
-                <div as={Link} to="/submit-form">Placeholder 2</div>
-                <div as={Link} to="/submit-form">Placeholder 3</div>
+            <Nav.Link as={Link} to="/HRSummary">HR Summary</Nav.Link>
+            <Nav.Link as={Link} to="/MyContracts">My Contracts</Nav.Link>
             </div>
             )}
         </div>

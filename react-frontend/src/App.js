@@ -7,6 +7,7 @@ import Operations from './components/operations/Operations';
 import ProjectInfo from './components/operations/ProjectInfo';
 import SubmitForm from './components/hr/SubmitForm';
 import HRSummary from './components/hr/HRSummary';
+import MyContracts from './components/hr/MyContracts';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
         <Route path="/operations/project/:id" element={<ProjectInfo/>} />
         <Route path="/submit-form" element={<SubmitForm/>}/>
         <Route path="/HRSummary" element={<HRSummary/>}/>
+        <Route path='/MyContracts' element={<MyContracts/>}/>
       </Routes>
       </BrowserRouter>
     </>

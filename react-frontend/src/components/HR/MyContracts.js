@@ -1,14 +1,13 @@
 import React from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useEffect, useState } from 'react';
-import NewProjectModal from "./NewProjectModal";
 import { dateFormat } from "../../utils/DateHelper";
 import TopBar from "../TopBar";
 import SideBar from "../SideBar";
 import '../../css/sidebar.css';
 import Notify, {success, loading, dismiss} from "../../utils/Notify";
  
-function Contracts() {
+function MyContracts() {
 
     function contractsDetails(id) {
         // navigate('/operations/project/' + id);
@@ -22,7 +21,6 @@ function Contracts() {
         <SideBar/>
         <TopBar/>
         <div class="content container pt-3 px-4">
-            <NewProjectModal show={newPrjModalShow} onHide={() => setNewPrjModalShow(false)}/>
             <table class="table-clickable table table-hover table-collapsed" id="project-table" style={{width:'100%'}}>
             <thead class="table-primary">
                 <tr>
@@ -45,22 +43,6 @@ function Contracts() {
                         </button>
                     </td>
                 </tr> */}
-                {projects.map(p=>(
-                    <tr key={p.id} onClick={() => projectDetails(p.id)}>
-                        <td>
-                            {/* <Link to={'/operations/project/' + p.id} className="text-decoration-none" 
-                        style={{display: 'inline-block', height: '100%', width: '100%'}}> */}
-                            {p.name}
-                            {/* </Link> */}
-                            </td>
-                        <td>{p.ownerName}</td>
-                        <td>{p.statusName}</td>
-                        <td>{dateFormat(p.dueDate)}</td>
-                        <td>{p.description}</td>
-                        <td><button type="button" class="btn btn-primary bi bi-trash delete-prj-btn"
-                            onClick={(e) => deleteProject(e, p.id, p.name)}></button></td>
-                    </tr>
-                ))}
             </tbody>
             </table>
         </div>
@@ -68,4 +50,4 @@ function Contracts() {
     );
 };
  
-export default Contracts;
+export default MyContracts;

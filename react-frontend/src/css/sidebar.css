@@ -55,23 +55,46 @@
     padding: 0.5rem 1rem;
     }
     
-    .nav-dropdown-title a:hover{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
-    }
-    
-    .nav-dropdown-content a:hover{
-    display: none;
-    flex-direction: column;
-    padding-left: 1rem;
+    .nav-dropdown-title {
+      margin: 0;
+      padding: 0;
+  
+      width: 100%;
+      background-color: #f1f1f1;
+    cursor: pointer; 
     background-color: #0d6efd;
     color: white;
+    }
+    
+    .nav-dropdown-title:hover {
+        background-color: #538ae2;
+      color: white;
 
     }
     
-    /* When the dropdown is open, display the content */
+    .nav-dropdown-content {
+    max-height: 0; 
+    overflow: hidden;
+    flex-direction: column;
+    padding-left: 1rem;
+    opacity: 0;
+    transition: opacity 0.3s, max-height 0.3s ease-out;
+    }
+    
+    .nav-dropdown-content a {
+    cursor: pointer; 
+    padding: 1px 16px;
+    text-decoration: none; 
+    color: white; 
+    }
+    
+    .nav-dropdown-content a:hover {
+      background-color: #538ae2;
+      color: white;
+    }
+    
     .nav-dropdown-container.active .nav-dropdown-content {
-    display: flex;
+    max-height: 500px; 
+    transition: opacity 0.3s, max-height 0.3s ease-in; ;
+    opacity: 1;
     }
