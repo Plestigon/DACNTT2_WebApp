@@ -106,8 +106,7 @@ function SubmitForm() {
         })
         .then(result=>result.json())
         .then((result)=>{
-            console.log(result);
-            if (result.status === 200) {
+            if (result.statusCode === 200) {
                 navigate("/hr/my-forms?submitted=true");
             }
         })

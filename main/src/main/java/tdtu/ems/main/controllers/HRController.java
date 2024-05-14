@@ -38,7 +38,7 @@ public class HRController {
     public ResponseEntity<BaseResponse> submitForm(@RequestBody FormSubmitDto entry) {
         try {
             BaseResponse result = _webClient.build().post()
-                    .uri("http://operation-management-service/api/operations/projects")
+                    .uri("http://hr-service/api/hr/form")
                     .bodyValue(entry)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)

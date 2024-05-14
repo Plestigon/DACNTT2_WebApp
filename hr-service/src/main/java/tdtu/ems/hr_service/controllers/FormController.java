@@ -27,14 +27,14 @@ public class FormController {
         }
     }
 
-    @GetMapping("hr/contract/{id}")
-    public BaseResponse getContractsByEmployeeId(@PathVariable int id) {
-        try {
-            List<Form> res = _formService.getFormsByEmployeeId(id);
-            return new BaseResponse(res, 200, "OK");
-        }
-        catch (Exception e) {
-            return new BaseResponse(null, 500, e.getMessage());
-        }
-    }
+//    @GetMapping("hr/form/{id}")
+//    public BaseResponse getContractsByEmployeeId(@PathVariable int id) {
+//        try {
+//            List<Form> res = _formService.getFormsByEmployeeId(id);
+//            return new BaseResponse(res, 200, "OK");
+//        }
+//        catch (Exception e) {
+//            return new BaseResponse(null, 500, e.getMessage());
+//        }
+//    }
 }
