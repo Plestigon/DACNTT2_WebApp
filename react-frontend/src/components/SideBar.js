@@ -59,7 +59,7 @@ function SideBar() {
             </div>
         </div>
         <div className={`nav-dropdown-content ${isHRMenuOpen ? 'active' : ''}`}>
-            <Nav.Link as={Link} to="/submit-form">Submit Form</Nav.Link>
+            <Nav.Link as={Link} to="/hr/submit-form">Submit Form</Nav.Link>
             <Nav.Link as={Link} to="/hr/summary">HR Summary</Nav.Link>
             <Nav.Link as={Link} to="/hr/contracts">My Contracts</Nav.Link>
         </div>
@@ -70,10 +70,10 @@ function SideBar() {
             </div>
         </div>
         <div className={`nav-dropdown-content ${isFinanceMenuOpen ? 'active' : ''}`}>
-            <Nav.Link as={Link} to="/submit-form">Accounts</Nav.Link>
-            <Nav.Link as={Link} to="/submit-form">Contacts</Nav.Link>
-            <Nav.Link as={Link} to="/submit-form">Deals</Nav.Link>
-            <Nav.Link as={Link} to="/submit-form">Leads</Nav.Link>
+            <Nav.Link as={Link} to="/hr/submit-form">Accounts</Nav.Link>
+            <Nav.Link as={Link} to="/hr/submit-form">Contacts</Nav.Link>
+            <Nav.Link as={Link} to="/hr/submit-form">Deals</Nav.Link>
+            <Nav.Link as={Link} to="/hr/submit-form">Leads</Nav.Link>
         </div>
 
     </Nav>

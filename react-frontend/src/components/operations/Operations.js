@@ -7,10 +7,16 @@ import TopBar from "../TopBar";
 import SideBar from "../SideBar";
 import '../../css/sidebar.css';
 import Notify, {success, error, loading, dismiss} from "../../utils/Notify";
+import DeleteConfirmModal from "./DeleteConfirmModal";
  
 function Operations() {
     const[projects,setProjects] = useState([]);
     const[newPrjModalShow, setNewPrjModalShow] = useState(false);
+    const[showDeleteModal, setShowDeleteModal] = useState(false);
+    const[deleteTarget, setDeleteTarget] = useState({
+        id: 0,
+        name: ''
+    });
 
     useEffect(()=>{
         fetchProjectData();
@@ -28,31 +34,34 @@ function Operations() {
         })
         .catch (e => {
             console.log("ERROR_fetchProjectData: " + e);
+            dismiss(toastId);
             error("Load project data failed");
         })
     }
     
-    function deleteProject(e, id, name) {
+    function deleteBtnClick(e, id, name) {
         e.stopPropagation();
-        try {
-            if (window.confirm("Are you sure you want to delete project \"" + name + "\"?")) {
-                fetch("http://localhost:8080/operations/project?id=" + id, {
-                    method:"DELETE"
-                })
-                .then((response) => {
-                    if (response.ok) {
-                        success("Project deleted");
-                        fetchProjectData();
-                    }
-                    else {
-                        console.log(response);
-                    }
-                })
+        setDeleteTarget({'id': id, 'name': name});
+        setShowDeleteModal(true);
+    }
+
+    function deleteProject() {
+        setShowDeleteModal(false);
+        if (deleteTarget.id === null || deleteTarget.id <= 0) {return;}
+        fetch("http://localhost:8080/operations/project?id=" + deleteTarget.id, {
+            method:"DELETE"
+        })
+        .then((response) => {
+            console.log(response);
+            if (response.ok) {
+                success("Project deleted");
+                fetchProjectData();
             }
-        }
-        catch(error) {
-            console.log(error);
-        }
+        })
+        .catch(e => {
+            console.log("ERROR_deleteProject: " + e);
+        })
+        setDeleteTarget({'id': 0, 'name': ''});
     }
 
     function projectDetails(id) {
@@ -66,11 +75,11 @@ function Operations() {
         <Notify/>
         <SideBar/>
         <TopBar/>
-        <div class="content container pt-3 px-4">
+        <div class="content container">
             <button type="button" class="btn btn-outline-primary my-2" id="newPrjBtn" onClick={() => setNewPrjModalShow(true)}>
                 <i class="bi bi-plus-circle me-2"></i>Create New Project
             </button>
-            <NewProjectModal show={newPrjModalShow} onHide={() => setNewPrjModalShow(false)}/>
+            <NewProjectModal show={newPrjModalShow} onHide={() => setNewPrjModalShow(false)} reload={fetchProjectData}/>
             <table class="table-clickable table table-hover table-collapsed" id="project-table" style={{width:'100%'}}>
             <thead class="table-primary">
                 <tr>
@@ -107,12 +116,14 @@ function Operations() {
                         <td>{dateFormat(p.dueDate)}</td>
                         <td>{p.description}</td>
                         <td><button type="button" class="btn btn-primary bi bi-trash delete-prj-btn"
-                            onClick={(e) => deleteProject(e, p.id, p.name)}></button></td>
+                            onClick={(e) => deleteBtnClick(e, p.id, p.name)}></button></td>
                     </tr>
                 ))}
             </tbody>
             </table>
         </div>
+        <DeleteConfirmModal show={showDeleteModal} onHide={() => {setShowDeleteModal(false); setDeleteTarget({'id': 0, 'name': ''})}} 
+        message={"Delete project \"" + deleteTarget.name + "\"?"} delete={deleteProject}/>
     </div>
     );
 };

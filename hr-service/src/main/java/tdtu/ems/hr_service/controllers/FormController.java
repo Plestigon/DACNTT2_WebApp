@@ -17,10 +17,10 @@ public class FormController {
     }
 
     @PostMapping("hr/form")
-    public BaseResponse addContract(@RequestBody Form entry) {
+    public BaseResponse submitForm(@RequestBody Form entry) {
         try {
-            Integer res = _formService.addForm(entry);
-            return new BaseResponse(res, 200, "OK");
+            //Integer res = _formService.addForm(entry);
+            return new BaseResponse(null, 200, "OK");
         }
         catch (Exception e) {
             return new BaseResponse(null, 500, e.getMessage());

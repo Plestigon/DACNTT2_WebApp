@@ -3,12 +3,12 @@ package tdtu.ems.main.controllers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
+import tdtu.ems.core_service.models.BaseResponse;
 import tdtu.ems.core_service.models.Enums;
 import tdtu.ems.main.models.SelectOptionsResult;
+import tdtu.ems.main.models.hr.FormSubmitDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,6 @@ import java.util.List;
 @RequestMapping("/")
 public class HRController {
     private WebClient.Builder _webClient;
-
 
     public HRController(WebClient.Builder webClient) {
         _webClient = webClient;
@@ -32,5 +31,22 @@ public class HRController {
             res.add(new SelectOptionsResult(types[i].name, types[i].ordinal()));
         }
         return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
+    @PostMapping("hr/submit-form")
+    @ResponseBody
+    public ResponseEntity<BaseResponse> submitForm(@RequestBody FormSubmitDto entry) {
+        try {
+            BaseResponse result = _webClient.build().post()
+                    .uri("http://operation-management-service/api/operations/projects")
+                    .bodyValue(entry)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

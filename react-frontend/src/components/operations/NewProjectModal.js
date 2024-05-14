@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Select from 'react-select';
 import { getDefaultDueDate } from "../../utils/DateHelper";
+import { success } from "../../utils/Notify";
 
 function NewProjectModal(props) {
     const [inputs, setInputs] = useState({
@@ -55,7 +56,7 @@ function NewProjectModal(props) {
 
     function handleSubmitProject(e) {
         e.preventDefault();
-        console.log(inputs);
+        // console.log(inputs);
         fetch("http://localhost:8080/operations/project",{
             method:"POST",
             body: JSON.stringify({
@@ -69,8 +70,9 @@ function NewProjectModal(props) {
         })
         .then((result)=>{
             if (result.ok) {
-                alert("New project added successfully!");
-                window.location.reload(false);
+                success("New project added successfully!");
+                props.onHide();
+                props.reload();
             }
             console.log(result);
         })
@@ -80,7 +82,7 @@ function NewProjectModal(props) {
     }
 
     return (
-        <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
+        <Modal show={props.show} onHide={props.onHide} reload={props.reload} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
             <Modal.Header closeButton>
                 <Modal.Title class="w-100" id="contained-modal-title-vcenter">
                     <p class="h4 text-center">Create New Project</p>

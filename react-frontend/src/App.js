@@ -8,6 +8,7 @@ import ProjectInfo from './components/operations/ProjectInfo';
 import SubmitForm from './components/hr/SubmitForm';
 import HRSummary from './components/hr/HRSummary';
 import MyContracts from './components/hr/MyContracts';
+import MyForms from './components/hr/MyForms';
 
 function App() {
   return (
@@ -33,7 +34,8 @@ function App() {
         <Route path="/" element={<Home/>}/>
         <Route path="/operations" element={<Operations/>}/>
         <Route path="/operations/project/:id" element={<ProjectInfo/>} />
-        <Route path="/submit-form" element={<SubmitForm/>}/>
+        <Route path="/hr/submit-form" element={<SubmitForm/>}/>
+        <Route path="/hr/my-forms" element={<MyForms/>}/>
         <Route path="/hr/summary" element={<HRSummary/>}/>
         <Route path="/hr/contracts" element={<MyContracts/>}/>
       </Routes>

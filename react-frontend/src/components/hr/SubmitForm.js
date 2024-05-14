@@ -7,6 +7,7 @@ import Select from 'react-select';
 import { Button } from "react-bootstrap";
 import Notify, { info, error } from "../../utils/Notify";
 import { getDefaultStartDate, getDefaultEndDate } from "../../utils/DateHelper";
+import { useNavigate } from "react-router-dom";
 
 function SubmitForm() {
     // var defaultStartDate = new Date();
@@ -15,13 +16,14 @@ function SubmitForm() {
     // defaultEndDate.setDate(defaultEndDate.getDate() + 2);
     // console.log(defaultStartDate);
     // console.log(defaultEndDate);
+    const navigate = useNavigate();
+
     const [inputs, setInputs] = useState({
         type: 0,
         typeName: '',
-        createDate: '',
         startDate: getDefaultStartDate(),
         endDate: getDefaultEndDate(),
-        reason:''
+        reason: ''
     });
     const [options, setOptions] = useState([
         // {label: 'Paid Leave', value: 1},
@@ -90,6 +92,28 @@ function SubmitForm() {
         if (inputs.typeName === 'Resignation') {
             setInputs(prevState => ({...prevState, 'startDate': '', 'endDate': ''}));
         }
+        console.log(inputs);
+        fetch("http://localhost:8080/hr/submit-form",{
+            method:"POST",
+            body: JSON.stringify({
+                'type': inputs.type,
+                'typeName': inputs.typeName,
+                'startDate': inputs.startDate,
+                'endDate': inputs.endDate,
+                'reason': inputs.reason
+            }),
+            headers: { "Content-type": "application/json; charset=UTF-8" }
+        })
+        .then(result=>result.json())
+        .then((result)=>{
+            console.log(result);
+            if (result.status === 200) {
+                navigate("/hr/my-forms?submitted=true");
+            }
+        })
+        .catch (e => {
+            console.log("ERROR_handleSubmitForm: " + e);
+        })
     }
 
     return (
@@ -123,13 +147,13 @@ function SubmitForm() {
             <div class="row my-2">
                 <div class="col-12">
                     <label htmlFor="newPrjDescription" className="my-2">Reason</label>
-                    <textarea type="text" class="form-control" rows='3' id="newPrjDescription" name="description" value={inputs.description} onChange={handleInputChange}
+                    <textarea type="text" class="form-control" rows='3' name="reason" value={inputs.description} onChange={handleInputChange}
                     placeholder="Reason" required/>
                 </div>
             </div>
         </form>
         <div class="row my-5 d-flex justify-content-center">
-            <Button style={{width: '200px', height: '50px'}}>Submit</Button>
+            <Button style={{width: '200px', height: '50px'}} onClick={handleSubmit}>Submit</Button>
         </div>
         </div>
     </div>
