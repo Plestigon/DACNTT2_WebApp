@@ -2,7 +2,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import React from "react";
-// import '../css/home.css';
+// import '.../css/home.css'
 import SideBar from '../SideBar';
 import { Link } from "react-router-dom";
 import Nav from 'react-bootstrap/Nav';
@@ -15,9 +15,9 @@ function HRSummary() {
     <div>
         <SideBar/>
         <TopBar/>
-            <h3 align="center"> Summmary of Human Resources Information</h3>
-        <div class="content container pt-3 px-4">
-            <div class="flip-card" style={{maxWidth: '18rem'}}>
+            <h3 align="center" style={{marginBottom: '125px'}}> Summmary of Human Resources Information</h3>
+        <Row className="justify-content-center">
+            <div class="flip-card" style={{maxWidth: '18rem', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' }}>
                     <div class="flip-card-inner">
                         <div class="flip-card-front bg-success">
                             {/* <img src={require('../assets/Stocks.png')} class="card-img-top" alt="..." style={{width: '12rem'}}/> */}
@@ -28,7 +28,7 @@ function HRSummary() {
                         </div>
                     </div>
                 </div>
-                <div class="flip-card" style={{maxWidth: '18rem'}}>
+                <div class="flip-card" style={{maxWidth: '18rem', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' }}>
                     <div class="flip-card-inner">
                         <div class="flip-card-front bg-info">
                             {/* <img src={require('../assets/Cog.png')} class="card-img-top" alt="..." style={{width: '12rem'}}/> */}
@@ -39,7 +39,7 @@ function HRSummary() {
                         </div>
                     </div>
                 </div>
-                <div class="flip-card" style={{maxWidth: '18rem'}}>
+                <div class="flip-card" style={{maxWidth: '18rem', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' }}>
                     <div class="flip-card-inner">
                         <div class="flip-card-front bg-info">
                             {/* <img src={require('../assets/Cog.png')} class="card-img-top" alt="..." style={{width: '12rem'}}/> */}
@@ -50,7 +50,7 @@ function HRSummary() {
                         </div>
                     </div>
                 </div>
-    </div>
+        </Row>
     </div>
   );
 }
