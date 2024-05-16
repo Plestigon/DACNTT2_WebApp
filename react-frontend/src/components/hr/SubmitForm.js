@@ -121,7 +121,10 @@ function SubmitForm() {
     <SideBar/>
     <TopBar/>
     <div class="content container pt-3 px-3">
-        <div class="card text-dark bg-light mt-5" style={{marginLeft: '20%', marginRight: '20%'}}>
+        <div class="d-flex justify-content-end mb-2 px-5">
+            <Button onClick={() => navigate("/hr/my-forms")}><i class="bi bi-file-earmark-text"></i> My Forms</Button>
+        </div>
+        <div class="card text-dark bg-light" style={{marginLeft: '20%', marginRight: '20%'}}>
         <form class="newPrjForm w-75 mt-3 mx-auto">
             <div class="row my-2">
                 <div class="col-12">

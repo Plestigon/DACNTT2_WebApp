@@ -7,9 +7,11 @@ import SideBar from "../SideBar";
 import Notify, {success, error, loading, dismiss} from "../../utils/Notify";
 import "../../css/utils.css"
 import { Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
  
 function MyForms() {
     const [forms, setForms] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const query = new URLSearchParams(window.location.search);
@@ -49,7 +51,7 @@ function MyForms() {
         <TopBar/>
         <div class="content container">
             <div class="row mb-2 px-5">
-                <Button><i class ="bi bi-pen"></i> Write a form</Button>
+                <Button onClick={() => navigate("/hr/submit-form")}><i class ="bi bi-pen"></i> Write a form</Button>
             </div>
             <div class="card table-card table-responsive">
                 <table class="table-clickable table table-hover table-collapsed" id="project-table" style={{width:'100%'}}>
