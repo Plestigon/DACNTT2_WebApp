@@ -3,6 +3,7 @@ package tdtu.ems.hr_service.controllers;
 import org.springframework.web.bind.annotation.*;
 import tdtu.ems.core_service.models.BaseResponse;
 import tdtu.ems.hr_service.models.Contract;
+import tdtu.ems.hr_service.models.ContractResult;
 import tdtu.ems.hr_service.services.ContractService;
 
 import java.util.List;
@@ -27,10 +28,10 @@ public class ContractController {
         }
     }
 
-    @GetMapping("hr/contract/{id}")
+    @GetMapping("hr/contracts/{id}")
     public BaseResponse getContractsByEmployeeId(@PathVariable int id) {
         try {
-            List<Contract> res = _contractService.getContractsByEmployeeId(id);
+            List<ContractResult> res = _contractService.getContractsByEmployeeId(id);
             return new BaseResponse(res, 200, "OK");
         }
         catch (Exception e) {

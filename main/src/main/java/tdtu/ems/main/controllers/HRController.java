@@ -49,4 +49,36 @@ public class HRController {
             return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("hr/forms/{id}")
+    @ResponseBody
+    public ResponseEntity<BaseResponse> getForms(@PathVariable int id) {
+        try {
+            BaseResponse result = _webClient.build().get()
+                    .uri("http://hr-service/api/hr/forms/" + id)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("hr/contracts/{id}")
+    @ResponseBody
+    public ResponseEntity<BaseResponse> getContracts(@PathVariable int id) {
+        try {
+            BaseResponse result = _webClient.build().get()
+                    .uri("http://hr-service/api/hr/contracts/" + id)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

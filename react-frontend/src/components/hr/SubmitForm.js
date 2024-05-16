@@ -97,7 +97,7 @@ function SubmitForm() {
             method:"POST",
             body: JSON.stringify({
                 'type': inputs.type,
-                'typeName': inputs.typeName,
+                'ownerId': 1,
                 'startDate': inputs.startDate,
                 'endDate': inputs.endDate,
                 'reason': inputs.reason

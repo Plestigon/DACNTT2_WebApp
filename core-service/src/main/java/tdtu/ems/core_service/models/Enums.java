@@ -29,7 +29,7 @@ public class Enums {
         NotStarted("Not Started"),
         InProgress("In Progress"),
         Finished("Finished"),
-        Stopped("Stopped"),
+        Paused("Paused"),
         Cancelled("Cancelled");
         public final String name;
         ProjectStatus(String name) {this.name = name;}

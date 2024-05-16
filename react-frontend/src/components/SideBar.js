@@ -16,10 +16,16 @@ function SideBar() {
     const [isFinanceMenuOpen, setFinanceMenuOpen] = useState(false);
     
     const toggleHRMenu = () => {
+        if (!isHRMenuOpen) {
+            setFinanceMenuOpen(false);
+        }
         setHRMenuOpen(!isHRMenuOpen);
     };
     
     const toggleFinanceMenu = () => {
+        if (!isFinanceMenuOpen) {
+            setHRMenuOpen(false);
+        }
         setFinanceMenuOpen(!isFinanceMenuOpen);
     };
     
@@ -59,21 +65,22 @@ function SideBar() {
             </div>
         </div>
         <div className={`nav-dropdown-content ${isHRMenuOpen ? 'active' : ''}`}>
-            <Nav.Link as={Link} to="/hr/summary"><i class ="bi bi-building"></i>HR Summary</Nav.Link>
-            <Nav.Link as={Link} to="/hr/submit-form"><i class ="bi bi-pen"></i>Submit Form</Nav.Link>
+            <Nav.Link as={Link} to="/hr/summary"><i class ="bi bi-building"></i> HR Summary</Nav.Link>
+            <Nav.Link as={Link} to="/hr/my-forms"><i class="bi bi-file-earmark-text"></i> My Forms</Nav.Link>
+            <Nav.Link as={Link} to="/hr/submit-form"><i class ="bi bi-pen"></i> Submit Form</Nav.Link>
             <Nav.Link as={Link} to="/hr/contracts"><i class ="bi bi-newspaper"></i> My Contracts</Nav.Link>
         </div>
 
         <div className="nav-dropdown-container">
             <div className="nav-dropdown-title" onClick={toggleFinanceMenu}>
-            <i className="bi bi-coin"></i> Finance <i className={isFinanceMenuOpen ? "bi bi-caret-up-fill" : "bi bi-caret-down-fill"}></i>
+            <i class="bi bi-graph-up-arrow"></i> Finance <i className={isFinanceMenuOpen ? "bi bi-caret-up-fill" : "bi bi-caret-down-fill"}></i>
             </div>
         </div>
         <div className={`nav-dropdown-content ${isFinanceMenuOpen ? 'active' : ''}`}>
-            <Nav.Link as={Link} to="/hr/submit-form"><i class ="bi bi-wallet"></i>Accounts</Nav.Link>
-            <Nav.Link as={Link} to="/hr/submit-form"><i class ="bi bi-person-bounding-box"></i>Contacts</Nav.Link>
-            <Nav.Link as={Link} to="/hr/submit-form"><i class ="bi bi-hand-thumbs-up"></i>Deals</Nav.Link>
-            <Nav.Link as={Link} to="/hr/submit-form"><i class ="bi bi-fingerprint"></i>Leads</Nav.Link>
+            <Nav.Link as={Link} to="/hr/submit-form"><i class ="bi bi-wallet"></i> Accounts</Nav.Link>
+            <Nav.Link as={Link} to="/hr/submit-form"><i class ="bi bi-person-bounding-box"></i> Contacts</Nav.Link>
+            <Nav.Link as={Link} to="/hr/submit-form"><i class ="bi bi-hand-thumbs-up"></i> Deals</Nav.Link>
+            <Nav.Link as={Link} to="/hr/submit-form"><i class ="bi bi-fingerprint"></i> Leads</Nav.Link>
         </div>
 
     </Nav>

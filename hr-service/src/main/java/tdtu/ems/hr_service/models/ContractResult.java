@@ -1,27 +1,34 @@
 package tdtu.ems.hr_service.models;
 
+import tdtu.ems.core_service.models.Enums;
+
 import java.util.Date;
 
-public class Contract {
+public class ContractResult {
     private int id;
     private String code;
     private int ownerId;
     private int type;   //ContractType
+    private String typeName;
     private int department;
+    private String departmentName;
     private Date timeStart;
     private Date timeEnd;
     private int status; //ContractStatus
+    private String statusName;
 
-    public Contract() {}
-
-    public Contract(String code, int ownerId, int type, int department, Date timeStart, Date timeEnd, int status) {
-        this.code = code;
-        this.ownerId = ownerId;
-        this.type = type;
-        this.department = department;
-        this.timeStart = timeStart;
-        this.timeEnd = timeEnd;
-        this.status = status;
+    public ContractResult(Contract c) {
+        this.id = c.getId();
+        this.code = c.getCode();
+        this.type = c.getType();
+        this.typeName = Enums.ContractType.values()[c.getType()].name;
+        this.department = c.getDepartment();
+        this.ownerId = c.getOwnerId();
+        this.departmentName = "DEPARTMENT_NAME";
+        this.timeStart = c.getTimeStart();
+        this.timeEnd = c.getTimeEnd();
+        this.status = c.getStatus();
+        this.statusName = Enums.ContractStatus.values()[c.getStatus()].name();
     }
 
     public int getId() {
@@ -48,12 +55,28 @@ public class Contract {
         this.type = type;
     }
 
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
+
     public int getDepartment() {
         return department;
     }
 
     public void setDepartment(int department) {
         this.department = department;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
     }
 
     public Date getTimeStart() {
@@ -78,6 +101,14 @@ public class Contract {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
     }
 
     public int getOwnerId() {

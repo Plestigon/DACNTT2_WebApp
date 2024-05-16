@@ -2,12 +2,17 @@ package tdtu.ems.hr_service.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import tdtu.ems.core_service.models.Enums;
 import tdtu.ems.core_service.utils.Logger;
 import tdtu.ems.hr_service.models.Form;
+import tdtu.ems.hr_service.models.FormResult;
 import tdtu.ems.hr_service.repositories.ContractRepository;
 import tdtu.ems.hr_service.repositories.FormRepository;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @Service
 public class FormService implements IFormService {
@@ -22,14 +27,31 @@ public class FormService implements IFormService {
     }
 
     @Override
-    public Integer addForm(Form entry) {
-        Integer res = _formRepository.addForm(entry);
-        return res;
+    public Integer addForm(Form entry) throws ExecutionException, InterruptedException {
+        try {
+            Integer result = _formRepository.addForm(entry);
+            return result;
+        }
+        catch (Exception e) {
+            _logger.Error("addForm", e.getMessage());
+            throw e;
+        }
     }
 
     @Override
-    public List<Form> getFormsByEmployeeId(int id) {
-        List<Form> res = _formRepository.getFormsByEmployeeId(id);
-        return res;
+    public List<FormResult> getFormsByEmployeeId(int id) throws ExecutionException, InterruptedException {
+        try {
+            List<Form> forms = _formRepository.getFormsByEmployeeId(id);
+            List<FormResult> result = new ArrayList<>();
+            for(Form form : forms) {
+                result.add(new FormResult(form));
+            }
+            result.sort(Comparator.comparing(FormResult::getCreateDate));
+            return result;
+        }
+        catch (Exception e) {
+            _logger.Error("getFormsByEmployeeId", e.getMessage());
+            throw e;
+        }
     }
 }

@@ -4,16 +4,16 @@ import java.util.Date;
 
 public class FormSubmitDto {
     private int type;
-    private String typeName;
+    private int ownerId;
     private Date startDate;
     private Date endDate;
     private String reason;
 
     public FormSubmitDto() {}
 
-    public FormSubmitDto(int type, String typeName, Date startDate, Date endDate, String reason) {
+    public FormSubmitDto(int type, int ownerId, Date startDate, Date endDate, String reason) {
         this.type = type;
-        this.typeName = typeName;
+        this.ownerId = ownerId;
         this.startDate = startDate;
         this.endDate = endDate;
         this.reason = reason;
@@ -25,14 +25,6 @@ public class FormSubmitDto {
 
     public void setType(int type) {
         this.type = type;
-    }
-
-    public String getTypeName() {
-        return typeName;
-    }
-
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
     }
 
     public Date getStartDate() {
@@ -57,5 +49,13 @@ public class FormSubmitDto {
 
     public void setReason(String reason) {
         this.reason = reason;
+    }
+
+    public int getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(int ownerId) {
+        this.ownerId = ownerId;
     }
 }

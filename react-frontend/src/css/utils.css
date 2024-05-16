@@ -1,0 +1,73 @@
+
+.card.status-card {
+    text-align: center;
+    border: none;
+    padding: 3px;
+}
+/* Form status card */
+/* Waiting for approval */
+.card.status-card.form-status-1 {
+    background-color: orange;
+    color: white;
+}
+/* Approved */
+.card.status-card.form-status-2 {
+    background-color: green;
+    color: white;
+}
+/* Rejected */
+.card.status-card.form-status-3 {
+    background-color: red;
+    color: white;
+}
+
+/* Project status card */
+/* Not started */
+.card.status-card.project-status-1 {
+    background-color: gray;
+    color: white;
+}
+/* In Progress */
+.card.status-card.project-status-2 {
+    background-color: green;
+    color: white;
+}
+/* Finished */
+.card.status-card.project-status-3 {
+    background-color: blue;
+    color: white;
+}
+/* Stopped */
+.card.status-card.project-status-4 {
+    background-color: orange;
+    color: white;
+}
+/* Cancelled */
+.card.status-card.project-status-5 {
+    background-color: red;
+    color: white;
+}
+
+/* Contract status card */
+/* Inactive */
+.card.status-card.contract-status-1 {
+    background-color: gray;
+    color: white;
+}
+/* Active */
+.card.status-card.contract-status-2 {
+    background-color: green;
+    color: white;
+}
+/* Ended */
+.card.status-card.contract-status-3 {
+    background-color: red;
+    color: white;
+}
+
+
+.card.table-card {
+    height: calc(100vh - 120px);
+    margin: 0px 40px;
+    padding: 20px;
+}

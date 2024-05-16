@@ -17,7 +17,7 @@ public class AssociateRepository implements IAssociateRepository {
     private final Logger<AssociateRepository> _logger;
 
     public AssociateRepository() {
-        _db = FirestoreClient.getFirestore();;
+        _db = FirestoreClient.getFirestore();
         _logger = new Logger<>(AssociateRepository.class);
     }
 

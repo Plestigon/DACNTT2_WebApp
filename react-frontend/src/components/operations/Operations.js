@@ -2,12 +2,13 @@ import React from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useEffect, useState } from 'react';
 import NewProjectModal from "./NewProjectModal";
-import { dateFormat } from "../../utils/DateHelper";
+import { dateTimeFormat } from "../../utils/DateHelper";
 import TopBar from "../TopBar";
 import SideBar from "../SideBar";
 import '../../css/sidebar.css';
 import Notify, {success, error, loading, dismiss} from "../../utils/Notify";
 import DeleteConfirmModal from "./DeleteConfirmModal";
+import { Button } from "react-bootstrap";
  
 function Operations() {
     const[projects,setProjects] = useState([]);
@@ -76,51 +77,50 @@ function Operations() {
         <SideBar/>
         <TopBar/>
         <div class="content container">
-            <button type="button" class="btn btn-outline-primary my-2" id="newPrjBtn" onClick={() => setNewPrjModalShow(true)}>
-                <i class="bi bi-plus-circle me-2"></i>Create New Project
-            </button>
             <NewProjectModal show={newPrjModalShow} onHide={() => setNewPrjModalShow(false)} reload={fetchProjectData}/>
-            <table class="table-clickable table table-hover table-collapsed" id="project-table" style={{width:'100%'}}>
-            <thead class="table-primary">
-                <tr>
-                    <th scope="col">Project</th>
-                    <th scope="col">Owner</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Due date</th>
-                    <th scope="col" style={{width:'30%'}}>Description</th>
-                    <th scope="col" style={{width:'10%'}}></th>
-                </tr>
-            </thead>
-            <tbody>
-                {/* <tr>
-                    <td>Project 1</td>
-                    <td>Owner 1</td>
-                    <td>Status 1</td>
-                    <td>Due date 1</td>
-                    <td>Description 1 Description 1 Description 1 Description 1 Description 1 Description 1 Description 1 Description 1 </td>
-                    <td>
-                        <button type="button" class="btn btn-primary bi bi-trash delete-prj-btn" style={{float: 'right'}}>
-                        </button>
-                    </td>
-                </tr> */}
-                {projects.map(p=>(
-                    <tr key={p.id} onClick={() => projectDetails(p.id)}>
-                        <td>
-                            {/* <Link to={'/operations/project/' + p.id} className="text-decoration-none" 
-                        style={{display: 'inline-block', height: '100%', width: '100%'}}> */}
-                            {p.name}
-                            {/* </Link> */}
-                            </td>
-                        <td>{p.ownerName}</td>
-                        <td>{p.statusName}</td>
-                        <td>{dateFormat(p.dueDate)}</td>
-                        <td>{p.description}</td>
-                        <td><button type="button" class="btn btn-primary bi bi-trash delete-prj-btn"
-                            onClick={(e) => deleteBtnClick(e, p.id, p.name)}></button></td>
+            <div class="row mb-2 px-5">
+                <Button class="btn btn-primary" id="newPrjBtn" onClick={() => setNewPrjModalShow(true)}>
+                    <i class="bi bi-plus-circle me-2"></i>Create New Project
+                </Button>
+            </div>
+            <div class="card table-card table-responsive">
+                <table class="table-clickable table table-hover table-collapsed" id="project-table" style={{width:'100%'}}>
+                <thead class="table-primary">
+                    <tr>
+                        <th scope="col">Project</th>
+                        <th scope="col">Owner</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Due date</th>
+                        <th scope="col" style={{width:'30%'}}>Description</th>
+                        <th scope="col" style={{width:'10%'}}></th>
                     </tr>
-                ))}
-            </tbody>
-            </table>
+                </thead>
+                <tbody>
+                    {/* <tr>
+                        <td>Project 1</td>
+                        <td>Owner 1</td>
+                        <td>Status 1</td>
+                        <td>Due date 1</td>
+                        <td>Description 1 Description 1 Description 1 Description 1 Description 1 Description 1 Description 1 Description 1 </td>
+                        <td>
+                            <button type="button" class="btn btn-primary bi bi-trash delete-prj-btn" style={{float: 'right'}}>
+                            </button>
+                        </td>
+                    </tr> */}
+                    {projects.map(p=>(
+                        <tr key={p.id} onClick={() => projectDetails(p.id)}>
+                            <td>{p.name}</td>
+                            <td>{p.ownerName}</td>
+                            <td><div class={"card status-card project-status-" + p.status}>{p.statusName}</div></td>
+                            <td>{dateTimeFormat(p.dueDate)}</td>
+                            <td>{p.description}</td>
+                            <td><button type="button" class="btn btn-primary bi bi-trash delete-prj-btn"
+                                onClick={(e) => deleteBtnClick(e, p.id, p.name)}></button></td>
+                        </tr>
+                    ))}
+                </tbody>
+                </table>
+            </div>
         </div>
         <DeleteConfirmModal show={showDeleteModal} onHide={() => {setShowDeleteModal(false); setDeleteTarget({'id': 0, 'name': ''})}} 
         message={"Delete project \"" + deleteTarget.name + "\"?"} delete={deleteProject}/>

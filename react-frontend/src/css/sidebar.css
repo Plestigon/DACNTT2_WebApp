@@ -35,7 +35,6 @@ div.content {
   padding-left: 15px;
   padding-top: 15px;
   width: auto;
-  /* height: 1000px; */
 }
 
 .sidebar .nav-link, .sidebar .nav-item {
@@ -98,6 +97,7 @@ div.content {
   transition: opacity 0.5s, max-height 0.5s ease-in;
   animation: slideDown 300ms ease-in-out forwards;
   transform-origin: top center;
+
 }
 @keyframes slideDown {
   0% {
@@ -124,9 +124,10 @@ div.content {
 
 .nav-dropdown-content a {
   cursor: pointer; 
-  padding: 5px 50px;
+  padding-top: 5px;
+  padding-left: 50px;
   text-decoration: none; 
-  color: white; 
+  color: white;
 }
 
 .nav-dropdown-content a:hover {

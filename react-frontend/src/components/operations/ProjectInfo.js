@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Select from 'react-select';
-import { handleDate, dateFormat } from "../../utils/DateHelper";
+import { handleDate, dateTimeFormat } from "../../utils/DateHelper";
 import "react-datepicker/dist/react-datepicker.css";
 import { Button } from "react-bootstrap";
 import AddMemberModal from "./AddMemberModal";
@@ -256,7 +256,7 @@ const ProjectInfo = () => {
                     <div class="card mx-3 p-2" style={{width: '90%'}}>
                         <div class="d-flex">
                             <div class="fw-bold">{p.writerName}</div>
-                            <div class="ms-auto fst-italic"><i class="bi bi-clock"></i> {dateFormat(p.createTime)}</div>
+                            <div class="ms-auto fst-italic"><i class="bi bi-clock"></i> {dateTimeFormat(p.createTime)}</div>
                         </div>
                         <hr style={{marginTop: '1px', marginBottom: '3px'}}/>
                         <div class="d-flex">

@@ -1,29 +1,36 @@
 package tdtu.ems.hr_service.models;
 
+import tdtu.ems.core_service.models.Enums;
+
 import java.util.Date;
 
-public class Form {
+public class FormResult {
     private int id;
     private int ownerId;
     private int type;   //FormType
+    private String typeName;
     private Date createDate;
     private Date startDate;
     private Date endDate;
     private String reason;
     private int status; //FormStatus
+    private String statusName;
     private String notes;
 
-    public Form() { }
+    public FormResult() {}
 
-    public Form(int ownerId, int type, Date createDate, Date startDate, Date endDate, String reason, int status, String notes) {
-        this.ownerId = ownerId;
-        this.type = type;
-        this.createDate = createDate;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.reason = reason;
-        this.status = status;
-        this.notes = notes;
+    public FormResult(Form f) {
+        this.id = f.getId();
+        this.ownerId = f.getOwnerId();
+        this.type = f.getType();
+        this.typeName = Enums.FormType.values()[f.getType()].name;
+        this.createDate = f.getCreateDate();
+        this.startDate = f.getStartDate();
+        this.endDate = f.getEndDate();
+        this.reason = f.getReason();
+        this.status = f.getStatus();
+        this.statusName = Enums.FormStatus.values()[f.getStatus()].name;
+        this.notes = f.getNotes();
     }
 
     public int getId() {
@@ -34,12 +41,28 @@ public class Form {
         this.id = id;
     }
 
+    public int getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(int ownerId) {
+        this.ownerId = ownerId;
+    }
+
     public int getType() {
         return type;
     }
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 
     public Date getCreateDate() {
@@ -82,19 +105,19 @@ public class Form {
         this.status = status;
     }
 
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
+    }
+
     public String getNotes() {
         return notes;
     }
 
     public void setNotes(String notes) {
         this.notes = notes;
-    }
-
-    public int getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(int ownerId) {
-        this.ownerId = ownerId;
     }
 }
