@@ -73,7 +73,9 @@ const ProjectInfo = () => {
         .then(result=>result.json())
         .then((result)=>{
             // console.log(result);
-            setPrjUpdates(result);
+            if (result.statusCode === 200) {
+                setPrjUpdates(result.data);
+            }
         })
         .catch (e => {
             console.log("ERROR_loadProjectData_updates: " + e);
@@ -91,13 +93,15 @@ const ProjectInfo = () => {
             if (data.memberIds.length > 0) {
                 query = "?ids=" + data.memberIds.join(",");
             }
-            fetch("http://localhost:8080/operations/employees" + query,{
+            fetch("http://localhost:8080/operations/project/members" + query,{
                 method:"GET"
             })
             .then(result=>result.json())
             .then((result)=>{
                 // console.log(result);
-                setMembers(result);
+                if (result.statusCode === 200) {
+                    setMembers(result.data);
+                }
             })
             .catch (e => {
                 console.log("ERROR_loadMembers: " + e);
@@ -274,12 +278,12 @@ const ProjectInfo = () => {
                 projectid={params.id} members={members} reload={loadProjectData} close={() => setAddMemberModalShow(false)}/>
             </div>
             <hr/>
-            {members.map(m => 
+            {members.length > 0 ? (members.map(m => 
                 <div class="row my-1" key={m.id}>
                     <div class="card p-2" style={{width: '90%'}}>
                         <div class="d-flex align-items-center">
                             <div class="">
-                                {m.name} ({m.email})
+                                {m.employeeName} ({m.employeeEmail}) - {m.roleName}
                             </div>
                             <div class="ms-auto">
                                 <Button className="btn btn-danger" onClick={() => handleRemoveMember(m.id, m.name)}><i class="bi bi-trash"></i></Button>
@@ -287,7 +291,7 @@ const ProjectInfo = () => {
                         </div>
                     </div>
                 </div>
-            )}
+            )) : ""}
         </div>
     </div>
     

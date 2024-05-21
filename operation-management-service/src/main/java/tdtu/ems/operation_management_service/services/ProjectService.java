@@ -1,21 +1,17 @@
 package tdtu.ems.operation_management_service.services;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import tdtu.ems.core_service.models.BaseResponse;
 import tdtu.ems.core_service.models.Enums;
 import tdtu.ems.core_service.utils.Logger;
-import tdtu.ems.operation_management_service.models.Project;
-import tdtu.ems.operation_management_service.models.ProjectResult;
-import tdtu.ems.operation_management_service.models.ProjectUpdate;
-import tdtu.ems.operation_management_service.models.ProjectUpdateResult;
+import tdtu.ems.operation_management_service.models.*;
 import tdtu.ems.operation_management_service.repositories.ProjectRepository;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 @Service
 public class ProjectService implements IProjectService {
@@ -139,9 +135,22 @@ public class ProjectService implements IProjectService {
     }
 
     @Override
-    public String addMemberToProject(int memberId, int projectId) throws ExecutionException, InterruptedException {
+    public List<ProjectMemberResult> getProjectMembers(List<Integer> ids) throws ExecutionException, InterruptedException {
         try {
-            return _projectRepository.addMemberToProject(memberId, projectId);
+            List<ProjectMemberResult> result = _projectRepository.getProjectMembers(ids);
+            result.sort(Comparator.comparing(ProjectMemberResult::getJoinDate));
+            return result;
+        }
+        catch (Exception e) {
+            _logger.Error("getProjectMembers", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Override
+    public String addMemberToProject(int memberId, int projectId, int role) throws ExecutionException, InterruptedException {
+        try {
+            return _projectRepository.addMemberToProject(memberId, projectId, role);
         }
         catch (Exception e) {
             _logger.Error("addMemberToProject", e.getMessage());

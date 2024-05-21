@@ -23,12 +23,14 @@ function NewProjectModal(props) {
         })
         .then(result=>result.json())
         .then((result)=>{
-            var data = [];
-            result.forEach(o => {
-                data.push({label: o.name, value: o.id});
-            });
-            setOptions(data);
-            handleInputChange({label: "Select project's owner", value: 0});
+            if (result.statusCode === 200) {
+                var data = [];
+                result.data.forEach(o => {
+                    data.push({label: o.name, value: o.id});
+                });
+                setOptions(data);
+                handleInputChange({label: "Select project's owner", value: 0});
+            }
         })
         .catch (e => {
             console.log("ERROR_handleSubmitProject: " + e);

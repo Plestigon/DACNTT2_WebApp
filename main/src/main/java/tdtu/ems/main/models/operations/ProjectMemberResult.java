@@ -1,20 +1,22 @@
-package tdtu.ems.operation_management_service.models;
+package tdtu.ems.main.models.operations;
 
 import java.util.Date;
 
-public class ProjectMember {
+public class ProjectMemberResult {
     private int id;
     private int projectId;
     private int employeeId;
+    private String employeeName;
+    private String employeeEmail;
     private Date joinDate;
     private int role;   //ProjectRole
 
-    public ProjectMember() {}
-
-    public ProjectMember(int id, int projectId, int employeeId, Date joinDate, int role) {
+    public ProjectMemberResult(int id, int projectId, int employeeId, String employeeName, String employeeEmail, Date joinDate, int role) {
         this.id = id;
         this.projectId = projectId;
         this.employeeId = employeeId;
+        this.employeeName = employeeName;
+        this.employeeEmail = employeeEmail;
         this.joinDate = joinDate;
         this.role = role;
     }
@@ -41,6 +43,22 @@ public class ProjectMember {
 
     public void setEmployeeId(int employeeId) {
         this.employeeId = employeeId;
+    }
+
+    public String getEmployeeName() {
+        return employeeName;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
+    }
+
+    public String getEmployeeEmail() {
+        return employeeEmail;
+    }
+
+    public void setEmployeeEmail(String employeeEmail) {
+        this.employeeEmail = employeeEmail;
     }
 
     public Date getJoinDate() {

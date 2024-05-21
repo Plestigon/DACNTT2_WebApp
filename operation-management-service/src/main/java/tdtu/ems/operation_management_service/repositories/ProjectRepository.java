@@ -8,10 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import tdtu.ems.core_service.models.BaseResponse;
 import tdtu.ems.core_service.utils.Logger;
-import tdtu.ems.operation_management_service.models.Project;
-import tdtu.ems.operation_management_service.models.ProjectResult;
-import tdtu.ems.operation_management_service.models.ProjectUpdate;
-import tdtu.ems.operation_management_service.models.ProjectUpdateResult;
+import tdtu.ems.operation_management_service.models.*;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -213,30 +210,56 @@ public class ProjectRepository implements IProjectRepository {
     }
 
     @Override
-    public String addMemberToProject(int memberId, int projectId) throws ExecutionException, InterruptedException {
+    public List<ProjectMemberResult> getProjectMembers(List<Integer> ids) throws ExecutionException, InterruptedException {
+        CollectionReference projectMembersDb = _db.collection("projectMembers");
+        CollectionReference employeesDb = _db.collection("employees");
+        List<ProjectMemberResult> result = new ArrayList<>();
+        for (int i : ids) {
+            ProjectMember pm = projectMembersDb.document(String.valueOf(i)).get().get().toObject(ProjectMember.class);
+            if (pm != null) {
+                String name = employeesDb.document(String.valueOf(pm.getEmployeeId())).get().get().getString("name");
+                String email = employeesDb.document(String.valueOf(pm.getEmployeeId())).get().get().getString("email");
+                result.add(new ProjectMemberResult(pm, name, email));
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public String addMemberToProject(int employeeId, int projectId, int role) throws ExecutionException, InterruptedException {
         CollectionReference projectsDb = _db.collection("projects");
+        CollectionReference projectMembersDb = _db.collection("projectMembers");
+        DocumentReference idTracer = _db.collection("idTracer").document("projectMembers");
+        long memberId = Objects.requireNonNull(idTracer.get().get().getLong("id")) + 1;
         Project prj = projectsDb.document(String.valueOf(projectId)).get().get().toObject(Project.class);
         if (prj == null) {
             throw new NotFoundException();
         }
-        if (!prj.getMemberIds().contains(memberId)) {
-            prj.getMemberIds().add(memberId);
+
+        ProjectMember pm = new ProjectMember((int)memberId, projectId, employeeId, new Date(), role);
+        ApiFuture<WriteResult> memberResult = projectMembersDb.document(String.valueOf(memberId)).set(pm);
+        if (memberResult.get() != null) {
+            prj.getMemberIds().add((int)memberId);
+            ApiFuture<WriteResult> result = projectsDb.document(String.valueOf(projectId)).set(prj);
+            ApiFuture<WriteResult> updateIdResult = idTracer.update("id", memberId);
+            return result.get().getUpdateTime().toString();
         }
-        ApiFuture<WriteResult> result = projectsDb.document(String.valueOf(projectId)).set(prj);
-        return result.get().getUpdateTime().toString();
+        else {
+            throw new InternalError("Add ProjectMember to database failed");
+        }
     }
 
     @Override
     public String removeMemberFromProject(int memberId, int projectId) throws ExecutionException, InterruptedException {
         CollectionReference projectsDb = _db.collection("projects");
+        CollectionReference projectMembersDb = _db.collection("projectMembers");
         Project prj = projectsDb.document(String.valueOf(projectId)).get().get().toObject(Project.class);
-        if (prj == null) {
+        if (prj == null || !prj.getMemberIds().contains(memberId) || projectMembersDb.document(String.valueOf(memberId)).get().get() == null) {
             throw new NotFoundException();
         }
-        if (prj.getMemberIds().contains(memberId)) {
-            prj.getMemberIds().remove(Integer.valueOf(memberId));
-        }
-        ApiFuture<WriteResult> result = projectsDb.document(String.valueOf(projectId)).set(prj);
+        ApiFuture<WriteResult> result = projectMembersDb.document(String.valueOf(memberId)).delete();
+        prj.getMemberIds().remove(Integer.valueOf(memberId));
+        ApiFuture<WriteResult> result2 = projectsDb.document(String.valueOf(projectId)).set(prj);
         return result.get().getUpdateTime().toString();
     }
 }

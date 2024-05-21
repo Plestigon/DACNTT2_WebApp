@@ -25,26 +25,26 @@ public class EmployeeController {
     }
 
     @GetMapping("/employees")
-    public ResponseEntity<List<EmployeeResult>> getEmployees(@RequestParam(required = false) List<Integer> ids) {
+    public BaseResponse getEmployees(@RequestParam(required = false) List<Integer> ids) {
         List<EmployeeResult> employees = null;
         try {
             employees = _employeeService.getEmployees(ids);
-            return new ResponseEntity<>(employees, HttpStatus.OK);
+            return new BaseResponse(employees, 200, "OK");
         }
         catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new BaseResponse(null, 500, e.getMessage());
         }
     }
 
     @GetMapping("/employees/except")
-    public ResponseEntity<List<EmployeeResult>> getEmployeesExcept(@RequestParam List<Integer> ids) {
+    public BaseResponse getEmployeesExcept(@RequestParam List<Integer> ids) {
         List<EmployeeResult> employees = null;
         try {
             employees = _employeeService.getEmployeesExcept(ids);
-            return new ResponseEntity<>(employees, HttpStatus.OK);
+            return new BaseResponse(employees, 200, "OK");
         }
         catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new BaseResponse(null, 500, e.getMessage());
         }
     }
 

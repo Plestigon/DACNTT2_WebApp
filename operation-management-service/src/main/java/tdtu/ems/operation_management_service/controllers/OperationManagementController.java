@@ -4,10 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tdtu.ems.core_service.models.BaseResponse;
-import tdtu.ems.operation_management_service.models.Project;
-import tdtu.ems.operation_management_service.models.ProjectResult;
-import tdtu.ems.operation_management_service.models.ProjectUpdate;
-import tdtu.ems.operation_management_service.models.ProjectUpdateResult;
+import tdtu.ems.operation_management_service.models.*;
 import tdtu.ems.operation_management_service.services.ProjectService;
 
 import java.util.List;
@@ -89,13 +86,13 @@ public class OperationManagementController {
     }
 
     @GetMapping("/operations/project/updates/{projectId}")
-    public ResponseEntity<List<ProjectUpdateResult>> getProjectUpdates(@PathVariable int projectId) {
+    public BaseResponse getProjectUpdates(@PathVariable int projectId) {
         List<ProjectUpdateResult> response = null;
         try {
             response = _projectService.getProjectUpdates(projectId);
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            return new BaseResponse(response, 200, "OK");
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new BaseResponse(null, 500, e.getMessage());
         }
     }
 
@@ -109,10 +106,20 @@ public class OperationManagementController {
         }
     }
 
-    @PostMapping("operations/project/{projectId}/member")
-    public BaseResponse addMember(@PathVariable int projectId, @RequestParam int memberId) {
+    @GetMapping("/operations/project/members")
+    public BaseResponse getProjectMembers(@RequestParam List<Integer> ids) {
         try {
-            String res = _projectService.addMemberToProject(memberId, projectId);
+            List<ProjectMemberResult> result = _projectService.getProjectMembers(ids);
+            return new BaseResponse(result, 200, "OK");
+        } catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
+
+    @PostMapping("operations/project/{projectId}/member")
+    public BaseResponse addMember(@PathVariable int projectId, @RequestParam int memberId, @RequestParam int role) {
+        try {
+            String res = _projectService.addMemberToProject(memberId, projectId, role);
             return new BaseResponse(null, 200,"OK");
         }
         catch (Exception e) {

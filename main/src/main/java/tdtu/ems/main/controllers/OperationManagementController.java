@@ -9,10 +9,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import tdtu.ems.core_service.models.BaseResponse;
 import tdtu.ems.core_service.models.Enums;
 import tdtu.ems.main.models.*;
-import tdtu.ems.main.models.operations.ProjectCreateDto;
-import tdtu.ems.main.models.operations.ProjectEditDto;
-import tdtu.ems.main.models.operations.ProjectResult;
-import tdtu.ems.main.models.operations.ProjectUpdateResult;
+import tdtu.ems.main.models.operations.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,18 +69,16 @@ public class OperationManagementController {
 
     @GetMapping("operations/employees")
     @ResponseBody
-    public ResponseEntity<List<EmployeeResult>> getEmployees(@RequestParam(required = false) List<Integer> ids) {
+    public ResponseEntity<BaseResponse> getEmployees(@RequestParam(required = false) List<Integer> ids) {
         try {
-            List<EmployeeResult> res = null;
             String query = "";
             if (ids != null && !ids.isEmpty()) {
                 query = "?ids=" + ids.stream().map(String::valueOf).collect(Collectors.joining(","));
             }
-            res = _webClient.build().get()
+            BaseResponse res = _webClient.build().get()
                     .uri("http://employee-service/api/employees" + query)
                     .retrieve()
-                    .bodyToFlux(EmployeeResult.class)
-                    .collectList()
+                    .bodyToMono(BaseResponse.class)
                     .block();
             return new ResponseEntity<>(res, HttpStatus.OK);
         }
@@ -94,23 +89,21 @@ public class OperationManagementController {
 
     @GetMapping("operations/employees/to-add")
     @ResponseBody
-    public ResponseEntity<List<EmployeeResult>> getEmployeesToAdd(@RequestParam List<Integer> ids) {
+    public ResponseEntity<BaseResponse> getEmployeesToAdd(@RequestParam(required = false) List<Integer> ids) {
         try {
-            List<EmployeeResult> res = null;
             String query = "";
             if (ids != null && !ids.isEmpty()) {
-                query = "?ids=" + ids.stream().map(String::valueOf).collect(Collectors.joining(","));
+                query = "/except?ids=" + ids.stream().map(String::valueOf).collect(Collectors.joining(","));
             }
-            res = _webClient.build().get()
-                    .uri("http://employee-service/api/employees/except" + query)
+            BaseResponse res = _webClient.build().get()
+                    .uri("http://employee-service/api/employees" + query)
                     .retrieve()
-                    .bodyToFlux(EmployeeResult.class)
-                    .collectList()
+                    .bodyToMono(BaseResponse.class)
                     .block();
             return new ResponseEntity<>(res, HttpStatus.OK);
         }
         catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -174,6 +167,17 @@ public class OperationManagementController {
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
+    @GetMapping("operations/project/roles")
+    @ResponseBody
+    public ResponseEntity<BaseResponse> getProjectRoles() {
+        var roles = Enums.ProjectRole.values();
+        List<SelectOptionsResult> res = new ArrayList<>();
+        for(int i = 1; i < roles.length; i++) {
+            res.add(new SelectOptionsResult(roles[i].name(), roles[i].ordinal()));
+        }
+        return new ResponseEntity<>(new BaseResponse(res, 200, "OK"), HttpStatus.OK);
+    }
+
     @PostMapping("operations/project/{id}/update")
     @ResponseBody
     public ResponseEntity<BaseResponse> updateProjectStatus(@PathVariable int id, @RequestParam int status) {
@@ -192,13 +196,32 @@ public class OperationManagementController {
 
     @GetMapping("operations/project/updates/{projectId}")
     @ResponseBody
-    public ResponseEntity<List<ProjectUpdateResult>> getProjectUpdates(@PathVariable int projectId) {
+    public ResponseEntity<BaseResponse> getProjectUpdates(@PathVariable int projectId) {
         try {
-            List<ProjectUpdateResult> res = _webClient.build().get()
+            BaseResponse res = _webClient.build().get()
                     .uri("http://operation-management-service/api/operations/project/updates/" + projectId)
                     .retrieve()
-                    .bodyToFlux(ProjectUpdateResult.class)
-                    .collectList()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("operations/project/members")
+    @ResponseBody
+    public ResponseEntity<BaseResponse> getProjectMembers(@RequestParam List<Integer> ids) {
+        try {
+            String query = "";
+            if (ids != null && !ids.isEmpty()) {
+                query = "?ids=" + ids.stream().map(String::valueOf).collect(Collectors.joining(","));
+            }
+            BaseResponse res = _webClient.build().get()
+                    .uri("http://operation-management-service/api/operations/project/members" + query)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
                     .block();
             return new ResponseEntity<>(res, HttpStatus.OK);
         }
@@ -209,10 +232,11 @@ public class OperationManagementController {
 
     @PostMapping("operations/project/{projectId}/member")
     @ResponseBody
-    public ResponseEntity<BaseResponse> addMember(@PathVariable int projectId, @RequestParam int memberId) {
+    public ResponseEntity<BaseResponse> addMember(@PathVariable int projectId, @RequestParam int memberId, @RequestParam int role) {
         try {
             BaseResponse res = _webClient.build().post()
-                    .uri("http://operation-management-service/api/operations/project/" + projectId + "/member?memberId=" + memberId)
+                    .uri("http://operation-management-service/api/operations/project/" + projectId +
+                            "/member?memberId=" + memberId + "&role=" + role)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();
