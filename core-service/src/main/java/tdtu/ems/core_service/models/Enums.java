@@ -43,6 +43,18 @@ public class Enums {
         BA,
         QC
     }
+
+    public enum TaskState {
+        None("None"),
+        ToDo("To Do"),
+        InProgress("In Progress"),
+        Done("Done"),
+        Removed("Removed");
+        public final String name;
+        TaskState(String name) {
+            this.name = name;
+        }
+    }
     //endregion
 
     //region HR
