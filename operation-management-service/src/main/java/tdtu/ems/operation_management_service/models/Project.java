@@ -7,11 +7,11 @@ public class Project {
     private int id;
     private String name;
     private int ownerId;
-    private List<Integer> memberIds;
+    private List<Integer> memberIds;    //ProjectMember
     private int status;
     private Date dueDate;
     private String description;
-    private List<Integer> projectUpdateIds;
+    private List<Integer> projectUpdateIds; //ProjectUpdate
 
     public Project() {}
 

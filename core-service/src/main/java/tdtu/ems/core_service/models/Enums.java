@@ -8,33 +8,6 @@ public class Enums {
         High
     }
 
-    public enum DealStage {
-        None,
-        Discovery,
-        Proposal,
-        Negotiate,
-        Lost,
-        Won
-    }
-
-    public enum LeadStatus {
-        None,
-        New,
-        Rejected,
-        Contacted
-    }
-
-    public enum ProjectStatus {
-        None("None"),
-        NotStarted("Not Started"),
-        InProgress("In Progress"),
-        Finished("Finished"),
-        Paused("Paused"),
-        Cancelled("Cancelled");
-        public final String name;
-        ProjectStatus(String name) {this.name = name;}
-    }
-
     public enum Role {
         None("None"),
         Intern("Intern"),
@@ -51,6 +24,28 @@ public class Enums {
         }
     }
 
+    //region Operation
+    public enum ProjectStatus {
+        None("None"),
+        NotStarted("Not Started"),
+        InProgress("In Progress"),
+        Finished("Finished"),
+        Paused("Paused"),
+        Cancelled("Cancelled");
+        public final String name;
+        ProjectStatus(String name) {this.name = name;}
+    }
+
+    public enum ProjectRole {
+        None,
+        Lead,
+        Dev,
+        BA,
+        QC
+    }
+    //endregion
+
+    //region HR
     public enum ContractStatus {
         None,
         Inactive,
@@ -95,4 +90,23 @@ public class Enums {
             this.name = name;
         }
     }
+    //endregion
+
+    //region Finance
+    public enum DealStage {
+        None,
+        Discovery,
+        Proposal,
+        Negotiate,
+        Lost,
+        Won
+    }
+
+    public enum LeadStatus {
+        None,
+        New,
+        Rejected,
+        Contacted
+    }
+    //endregion
 }
