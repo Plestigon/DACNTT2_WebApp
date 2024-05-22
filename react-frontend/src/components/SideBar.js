@@ -57,6 +57,8 @@ function SideBar() {
         <Nav.Link as={Link} to="/"><i class="bi bi-house"></i> Home</Nav.Link>
 
         <Nav.Link as={Link} to="/operations"><i class="bi bi-journal-check"></i> Operations</Nav.Link>
+        <Nav.Link as={Link} to="/operations/TaskModal"><i class="bi bi-journal-check"></i> ModalTask</Nav.Link>
+
 
 
         <div className="nav-dropdown-container">
@@ -69,6 +71,7 @@ function SideBar() {
             <Nav.Link as={Link} to="/hr/my-forms"><i class="bi bi-file-earmark-text"></i> My Forms</Nav.Link>
             <Nav.Link as={Link} to="/hr/submit-form"><i class ="bi bi-pen"></i> Submit Form</Nav.Link>
             <Nav.Link as={Link} to="/hr/contracts"><i class ="bi bi-newspaper"></i> My Contracts</Nav.Link>
+        
         </div>
 
         <div className="nav-dropdown-container">

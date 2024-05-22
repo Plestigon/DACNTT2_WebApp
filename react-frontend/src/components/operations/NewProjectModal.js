@@ -75,7 +75,7 @@ function NewProjectModal(props) {
                 success("New project added successfully!");
                 props.onHide();
                 props.reload();
-            }
+            }   
             console.log(result);
         })
         .catch (e => {
