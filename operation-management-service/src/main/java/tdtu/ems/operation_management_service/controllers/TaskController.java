@@ -3,6 +3,7 @@ package tdtu.ems.operation_management_service.controllers;
 import org.springframework.web.bind.annotation.*;
 import tdtu.ems.core_service.models.BaseResponse;
 import tdtu.ems.operation_management_service.models.Task;
+import tdtu.ems.operation_management_service.models.TaskDiscussion;
 import tdtu.ems.operation_management_service.models.TaskResult;
 import tdtu.ems.operation_management_service.services.TaskService;
 
@@ -56,6 +57,29 @@ public class TaskController {
     public BaseResponse assignTask(@PathVariable int id, @RequestParam int assigneeId) {
         try {
             String result = _taskService.assignTask(id, assigneeId);
+            return new BaseResponse(result, 200, "OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
+
+    @PostMapping("/operations/task/discussion")
+    public BaseResponse addDiscussion(@RequestBody TaskDiscussion d) {
+        try {
+            //TaskDiscussion dd = new TaskDiscussion(0, 1, 1, "tva", "a@a", "Dev", null, "hello");
+            Integer result = _taskService.addDiscussion(d);
+            return new BaseResponse(result, 200, "OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
+
+    @GetMapping("/operations/task/{id}/discussions")
+    public BaseResponse getDiscussions(@PathVariable int id) {
+        try {
+            List<TaskDiscussion> result = _taskService.getDiscussions(id);
             return new BaseResponse(result, 200, "OK");
         }
         catch (Exception e) {

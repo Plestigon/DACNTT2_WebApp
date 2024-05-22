@@ -75,4 +75,36 @@ public class TaskRepository implements ITaskRepository {
         ApiFuture<WriteResult> result = tasksDb.document(String.valueOf(taskId)).update("assigneeId", employeeId);
         return result.get().getUpdateTime().toString();
     }
+
+    public Integer addDiscussion(TaskDiscussion dis) throws ExecutionException, InterruptedException {
+        CollectionReference taskDiscussionsDb = _db.collection("taskDiscussions");
+        CollectionReference tasksDb = _db.collection("tasks");
+        int taskId = dis.getTaskId();
+        Task task = tasksDb.document(String.valueOf(taskId)).get().get().toObject(Task.class);
+        if (task == null) {
+            throw new IllegalArgumentException("Task not found");
+        }
+        DocumentReference idTracer = _db.collection("idTracer").document("taskDiscussions");
+        long id = Objects.requireNonNull(idTracer.get().get().getLong("id")) + 1;
+        dis.setId((int) id);
+        dis.setCreateDate(new Date());
+        ApiFuture<WriteResult> result = taskDiscussionsDb.document(String.valueOf(id)).set(dis);
+        task.getDiscussions().add((int) id);
+        ApiFuture<WriteResult> result2 = tasksDb.document(String.valueOf(taskId)).set(task);
+        return (int) id;
+    }
+
+    public List<TaskDiscussion> getDiscussions(int taskId) throws ExecutionException, InterruptedException {
+        CollectionReference taskDiscussionsDb = _db.collection("taskDiscussions");
+        List<TaskDiscussion> result = new ArrayList<>();
+        for (var data : taskDiscussionsDb.get().get().getDocuments()) {
+            if (data.exists()) {
+                TaskDiscussion dis = data.toObject(TaskDiscussion.class);
+                if (dis.getTaskId() == taskId) {
+                    result.add(dis);
+                }
+            }
+        }
+        return result;
+    }
 }

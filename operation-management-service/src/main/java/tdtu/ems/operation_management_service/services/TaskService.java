@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import tdtu.ems.core_service.utils.Logger;
 import tdtu.ems.operation_management_service.models.Task;
+import tdtu.ems.operation_management_service.models.TaskDiscussion;
 import tdtu.ems.operation_management_service.models.TaskResult;
 import tdtu.ems.operation_management_service.repositories.TaskRepository;
 
@@ -66,6 +67,31 @@ public class TaskService implements ITaskService {
         }
         catch (Exception e) {
             _logger.Error("assignTask", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Override
+    public Integer addDiscussion(TaskDiscussion d) throws ExecutionException, InterruptedException {
+        try {
+            Integer result = _taskRepository.addDiscussion(d);
+            return result;
+        }
+        catch (Exception e) {
+            _logger.Error("addDiscussion", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Override
+    public List<TaskDiscussion> getDiscussions(int taskId) throws ExecutionException, InterruptedException {
+        try {
+            List<TaskDiscussion> result = _taskRepository.getDiscussions(taskId);
+            result.sort(Comparator.comparing(TaskDiscussion::getCreateDate).reversed());
+            return result;
+        }
+        catch (Exception e) {
+            _logger.Error("getDiscussions", e.getMessage());
             throw e;
         }
     }

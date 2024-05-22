@@ -7,7 +7,7 @@ public class Task {
     private int id;
     private String name;
     private int projectId;
-    private int assigneeId;
+    private int assigneeId; //EmployeeId
     private Date createDate;
     private Date updateDate;
     private int priority;
