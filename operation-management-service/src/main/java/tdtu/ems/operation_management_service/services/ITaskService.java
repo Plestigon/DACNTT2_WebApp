@@ -9,4 +9,6 @@ import java.util.concurrent.ExecutionException;
 public interface ITaskService {
     Integer createTask(Task task) throws ExecutionException, InterruptedException;
     List<TaskResult> getTasksByProjectId(int projectId) throws ExecutionException, InterruptedException;
+    String updateTaskStateById(int id, int newState) throws ExecutionException, InterruptedException;
+    String assignTask(int taskId, int employeeId) throws ExecutionException, InterruptedException;
 }

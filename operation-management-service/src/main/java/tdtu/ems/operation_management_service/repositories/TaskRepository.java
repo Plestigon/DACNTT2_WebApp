@@ -3,15 +3,13 @@ package tdtu.ems.operation_management_service.repositories;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
+import jakarta.ws.rs.NotFoundException;
 import org.springframework.stereotype.Repository;
 import tdtu.ems.core_service.models.Enums;
 import tdtu.ems.core_service.utils.Logger;
 import tdtu.ems.operation_management_service.models.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 @Repository
@@ -49,5 +47,32 @@ public class TaskRepository implements ITaskRepository {
             }
         }
         return result;
+    }
+
+    public String updateTaskStateById(int id, int newState) throws ExecutionException, InterruptedException {
+        CollectionReference tasksDb = _db.collection("tasks");
+        Task t = tasksDb.document(String.valueOf(id)).get().get().toObject(Task.class);
+        if (t == null) {
+            throw new IllegalArgumentException("Task not found");
+        }
+        t.setState(newState);
+        t.setUpdateDate(new Date());
+        ApiFuture<WriteResult> result = tasksDb.document(String.valueOf(id)).set(t);
+        return result.get().getUpdateTime().toString();
+    }
+
+    public String assignTask(int taskId, int employeeId) throws ExecutionException, InterruptedException {
+        CollectionReference tasksDb = _db.collection("tasks");
+        CollectionReference employeeDb = _db.collection("employees");
+        var t = tasksDb.document(String.valueOf(taskId)).get().get();
+        if (!t.exists()) {
+            throw new IllegalArgumentException("Task not found");
+        }
+        var e = employeeDb.document(String.valueOf(employeeId)).get().get();
+        if (!e.exists()) {
+            throw new IllegalArgumentException("Employee not found");
+        }
+        ApiFuture<WriteResult> result = tasksDb.document(String.valueOf(taskId)).update("assigneeId", employeeId);
+        return result.get().getUpdateTime().toString();
     }
 }

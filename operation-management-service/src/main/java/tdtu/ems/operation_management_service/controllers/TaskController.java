@@ -19,9 +19,9 @@ public class TaskController {
     }
 
     @PostMapping("/operations/task")
-    public BaseResponse createTask() {
+    public BaseResponse createTask(@RequestBody Task task) {
         try {
-            Task task = new Task(0, "test2", 2, 2, null, null, 1, 0, "Description2", new ArrayList<>());
+            //Task task = new Task(0, "test2", 2, 2, null, null, 1, 0, "Description2", new ArrayList<>());
             Integer result = _taskService.createTask(task);
             return new BaseResponse(result, 200, "OK");
         }
@@ -34,6 +34,28 @@ public class TaskController {
     public BaseResponse getTasksByProjectId(@RequestParam int projectId) {
         try {
             List<TaskResult> result = _taskService.getTasksByProjectId(projectId);
+            return new BaseResponse(result, 200, "OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
+
+    @PostMapping("/operations/task/{id}")
+    public BaseResponse updateTaskStateById(@PathVariable int id, @RequestParam int newState) {
+        try {
+            String result = _taskService.updateTaskStateById(id, newState);
+            return new BaseResponse(result, 200, "OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
+
+    @PostMapping("/operations/task/{id}/assign")
+    public BaseResponse assignTask(@PathVariable int id, @RequestParam int assigneeId) {
+        try {
+            String result = _taskService.assignTask(id, assigneeId);
             return new BaseResponse(result, 200, "OK");
         }
         catch (Exception e) {

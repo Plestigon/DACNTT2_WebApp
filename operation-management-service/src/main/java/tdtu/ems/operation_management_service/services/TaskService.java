@@ -45,4 +45,28 @@ public class TaskService implements ITaskService {
             throw e;
         }
     }
+
+    @Override
+    public String updateTaskStateById(int id, int newState) throws ExecutionException, InterruptedException {
+        try {
+            String result = _taskRepository.updateTaskStateById(id, newState);
+            return result;
+        }
+        catch (Exception e) {
+            _logger.Error("updateTaskStateById", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Override
+    public String assignTask(int taskId, int employeeId) throws ExecutionException, InterruptedException {
+        try {
+            String result = _taskRepository.assignTask(taskId, employeeId);
+            return result;
+        }
+        catch (Exception e) {
+            _logger.Error("assignTask", e.getMessage());
+            throw e;
+        }
+    }
 }
