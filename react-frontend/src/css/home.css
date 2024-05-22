@@ -36,3 +36,26 @@
     color: white;
     transform: rotateY(180deg);
   }
+
+  .card-hover-text{
+    display:none;
+    width: 100%;
+    height: 100%;
+
+}
+.card:hover .card-text{
+    display:none;
+    width: 100%;
+    height: 100%;
+
+}
+.card:hover .card-hover-text{
+    display:block;
+    width: 100%;
+    height: 100%;
+
+}
+.slick-prev:before,
+.slick-next:before {
+  color: rgb(0, 0, 0)!important;
+}

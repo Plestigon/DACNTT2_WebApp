@@ -10,6 +10,7 @@ import HRSummary from './components/hr/HRSummary';
 import MyContracts from './components/hr/MyContracts';
 import MyForms from './components/hr/MyForms';
 import NewTaskModal from './components/operations/NewTaskModal';
+import MyProjects from './components/operations/MyProjects';
 
 
 function App() {
@@ -37,6 +38,8 @@ function App() {
         <Route path="/operations" element={<Operations/>}/>
         <Route path="/operations/project/:id" element={<ProjectInfo/>} />
         <Route path="/operations/TaskModal" element={<NewTaskModal/>}/>
+        <Route path="/operations/MyProjects" element={<MyProjects/>}/>
+
         <Route path="/hr/submit-form" element={<SubmitForm/>}/>
         <Route path="/hr/my-forms" element={<MyForms/>}/>
         <Route path="/hr/summary" element={<HRSummary/>}/>
