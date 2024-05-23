@@ -12,6 +12,7 @@ import AddMemberModal from "./AddMemberModal";
 import SideBar from "../SideBar";
 import TopBar from "../TopBar";
 import Notify, {success} from "../../utils/Notify";
+import NewTaskModal from "./NewTaskModal";
   
 const ProjectInfo = () => {
     const params = useParams();
@@ -28,8 +29,10 @@ const ProjectInfo = () => {
     });
     const [prjUpdates, setPrjUpdates] = useState([]);
     const [members, setMembers] = useState([]);
+    const [tasks, setTasks] = useState([]);
     const [inputDisabled, setInputDisabled] = useState(true);
     const [addMemberModalShow, setAddMemberModalShow] = useState(false);
+    const [newTaskModalShow, setNewTaskModalShow] = useState(false);
 
     const loadProjectData = useCallback(() => {
         fetch("http://localhost:8080/operations/project?id=" + params.id,{
@@ -113,6 +116,27 @@ const ProjectInfo = () => {
         loadMembers();
     }, [data.memberIds, loadMembers])
 
+    const loadTasks = useCallback(() => {
+        console.log("Load");
+        fetch("http://localhost:8080/operations/tasks?projectId=" + params.id,{
+            method:"GET"
+        })
+        .then(result=>result.json())
+        .then((result)=>{
+            //console.log(result);
+            if (result.statusCode === 200) {
+                setTasks(result.data);
+            }
+        })
+        .catch (e => {
+            console.log("ERROR_loadTasks: " + e);
+        })
+    }, [params.id])
+
+    useEffect(() => {
+        loadTasks();
+    }, [loadTasks])
+
     function handleInputChange(e) {
         if (e.target) {
             const name = e.target.name;
@@ -177,10 +201,6 @@ const ProjectInfo = () => {
         })
     }
 
-    function handleAddMemberClick() {
-        setAddMemberModalShow(true);
-    }
-
     function handleRemoveMember(memberId) {
         // console.log("remove " + memberId + " from " + params.id);
         fetch("http://localhost:8080/operations/project/" + params.id + "/member?memberId=" + memberId,{
@@ -242,60 +262,80 @@ const ProjectInfo = () => {
         </div>
 
         <div class="row mt-2 mb-5" style={{marginLeft: '5%', marginRight: '5%'}}>
-        <div class="col-6">
-            <p class="h5"><i class="bi bi-card-text"></i> Updates</p>
-            <hr/>
-            <div class="row">
-                <div class="col-2">Comment</div>
-                <div class="col-10">
-                    <textarea class="form-control" rows={2} cols={10}/>
-                </div>
-            </div>
-            <div class="row w-100">
-                <Button className="ms-auto mt-2" style={{width: '150px'}}>Submit</Button>
-            </div>
-            <hr/>
-            {prjUpdates.map(p => 
-                <div class="row d-flex justify-content-center my-1" key={p.id}>
-                    <div class="card mx-3 p-2" style={{width: '90%'}}>
-                        <div class="d-flex">
-                            <div class="fw-bold">{p.writerName}</div>
-                            <div class="ms-auto fst-italic"><i class="bi bi-clock"></i> {dateTimeFormat(p.createTime)}</div>
-                        </div>
-                        <hr style={{marginTop: '1px', marginBottom: '3px'}}/>
-                        <div class="d-flex">
-                            <div class="mx-1">{p.comment}</div>
-                        </div>
+            <div class="col-6">
+                <p class="h5"><i class="bi bi-card-text"></i> Updates</p>
+                <hr/>
+                <div class="row">
+                    <div class="col-2">Comment</div>
+                    <div class="col-10">
+                        <textarea class="form-control" rows={2} cols={10}/>
                     </div>
                 </div>
-            )}
-            </div>
-        <div class="col-6 px-5">
-            <div class="h5">
-                <i class="bi bi-person"></i> Members
-                <Button className="btn-primary ms-3" onClick={handleAddMemberClick}><i class="bi bi-person-plus"></i></Button>
-                <AddMemberModal show={addMemberModalShow} onHide={() => setAddMemberModalShow(false)}
-                projectid={params.id} members={members} reload={loadProjectData} close={() => setAddMemberModalShow(false)}/>
-            </div>
-            <hr/>
-            {members.length > 0 ? (members.map(m => 
-                <div class="row my-1" key={m.id}>
-                    <div class="card p-2" style={{width: '90%'}}>
-                        <div class="d-flex align-items-center">
-                            <div class="">
-                                {m.employeeName} ({m.employeeEmail}) - {m.roleName}
+                <div class="row w-100">
+                    <Button className="ms-auto mt-2" style={{width: '150px'}}>Submit</Button>
+                </div>
+                <hr/>
+                {prjUpdates.map(p => 
+                    <div class="row d-flex justify-content-center my-1" key={p.id}>
+                        <div class="card mx-3 p-2" style={{width: '90%'}}>
+                            <div class="d-flex">
+                                <div class="fw-bold">{p.writerName}</div>
+                                <div class="ms-auto fst-italic"><i class="bi bi-clock"></i> {dateTimeFormat(p.createTime)}</div>
                             </div>
-                            <div class="ms-auto">
-                                <Button className="btn btn-danger" onClick={() => handleRemoveMember(m.id, m.name)}><i class="bi bi-trash"></i></Button>
+                            <hr style={{marginTop: '1px', marginBottom: '3px'}}/>
+                            <div class="d-flex">
+                                <div class="mx-1">{p.comment}</div>
                             </div>
                         </div>
                     </div>
+                )}
+            </div>
+            <div class="col-6 px-5">
+                <div class="h5">
+                    <i class="bi bi-person"></i> Members
+                    <Button className="btn-primary ms-3" onClick={() => setAddMemberModalShow(true)}><i class="bi bi-person-plus"></i></Button>
+                    <AddMemberModal show={addMemberModalShow} onHide={() => setAddMemberModalShow(false)}
+                    projectId={params.id} members={members} reload={loadProjectData}/>
                 </div>
-            )) : ""}
+                <hr/>
+                {members.length > 0 ? (members.map(m => 
+                    <div class="row my-1" key={m.id}>
+                        <div class="card p-2" style={{width: '90%'}}>
+                            <div class="d-flex align-items-center">
+                                <div class="">
+                                    {m.employeeName} ({m.employeeEmail}) - {m.roleName}
+                                </div>
+                                <div class="ms-auto">
+                                    <Button className="btn btn-danger" onClick={() => handleRemoveMember(m.id, m.name)}><i class="bi bi-trash"></i></Button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )) : ""}
+
+                <div class="h5 mt-5">
+                    <i class="bi bi-person"></i> Tasks
+                    <Button className="btn-primary ms-3" onClick={() => setNewTaskModalShow(true)}><i class="bi bi-person-plus"></i></Button>
+                    <NewTaskModal show={newTaskModalShow} onHide={() => setNewTaskModalShow(false)}
+                    projectId={params.id} members={members} reload={loadTasks}/>
+                </div>
+                <hr/>
+                {tasks.length > 0 ? (tasks.map(t => 
+                    <div class="row my-1" key={t.id}>
+                        <div class="card p-2" style={{width: '90%'}}>
+                            <div class="d-flex">
+                                <div class="">
+                                    {t.name} - {t.assigneeName}
+                                </div>
+                                <div class="ms-auto">
+                                    <div class={"card status-card project-status-" + t.state} style={{width: '100px'}}>{t.stateName}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )) : ""}
+            </div>
         </div>
-    </div>
-    
-    
     </div>
 </div>
 );

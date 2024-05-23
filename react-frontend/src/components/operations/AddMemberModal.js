@@ -67,7 +67,7 @@ function AddMemberModal(props) {
     }
 
     function handleSubmit() {
-        fetch("http://localhost:8080/operations/project/" + props.projectid + "/member?memberId=" + data.memberId + "&role=" + data.role,{
+        fetch("http://localhost:8080/operations/project/" + props.projectId + "/member?memberId=" + data.memberId + "&role=" + data.role,{
             method:"POST"
         })
         .then(result=>result.json())

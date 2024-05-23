@@ -13,12 +13,14 @@ import { render } from "@testing-library/react";
 function NewTaskModal(props) {
     const [inputs, setInputs] = useState({
         name: '',
-        owner: 0,
-        ownerName: '',
-        dueDate: getDefaultDueDate(),
+        assignee: 0,
+        assigneeName: '',
+        priority: 0,
+        priorityName: '',
         description: ''
     });
-    const [options, setOptions] = useState([]);
+    const [assigneeOptions, setAssigneeOptions] = useState([]);
+    const [priorityOptions, setPriorityOptions] = useState([]);
     const [value, setValue] = useState('');
 
     const editorConfiguration = {
@@ -29,125 +31,125 @@ function NewTaskModal(props) {
         setValue(event.target.value)
     }
 
-    const taskpriority =[
-        {label: "1 - Very High", value: 1},
-        {label: "2 - High", value: 2},
-        {label: "3 - Medium", value: 3},
-        {label: "4 - Low", value: 4},
+    useEffect(() => {
+        function loadAssignees() {
+            var a = [];
+            props.members.forEach(e => {
+                a.push({label: e.employeeName, value: e.employeeId})
+            });
+            setAssigneeOptions(a);
+        }
+        loadAssignees();
+    }, [props.members])
 
-    ]
-    // const loadOwners = useCallback(() => {
-    //     fetch("http://localhost:8080/operations/employees",{
-    //         method:"GET"
-    //     })
-    //     .then(result=>result.json())
-    //     .then((result)=>{
-    //         if (result.statusCode === 200) {
-    //             var data = [];
-    //             result.data.forEach(o => {
-    //                 data.push({label: o.name, value: o.id});
-    //             });
-    //             setOptions(data);
-    //             handleInputChange({label: "Select project's owner", value: 0});
-    //         }
-    //     })
-    //     .catch (e => {
-    //         console.log("ERROR_handleSubmitProject: " + e);
-    //     })
-    // }, [])
-    
-    // useEffect(()=>{
-    //     loadOwners();
-    // }, [loadOwners])
+    useEffect(() => {
+        function loadPriorities() {
+            fetch("http://localhost:8080/operations/tasks/priorities",{
+                method:"GET"
+            })
+            .then(result=>result.json())
+            .then((result)=>{
+                if (result.statusCode === 200) {
+                    setPriorityOptions(result.data);
+                }
+            })
+            .catch (e => {
+                console.log("ERROR_loadPriorities: " + e);
+            })
+        }
+        loadPriorities();
+    }, [])
 
-    // function handleInputChange(e) {
-    //     if (e.target) {
-    //         const name = e.target.name;
-    //         const value = e.target.value;
-    //         setInputs(prevState => ({...prevState, [name]: value}));
-    //     }
-    //     else {
-    //         setInputs(prevState => ({...prevState, 'owner': e.value, 'ownerName': e.label}));
-    //     }
-    // }
+    function handleInputChange(e) {
+        const name = e.target.name;
+        const value = e.target.value;
+        setInputs(prevState => ({...prevState, [name]: value}));
+    }
 
-    // function handleSelectChange(json) {
-    //     setInputs(prevState => ({...prevState, }))
-    // }
+    function handleAssigneeChange(e) {
+        setInputs(prevState => ({...prevState, 'assignee': e.value, 'assigneeName': e.label}));
+    }
 
-    // function handleSubmitProject(e) {
-    //     e.preventDefault();
-    //     // console.log(inputs);
-    //     fetch("http://localhost:8080/operations/project",{
-    //         method:"POST",
-    //         body: JSON.stringify({
-    //             'name': inputs.name,
-    //             'ownerId': inputs.owner,
-    //             'memberIds': [],
-    //             'dueDate': inputs.dueDate,
-    //             'description': inputs.description
-    //         }),
-    //         headers: { "Content-type": "application/json; charset=UTF-8" }
-    //     })
-    //     .then((result)=>{
-    //         if (result.ok) {
-    //             success("New project added successfully!");
-    //             props.onHide();
-    //             props.reload();
-    //         }   
-    //         console.log(result);
-    //     })
-    //     .catch (e => {
-    //         console.log("ERROR_handleSubmitProject: " + e);
-    //     })
-    // }
+    function handlePriorityChange(e) {
+        setInputs(prevState => ({...prevState, 'priority': e.value, 'priorityName': e.label}));
+    }
+
+    function handleDescriptionChange(data) {
+        setInputs(prevState => ({...prevState, 'description': data}));
+    }
+
+    function handleSubmit() {
+        console.log(inputs);
+        fetch("http://localhost:8080/operations/task",{
+            method:"POST",
+            body: JSON.stringify({
+                name: inputs.name,
+                projectId: props.projectId,
+                assigneeId: inputs.assignee,
+                priority: inputs.priority,
+                description: inputs.description
+            }),
+            headers: { "Content-type": "application/json; charset=UTF-8" }
+        })
+        .then(result=>result.json())
+        .then((result)=>{
+            if (result.statusCode === 200) {
+                success("New task added successfully");
+                props.onHide();
+                props.reload();
+            }
+        })
+        .catch (e => {
+            console.log("ERROR_handleSubmitTask: " + e);
+        })
+    }
+
     return (
-        <Modal show={props.show} onHide={props.onHide} reload={props.reload} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
+        <Modal show={props.show} onHide={props.onHide} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
             <Modal.Header closeButton>
                 <Modal.Title class="w-100" id="contained-modal-title-vcenter">
                     <p class="h4 text-center">Create New Task</p>
                 </Modal.Title>
             </Modal.Header>
-            <Modal.Body>
-            <form class="newPrjForm mx-3">
+            <Modal.Body style={{height: '500px', overflow: 'scroll'}}>
+            <form class="newPrjForm mx-3 h-100">
                 <div class="row my-2">
                     <div class="col-12">
-                        <label htmlFor="newPrjName">Task name</label>
-                        <input type="text" class="form-control" id="newPrjName" name="name"  placeholder="New project's name" required/> 
+                        <label>Task name</label>
+                        <input type="text" class="form-control" name="name" placeholder="New task's title" onChange={handleInputChange} required/> 
                     </div>
                 </div>
                 <div class="row my-2">
                     <div class="col-6">
-                        <label htmlFor="newPrjOwner">Assgined To</label>
-                        <Select class="form-select" id="newPrjOwner" name="owner" 
-                        options={options}/>
+                        <label>Assgined To</label>
+                        <Select class="form-select" name="assignee" value={{label: inputs.assigneeName, value: inputs.assignee}}
+                        options={assigneeOptions} onChange={handleAssigneeChange}/>
                     </div>
                     <div class="col-6">
-                        <label htmlFor="newPrjDueDate">Priority</label>
-                        <select type="select" class="form-select" id="TaskPriority" onChange={handleSelectPrio} >
-                        {taskpriority.map(option => (
-                            <option value={option.value}>{option.label}</option>
-                        ))}/</select>
+                        <label>Priority</label>
+                        <Select class="form-select" name="priority" value={{label: inputs.priorityName, value: inputs.priority}}
+                        options={priorityOptions} onChange={handlePriorityChange}/>
                     </div>
                 </div>
                 <div class="row my-2">
                     <div class="col-12">
-                        <label htmlFor="newTaskDescription">Task description</label>
+                        <label>Task description</label>
                         <CKEditor
                             editor={ ClassicEditor }
                             data={inputs.description} 
                             onReady={ editor => {
-                                console.log( 'Editor is ready to use!', editor );
+                                //console.log( 'Editor is ready to use!', editor );
                             } }
                             onChange={ ( event, editor ) => {
                                 const data =  editor.getData();
-                                console.log( {event, editor, data} );
+                                //console.log( {event, editor, data} );
+                                handleDescriptionChange(data);
                             } }
                             onBlur={ ( event, editor ) => {
-                                console.log( 'Blur.', editor );
+                                //console.log( 'Blur.', editor );
                             } }
                             onFocus={ ( event, editor ) => {
-                                console.log( 'Focus.', editor );
+                                //console.log( 'Focus.', editor );
                             } }
                         />
                     </div>
@@ -155,7 +157,7 @@ function NewTaskModal(props) {
             </form>
              </Modal.Body>
              <Modal.Footer className="d-flex justify-content-center">
-                 <Button className="btn-primary w-25" >Submit</Button>
+                 <Button className="btn-primary w-25" onClick={handleSubmit}>Submit</Button>
                  <Button className="btn-secondary w-25" onClick={props.onHide}>Cancel</Button>
              </Modal.Footer>
          </Modal>

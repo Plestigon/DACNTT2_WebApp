@@ -29,12 +29,12 @@
 }
 /* In Progress */
 .card.status-card.project-status-2 {
-    background-color: green;
+    background-color: blue;
     color: white;
 }
 /* Finished */
 .card.status-card.project-status-3 {
-    background-color: blue;
+    background-color: green;
     color: white;
 }
 /* Stopped */
@@ -44,6 +44,28 @@
 }
 /* Cancelled */
 .card.status-card.project-status-5 {
+    background-color: red;
+    color: white;
+}
+
+/* Task state card */
+/* To Do */
+.card.status-card.task-state-1 {
+    background-color: gray;
+    color: white;
+}
+/* In Progress */
+.card.status-card.task-state-2 {
+    background-color: blue;
+    color: white;
+}
+/* Done */
+.card.status-card.task-state-3 {
+    background-color: green;
+    color: white;
+}
+/* Removed */
+.card.status-card.task-state-4 {
     background-color: red;
     color: white;
 }
