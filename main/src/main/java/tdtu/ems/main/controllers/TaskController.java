@@ -37,12 +37,58 @@ public class TaskController {
         }
     }
 
+    @GetMapping("operations/task/{id}")
+    public ResponseEntity<BaseResponse> getTask(@PathVariable int id) {
+        try {
+            BaseResponse result = _webClient.build().get()
+                    .uri("http://operation-management-service/api/operations/task/" + id)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping("operations/task")
     public ResponseEntity<BaseResponse> createTask(@RequestBody TaskDto task) {
         try {
             BaseResponse result = _webClient.build().post()
                     .uri("http://operation-management-service/api/operations/task")
                     .bodyValue(task)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/operations/task/edit")
+    public ResponseEntity<BaseResponse> editTask(@RequestBody TaskDto task) {
+        try {
+            BaseResponse result = _webClient.build().post()
+                    .uri("http://operation-management-service/api/operations/task/edit")
+                    .bodyValue(task)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/operations/task/{id}")
+    public ResponseEntity<BaseResponse> updateTaskStateById(@PathVariable int id, @RequestParam int newState) {
+        try {
+            BaseResponse result = _webClient.build().post()
+                    .uri("http://operation-management-service/api/operations/task/" + id + "?newState=" + newState)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();
@@ -61,5 +107,45 @@ public class TaskController {
             res.add(new SelectOptionsResult(p[i].name(), p[i].ordinal()));
         }
         return new ResponseEntity<>(new BaseResponse(res, 200, "OK"), HttpStatus.OK);
+    }
+
+    @GetMapping("operations/tasks/states")
+    public ResponseEntity<BaseResponse> getTaskStates() {
+        var p = Enums.TaskState.values();
+        List<SelectOptionsResult> res = new ArrayList<>();
+        for(int i = 1; i < p.length; i++) {
+            res.add(new SelectOptionsResult(p[i].name, p[i].ordinal()));
+        }
+        return new ResponseEntity<>(new BaseResponse(res, 200, "OK"), HttpStatus.OK);
+    }
+
+    @GetMapping("operations/task/{id}/members")
+    public ResponseEntity<BaseResponse> getMembers(@PathVariable int id) {
+        try {
+            BaseResponse result = _webClient.build().get()
+                    .uri("http://operation-management-service/api/operations/task/" + id + "/members")
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/operations/task/{id}/assign")
+    public ResponseEntity<BaseResponse> assignTask(@PathVariable int id, @RequestParam int assigneeId) {
+        try {
+            BaseResponse result = _webClient.build().post()
+                    .uri("http://operation-management-service/api/operations/task/" + id + "/assign?assigneeId=" + assigneeId)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

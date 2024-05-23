@@ -4,11 +4,9 @@ import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Select from 'react-select';
-import { getDefaultDueDate } from "../../utils/DateHelper";
 import { success } from "../../utils/Notify";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { render } from "@testing-library/react";
 
 function NewTaskModal(props) {
     const [inputs, setInputs] = useState({

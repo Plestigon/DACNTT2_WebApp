@@ -9,7 +9,9 @@ import java.util.concurrent.ExecutionException;
 
 public interface ITaskRepository {
     Integer createTask(Task entry) throws ExecutionException, InterruptedException;
+    TaskResult getTask(int id) throws ExecutionException, InterruptedException;
     List<TaskResult> getTasksByProjectId(int projectId) throws ExecutionException, InterruptedException;
+    String  editTask(Task entry) throws ExecutionException, InterruptedException;
     String updateTaskStateById(int id, int newState) throws ExecutionException, InterruptedException;
     String assignTask(int taskId, int employeeId) throws ExecutionException, InterruptedException;
     Integer addDiscussion(TaskDiscussion d) throws ExecutionException, InterruptedException;

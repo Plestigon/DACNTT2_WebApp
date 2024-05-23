@@ -3,11 +3,11 @@ package tdtu.ems.operation_management_service.services;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import tdtu.ems.core_service.utils.Logger;
-import tdtu.ems.operation_management_service.models.Task;
-import tdtu.ems.operation_management_service.models.TaskDiscussion;
-import tdtu.ems.operation_management_service.models.TaskResult;
+import tdtu.ems.operation_management_service.models.*;
+import tdtu.ems.operation_management_service.repositories.ProjectRepository;
 import tdtu.ems.operation_management_service.repositories.TaskRepository;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -15,11 +15,13 @@ import java.util.concurrent.ExecutionException;
 @Service
 public class TaskService implements ITaskService {
     private final TaskRepository _taskRepository;
+    private final ProjectRepository _projectRepository;
     private final Logger<TaskService> _logger;
     private final WebClient.Builder _webClient;
 
-    public TaskService(TaskRepository taskRepository, WebClient.Builder webClient) {
+    public TaskService(TaskRepository taskRepository, ProjectRepository projectRepository, WebClient.Builder webClient) {
         _taskRepository = taskRepository;
+        _projectRepository = projectRepository;
         _webClient = webClient;
         _logger = new Logger<>(TaskService.class);
     }
@@ -35,6 +37,17 @@ public class TaskService implements ITaskService {
         }
     }
 
+    @Override
+    public TaskResult getTask(int id) throws ExecutionException, InterruptedException {
+        try {
+            return _taskRepository.getTask(id);
+        }
+        catch (Exception e) {
+            _logger.Error("getTask", e.getMessage());
+            throw e;
+        }
+    }
+
     public List<TaskResult> getTasksByProjectId(int projectId) throws ExecutionException, InterruptedException {
         try {
             List<TaskResult> results = _taskRepository.getTasksByProjectId(projectId);
@@ -43,6 +56,18 @@ public class TaskService implements ITaskService {
         }
         catch (Exception e) {
             _logger.Error("getTasksByProjectId", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Override
+    public String editTask(Task entry) throws ExecutionException, InterruptedException {
+        try {
+            String result = _taskRepository.editTask(entry);
+            return result;
+        }
+        catch (Exception e) {
+            _logger.Error("editTask", e.getMessage());
             throw e;
         }
     }
@@ -92,6 +117,27 @@ public class TaskService implements ITaskService {
         }
         catch (Exception e) {
             _logger.Error("getDiscussions", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Override
+    public List<ProjectMemberResult> getMembersByTaskId(int id) throws ExecutionException, InterruptedException {
+        try {
+            List<Integer> memIds = new ArrayList<>();
+            TaskResult task = _taskRepository.getTask(id);
+            if (task != null) {
+                Project prj = _projectRepository.getProjectById(task.getId());
+                if (prj != null) {
+                    memIds = prj.getMemberIds();
+                }
+            }
+            List<ProjectMemberResult> result = _projectRepository.getProjectMembers(memIds);
+            result.sort(Comparator.comparing(ProjectMemberResult::getJoinDate).reversed());
+            return result;
+        }
+        catch (Exception e) {
+            _logger.Error("getMembersByTaskId", e.getMessage());
             throw e;
         }
     }

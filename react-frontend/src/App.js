@@ -35,11 +35,11 @@ function App() {
       <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home/>}/>
+        
         <Route path="/operations" element={<Operations/>}/>
         <Route path="/operations/project/:id" element={<ProjectInfo/>} />
-        <Route path="/operations/TaskModal" element={<NewTaskModal/>}/>
-        <Route path="/operations/MyProjects" element={<MyProjects/>}/>
-        <Route path="/operations/TaskInfo" element={<TaskInfo/>}/>
+        <Route path="/operations/my-projects" element={<MyProjects/>}/>
+        <Route path="/operations/task/:id" element={<TaskInfo/>}/>
 
         <Route path="/hr/submit-form" element={<SubmitForm/>}/>
         <Route path="/hr/my-forms" element={<MyForms/>}/>

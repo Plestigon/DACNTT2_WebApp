@@ -2,6 +2,7 @@ package tdtu.ems.operation_management_service.controllers;
 
 import org.springframework.web.bind.annotation.*;
 import tdtu.ems.core_service.models.BaseResponse;
+import tdtu.ems.operation_management_service.models.ProjectMemberResult;
 import tdtu.ems.operation_management_service.models.Task;
 import tdtu.ems.operation_management_service.models.TaskDiscussion;
 import tdtu.ems.operation_management_service.models.TaskResult;
@@ -35,6 +36,28 @@ public class TaskController {
     public BaseResponse getTasksByProjectId(@RequestParam int projectId) {
         try {
             List<TaskResult> result = _taskService.getTasksByProjectId(projectId);
+            return new BaseResponse(result, 200, "OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
+
+    @GetMapping("/operations/task/{id}")
+    public BaseResponse getTask(@PathVariable int id) {
+        try {
+            TaskResult result = _taskService.getTask(id);
+            return new BaseResponse(result, 200, "OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
+
+    @PostMapping("/operations/task/edit")
+    public BaseResponse editTask(@RequestBody Task task) {
+        try {
+            String result = _taskService.editTask(task);
             return new BaseResponse(result, 200, "OK");
         }
         catch (Exception e) {
@@ -80,6 +103,17 @@ public class TaskController {
     public BaseResponse getDiscussions(@PathVariable int id) {
         try {
             List<TaskDiscussion> result = _taskService.getDiscussions(id);
+            return new BaseResponse(result, 200, "OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
+
+    @GetMapping("/operations/task/{id}/members")
+    public BaseResponse getMembers(@PathVariable int id) {
+        try {
+            List<ProjectMemberResult> result = _taskService.getMembersByTaskId(id);
             return new BaseResponse(result, 200, "OK");
         }
         catch (Exception e) {

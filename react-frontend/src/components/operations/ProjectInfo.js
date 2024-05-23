@@ -174,7 +174,8 @@ const ProjectInfo = () => {
     }
 
     function handleCancelEditClick() {
-        window.location.reload(); 
+        setInputDisabled(true);
+        loadProjectData();
     }
 
     function handleEditSubmit() {
@@ -323,7 +324,10 @@ const ProjectInfo = () => {
                 {tasks.length > 0 ? (tasks.map(t => 
                     <div class="row my-1" key={t.id}>
                         <div class="card p-2" style={{width: '90%'}}>
-                            <div class="d-flex">
+                            <div class="d-flex" onClick={() => {
+                                        var win = window.open('/operations/task/' + t.id, '_blank');
+                                        win.focus();
+                                    }}>
                                 <div class="">
                                     {t.name} - {t.assigneeName}
                                 </div>

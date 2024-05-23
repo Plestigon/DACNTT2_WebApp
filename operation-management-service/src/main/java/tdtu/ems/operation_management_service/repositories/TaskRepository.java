@@ -35,6 +35,19 @@ public class TaskRepository implements ITaskRepository {
         return (int) id;
     }
 
+    @Override
+    public TaskResult getTask(int id) throws ExecutionException, InterruptedException {
+        CollectionReference tasksDb = _db.collection("tasks");
+        CollectionReference employeeDb = _db.collection("employees");
+        Task task = tasksDb.document(String.valueOf(id)).get().get().toObject(Task.class);
+        if (task == null) {
+            throw new IllegalArgumentException("Task not found");
+        }
+        String name = employeeDb.document(String.valueOf(task.getAssigneeId())).get().get().getString("name");
+        TaskResult result = new TaskResult(task, name);
+        return result;
+    }
+
     public List<TaskResult> getTasksByProjectId(int projectId) throws ExecutionException, InterruptedException {
         CollectionReference tasksDb = _db.collection("tasks");
         CollectionReference employeeDb = _db.collection("employees");
@@ -47,6 +60,20 @@ public class TaskRepository implements ITaskRepository {
             }
         }
         return result;
+    }
+
+    @Override
+    public String editTask(Task entry) throws ExecutionException, InterruptedException {
+        CollectionReference tasksDb = _db.collection("tasks");
+        Task existing = tasksDb.document(String.valueOf(entry.getId())).get().get().toObject(Task.class);
+        if (existing == null) {
+            throw new IllegalArgumentException("Wrong task id");
+        }
+        existing.setName(entry.getName());
+        existing.setAssigneeId(entry.getAssigneeId());
+        existing.setDescription(entry.getDescription());
+        ApiFuture<WriteResult> result = tasksDb.document(String.valueOf(entry.getId())).set(existing);
+        return result.get().getUpdateTime().toString();
     }
 
     public String updateTaskStateById(int id, int newState) throws ExecutionException, InterruptedException {

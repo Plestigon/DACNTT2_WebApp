@@ -14,6 +14,7 @@ public class TaskResult {
     private Date createDate;
     private Date updateDate;
     private int priority;
+    private String priorityName;
     private int state;  //TaskState
     private String stateName;
     private String description;
@@ -28,6 +29,7 @@ public class TaskResult {
         this.createDate = t.getCreateDate();
         this.updateDate = t.getUpdateDate();
         this.priority = t.getPriority();
+        this.priorityName = Enums.Priority.values()[t.getPriority()].name();
         this.state = t.getState();
         this.stateName = Enums.TaskState.values()[t.getState()].name;
         this.description = t.getDescription();
@@ -128,5 +130,13 @@ public class TaskResult {
 
     public void setDiscussions(List<Integer> discussions) {
         this.discussions = discussions;
+    }
+
+    public String getPriorityName() {
+        return priorityName;
+    }
+
+    public void setPriorityName(String priorityName) {
+        this.priorityName = priorityName;
     }
 }
