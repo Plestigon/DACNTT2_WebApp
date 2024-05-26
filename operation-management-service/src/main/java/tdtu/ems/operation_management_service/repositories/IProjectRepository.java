@@ -1,16 +1,15 @@
 package tdtu.ems.operation_management_service.repositories;
 
-import tdtu.ems.core_service.models.BaseResponse;
 import tdtu.ems.operation_management_service.models.*;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public interface IProjectRepository {
-    List<Project> getProjects();
-    List<ProjectResult> getProjectResults();
+    List<ProjectResult> getProjects();
     Project getProjectById(int id);
     ProjectResult getProjectResultById(int id);
+    List<ProjectResult> getProjectsByEmployeeId(int id) throws ExecutionException, InterruptedException;
     String addProject(Project project);
     String removeProject(int id) throws ExecutionException, InterruptedException;
     String editProject(Project project) throws ExecutionException, InterruptedException;

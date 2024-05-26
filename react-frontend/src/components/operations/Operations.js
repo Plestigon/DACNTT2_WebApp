@@ -30,8 +30,10 @@ function Operations() {
         })
         .then(result=>result.json())
         .then((result)=>{
-            dismiss(toastId);
-            setProjects(result);
+            if (result.statusCode === 200) {
+                dismiss(toastId);
+                setProjects(result.data);
+            }
         })
         .catch (e => {
             console.log("ERROR_fetchProjectData: " + e);

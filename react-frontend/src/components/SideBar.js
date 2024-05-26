@@ -57,7 +57,7 @@ function SideBar() {
         <Nav.Link as={Link} to="/"><i class="bi bi-house"></i> Home</Nav.Link>
 
         <Nav.Link as={Link} to="/operations"><i class="bi bi-journal-check"></i> Operations</Nav.Link>
-        <Nav.Link as={Link} to="/operations/TaskModal"><i class="bi bi-journal-check"></i> ModalTask</Nav.Link>
+        <Nav.Link as={Link} to="/operations/my-projects"><i class="bi bi-journal-check"></i> My Projects</Nav.Link>
 
 
 

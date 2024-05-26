@@ -51,14 +51,13 @@ public class OperationManagementController {
 
     @RequestMapping(value = "operations/projects", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<List<ProjectResult>> getProjects() {
+    public ResponseEntity<BaseResponse> getProjects(@RequestParam(required = false) Integer employeeId) {
         try {
-            List<ProjectResult> res = null;
-            res = _webClient.build().get()
-                    .uri("http://operation-management-service/api/operations/projects")
+            BaseResponse res = _webClient.build().get()
+                    .uri("http://operation-management-service/api/operations/projects" +
+                            (employeeId != null ? "?employeeId=" + employeeId : ""))
                     .retrieve()
-                    .bodyToFlux(ProjectResult.class)
-                    .collectList()
+                    .bodyToMono(BaseResponse.class)
                     .block();
             return new ResponseEntity<>(res, HttpStatus.OK);
         }

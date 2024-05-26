@@ -19,13 +19,12 @@ public class OperationManagementController {
     }
 
     @GetMapping("/operations/projects")
-    public ResponseEntity<List<ProjectResult>> getProjects() {
-        List<ProjectResult> response = null;
+    public BaseResponse getProjects(@RequestParam(required = false) Integer employeeId) {
         try {
-            response = _projectService.getProjects();
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            List<ProjectResult> response = _projectService.getProjects(employeeId);
+            return new BaseResponse(response, 200, "OK");
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new BaseResponse(null, 500, e.getMessage());
         }
     }
 

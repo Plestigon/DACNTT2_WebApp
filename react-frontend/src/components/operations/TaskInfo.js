@@ -8,7 +8,6 @@ import Select from 'react-select';
 import { dateTimeFormat } from "../../utils/DateHelper";
 import "react-datepicker/dist/react-datepicker.css";
 import { Button } from "react-bootstrap";
-import AddMemberModal from "./AddMemberModal";
 import SideBar from "../SideBar";
 import TopBar from "../TopBar";
 import Notify, {success} from "../../utils/Notify";

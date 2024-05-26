@@ -23,23 +23,9 @@ public class ProjectRepository implements IProjectRepository {
         _logger = new Logger<>(ProjectRepository.class);
     }
 
-    @Override
-    public List<Project> getProjects() {
-        try {
-            CollectionReference projectsDb = _db.collection("projects");
-            List<Project> projects = new ArrayList<>();
-            for (DocumentSnapshot data : projectsDb.get().get().getDocuments()) {
-                projects.add(data.toObject(Project.class));
-            }
-            return projects;
-        }
-        catch (Exception e) {
-            return null;
-        }
-    }
 
     @Override
-    public List<ProjectResult> getProjectResults() {
+    public List<ProjectResult> getProjects() {
         try {
             CollectionReference projectsDb = _db.collection("projects");
             CollectionReference employeesDb = _db.collection("employees");
@@ -99,6 +85,22 @@ public class ProjectRepository implements IProjectRepository {
             _logger.Error("getProjectResultById", e.getMessage());
             return null;
         }
+    }
+
+    @Override
+    public List<ProjectResult> getProjectsByEmployeeId(int id) throws ExecutionException, InterruptedException {
+        CollectionReference projectsDb = _db.collection("projects");
+        CollectionReference employeesDb = _db.collection("employees");
+        List<ProjectResult> projects = new ArrayList<>();
+        for (DocumentSnapshot data : projectsDb.get().get().getDocuments()) {
+            Project prj = data.toObject(Project.class);
+            if (prj != null && prj.getMemberIds().contains(id)) {
+                DocumentSnapshot ownerData = employeesDb.document(String.valueOf(prj.getOwnerId())).get().get();
+                ProjectResult prjRes = new ProjectResult(prj, ownerData.getString("name"));
+                projects.add(prjRes);
+            }
+        }
+        return projects;
     }
 
     @Override

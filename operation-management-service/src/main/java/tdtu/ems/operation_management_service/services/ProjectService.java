@@ -2,7 +2,6 @@ package tdtu.ems.operation_management_service.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import tdtu.ems.core_service.models.BaseResponse;
 import tdtu.ems.core_service.models.Enums;
 import tdtu.ems.core_service.utils.Logger;
 import tdtu.ems.operation_management_service.models.*;
@@ -11,7 +10,6 @@ import tdtu.ems.operation_management_service.repositories.ProjectRepository;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
 
 @Service
 public class ProjectService implements IProjectService {
@@ -26,10 +24,21 @@ public class ProjectService implements IProjectService {
     }
 
     @Override
-    public List<ProjectResult> getProjects() {
-        List<ProjectResult> result = _projectRepository.getProjectResults();
-        result.sort(Comparator.comparing(ProjectResult::getId));
-        return result;
+    public List<ProjectResult> getProjects(Integer employeeId) throws ExecutionException, InterruptedException {
+        try {
+            List<ProjectResult> result = null;
+            if (employeeId == null) {
+                result = _projectRepository.getProjects();
+            } else {
+                result = _projectRepository.getProjectsByEmployeeId(employeeId);
+            }
+            result.sort(Comparator.comparing(ProjectResult::getId));
+            return result;
+        }
+        catch (Exception e) {
+            _logger.Error("getProjects", e.getMessage());
+            throw e;
+        }
     }
 
     @Override

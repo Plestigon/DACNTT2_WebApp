@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public interface IProjectService {
-    List<ProjectResult> getProjects();
+    List<ProjectResult> getProjects(Integer employeeId) throws ExecutionException, InterruptedException;
     ProjectResult getProjectById(int id);
     String addProject(Project project);
     String removeProject(int id) throws ExecutionException, InterruptedException;
