@@ -92,9 +92,10 @@ function Operations() {
                         <th scope="col">Project</th>
                         <th scope="col">Owner</th>
                         <th scope="col">Status</th>
+                        <th scope="col">Create date</th>
                         <th scope="col">Due date</th>
-                        <th scope="col" style={{width:'30%'}}>Description</th>
-                        <th scope="col" style={{width:'10%'}}></th>
+                        <th scope="col">Description</th>
+                        <th scope="col" style={{width:'50px'}}></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -110,10 +111,11 @@ function Operations() {
                         </td>
                     </tr> */}
                     {projects.map(p=>(
-                        <tr key={p.id} onClick={() => projectDetails(p.id)}>
+                        <tr key={p.id} title="See details" style={{cursor:"pointer"}} onClick={() => projectDetails(p.id)}>
                             <td>{p.name}</td>
                             <td>{p.ownerName}</td>
                             <td><div class={"card status-card project-status-" + p.status}>{p.statusName}</div></td>
+                            <td>{dateTimeFormat(p.createDate)}</td>
                             <td>{dateTimeFormat(p.dueDate)}</td>
                             <td>{p.description}</td>
                             <td><button type="button" class="btn btn-primary bi bi-trash delete-prj-btn"

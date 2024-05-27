@@ -1,3 +1,3 @@
-.ck-editor__editable, .ck .ck-editor__top .ck-reset_all, .ck .ck-reset .ck-editor .ck-rounded-corners {
-    width: 1000px;
+.task-info .ck-editor__editable, .task-info .ck .ck-editor__top .ck-reset_all, .task-info .ck .ck-reset .ck-editor .ck-rounded-corners, .task-info .ck .ck-sticky-panel__content  {
+    width: 65vw;
 }

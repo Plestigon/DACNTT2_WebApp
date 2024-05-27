@@ -16,4 +16,5 @@ public interface ITaskRepository {
     String assignTask(int taskId, int employeeId) throws ExecutionException, InterruptedException;
     Integer addDiscussion(TaskDiscussion d) throws ExecutionException, InterruptedException;
     List<TaskDiscussion> getDiscussions(int taskId) throws ExecutionException, InterruptedException;
+    List<TaskResult> getTasksFromMyProject(int projectId, int employeeId) throws ExecutionException, InterruptedException;
 }

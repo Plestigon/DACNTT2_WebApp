@@ -110,6 +110,7 @@ public class ProjectRepository implements IProjectRepository {
             DocumentReference idTracer = _db.collection("idTracer").document("projects");
             long id = Objects.requireNonNull(idTracer.get().get().getLong("id")) + 1;
             project.setId((int) id);
+            project.setCreateDate(new Date());
             ApiFuture<WriteResult> result = projectsDb.document(String.valueOf(id)).set(project);
             ApiFuture<WriteResult> updateIdResult = idTracer.update("id", id);
             return result.get().getUpdateTime().toString();

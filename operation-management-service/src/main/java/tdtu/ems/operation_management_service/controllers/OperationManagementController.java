@@ -39,6 +39,16 @@ public class OperationManagementController {
         }
     }
 
+    @GetMapping("/operations/my-projects")
+    public BaseResponse getMyProjects(@RequestParam int employeeId) {
+        try {
+            List<MyProjectResult> response = _projectService.getMyProjects(employeeId);
+            return new BaseResponse(response, 200, "OK");
+        } catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
+
     @PostMapping("/operations/projects")
     public ResponseEntity<String> addProject(@RequestBody Project project) {
         String response = null;

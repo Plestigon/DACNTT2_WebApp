@@ -229,7 +229,7 @@ const TaskInfo = () => {
                 <div class="form-control">{data.createDate}</div>
                 </Col>
             </Row>
-            <Row className="my-4 p-2" style={{marginLeft: '10%', marginRight: '10%'}}>
+            <Row className="my-4 p-2 task-info" style={{marginLeft: '10%', marginRight: '10%'}}>
                 <label className="w-100">Description:</label>
                 <CKEditor
                     editor={ ClassicEditor }

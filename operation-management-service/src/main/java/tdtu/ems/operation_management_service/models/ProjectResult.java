@@ -14,11 +14,12 @@ public class ProjectResult {
     private List<Integer> memberIds;
     private int status;
     private String statusName;
+    private Date createDate;
     private Date dueDate;
     private String description;
     private List<Integer> projectUpdateIds;
 
-    public ProjectResult(int id, String name, int ownerId, String ownerName, List<Integer> memberIds, int status, String statusName, Date dueDate, String description, List<Integer> projectUpdateIds) {
+    public ProjectResult(int id, String name, int ownerId, String ownerName, List<Integer> memberIds, int status, String statusName, Date createDate, Date dueDate, String description, List<Integer> projectUpdateIds) {
         this.id = id;
         this.name = name;
         this.ownerId = ownerId;
@@ -26,6 +27,7 @@ public class ProjectResult {
         this.memberIds = memberIds;
         this.status = status;
         this.statusName = statusName;
+        this.createDate = createDate;
         this.dueDate = dueDate;
         this.description = description;
         this.projectUpdateIds = projectUpdateIds;
@@ -39,6 +41,7 @@ public class ProjectResult {
         this.memberIds = p.getMemberIds();
         this.status = p.getStatus();
         this.statusName = Enums.ProjectStatus.values()[p.getStatus()].name;
+        this.createDate = p.getCreateDate();
         this.dueDate = p.getDueDate();
         this.description = p.getDescription();
         this.projectUpdateIds = p.getProjectUpdateIds();
@@ -98,6 +101,14 @@ public class ProjectResult {
 
     public void setStatusName(String statusName) {
         this.statusName = statusName;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
     public Date getDueDate() {

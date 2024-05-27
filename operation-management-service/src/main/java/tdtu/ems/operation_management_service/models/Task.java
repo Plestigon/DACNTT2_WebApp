@@ -10,6 +10,7 @@ public class Task {
     private int assigneeId; //EmployeeId
     private Date createDate;
     private Date updateDate;
+    private Date dueDate;
     private int priority;
     private int state;  //TaskState
     private String description;
@@ -17,13 +18,14 @@ public class Task {
 
     public Task() {}
 
-    public Task(int id, String name, int projectId, int assigneeId, Date createDate, Date updateDate, int priority, int state, String description, List<Integer> discussions) {
+    public Task(int id, String name, int projectId, int assigneeId, Date createDate, Date updateDate, Date dueDate, int priority, int state, String description, List<Integer> discussions) {
         this.id = id;
         this.name = name;
         this.projectId = projectId;
         this.assigneeId = assigneeId;
         this.createDate = createDate;
         this.updateDate = updateDate;
+        this.dueDate = dueDate;
         this.priority = priority;
         this.state = state;
         this.description = description;
@@ -76,6 +78,14 @@ public class Task {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public Date getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
     }
 
     public int getPriority() {

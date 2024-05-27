@@ -9,16 +9,18 @@ public class Project {
     private int ownerId;
     private List<Integer> memberIds;    //ProjectMember
     private int status;
+    private Date createDate;
     private Date dueDate;
     private String description;
     private List<Integer> projectUpdateIds; //ProjectUpdate
 
     public Project() {}
 
-    public Project(String name, int ownerId, int status, Date dueDate, String description) {
+    public Project(String name, int ownerId, int status, Date createDate, Date dueDate, String description) {
         this.name = name;
         this.ownerId = ownerId;
         this.status = status;
+        this.createDate = createDate;
         this.dueDate = dueDate;
         this.description = description;
     }
@@ -29,6 +31,7 @@ public class Project {
         this.ownerId = p.ownerId;
         this.memberIds = p.memberIds;
         this.status = p.status;
+        this.createDate = p.createDate;
         this.dueDate = p.dueDate;
         this.description = p.description;
         this.projectUpdateIds = p.projectUpdateIds;
@@ -72,6 +75,14 @@ public class Project {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
     public Date getDueDate() {

@@ -134,4 +134,18 @@ public class TaskRepository implements ITaskRepository {
         }
         return result;
     }
+
+    public List<TaskResult> getTasksFromMyProject(int projectId, int employeeId) throws ExecutionException, InterruptedException {
+        CollectionReference tasksDb = _db.collection("tasks");
+        CollectionReference employeeDb = _db.collection("employees");
+        List<TaskResult> result = new ArrayList<>();
+        for (DocumentSnapshot data : tasksDb.get().get().getDocuments()) {
+            Task task = data.toObject(Task.class);
+            if (task != null && task.getProjectId() == projectId && task.getAssigneeId() == employeeId) {
+                String name = employeeDb.document(String.valueOf(task.getAssigneeId())).get().get().getString("name");
+                result.add(new TaskResult(task, name));
+            }
+        }
+        return result;
+    }
 }

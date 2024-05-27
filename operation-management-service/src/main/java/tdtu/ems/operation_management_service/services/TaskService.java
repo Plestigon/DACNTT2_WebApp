@@ -61,6 +61,19 @@ public class TaskService implements ITaskService {
     }
 
     @Override
+    public List<TaskResult> getTasksFromMyProject(int projectId, int employeeId) throws ExecutionException, InterruptedException {
+        try {
+            List<TaskResult> result = _taskRepository.getTasksFromMyProject(projectId, employeeId);
+            result.sort(Comparator.comparing(TaskResult::getUpdateDate));
+            return result;
+        }
+        catch (Exception e) {
+            _logger.Error("getTasksFromMyProject", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Override
     public String editTask(Task entry) throws ExecutionException, InterruptedException {
         try {
             String result = _taskRepository.editTask(entry);

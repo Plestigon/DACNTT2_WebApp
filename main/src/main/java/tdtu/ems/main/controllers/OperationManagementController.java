@@ -261,4 +261,20 @@ public class OperationManagementController {
             return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("operations/my-projects")
+    @ResponseBody
+    public ResponseEntity<BaseResponse> getMyProjects(@RequestParam int employeeId) {
+        try {
+            BaseResponse res = _webClient.build().get()
+                    .uri("http://operation-management-service/api/operations/my-projects?employeeId=" + employeeId)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

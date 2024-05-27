@@ -6,19 +6,24 @@ import tdtu.ems.core_service.models.Enums;
 import tdtu.ems.core_service.utils.Logger;
 import tdtu.ems.operation_management_service.models.*;
 import tdtu.ems.operation_management_service.repositories.ProjectRepository;
+import tdtu.ems.operation_management_service.repositories.TaskRepository;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @Service
 public class ProjectService implements IProjectService {
     private final ProjectRepository _projectRepository;
+    private final TaskRepository _taskRepository;
     private final Logger<ProjectService> _logger;
     private final WebClient.Builder _webClient;
 
-    public ProjectService(ProjectRepository projectRepository, WebClient.Builder webClient) {
+    public ProjectService(ProjectRepository projectRepository, TaskRepository taskRepository, WebClient.Builder webClient) {
         _projectRepository = projectRepository;
+        _taskRepository = taskRepository;
         _webClient = webClient;
         _logger = new Logger<>(ProjectService.class);
     }
@@ -32,7 +37,7 @@ public class ProjectService implements IProjectService {
             } else {
                 result = _projectRepository.getProjectsByEmployeeId(employeeId);
             }
-            result.sort(Comparator.comparing(ProjectResult::getId));
+            result.sort(Comparator.comparing(ProjectResult::getCreateDate).reversed());
             return result;
         }
         catch (Exception e) {
@@ -45,6 +50,44 @@ public class ProjectService implements IProjectService {
     public ProjectResult getProjectById(int id) {
         ProjectResult result =  _projectRepository.getProjectResultById(id);
         return result;
+    }
+
+    public List<MyProjectResult> getMyProjects(int employeeId) throws ExecutionException, InterruptedException {
+        try {
+            List<MyProjectResult> result = new ArrayList<>();
+            List<ProjectResult> prs = _projectRepository.getProjectsByEmployeeId(employeeId);
+            for (ProjectResult pr : prs) {
+                List<ProjectMemberResult> members = _projectRepository.getProjectMembers(pr.getMemberIds());
+                //Find member data that belongs to this employee
+                ProjectMemberResult memberInfo = members.stream().filter(m -> m.getEmployeeId() == employeeId).findFirst().orElse(null);
+                if (memberInfo != null) {
+                    List<TaskResult> tasks = _taskRepository.getTasksByProjectId(memberInfo.getProjectId());
+                    int inProgressCnt = 0;
+                    int notStartedCnt = 0;
+                    Date nearestDueDate = null;
+                    for (TaskResult t : tasks) {
+                        if (t.getAssigneeId() == employeeId) {
+                            if (t.getState() == Enums.TaskState.InProgress.ordinal()) {
+                                inProgressCnt++;
+                            }
+                            else if (t.getState() == Enums.TaskState.ToDo.ordinal()) {
+                                notStartedCnt++;
+                            }
+                            if (nearestDueDate == null || t.getUpdateDate().before(nearestDueDate)) {
+                                nearestDueDate = t.getDueDate();
+                            }
+                        }
+                    }
+                    result.add(new MyProjectResult(pr, memberInfo, inProgressCnt, notStartedCnt, nearestDueDate));
+                }
+            }
+            result.sort(Comparator.comparing(MyProjectResult::getId));
+            return result;
+        }
+        catch (Exception e) {
+            _logger.Error("getMyProjects", e.getMessage());
+            throw e;
+        }
     }
 
     @Override

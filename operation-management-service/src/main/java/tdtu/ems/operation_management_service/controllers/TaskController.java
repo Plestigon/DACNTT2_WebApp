@@ -32,10 +32,21 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/operations/tasks")
-    public BaseResponse getTasksByProjectId(@RequestParam int projectId) {
+    @GetMapping("/operations/project/{projectId}/tasks")
+    public BaseResponse getTasksByProjectId(@PathVariable int projectId) {
         try {
             List<TaskResult> result = _taskService.getTasksByProjectId(projectId);
+            return new BaseResponse(result, 200, "OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
+
+    @GetMapping("/operations/my-project/{projectId}/tasks")
+    public BaseResponse getTasksFromMyProject(@PathVariable int projectId, @RequestParam int employeeId) {
+        try {
+            List<TaskResult> result = _taskService.getTasksFromMyProject(projectId, employeeId);
             return new BaseResponse(result, 200, "OK");
         }
         catch (Exception e) {

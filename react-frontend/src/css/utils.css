@@ -87,6 +87,23 @@
     color: white;
 }
 
+/* Priorities */
+/* Low */
+.card.status-card.priority-1 {
+    background-color: gray;
+    color: white;
+}
+/* Medium */
+.card.status-card.priority-2 {
+    background-color: orange;
+    color: white;
+}
+/* High */
+.card.status-card.priority-3 {
+    background-color: red;
+    color: white;
+}
+
 
 .card.table-card {
     height: calc(100vh - 120px);

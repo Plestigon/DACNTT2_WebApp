@@ -6,6 +6,7 @@ import SideBar from "../SideBar";
 import '../../css/sidebar.css';
 import '../../css/utils.css';
 import Notify, {success, error, loading, dismiss} from "../../utils/Notify";
+import { getDaysUntil, getHoursUntil, getDaysSince, getHoursSince } from "../../utils/DateHelper";
 import { Button, Card } from "react-bootstrap";
 import 'react-horizontal-scrolling-menu/dist/styles.css';
 import Slider from "react-slick";
@@ -15,6 +16,7 @@ import styled from "@emotion/styled/macro";
 
 function MyProjects() {
     const [projects, setProjects] = useState([]);
+    const [tasks, setTasks] = useState([]);
     const employeeId = 1;
 
     var settings = {
@@ -57,12 +59,13 @@ function MyProjects() {
     useEffect(() => {
         function loadProjects() {
             const toastId = loading("Loading project data...");
-            fetch("http://localhost:8080/operations/projects?employeeId=" + employeeId,{
+            fetch("http://localhost:8080/operations/my-projects?employeeId=" + employeeId,{
                 method:"GET"
             })
             .then(result=>result.json())
             .then((result)=>{
                 if (result.statusCode === 200) {
+                    // console.log(result.data);
                     dismiss(toastId);
                     setProjects(result.data);
                 }
@@ -76,6 +79,26 @@ function MyProjects() {
         loadProjects();
     }, [])
 
+    function loadTasks(projectId) {
+        const toastId = loading("Loading task data...");
+        fetch("http://localhost:8080/operations/my-project/" + projectId + "/tasks?employeeId=" + employeeId,{
+            method:"GET"
+        })
+        .then(result=>result.json())
+        .then((result)=>{
+            if (result.statusCode === 200) {
+                console.log(result.data);
+                dismiss(toastId);
+                setTasks(result.data);
+            }
+        })
+        .catch (e => {
+            console.log("ERROR_loadTasks: " + e);
+            dismiss(toastId);
+            error("Load task data failed");
+        })
+    }
+
     return (
         
     <div>
@@ -84,21 +107,21 @@ function MyProjects() {
         <SideBar/>
         <TopBar/>
 
-        <div className="slider-container" style={{marginLeft:"225px", marginRight:"50px", marginTop:"25px"}}>
+        <div class="content container">
+        <div className="slider-container" style={{marginLeft:"25px", marginRight:"25px", marginTop:"10px", maxHeight:"50vh"}}>
             <Slider {...settings}>
             {
                 projects.length > 0 && (
                     projects.map(p=>(
                         <div class="card" key={p.id}>
                             <div class="card-body" style={{minHeight:"220px"}}>
-                                <h5 class="card-title">{p.name}</h5>
-                                <p class="card-text" style={{textAlign:"right"}}>{p.statusName}</p>
-                                <p class="card-text">You have X tasks in progress</p>
-                                <p class="card-text">You have X tasks not started</p>
-                                <p class="card-hover-text">Role Title</p>
-                                <p class="card-hover-text">You have X tasks in progress</p>
-                                <p class="card-hover-text">You have X tasks not started</p>
-                                <Button class="btn btn-primary">Check Project 1 tasks</Button>
+                                <h5 class="card-title text-nowrap d-inline-block text-truncate" style={{maxWidth:"100%"}}>{p.name}</h5>
+                                <p class={"card status-card project-status-" + p.status}>{p.statusName}</p>
+                                <p class="card-text text-end">You have <span class="fw-bold">{p.tasksInProgress}</span> task{p.tasksInProgress > 1 ? "s" : ""} in progress</p>
+                                <p class="card-text text-end">You have <span class="fw-bold">{p.tasksNotStarted}</span> task{p.tasksNotStarted > 1 ? "s" : ""} not started</p>
+                                <p class="card-hover-text">Role: <span class="fw-bold">{p.memberInfo.roleName}</span></p>
+                                <p class="card-hover-text">Nearest deadline in <span class="fw-bold">{getDaysUntil(p.nearestDueDate)}</span> days <span class="fw-bold">{getHoursUntil(p.nearestDueDate)}</span> hours</p>
+                                <div class="row mx-2"><Button class="btn btn-primary w-100" onClick={() => loadTasks(p.id)}>Show all tasks</Button></div>
                             </div>
                         </div>
                     ))
@@ -110,12 +133,12 @@ function MyProjects() {
                     placeholders.push(
                         <div class="card">
                             <div class="card-body" style={{minHeight:"220px"}}>
-                                <h5 class="card-title">You haven't joined any project.</h5>
+                                <h5 class="card-title text-nowrap d-inline-block text-truncate" style={{maxWidth:"100%"}}>You haven't joined any project.</h5>
                             </div>
                         </div>
                     );
                 }
-                for (let i = placeholders.length; i <= 3-projects.length; i++) {
+                for (let i = placeholders.length; i < 3-projects.length; i++) {
                     placeholders.push(<div class="card"/>);
                 }
                 return placeholders;
@@ -159,36 +182,54 @@ function MyProjects() {
 
             </Slider>
 
+            </div>
             <hr ></hr>
 
-            <div class="row mx-md-n5">
-                <div class="col px-md-2" href="#">Selected project's Name hyperlink that goes to Projinfo</div>
-                <div class="col px-md-1">
-                    <table className="table-clickable table table-hover table-collapsed" style={{width:'100%'}}>
-                    <thead class="table-primary">
-                    <tr>
-                        <th scope="col">Task Name</th>
-                        <th scope="col">Asigned to</th>
-                        <th scope="col">Priority</th>
-                        <th scope="col">Last Updated</th>
-                        <th scope="col">State</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
-                    </tbody>
-                    </table>
-                </div>
+            {/* <div class="col px-md-2" href="#">Selected project's Name hyperlink that goes to Projinfo</div> */}
+            <div class="card table-card table-responsive" style={{height:'50vh'}}>
+                <table className="table-clickable table table-hover table-collapsed">
+                <thead class="table-primary">
+                <tr>
+                    <th scope="col">Task Name</th>
+                    <th scope="col">Asigned To</th>
+                    <th scope="col" style={{width:'15%'}}>Priority</th>
+                    <th scope="col" style={{width:'15%'}}>Last Updated</th>
+                    <th scope="col" style={{width:'15%'}}>Due Date</th>
+                    <th scope="col" style={{width:'15%'}}>State</th>
+                </tr>
+                </thead>
+                <tbody>
+                {
+                    tasks.length > 0 && (
+                        tasks.map(t => (
+                            <tr key={t.id} title="See details" style={{cursor:"pointer"}} onClick={() => {
+                                var win = window.open('/operations/task/' + t.id, '_blank');
+                                win.focus();
+                            }}>
+                            <td>{t.name}</td>
+                            <td>{t.assigneeName}</td>
+                            <td><div class={"card status-card priority-" + t.priority}>{t.priorityName}</div></td>
+                            {getDaysSince(t.updateDate) > 0 ? (
+                                <td>{getDaysSince(t.updateDate)} days</td>
+                            ):(
+                                <td>{getHoursSince(t.updateDate)} hours</td>
+                            )}
+                            {getDaysUntil(t.dueDate) > 0 ? (
+                                <td>{getDaysUntil(t.dueDate)} days</td>
+                            ):(
+                                <td>{getHoursUntil(t.dueDate)} hours</td>
+                            )}
+                            <td><div class={"card status-card task-state-" + t.state}>{t.stateName}</div></td>
+                            </tr>
+                        ))
+                    )
+                }
+                </tbody>
+                </table>
             </div>
 
-        </div>
 
+    </div>
     </div>
 
     );

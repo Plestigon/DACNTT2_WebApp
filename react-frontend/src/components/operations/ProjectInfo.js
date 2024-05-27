@@ -118,7 +118,7 @@ const ProjectInfo = () => {
 
     const loadTasks = useCallback(() => {
         console.log("Load");
-        fetch("http://localhost:8080/operations/tasks?projectId=" + params.id,{
+        fetch("http://localhost:8080/operations/project/" + params.id + "/tasks",{
             method:"GET"
         })
         .then(result=>result.json())
@@ -322,7 +322,7 @@ const ProjectInfo = () => {
                 </div>
                 <hr/>
                 {tasks.length > 0 ? (tasks.map(t => 
-                    <div class="row my-1" key={t.id}>
+                    <div class="row my-1" style={{cursor:"pointer"}} key={t.id}>
                         <div class="card p-2" style={{width: '90%'}}>
                             <div class="d-flex" onClick={() => {
                                         var win = window.open('/operations/task/' + t.id, '_blank');

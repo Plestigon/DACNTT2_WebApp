@@ -22,11 +22,11 @@ public class TaskController {
         _webClient = webClient;
     }
 
-    @GetMapping("operations/tasks")
-    public ResponseEntity<BaseResponse> getTasks(@RequestParam int projectId) {
+    @GetMapping("operations/project/{projectId}/tasks")
+    public ResponseEntity<BaseResponse> getTasks(@PathVariable int projectId) {
         try {
             BaseResponse result = _webClient.build().get()
-                    .uri("http://operation-management-service/api/operations/tasks?projectId=" + projectId)
+                    .uri("http://operation-management-service/api/operations/project/" + projectId + "/tasks")
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();
@@ -139,6 +139,21 @@ public class TaskController {
         try {
             BaseResponse result = _webClient.build().post()
                     .uri("http://operation-management-service/api/operations/task/" + id + "/assign?assigneeId=" + assigneeId)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("operations/my-project/{projectId}/tasks")
+    public ResponseEntity<BaseResponse> getTasksFromMyProject(@PathVariable int projectId, @RequestParam int employeeId) {
+        try {
+            BaseResponse result = _webClient.build().get()
+                    .uri("http://operation-management-service/api/operations/my-project/" + projectId + "/tasks?employeeId=" + employeeId)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();

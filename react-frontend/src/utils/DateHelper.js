@@ -55,3 +55,39 @@ export function dateTimeFormat(input) {
     var result = `${day}-${month}-${year} | ${hour}:${minute}`;
     return (result);
 }
+
+export function getDaysUntil(input) {
+    var dueDate = new Date(input);
+    var today = new Date();
+    var diff = dueDate - today;
+    var days = Math.floor(diff / 1000 / 60 / 60 / 24);
+    return days;
+}
+
+export function getHoursUntil(input) {
+    var dueDate = new Date(input);
+    var today = new Date();
+    var diff = dueDate - today;
+    var days = Math.floor(diff / 1000 / 60 / 60 / 24);
+    diff -= days * 1000 * 60 * 60 * 24;
+    var hours = Math.floor(diff / 1000 / 60 / 60);
+    return hours;
+}
+
+export function getDaysSince(input) {
+    var date = new Date(input);
+    var today = new Date();
+    var diff = today - date;
+    var days = Math.floor(diff / 1000 / 60 / 60 / 24);
+    return days;
+}
+
+export function getHoursSince(input) {
+    var date = new Date(input);
+    var today = new Date();
+    var diff = today - date;
+    var days = Math.floor(diff / 1000 / 60 / 60 / 24);
+    diff -= days * 1000 * 60 * 60 * 24;
+    var hours = Math.floor(diff / 1000 / 60 / 60);
+    return hours;
+}

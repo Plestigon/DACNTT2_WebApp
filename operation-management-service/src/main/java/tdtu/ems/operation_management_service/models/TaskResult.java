@@ -13,6 +13,7 @@ public class TaskResult {
     private String assigneeName;
     private Date createDate;
     private Date updateDate;
+    private Date dueDate;
     private int priority;
     private String priorityName;
     private int state;  //TaskState
@@ -28,6 +29,7 @@ public class TaskResult {
         this.assigneeName = assigneeName;
         this.createDate = t.getCreateDate();
         this.updateDate = t.getUpdateDate();
+        this.dueDate = t.getDueDate();
         this.priority = t.getPriority();
         this.priorityName = Enums.Priority.values()[t.getPriority()].name();
         this.state = t.getState();
@@ -90,6 +92,14 @@ public class TaskResult {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public Date getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
     }
 
     public int getPriority() {
