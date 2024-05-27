@@ -86,13 +86,25 @@ public class TaskService implements ITaskService {
     }
 
     @Override
-    public String updateTaskStateById(int id, int newState) throws ExecutionException, InterruptedException {
+    public String updateTaskStateById(int id, int newValue) throws ExecutionException, InterruptedException {
         try {
-            String result = _taskRepository.updateTaskStateById(id, newState);
+            String result = _taskRepository.updateTaskStateById(id, newValue);
             return result;
         }
         catch (Exception e) {
             _logger.Error("updateTaskStateById", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Override
+    public String updateTaskPriorityById(int id, int newValue) throws ExecutionException, InterruptedException {
+        try {
+            String result = _taskRepository.updateTaskPriorityById(id, newValue);
+            return result;
+        }
+        catch (Exception e) {
+            _logger.Error("updateTaskPriorityById", e.getMessage());
             throw e;
         }
     }
@@ -140,7 +152,7 @@ public class TaskService implements ITaskService {
             List<Integer> memIds = new ArrayList<>();
             TaskResult task = _taskRepository.getTask(id);
             if (task != null) {
-                Project prj = _projectRepository.getProjectById(task.getId());
+                Project prj = _projectRepository.getProjectById(task.getProjectId());
                 if (prj != null) {
                     memIds = prj.getMemberIds();
                 }

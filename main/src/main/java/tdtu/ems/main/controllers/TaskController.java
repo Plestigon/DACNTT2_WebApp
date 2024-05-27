@@ -84,11 +84,26 @@ public class TaskController {
         }
     }
 
-    @PostMapping("/operations/task/{id}")
-    public ResponseEntity<BaseResponse> updateTaskStateById(@PathVariable int id, @RequestParam int newState) {
+    @PostMapping("/operations/task/{id}/state")
+    public ResponseEntity<BaseResponse> updateTaskStateById(@PathVariable int id, @RequestParam int newValue) {
         try {
             BaseResponse result = _webClient.build().post()
-                    .uri("http://operation-management-service/api/operations/task/" + id + "?newState=" + newState)
+                    .uri("http://operation-management-service/api/operations/task/" + id + "/state?newValue=" + newValue)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/operations/task/{id}/priority")
+    public ResponseEntity<BaseResponse> updateTaskPriorityById(@PathVariable int id, @RequestParam int newValue) {
+        try {
+            BaseResponse result = _webClient.build().post()
+                    .uri("http://operation-management-service/api/operations/task/" + id + "/priority?newValue=" + newValue)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();

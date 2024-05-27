@@ -110,3 +110,7 @@
     margin: 0px 40px;
     padding: 20px;
 }
+
+.hover-lightgray:hover {
+    background-color: lightgray;
+}

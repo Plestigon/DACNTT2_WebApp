@@ -111,7 +111,7 @@ function Operations() {
                         </td>
                     </tr> */}
                     {projects.map(p=>(
-                        <tr key={p.id} title="See details" style={{cursor:"pointer"}} onClick={() => projectDetails(p.id)}>
+                        <tr key={p.id} title="See Project's details" style={{cursor:"pointer"}} onClick={() => projectDetails(p.id)}>
                             <td>{p.name}</td>
                             <td>{p.ownerName}</td>
                             <td><div class={"card status-card project-status-" + p.status}>{p.statusName}</div></td>

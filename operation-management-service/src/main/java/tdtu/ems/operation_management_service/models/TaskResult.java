@@ -9,6 +9,7 @@ public class TaskResult {
     private int id;
     private String name;
     private int projectId;
+    private String projectName;
     private int assigneeId;
     private String assigneeName;
     private Date createDate;
@@ -60,6 +61,14 @@ public class TaskResult {
 
     public void setProjectId(int projectId) {
         this.projectId = projectId;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
     public int getAssigneeId() {

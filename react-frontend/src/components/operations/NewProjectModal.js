@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Select from 'react-select';
 import { getDefaultDueDate } from "../../utils/DateHelper";
-import { success } from "../../utils/Notify";
+import { success, error } from "../../utils/Notify";
 
 function NewProjectModal(props) {
     const [inputs, setInputs] = useState({
@@ -45,6 +45,14 @@ function NewProjectModal(props) {
         if (e.target) {
             const name = e.target.name;
             const value = e.target.value;
+            if (name === 'dueDate') {
+                var newDate = new Date(value);
+                var today = new Date();
+                if (newDate < today) {
+                    error("Invalid due date");
+                    return;
+                }
+            }
             setInputs(prevState => ({...prevState, [name]: value}));
         }
         else {

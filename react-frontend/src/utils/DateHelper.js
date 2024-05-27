@@ -41,7 +41,7 @@ export function dateFormat(input) {
     var year = date.getFullYear();
     var month = date.getMonth()+1; if (month < 10) {month = "0" + month};
     var day = date.getDate(); if (day < 10) {day = "0" + day};
-    var result = `${day}-${month}-${year}`;
+    var result = `${day}/${month}/${year}`;
     return (result);
 }
 
@@ -52,7 +52,7 @@ export function dateTimeFormat(input) {
     var day = date.getDate(); if (day < 10) {day = "0" + day};
     var hour = date.getHours(); if (hour < 10) {hour = "0" + hour};
     var minute = date.getMinutes(); if (minute < 10) {minute = "0" + minute};
-    var result = `${day}-${month}-${year} | ${hour}:${minute}`;
+    var result = `${day}/${month}/${year} ${hour}:${minute}`;
     return (result);
 }
 

@@ -301,7 +301,7 @@ const ProjectInfo = () => {
                 <hr/>
                 {members.length > 0 ? (members.map(m => 
                     <div class="row my-1" key={m.id}>
-                        <div class="card p-2" style={{width: '90%'}}>
+                        <div class="card hover-lightgray p-2" style={{width: '90%', cursor:"default"}}>
                             <div class="d-flex align-items-center">
                                 <div class="">
                                     {m.employeeName} ({m.employeeEmail}) - {m.roleName}
@@ -322,12 +322,13 @@ const ProjectInfo = () => {
                 </div>
                 <hr/>
                 {tasks.length > 0 ? (tasks.map(t => 
-                    <div class="row my-1" style={{cursor:"pointer"}} key={t.id}>
-                        <div class="card p-2" style={{width: '90%'}}>
-                            <div class="d-flex" onClick={() => {
-                                        var win = window.open('/operations/task/' + t.id, '_blank');
-                                        win.focus();
-                                    }}>
+                    <div class="row my-1" key={t.id}>
+                        <div class="card hover-lightgray p-2" style={{width: '90%', cursor:"pointer"}} title="See Task's details"
+                        onClick={() => {
+                            var win = window.open('/operations/task/' + t.id, '_blank');
+                            win.focus();
+                        }}>
+                            <div class="d-flex">
                                 <div class="">
                                     {t.name} - {t.assigneeName}
                                 </div>

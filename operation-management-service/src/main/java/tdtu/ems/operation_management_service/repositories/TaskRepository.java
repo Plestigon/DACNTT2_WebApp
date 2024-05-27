@@ -38,13 +38,16 @@ public class TaskRepository implements ITaskRepository {
     @Override
     public TaskResult getTask(int id) throws ExecutionException, InterruptedException {
         CollectionReference tasksDb = _db.collection("tasks");
-        CollectionReference employeeDb = _db.collection("employees");
+        CollectionReference employeesDb = _db.collection("employees");
+        CollectionReference projectsDb = _db.collection("projects");
         Task task = tasksDb.document(String.valueOf(id)).get().get().toObject(Task.class);
         if (task == null) {
             throw new IllegalArgumentException("Task not found");
         }
-        String name = employeeDb.document(String.valueOf(task.getAssigneeId())).get().get().getString("name");
-        TaskResult result = new TaskResult(task, name);
+        String assigneeName = employeesDb.document(String.valueOf(task.getAssigneeId())).get().get().getString("name");
+        String projectName = projectsDb.document(String.valueOf(task.getProjectId())).get().get().getString("name");
+        TaskResult result = new TaskResult(task, assigneeName);
+        result.setProjectName(projectName);
         return result;
     }
 
@@ -55,8 +58,8 @@ public class TaskRepository implements ITaskRepository {
         for (DocumentSnapshot data : tasksDb.get().get().getDocuments()) {
             Task task = data.toObject(Task.class);
             if (task != null && task.getProjectId() == projectId) {
-                String name = employeeDb.document(String.valueOf(task.getAssigneeId())).get().get().getString("name");
-                result.add(new TaskResult(task, name));
+                String assigneeName = employeeDb.document(String.valueOf(task.getAssigneeId())).get().get().getString("name");
+                result.add(new TaskResult(task, assigneeName));
             }
         }
         return result;
@@ -70,20 +73,32 @@ public class TaskRepository implements ITaskRepository {
             throw new IllegalArgumentException("Wrong task id");
         }
         existing.setName(entry.getName());
-        existing.setAssigneeId(entry.getAssigneeId());
+        existing.setDueDate(entry.getDueDate());
         existing.setDescription(entry.getDescription());
         ApiFuture<WriteResult> result = tasksDb.document(String.valueOf(entry.getId())).set(existing);
         return result.get().getUpdateTime().toString();
     }
 
-    public String updateTaskStateById(int id, int newState) throws ExecutionException, InterruptedException {
+    public String updateTaskStateById(int id, int newValue) throws ExecutionException, InterruptedException {
         CollectionReference tasksDb = _db.collection("tasks");
         Task t = tasksDb.document(String.valueOf(id)).get().get().toObject(Task.class);
         if (t == null) {
             throw new IllegalArgumentException("Task not found");
         }
-        t.setState(newState);
+        t.setState(newValue);
         t.setUpdateDate(new Date());
+        ApiFuture<WriteResult> result = tasksDb.document(String.valueOf(id)).set(t);
+        return result.get().getUpdateTime().toString();
+    }
+
+    @Override
+    public String updateTaskPriorityById(int id, int newValue) throws ExecutionException, InterruptedException {
+        CollectionReference tasksDb = _db.collection("tasks");
+        Task t = tasksDb.document(String.valueOf(id)).get().get().toObject(Task.class);
+        if (t == null) {
+            throw new IllegalArgumentException("Task not found");
+        }
+        t.setPriority(newValue);
         ApiFuture<WriteResult> result = tasksDb.document(String.valueOf(id)).set(t);
         return result.get().getUpdateTime().toString();
     }
@@ -117,6 +132,7 @@ public class TaskRepository implements ITaskRepository {
         dis.setCreateDate(new Date());
         ApiFuture<WriteResult> result = taskDiscussionsDb.document(String.valueOf(id)).set(dis);
         task.getDiscussions().add((int) id);
+        task.setUpdateDate(new Date());
         ApiFuture<WriteResult> result2 = tasksDb.document(String.valueOf(taskId)).set(task);
         return (int) id;
     }
@@ -138,6 +154,7 @@ public class TaskRepository implements ITaskRepository {
     public List<TaskResult> getTasksFromMyProject(int projectId, int employeeId) throws ExecutionException, InterruptedException {
         CollectionReference tasksDb = _db.collection("tasks");
         CollectionReference employeeDb = _db.collection("employees");
+        CollectionReference projectsDb = _db.collection("projects");
         List<TaskResult> result = new ArrayList<>();
         for (DocumentSnapshot data : tasksDb.get().get().getDocuments()) {
             Task task = data.toObject(Task.class);

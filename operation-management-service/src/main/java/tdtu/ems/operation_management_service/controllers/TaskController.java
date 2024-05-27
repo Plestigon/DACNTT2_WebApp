@@ -76,10 +76,21 @@ public class TaskController {
         }
     }
 
-    @PostMapping("/operations/task/{id}")
-    public BaseResponse updateTaskStateById(@PathVariable int id, @RequestParam int newState) {
+    @PostMapping("/operations/task/{id}/state")
+    public BaseResponse updateTaskStateById(@PathVariable int id, @RequestParam int newValue) {
         try {
-            String result = _taskService.updateTaskStateById(id, newState);
+            String result = _taskService.updateTaskStateById(id, newValue);
+            return new BaseResponse(result, 200, "OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
+
+    @PostMapping("/operations/task/{id}/priority")
+    public BaseResponse updateTaskPriorityById(@PathVariable int id, @RequestParam int newValue) {
+        try {
+            String result = _taskService.updateTaskPriorityById(id, newValue);
             return new BaseResponse(result, 200, "OK");
         }
         catch (Exception e) {

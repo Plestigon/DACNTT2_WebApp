@@ -7,15 +7,17 @@ public class TaskDto {
     private int projectId;
     private int assigneeId;
     private int priority;
+    private Date dueDate;
     private String description;
 
     public TaskDto() {}
 
-    public TaskDto(String name, int projectId, int assigneeId, int priority, String description) {
+    public TaskDto(String name, int projectId, int assigneeId, int priority, Date dueDate, String description) {
         this.name = name;
         this.projectId = projectId;
         this.assigneeId = assigneeId;
         this.priority = priority;
+        this.dueDate = dueDate;
         this.description = description;
     }
 
@@ -49,6 +51,14 @@ public class TaskDto {
 
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    public Date getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
     }
 
     public String getDescription() {

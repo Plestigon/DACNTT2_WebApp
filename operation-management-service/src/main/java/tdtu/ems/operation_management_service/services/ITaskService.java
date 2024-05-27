@@ -14,7 +14,8 @@ public interface ITaskService {
     List<TaskResult> getTasksByProjectId(int projectId) throws ExecutionException, InterruptedException;
     List<TaskResult> getTasksFromMyProject(int projectId, int employeeId) throws ExecutionException, InterruptedException;
     String  editTask(Task entry) throws ExecutionException, InterruptedException;
-    String updateTaskStateById(int id, int newState) throws ExecutionException, InterruptedException;
+    String updateTaskStateById(int id, int newValue) throws ExecutionException, InterruptedException;
+    String updateTaskPriorityById(int id, int newValue) throws ExecutionException, InterruptedException;
     String assignTask(int taskId, int employeeId) throws ExecutionException, InterruptedException;
     Integer addDiscussion(TaskDiscussion d) throws ExecutionException, InterruptedException;
     List<TaskDiscussion> getDiscussions(int taskId) throws ExecutionException, InterruptedException;
