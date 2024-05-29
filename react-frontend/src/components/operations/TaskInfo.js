@@ -16,10 +16,8 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import "../../css/editor.css";
   
 const TaskInfo = () => {
+    const userId = 1;
     const params = useParams();
-    const [stateOptions, setStateOptions] = useState([]);
-    const [assigneeOptions, setAssigneeOptions] = useState([]);
-    const [priorityOptions, setPriorityOptions] = useState([])
     const [data, setData] = useState({
         id: 0,
         name: '',
@@ -36,7 +34,12 @@ const TaskInfo = () => {
         stateName: '',
         description: '',
     });
+    const [discussions, setDiscussions] = useState([]);
+    const [stateOptions, setStateOptions] = useState([]);
+    const [assigneeOptions, setAssigneeOptions] = useState([]);
+    const [priorityOptions, setPriorityOptions] = useState([]);
     const [inputDisabled, setInputDisabled] = useState(true);
+    const [comment, setComment] = useState();
 
     const loadTaskData = useCallback(() => {
         fetch("http://localhost:8080/operations/task/" + params.id,{
@@ -128,11 +131,28 @@ const TaskInfo = () => {
         .catch (e => {
             console.log("ERROR_loadMembers: " + e);
         })
+    }, [data.id, data.assignee])
+
+    const loadDiscussions = useCallback(() => {
+        if (data.id <= 0) return;
+        fetch("http://localhost:8080/operations/task/" + data.id + "/discussions",{
+            method:"GET"
+        })
+        .then(result=>result.json())
+        .then((result)=>{
+            if (result.statusCode === 200) {
+                setDiscussions(result.data);
+            }
+        })
+        .catch (e => {
+            console.log("ERROR_loadDiscussions: " + e);
+        })
     }, [data.id])
 
     useEffect(() => {
         loadAssignees();
-    }, [loadAssignees])
+        loadDiscussions();
+    }, [loadAssignees, loadDiscussions])
 
     function handleInputChange(e) {
         const name = e.target.name;
@@ -152,6 +172,10 @@ const TaskInfo = () => {
     function handleDescriptionChange(data) {
         setData(prevState => ({...prevState, 'description': data}));
         //console.log(assigneeOptions);
+    }
+
+    function handleCommentChange(e) {
+        setComment(e.target.value);
     }
 
     function handleStateChange(e) {
@@ -244,6 +268,30 @@ const TaskInfo = () => {
         })
     }
 
+    function handleSubmitComment() {
+        // console.log(data);
+        fetch("http://localhost:8080/operations/task/discussion",{
+            method:"POST",
+            body: JSON.stringify({
+                'taskId': data.id,
+                'writerId': userId,
+                'content': comment,
+            }),
+            headers: { "Content-type": "application/json; charset=UTF-8" }
+        })
+        .then(result=>result.json())
+        .then((result)=>{
+            if (result.statusCode === 200) {
+                loadDiscussions();
+                setComment("");
+            }
+        })
+        .catch (e => {
+            console.log("ERROR_handleSubmitComment: " + e);
+            error("Some errors occurred");
+        })
+    }
+
     return (
 <div>
 <Notify/>
@@ -331,27 +379,27 @@ const TaskInfo = () => {
             <div class="row">
                 <div class="col-2">Comment</div>
                 <div class="col-10">
-                    <textarea class="form-control" rows={2} cols={10}/>
+                    <textarea class="form-control" rows={2} cols={10} name="comment" value={comment} onChange={handleCommentChange}/>
                 </div>
             </div>
             <div class="row w-100">
-                <Button className="ms-auto mt-2" style={{width: '150px'}}>Submit</Button>
+                <Button className="ms-auto mt-2" style={{width: '150px'}} onClick={handleSubmitComment}>Submit</Button>
             </div>
             <hr/>
-            {/* {prjUpdates.map(p => 
-                <div class="row d-flex justify-content-center my-1" key={p.id}>
+            {discussions.map(d => 
+                <div class="row d-flex justify-content-center my-1" key={d.id}>
                     <div class="card mx-3 p-2" style={{width: '90%'}}>
                         <div class="d-flex">
-                            <div class="fw-bold">{p.writerName}</div>
-                            <div class="ms-auto fst-italic"><i class="bi bi-clock"></i> {dateTimeFormat(p.createTime)}</div>
+                            <div class="fw-bold">{d.writerName} ({d.writerEmail})</div>
+                            <div class="ms-auto fst-italic"><i class="bi bi-clock"></i> {dateTimeFormat(d.createDate)}</div>
                         </div>
                         <hr style={{marginTop: '1px', marginBottom: '3px'}}/>
                         <div class="d-flex">
-                            <div class="mx-1">{p.comment}</div>
+                            <div class="mx-1">{d.content}</div>
                         </div>
                     </div>
                 </div>
-            )} */}
+            )}
         </div>
     </div>
     

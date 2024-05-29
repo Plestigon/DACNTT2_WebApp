@@ -121,17 +121,33 @@ public class TaskRepository implements ITaskRepository {
     public Integer addDiscussion(TaskDiscussion dis) throws ExecutionException, InterruptedException {
         CollectionReference taskDiscussionsDb = _db.collection("taskDiscussions");
         CollectionReference tasksDb = _db.collection("tasks");
+        CollectionReference employeesDb = _db.collection("employees");
         int taskId = dis.getTaskId();
         Task task = tasksDb.document(String.valueOf(taskId)).get().get().toObject(Task.class);
         if (task == null) {
             throw new IllegalArgumentException("Task not found");
         }
+
         DocumentReference idTracer = _db.collection("idTracer").document("taskDiscussions");
         long id = Objects.requireNonNull(idTracer.get().get().getLong("id")) + 1;
         dis.setId((int) id);
         dis.setCreateDate(new Date());
+        var emp = employeesDb.document(String.valueOf(dis.getWriterId())).get().get();
+        dis.setWriterName(emp.getString("name"));
+        dis.setWriterEmail(emp.getString("email"));
+        Long role = emp.getLong("role");
+        if (role != null) {
+            dis.setWriterRole(Enums.Role.values()[role.intValue()].name);
+        }
         ApiFuture<WriteResult> result = taskDiscussionsDb.document(String.valueOf(id)).set(dis);
-        task.getDiscussions().add((int) id);
+        ApiFuture<WriteResult> updateIdResult = idTracer.update("id", id);
+
+        if (task.getDiscussions() == null) {
+            task.setDiscussions(new ArrayList<>());
+        }
+        if (!task.getDiscussions().contains((int) id)) {
+            task.getDiscussions().add((int) id);
+        }
         task.setUpdateDate(new Date());
         ApiFuture<WriteResult> result2 = tasksDb.document(String.valueOf(taskId)).set(task);
         return (int) id;

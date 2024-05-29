@@ -6,7 +6,7 @@ import SideBar from "../SideBar";
 import '../../css/sidebar.css';
 import '../../css/utils.css';
 import Notify, {success, error, loading, dismiss} from "../../utils/Notify";
-import { getDaysUntil, getHoursUntil, getDaysSince, getHoursSince } from "../../utils/DateHelper";
+import { getDaysUntil, getHoursUntil, getDaysSince, getHoursSince, getTimeUntil, getTimeSince } from "../../utils/DateHelper";
 import { Button, Card } from "react-bootstrap";
 import 'react-horizontal-scrolling-menu/dist/styles.css';
 import Slider from "react-slick";
@@ -121,7 +121,7 @@ function MyProjects() {
                                 <p class="card-text text-end">You have <span class="fw-bold">{p.tasksNotStarted}</span> task{p.tasksNotStarted > 1 ? "s" : ""} not started</p>
                                 <p class="card-hover-text">Role: <span class="fw-bold">{p.memberInfo.roleName}</span></p>
                                 <p class="card-hover-text">Nearest deadline in <span class="fw-bold">{getDaysUntil(p.nearestDueDate)}</span> days <span class="fw-bold">{getHoursUntil(p.nearestDueDate)}</span> hours</p>
-                                <div class="row mx-2"><Button class="btn btn-primary w-100" onClick={() => loadTasks(p.id)}>Show all tasks</Button></div>
+                                <div class="row mx-2"><Button class="btn btn-primary w-100" onClick={() => loadTasks(p.id)}>Show assigned tasks</Button></div>
                             </div>
                         </div>
                     ))
@@ -209,16 +209,8 @@ function MyProjects() {
                             <td>{t.name}</td>
                             <td>{t.assigneeName}</td>
                             <td><div class={"card status-card priority-" + t.priority}>{t.priorityName}</div></td>
-                            {getDaysSince(t.updateDate) > 0 ? (
-                                <td>{getDaysSince(t.updateDate)} days</td>
-                            ):(
-                                <td>{getHoursSince(t.updateDate)} hours</td>
-                            )}
-                            {getDaysUntil(t.dueDate) > 0 ? (
-                                <td>{getDaysUntil(t.dueDate)} days</td>
-                            ):(
-                                <td>{getHoursUntil(t.dueDate)} hours</td>
-                            )}
+                            <td>{getTimeSince(t.updateDate)}</td>
+                            <td>{t.state >= 3 ? "-/-" : getTimeUntil(t.dueDate)}</td>
                             <td><div class={"card status-card task-state-" + t.state}>{t.stateName}</div></td>
                             </tr>
                         ))

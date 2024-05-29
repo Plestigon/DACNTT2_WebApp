@@ -57,19 +57,24 @@ export function dateTimeFormat(input) {
 }
 
 export function getDaysUntil(input) {
-    var dueDate = new Date(input);
+    var date = new Date(input);
     var today = new Date();
-    var diff = dueDate - today;
+    var diff = date - today;
     var days = Math.floor(diff / 1000 / 60 / 60 / 24);
     return days;
 }
 
 export function getHoursUntil(input) {
-    var dueDate = new Date(input);
+    var date = new Date(input);
     var today = new Date();
-    var diff = dueDate - today;
+    var diff = date - today;
     var days = Math.floor(diff / 1000 / 60 / 60 / 24);
-    diff -= days * 1000 * 60 * 60 * 24;
+    if (diff >= 0) {
+        diff -= days * 1000 * 60 * 60 * 24;
+    }
+    else {
+        diff += days * 1000 * 60 * 60 * 24;
+    }
     var hours = Math.floor(diff / 1000 / 60 / 60);
     return hours;
 }
@@ -87,7 +92,72 @@ export function getHoursSince(input) {
     var today = new Date();
     var diff = today - date;
     var days = Math.floor(diff / 1000 / 60 / 60 / 24);
-    diff -= days * 1000 * 60 * 60 * 24;
+    if (diff >= 0) {
+        diff -= days * 1000 * 60 * 60 * 24;
+    }
+    else {
+        diff += days * 1000 * 60 * 60 * 24;
+    }
     var hours = Math.floor(diff / 1000 / 60 / 60);
     return hours;
+}
+
+export function getTimeUntil(input) {
+    var date = new Date(input);
+    var today = new Date();
+    var diff = date - today;
+    var days;
+    var hours;
+    if (diff >= 0) {
+        days = Math.floor(diff / 1000 / 60 / 60 / 24);
+        if (days >= 1) {
+            return (<div> {days} day{days > 1 ? "s" : ""}</div>);
+        }
+        else {
+            diff -= days * 1000 * 60 * 60 * 24;
+            hours = Math.floor(diff / 1000 / 60 / 60);
+            return (<div> {hours} hours{hours > 1 ? "s" : ""}</div>);
+        }
+    }
+    else {
+        days = Math.floor(diff / 1000 / 60 / 60 / 24);
+        if (days <= -1) {
+            return (<div class='text-danger'> {-days} day{days < 1 ? "s" : ""} overdue</div>);
+        }
+        else {
+            diff += days * 1000 * 60 * 60 * 24;
+            hours = Math.floor(diff / 1000 / 60 / 60);
+            return (<div class='text-danger'> {-hours} hour{hours < 1 ? "s" : ""} overdue</div>);
+        }
+    }
+}
+
+export function getTimeSince(input) {
+    var date = new Date(input);
+    var today = new Date();
+    var diff = today - date;
+    var days;
+    var hours;
+    if (diff >= 0) {
+        days = Math.floor(diff / 1000 / 60 / 60 / 24);
+        if (days >= 1) {
+            return (<div> {days} day{days > 1 ? "s" : ""} ago</div>);
+        }
+        else {
+            diff -= days * 1000 * 60 * 60 * 24;
+            hours = Math.floor(diff / 1000 / 60 / 60);
+            return (<div> {hours} hours{hours > 1 ? "s" : ""} ago</div>);
+        }
+    }
+    else {
+        days = Math.floor(diff / 1000 / 60 / 60 / 24);
+        if (days <= -1) {
+            return (<div class='text-danger'>Invalid date</div>);
+        }
+        else {
+            diff += days * 1000 * 60 * 60 * 24;
+            hours = Math.floor(diff / 1000 / 60 / 60);
+            return (<div class='text-danger'>Invalid date</div>);
+        }
+    }
 }

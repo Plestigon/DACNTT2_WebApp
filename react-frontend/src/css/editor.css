@@ -1,3 +1,8 @@
 .task-info .ck-editor__editable, .task-info .ck .ck-editor__top .ck-reset_all, .task-info .ck .ck-reset .ck-editor .ck-rounded-corners, .task-info .ck .ck-sticky-panel__content  {
     width: 65vw;
+    z-index: -10;
+}
+
+.ck.ck-dropdown .ck-dropdown__arrow {
+    z-index: 0;
 }

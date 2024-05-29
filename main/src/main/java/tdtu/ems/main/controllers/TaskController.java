@@ -8,6 +8,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import tdtu.ems.core_service.models.BaseResponse;
 import tdtu.ems.core_service.models.Enums;
 import tdtu.ems.main.models.SelectOptionsResult;
+import tdtu.ems.main.models.operations.TaskDiscussionDto;
 import tdtu.ems.main.models.operations.TaskDto;
 
 import java.util.ArrayList;
@@ -169,6 +170,37 @@ public class TaskController {
         try {
             BaseResponse result = _webClient.build().get()
                     .uri("http://operation-management-service/api/operations/my-project/" + projectId + "/tasks?employeeId=" + employeeId)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("operations/task/{id}/discussions")
+    public ResponseEntity<BaseResponse> getDiscussions(@PathVariable int id) {
+        try {
+            BaseResponse result = _webClient.build().get()
+                    .uri("http://operation-management-service/api/operations/task/" + id + "/discussions")
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("operations/task/discussion")
+    public ResponseEntity<BaseResponse> addDiscussion(@RequestBody TaskDiscussionDto entry) {
+        try {
+            BaseResponse result = _webClient.build().post()
+                    .uri("http://operation-management-service/api/operations/task/discussion")
+                    .bodyValue(entry)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();
