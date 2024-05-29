@@ -12,6 +12,7 @@ import MyForms from './components/hr/MyForms';
 import NewTaskModal from './components/operations/NewTaskModal';
 import MyProjects from './components/operations/MyProjects';
 import TaskInfo from './components/operations/TaskInfo';
+import ProfilePage from './components/profile/ProfilePage';
 
 function App() {
   return (
@@ -40,6 +41,8 @@ function App() {
         <Route path="/operations/project/:id" element={<ProjectInfo/>} />
         <Route path="/operations/my-projects" element={<MyProjects/>}/>
         <Route path="/operations/task/:id" element={<TaskInfo/>}/>
+        <Route path="/profile" element={<ProfilePage/>}/>
+
 
         <Route path="/hr/submit-form" element={<SubmitForm/>}/>
         <Route path="/hr/my-forms" element={<MyForms/>}/>

@@ -18,7 +18,7 @@ import "../css/topbar.css";
 
 
 const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Profile', 'Change Password', 'Dashboard', 'Logout'];
 
 function TopBar() {
   // let navigate = useNavigate();
@@ -43,7 +43,7 @@ function TopBar() {
 
 
   return (
-    <Navbar data-bs-theme="dark" position="static" className="topbar">
+    <Navbar bg='primary' position="static" className="topbar">
       <Container maxWidth="xl">
         <div class="d-flex justify-content-end">
         <Toolbar disableGutters>
