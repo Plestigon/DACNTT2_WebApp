@@ -64,7 +64,7 @@ public class ProjectService implements IProjectService {
                     List<TaskResult> tasks = _taskRepository.getTasksByProjectId(memberInfo.getProjectId());
                     int inProgressCnt = 0;
                     int notStartedCnt = 0;
-                    Date nearestDueDate = null;
+                    Date nearestDueDate = new Date(Long.MAX_VALUE);
                     for (TaskResult t : tasks) {
                         if (t.getAssigneeId() == employeeId) {
                             if (t.getState() == Enums.TaskState.InProgress.ordinal()) {
@@ -73,12 +73,13 @@ public class ProjectService implements IProjectService {
                             else if (t.getState() == Enums.TaskState.ToDo.ordinal()) {
                                 notStartedCnt++;
                             }
-                            if (nearestDueDate == null || t.getDueDate().before(nearestDueDate)) {
-                                if (t.getDueDate().after(new Date())) {
-                                    nearestDueDate = t.getDueDate();
-                                }
+                            if (t.getDueDate().before(nearestDueDate) && t.getDueDate().after(new Date())) {
+                                nearestDueDate = t.getDueDate();
                             }
                         }
+                    }
+                    if (nearestDueDate.compareTo(new Date(Long.MAX_VALUE)) == 0) {
+                        nearestDueDate = null;
                     }
                     result.add(new MyProjectResult(pr, memberInfo, inProgressCnt, notStartedCnt, nearestDueDate));
                 }

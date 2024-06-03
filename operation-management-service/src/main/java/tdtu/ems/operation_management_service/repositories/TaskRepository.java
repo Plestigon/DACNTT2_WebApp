@@ -175,8 +175,11 @@ public class TaskRepository implements ITaskRepository {
         for (DocumentSnapshot data : tasksDb.get().get().getDocuments()) {
             Task task = data.toObject(Task.class);
             if (task != null && task.getProjectId() == projectId && task.getAssigneeId() == employeeId) {
-                String name = employeeDb.document(String.valueOf(task.getAssigneeId())).get().get().getString("name");
-                result.add(new TaskResult(task, name));
+                if (task.getState() == Enums.TaskState.ToDo.ordinal() ||
+                    task.getState() == Enums.TaskState.InProgress.ordinal()) {
+                    String name = employeeDb.document(String.valueOf(task.getAssigneeId())).get().get().getString("name");
+                    result.add(new TaskResult(task, name));
+                }
             }
         }
         return result;

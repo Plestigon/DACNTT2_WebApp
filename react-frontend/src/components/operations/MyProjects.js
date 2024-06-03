@@ -65,7 +65,7 @@ function MyProjects() {
             .then(result=>result.json())
             .then((result)=>{
                 if (result.statusCode === 200) {
-                    // console.log(result.data);
+                    console.log(result.data);
                     dismiss(toastId);
                     setProjects(result.data);
                 }
@@ -120,7 +120,7 @@ function MyProjects() {
                                 <p class="card-text text-end">You have <span class="fw-bold">{p.tasksInProgress}</span> task{p.tasksInProgress > 1 ? "s" : ""} in progress</p>
                                 <p class="card-text text-end">You have <span class="fw-bold">{p.tasksNotStarted}</span> task{p.tasksNotStarted > 1 ? "s" : ""} not started</p>
                                 <p class="card-hover-text">Role: <span class="fw-bold">{p.memberInfo.roleName}</span></p>
-                                <p class="card-hover-text">Nearest deadline in <span class="fw-bold">{getDaysUntil(p.nearestDueDate)}</span> days <span class="fw-bold">{getHoursUntil(p.nearestDueDate)}</span> hours</p>
+                                <p class="card-hover-text">Nearest deadline in <span class="fw-bold">{p.nearestDueDate != null ? getDaysUntil(p.nearestDueDate) : "-/-"}</span> days <span class="fw-bold">{p.nearestDueDate != null ? getHoursUntil(p.nearestDueDate) : "-/-"}</span> hours</p>
                                 <div class="row mx-2"><Button class="btn btn-primary w-100" onClick={() => loadTasks(p.id)}>Show assigned tasks</Button></div>
                             </div>
                         </div>
@@ -139,7 +139,7 @@ function MyProjects() {
                     );
                 }
                 for (let i = placeholders.length; i < 3-projects.length; i++) {
-                    placeholders.push(<div class="card"/>);
+                    placeholders.push(<div class="card" key={i}/>);
                 }
                 return placeholders;
             })()}
@@ -202,7 +202,7 @@ function MyProjects() {
                 {
                     tasks.length > 0 && (
                         tasks.map(t => (
-                            <tr key={t.id} title="See details" style={{cursor:"pointer"}} onClick={() => {
+                            <tr key={t.id} title="See task details" style={{cursor:"pointer"}} onClick={() => {
                                 var win = window.open('/operations/task/' + t.id, '_blank');
                                 win.focus();
                             }}>
@@ -210,7 +210,7 @@ function MyProjects() {
                             <td>{t.assigneeName}</td>
                             <td><div class={"card status-card priority-" + t.priority}>{t.priorityName}</div></td>
                             <td>{getTimeSince(t.updateDate)}</td>
-                            <td>{t.state >= 3 ? "-/-" : getTimeUntil(t.dueDate)}</td>
+                            <td>{getTimeUntil(t.dueDate)}</td>
                             <td><div class={"card status-card task-state-" + t.state}>{t.stateName}</div></td>
                             </tr>
                         ))

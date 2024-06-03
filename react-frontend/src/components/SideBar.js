@@ -63,7 +63,7 @@ function SideBar() {
 
         <div className="nav-dropdown-container">
             <div className="nav-dropdown-title" onClick={toggleHRMenu}>
-            <i className="bi bi-people "></i> Human Resources <i className={isHRMenuOpen ? "bi bi-caret-up-fill" : "bi bi-caret-down-fill"}></i>
+            <i className="bi bi-people "></i> Human Resources<i className={isHRMenuOpen ? "bi bi-caret-up-fill" : "bi bi-caret-down-fill"}></i>
             </div>
         </div>
         <div className={`nav-dropdown-content ${isHRMenuOpen ? 'active' : ''}`}>

@@ -299,7 +299,7 @@ const TaskInfo = () => {
 <TopBar/>
     <div class="content mt-5">
         <div class="row w-100">
-            <Button onClick={handleEditClick} className="ms-auto" style={{width: '50px', height: '50px', marginRight: '10%'}}
+            <Button onClick={handleEditClick} className="ms-auto" style={{width: '50px', height: '50px', marginRight: '10%', padding: '0px'}}
             data-toggle="tooltip" data-placement="bottom" title="Edit task"><i class="bi bi-pencil-square"></i></Button>
         </div>
         <Container>

@@ -15,13 +15,15 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import "../css/topbar.css";
+import { Icon } from '@mui/material';
+import { useAuthentication } from './system/Authentication';
 
 
 const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Change Password', 'Dashboard', 'Logout'];
+const settings = ['Profile', 'Change Password', 'Dashboard'];
 
 function TopBar() {
-  // let navigate = useNavigate();
+  const auth = useAuthentication();
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -41,16 +43,21 @@ function TopBar() {
     setAnchorElUser(null);
   };
 
+  function handleLogOutClick() {
+    auth.logOut();
+  }
+
 
   return (
-    <Navbar bg='primary' position="static" className="topbar">
+    <Navbar position="static" className="topbar">
       <Container maxWidth="xl">
         <div class="d-flex justify-content-end">
         <Toolbar disableGutters>
+          <IconButton style={{marginRight:"10px"}}><i class="fa-solid fa-bell"></i></IconButton>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="User" src={require('../assets/profile-user.png')} />
               </IconButton>
             </Tooltip>
             <Menu
@@ -74,6 +81,11 @@ function TopBar() {
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
+              <MenuItem onClick={handleLogOutClick}>
+                <div class="fw-bold">
+                  <i class="fa fa-sign-out me-2" aria-hidden="true" style={{color:'#dc3545'}}></i><span class="text-danger">Log Out</span>
+                </div>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>

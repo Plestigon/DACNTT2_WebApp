@@ -1,6 +1,6 @@
 .topbar {
     position: static;
-    background: lightgray;
+    background: rgb(230, 230, 230);
     margin-left: 200px;
     height: 50px;
     width: auto;
