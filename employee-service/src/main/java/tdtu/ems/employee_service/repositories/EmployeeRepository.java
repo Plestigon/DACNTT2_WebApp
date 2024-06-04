@@ -86,8 +86,11 @@ public class EmployeeRepository implements IEmployeeRepository {
     @Override
     public Employee getEmployeeByEmail(String email) throws ExecutionException, InterruptedException {
         CollectionReference employeesDb = _db.collection("employees");
-        Employee result = employeesDb.whereEqualTo("email", email).get().get().toObjects(Employee.class).getFirst();
-        return result;
+        var data = employeesDb.whereEqualTo("email", email).get().get();
+        if (data.isEmpty()) {
+            throw new RuntimeException("Invalid email");
+        }
+        return data.getDocuments().get(0).toObject(Employee.class);
     }
 
 //    @Override

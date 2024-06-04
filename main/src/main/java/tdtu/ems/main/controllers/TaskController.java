@@ -17,7 +17,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/")
 public class TaskController {
-    private WebClient.Builder _webClient;
+    private final WebClient.Builder _webClient;
 
     public TaskController(WebClient.Builder webClient) {
         _webClient = webClient;

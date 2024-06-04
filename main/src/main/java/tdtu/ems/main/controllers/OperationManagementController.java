@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class OperationManagementController {
     private final String OPERATIONS_PAGE_TITLE = "Operations Management";
     private final String PROJECT_PAGE_TITLE = "Project";
-    private WebClient.Builder _webClient;
+    private final WebClient.Builder _webClient;
 
     public OperationManagementController(WebClient.Builder webClient) {
         _webClient = webClient;
