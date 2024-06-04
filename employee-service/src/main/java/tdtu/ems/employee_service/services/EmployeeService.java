@@ -100,15 +100,14 @@ public class EmployeeService implements IEmployeeService {
     }
 
     @Override
-    public Employee getEmployeeByEmail(String email) {
+    public Employee getEmployeeByEmail(String email) throws ExecutionException, InterruptedException {
         try {
-            QuerySnapshot query = _db.collection("employees")
-                    .whereEqualTo("email", email).get().get();
-            List<QueryDocumentSnapshot> documents = query.getDocuments();
-            return documents.isEmpty() ? null : documents.get(0).toObject(Employee.class);
+            Employee result = _employeeRepository.getEmployeeByEmail(email);
+            return result;
         }
         catch (Exception e) {
-            return null;
+            _logger.Error("getEmployeeByEmail", e.getMessage());
+            throw e;
         }
     }
 

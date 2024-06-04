@@ -83,6 +83,13 @@ public class EmployeeRepository implements IEmployeeRepository {
         return employees;
     }
 
+    @Override
+    public Employee getEmployeeByEmail(String email) throws ExecutionException, InterruptedException {
+        CollectionReference employeesDb = _db.collection("employees");
+        Employee result = employeesDb.whereEqualTo("email", email).get().get().toObjects(Employee.class).getFirst();
+        return result;
+    }
+
 //    @Override
 //    public List<Employee> getEmployeesByIds(List<Integer> ids) {
 //        CollectionReference employeesDb = _db.collection("employees");

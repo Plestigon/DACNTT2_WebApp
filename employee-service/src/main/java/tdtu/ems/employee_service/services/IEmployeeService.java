@@ -13,6 +13,6 @@ public interface IEmployeeService {
     List<EmployeeResult> getEmployees(List<Integer> ids) throws ExecutionException, InterruptedException;
     List<EmployeeResult> getEmployeesExcept(List<Integer> ids) throws ExecutionException, InterruptedException;
     Employee getEmployeeById(int id);
-    Employee getEmployeeByEmail(String email);
+    Employee getEmployeeByEmail(String email) throws ExecutionException, InterruptedException;
     ProjectUpdateEmployeeDataResult getProjectUpdateEmployeeData(int writerId, List<Integer> checkIds);
 }
