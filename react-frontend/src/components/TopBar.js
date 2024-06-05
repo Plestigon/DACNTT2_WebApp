@@ -15,8 +15,12 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import "../css/topbar.css";
+<<<<<<< Updated upstream
 import { Icon } from '@mui/material';
 import { useAuthentication } from './system/Authentication';
+=======
+import ProfilePage from './profile/ProfilePage';
+>>>>>>> Stashed changes
 
 
 const pages = ['Products', 'Pricing', 'Blog'];
@@ -49,7 +53,11 @@ function TopBar() {
 
 
   return (
+<<<<<<< Updated upstream
     <Navbar position="static" className="topbar">
+=======
+    <Navbar data-bs-theme="dark" position="static" className="topbar bg-primary" >
+>>>>>>> Stashed changes
       <Container maxWidth="xl">
         <div class="d-flex justify-content-end">
         <Toolbar disableGutters>
