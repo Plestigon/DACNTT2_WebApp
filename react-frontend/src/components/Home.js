@@ -48,7 +48,7 @@ function Home() {
                         <div class="flip-card-back bg-danger">
                             <h5 class="card-title">Human Resources</h5>
                             <p class="card-text">Manage the company's human resources.</p>
-                            <a href="#" class="btn btn-primary stretched-link bg-danger border-0">Go to Human Resources</a>
+                            <a href="/hr/summary" class="btn btn-primary stretched-link bg-danger border-0">Go to Human Resources</a>
                         </div>
                     </div>
                 </div>
