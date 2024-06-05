@@ -1,5 +1,6 @@
 package tdtu.ems.main.controllers;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -51,18 +52,20 @@ public class OperationManagementController {
 
     @RequestMapping(value = "operations/projects", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<BaseResponse> getProjects(@RequestParam(required = false) Integer employeeId) {
+    public ResponseEntity<BaseResponse> getProjects(@RequestParam(required = false) Integer employeeId, @RequestParam String token) {
         try {
+
             BaseResponse res = _webClient.build().get()
-                    .uri("http://operation-management-service/api/operations/projects" +
+                    .uri("http://api-gateway/api/operations/projects" +
                             (employeeId != null ? "?employeeId=" + employeeId : ""))
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();
             return new ResponseEntity<>(res, HttpStatus.OK);
         }
         catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

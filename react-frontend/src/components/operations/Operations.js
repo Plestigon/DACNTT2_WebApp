@@ -9,8 +9,10 @@ import '../../css/sidebar.css';
 import Notify, {success, error, loading, dismiss} from "../../utils/Notify";
 import DeleteConfirmModal from "./DeleteConfirmModal";
 import { Button } from "react-bootstrap";
+import { useAuthentication } from "../system/Authentication";
  
 function Operations() {
+    const auth = useAuthentication();
     const[projects,setProjects] = useState([]);
     const[newPrjModalShow, setNewPrjModalShow] = useState(false);
     const[showDeleteModal, setShowDeleteModal] = useState(false);
@@ -25,7 +27,7 @@ function Operations() {
 
     function fetchProjectData() {
         const toastId = loading("Loading project data...");
-        fetch("http://localhost:8080/operations/projects",{
+        fetch("http://localhost:8080/operations/projects" + "?token=" + auth.token,{
             method:"GET"
         })
         .then(result=>result.json())
