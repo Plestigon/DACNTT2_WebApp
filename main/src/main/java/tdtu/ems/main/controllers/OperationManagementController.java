@@ -108,19 +108,18 @@ public class OperationManagementController {
 
     @RequestMapping(value = "operations/project", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> createProject(@RequestBody ProjectCreateDto project) {
-        String res = null;
+    public ResponseEntity<BaseResponse> createProject(@RequestBody ProjectCreateDto project) {
         try {
-            res = _webClient.build().post()
+            BaseResponse result = _webClient.build().post()
                     .uri("http://operation-management-service/api/operations/projects")
                     .bodyValue(project)
                     .retrieve()
-                    .bodyToMono(String.class)
+                    .bodyToMono(BaseResponse.class)
                     .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 
     @PostMapping("operations/project/edit")

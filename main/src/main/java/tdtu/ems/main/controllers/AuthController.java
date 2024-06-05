@@ -23,7 +23,7 @@ public class AuthController {
     public ResponseEntity<BaseResponse> login(@RequestBody LoginDto input) {
         try {
             BaseResponse result = _webClient.build().post()
-                    .uri("http://employee-service/api/auth/login")
+                    .uri("http://employee-service/api/auth/token")
                     .bodyValue(input)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)

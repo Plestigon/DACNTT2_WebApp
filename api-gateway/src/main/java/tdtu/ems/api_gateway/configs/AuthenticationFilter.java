@@ -38,11 +38,13 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                     return unauthenticated(exchange.getResponse());
                 }
                 String authHeader = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
+                String token = "";
                 if (authHeader != null && authHeader.startsWith("Bearer ")) {
-                    authHeader = authHeader.substring(7);
+                    token = authHeader.substring(7);
                 }
                 try {
-                    Claims claims = _jwtValidator.validateToken(authHeader);
+                    Claims claims = _jwtValidator.validateToken(token);
+
                 }
                 catch (Exception e) {
                     _logger.Error("GatewayFilter", e.getMessage());

@@ -15,7 +15,7 @@ function Login() {
 			setEmailError("Please enter email");
 			return false;
 		}
-		if (!"/^[w-.]+@([w-]+.)+[w-]{2,4}$/".test(email.toLowerCase())) {
+		if (!/^[\w-.]+@([\w-]+.)+[\w-]{2,4}$/.test(email.toLowerCase())) {
 			setEmailError("Please enter a valid email");
 			return false;
 		}
@@ -26,8 +26,8 @@ function Login() {
 		return true;
 	}
 
-	function handleSubmit() {
-		console.log(validate);
+	function handleSubmit(e) {
+		e.preventDefault();
 		if (validate()) {
 			auth.login(email, password);
 		}
@@ -62,7 +62,7 @@ function Login() {
 							<hr></hr>
 
 							<div class="row mt-4 pt-2">
-								<button class="btn btn-primary btn-lg" onClick={handleSubmit}>Login</button>
+								<button class="btn btn-primary btn-lg" onClick={e => handleSubmit(e)}>Login</button>
 							</div>
 
 						</form>

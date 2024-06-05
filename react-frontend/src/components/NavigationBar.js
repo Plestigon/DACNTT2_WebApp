@@ -14,13 +14,14 @@ import { Link, useNavigate } from "react-router-dom";
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import { useAuthentication } from './system/Authentication';
 
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function NavigationBar() {
-  // let navigate = useNavigate();
+  const auth = useAuthentication();
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -39,6 +40,10 @@ function NavigationBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  function handleLogOutClick() {
+    auth.logOut();
+  }
 
   // const redirect = (path) => {
   //   navigate(path);
@@ -168,10 +173,11 @@ function NavigationBar() {
 
           </Nav>
 
+          {/* Profile */}
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="User" src={require('../assets/profile-user.png')} />
               </IconButton>
             </Tooltip>
             <Menu
@@ -195,8 +201,15 @@ function NavigationBar() {
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
+              <MenuItem onClick={handleLogOutClick}>
+                <div class="fw-bold">
+                  <i class="fa fa-sign-out me-2" aria-hidden="true" style={{color:'#dc3545'}}></i><span class="text-danger">Log Out</span>
+                </div>
+              </MenuItem>
             </Menu>
           </Box>
+          {/* End Profile */}
+          
         </Toolbar>
       </Container>
     </Navbar>

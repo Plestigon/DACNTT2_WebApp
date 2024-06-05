@@ -54,9 +54,9 @@ function Operations() {
         fetch("http://localhost:8080/operations/project?id=" + deleteTarget.id, {
             method:"DELETE"
         })
-        .then((response) => {
-            console.log(response);
-            if (response.ok) {
+        .then(result=>result.json())
+        .then((result)=>{
+            if (result.statusCode === 200) {
                 success("Project deleted");
                 fetchProjectData();
             }

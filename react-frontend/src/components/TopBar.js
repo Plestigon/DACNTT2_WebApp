@@ -54,6 +54,8 @@ function TopBar() {
         <div class="d-flex justify-content-end">
         <Toolbar disableGutters>
           <IconButton style={{marginRight:"10px"}}><i class="fa-solid fa-bell"></i></IconButton>
+
+          {/* Profile */}
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -88,6 +90,8 @@ function TopBar() {
               </MenuItem>
             </Menu>
           </Box>
+          {/* End Profile */}
+
         </Toolbar>
         </div>
       </Container>

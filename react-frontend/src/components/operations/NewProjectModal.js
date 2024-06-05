@@ -78,8 +78,9 @@ function NewProjectModal(props) {
             }),
             headers: { "Content-type": "application/json; charset=UTF-8" }
         })
+        .then(result=>result.json())
         .then((result)=>{
-            if (result.ok) {
+            if (result.statusCode === 200) {
                 success("New project added successfully!");
                 props.onHide();
                 props.reload();
