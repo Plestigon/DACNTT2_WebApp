@@ -16,7 +16,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/")
 public class HRController {
-    private WebClient.Builder _webClient;
+    private final WebClient.Builder _webClient;
 
     public HRController(WebClient.Builder webClient) {
         _webClient = webClient;

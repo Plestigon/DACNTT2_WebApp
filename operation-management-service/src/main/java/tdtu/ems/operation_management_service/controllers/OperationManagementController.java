@@ -50,27 +50,22 @@ public class OperationManagementController {
     }
 
     @PostMapping("/operations/projects")
-    public ResponseEntity<String> addProject(@RequestBody Project project) {
-        String response = null;
+    public BaseResponse addProject(@RequestBody Project project) {
         try {
-            response = _projectService.addProject(project);
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            String result = _projectService.addProject(project);
+            return new BaseResponse(result, 200, "OK");
         } catch (Exception e) {
-            return new ResponseEntity<>(e.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new BaseResponse(null, 500, e.getMessage());
         }
     }
 
     @DeleteMapping("/operations/projects/{id}")
-    public ResponseEntity<String> deleteProject(@PathVariable int id) {
-        String response = null;
+    public BaseResponse deleteProject(@PathVariable int id) {
         try {
-            response = _projectService.removeProject(id);
-            if (response == null) {
-                return new ResponseEntity<>("", HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            String result = _projectService.removeProject(id);
+            return new BaseResponse(result, 200, "OK");
         } catch (Exception e) {
-            return new ResponseEntity<>(e.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new BaseResponse(null, 500, e.getMessage());
         }
     }
 

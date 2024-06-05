@@ -1,5 +1,6 @@
 package tdtu.ems.main.controllers;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
 public class OperationManagementController {
     private final String OPERATIONS_PAGE_TITLE = "Operations Management";
     private final String PROJECT_PAGE_TITLE = "Project";
-    private WebClient.Builder _webClient;
+    private final WebClient.Builder _webClient;
 
     public OperationManagementController(WebClient.Builder webClient) {
         _webClient = webClient;
@@ -51,18 +52,20 @@ public class OperationManagementController {
 
     @RequestMapping(value = "operations/projects", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<BaseResponse> getProjects(@RequestParam(required = false) Integer employeeId) {
+    public ResponseEntity<BaseResponse> getProjects(@RequestParam(required = false) Integer employeeId, @RequestParam String token) {
         try {
+
             BaseResponse res = _webClient.build().get()
-                    .uri("http://operation-management-service/api/operations/projects" +
+                    .uri("http://api-gateway/api/operations/projects" +
                             (employeeId != null ? "?employeeId=" + employeeId : ""))
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();
             return new ResponseEntity<>(res, HttpStatus.OK);
         }
         catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -108,19 +111,18 @@ public class OperationManagementController {
 
     @RequestMapping(value = "operations/project", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> createProject(@RequestBody ProjectCreateDto project) {
-        String res = null;
+    public ResponseEntity<BaseResponse> createProject(@RequestBody ProjectCreateDto project) {
         try {
-            res = _webClient.build().post()
+            BaseResponse result = _webClient.build().post()
                     .uri("http://operation-management-service/api/operations/projects")
                     .bodyValue(project)
                     .retrieve()
-                    .bodyToMono(String.class)
+                    .bodyToMono(BaseResponse.class)
                     .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 
     @PostMapping("operations/project/edit")

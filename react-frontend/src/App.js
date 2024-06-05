@@ -25,10 +25,11 @@ function App() {
       <BrowserRouter>
         <Authentication>
           <Routes>
-            <Route path="/" element={<Home/>}/>
+            {/* <Route path="/" element={<Home/>}/> */}
+            <Route path="/" element={<PrivateRoute><Home/></PrivateRoute>}/>
             
-            <Route path="/operations" element={<Operations/>}/>
-            {/* <Route path="/operations" element={<PrivateRoute><Operations/></PrivateRoute>}/> */}
+            {/* <Route path="/operations" element={<Operations/>}/> */}
+            <Route path="/operations" element={<PrivateRoute><Operations/></PrivateRoute>}/>
             <Route path="/operations/project/:id" element={<ProjectInfo/>} />
             <Route path="/operations/my-projects" element={<MyProjects/>}/>
             <Route path="/operations/task/:id" element={<TaskInfo/>}/>

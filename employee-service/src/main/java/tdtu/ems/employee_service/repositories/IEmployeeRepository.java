@@ -10,5 +10,6 @@ import java.util.concurrent.ExecutionException;
 public interface IEmployeeRepository {
     List<EmployeeResult> getEmployees(List<Integer> ids) throws ExecutionException, InterruptedException;
     List<EmployeeResult> getEmployeesExcept(List<Integer> ids) throws ExecutionException, InterruptedException;
+    Employee getEmployeeByEmail(String email) throws ExecutionException, InterruptedException;
     ProjectUpdateEmployeeDataResult getProjectUpdateEmployeeData(int writerId, List<Integer> checkIds);
 }
