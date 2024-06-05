@@ -22,7 +22,9 @@ public class AuthConfig {
     private final String[] REQUEST_URL_PERMIT_ALL = {
             "/error",
             "/api/auth/token",
-            "/api/auth/validate"
+            "/api/auth/validate",
+            "/api/employees",
+            "/api/employees/**"
     };
 
     @Bean
