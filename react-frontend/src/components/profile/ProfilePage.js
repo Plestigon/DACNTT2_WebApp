@@ -22,15 +22,9 @@ export default function ProfilePage() {
         <TopBar/>
     <section>
       <MDBContainer className="py-5">
-<<<<<<< Updated upstream
-        <MDBRow style={{marginLeft: '10%'}}>
-          <MDBCol lg=""  >
-            <Card className="mb-7">
-=======
         <MDBRow>
           <MDBCol lg="4">
             <Card className="mb-9">
->>>>>>> Stashed changes
               <Card className="text-center">
                 <Card
                   src=""
@@ -52,11 +46,7 @@ export default function ProfilePage() {
                     <Card class="shadow-none">Full Name</Card>
                   </MDBCol>
                   <MDBCol sm="9">
-<<<<<<< Updated upstream
-                    <Card className="text-muted" class="shadow-none text-muted">Johnathan Doe</Card>
-=======
                     <Card className="text-muted" class="shadow-none">Johnathan Doe</Card>
->>>>>>> Stashed changes
                   </MDBCol>
                 </MDBRow>
                 <hr />

@@ -10,8 +10,9 @@ import Notify, {success, error, loading, dismiss} from "../../utils/Notify";
 import DeleteConfirmModal from "./DeleteConfirmModal";
 import { Button } from "react-bootstrap";
 import { useAuthentication } from "../system/Authentication";
- 
-function Operations() {
+
+
+ function Operations() {
     const auth = useAuthentication();
     const[projects,setProjects] = useState([]);
     const[newPrjModalShow, setNewPrjModalShow] = useState(false);

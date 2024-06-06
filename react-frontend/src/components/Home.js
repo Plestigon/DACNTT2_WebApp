@@ -12,7 +12,7 @@ function Home() {
 
         {/*Cards*/}
         <div class="container">
-            <div class="card-group">
+            <div class="card-group" style={{alignContent:'center'}}>
                 <div class="flip-card" style={{maxWidth: '18rem'}}>
                     <div class="flip-card-inner">
                         <div class="flip-card-front bg-success">
