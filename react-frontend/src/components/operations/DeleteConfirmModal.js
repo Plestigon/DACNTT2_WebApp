@@ -9,7 +9,7 @@ function DeleteConfirmModal(props) {
             <Modal.Header closeButton>
                 <Modal.Title>{props.message}</Modal.Title>
             </Modal.Header>
-            <Modal.Body><div className="alert alert-danger">This cannot be undone!</div></Modal.Body>
+            <Modal.Body><div className="alert alert-danger text-center">This cannot be undone!</div></Modal.Body>
             <Modal.Footer>
                 <Button variant="default" onClick={props.onHide}>
                 Cancel

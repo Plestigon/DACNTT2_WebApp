@@ -17,6 +17,7 @@ import ProfilePage from './components/profile/ProfilePage';
 import Login from './components/system/Login';
 import PrivateRoute from './components/system/PrivateRoute';
 import Authentication from './components/system/Authentication';
+import EmpList from './components/hr/EmpList';
 
 function App() {
 
@@ -28,8 +29,8 @@ function App() {
             {/* <Route path="/" element={<Home/>}/> */}
             <Route path="/" element={<PrivateRoute><Home/></PrivateRoute>}/>
             
-            {/* <Route path="/operations" element={<Operations/>}/> */}
-            <Route path="/operations" element={<PrivateRoute><Operations/></PrivateRoute>}/>
+            {/* <Route path="/operations/projects" element={<Operations/>}/> */}
+            <Route path="/operations/projects" element={<PrivateRoute><Operations/></PrivateRoute>}/>
             <Route path="/operations/project/:id" element={<ProjectInfo/>} />
             <Route path="/operations/my-projects" element={<MyProjects/>}/>
             <Route path="/operations/task/:id" element={<TaskInfo/>}/>
@@ -40,6 +41,7 @@ function App() {
             <Route path="/hr/my-forms" element={<MyForms/>}/>
             <Route path="/hr/summary" element={<HRSummary/>}/>
             <Route path="/hr/contracts" element={<MyContracts/>}/>
+            <Route path="/hr/employees" element={<PrivateRoute><EmpList/></PrivateRoute>}/>
             
             <Route path="/login" element={<Login/>}/>
           </Routes>

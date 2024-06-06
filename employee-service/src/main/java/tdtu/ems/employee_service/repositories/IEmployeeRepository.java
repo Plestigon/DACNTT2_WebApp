@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public interface IEmployeeRepository {
+    Employee addEmployee(Employee e) throws ExecutionException, InterruptedException;
     List<EmployeeResult> getEmployees(List<Integer> ids) throws ExecutionException, InterruptedException;
     List<EmployeeResult> getEmployeesExcept(List<Integer> ids) throws ExecutionException, InterruptedException;
     Employee getEmployeeByEmail(String email) throws ExecutionException, InterruptedException;

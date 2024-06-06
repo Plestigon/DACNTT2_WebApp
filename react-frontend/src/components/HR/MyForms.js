@@ -36,11 +36,12 @@ function MyForms() {
             if (result.statusCode === 200) {
                 setForms(result.data);
             }
+            else {
+                error("Load form data failed");
+            }
         })
         .catch (e => {
             console.log("ERROR_loadFormData: " + e);
-            dismiss(toastId);
-            error("Load form data failed");
         })
     }
 

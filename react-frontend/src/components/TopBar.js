@@ -50,7 +50,7 @@ function TopBar() {
 
 
   return (
-    <Navbar data-bs-theme="dark" position="static" className="topbar bg-primary" >
+    <Navbar data-bs-theme="dark" position="static" className="topbar bg-secondary" >
       <Container maxWidth="xl">
         <div class="d-flex justify-content-end">
         <Toolbar disableGutters>

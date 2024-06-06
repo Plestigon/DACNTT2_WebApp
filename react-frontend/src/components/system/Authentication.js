@@ -1,5 +1,6 @@
 import React, { useState, useContext, createContext } from "react";
 import { createSearchParams, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const AuthContext = createContext();
 
@@ -51,7 +52,31 @@ function Authentication({ children }) {
 		});
 	}
 
-	return <AuthContext.Provider value={{user, token, login, logOut: logOut}}>{children}</AuthContext.Provider>;
+	function isExpired(token) {
+		let decodedToken = jwtDecode(token);
+		// console.log("Decoded Token", decodedToken);
+		let currentDate = new Date();
+
+		if (decodedToken.exp * 1000 < currentDate.getTime()) {
+			//Expired
+			return true
+		}
+		return false;
+	}
+
+	function checkToken() {
+		let token = localStorage.getItem("token");
+		if (token && !isExpired(token)) {
+			return true;
+		}
+		navigate({
+			pathname: "/login",
+			search: createSearchParams({tokenNotFoundOrExpired: true}).toString()
+		});
+		return false;
+	}
+
+	return <AuthContext.Provider value={{user, token, login, logOut, isExpired, checkToken}}>{children}</AuthContext.Provider>;
 };
 
 export function useAuthentication() {

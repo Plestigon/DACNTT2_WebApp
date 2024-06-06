@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import tdtu.ems.core_service.models.BaseResponse;
 import tdtu.ems.department_service.models.Department;
 import tdtu.ems.department_service.services.DepartmentService;
 
@@ -21,12 +22,12 @@ public class DepartmentController {
     }
 
     @GetMapping("/departments")
-    public List<Department> getDepartments() throws ExecutionException, InterruptedException {
-        List<Department> response = departmentService.getDepartments();
-        if (response == null || response.isEmpty()) {
+    public BaseResponse getDepartments() throws ExecutionException, InterruptedException {
+        List<Department> result = departmentService.getDepartments();
+        if (result == null || result.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        return response;
+        return new BaseResponse(result, 200, "OK");
     }
 
     @GetMapping("/departments/{id}")

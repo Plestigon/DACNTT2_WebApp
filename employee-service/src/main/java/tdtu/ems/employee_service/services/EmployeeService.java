@@ -10,6 +10,7 @@ import tdtu.ems.employee_service.models.EmployeeResult;
 import tdtu.ems.employee_service.models.ProjectUpdateEmployeeDataResult;
 import tdtu.ems.employee_service.repositories.EmployeeRepository;
 import tdtu.ems.employee_service.models.Employee;
+import tdtu.ems.employee_service.repositories.IDepartmentRepository;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -20,11 +21,13 @@ import java.util.concurrent.ExecutionException;
 @Service
 public class EmployeeService implements IEmployeeService {
     private final EmployeeRepository _employeeRepository;
+    private final IDepartmentRepository _departmentRepository;
     private final Firestore _db;
     private final Logger<EmployeeService> _logger;
 
-    public EmployeeService(EmployeeRepository employeeRepository) {
+    public EmployeeService(EmployeeRepository employeeRepository, IDepartmentRepository departmentRepository) {
         _employeeRepository = employeeRepository;
+        _departmentRepository = departmentRepository;
         _db = FirestoreClient.getFirestore();
         _logger = new Logger<>(EmployeeService.class);
     }
@@ -32,7 +35,13 @@ public class EmployeeService implements IEmployeeService {
     @Override
     public int addEmployee(Employee employee) throws ExecutionException, InterruptedException {
         try {
-            return _employeeRepository.addEmployee(employee);
+            Employee result = _employeeRepository.addEmployee(employee);
+            if (result != null) {
+                //Add new employee to department's employee list
+                _departmentRepository.addEmployeeToDepartment(result.getId(), result.getDepartmentId());
+                return result.getId();
+            }
+            return -1;
         } catch (Exception e) {
             _logger.Error("addEmployee", e.getMessage());
             throw e;

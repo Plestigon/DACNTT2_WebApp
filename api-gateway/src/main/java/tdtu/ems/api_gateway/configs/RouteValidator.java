@@ -10,8 +10,9 @@ import java.util.function.Predicate;
 public class RouteValidator {
     public static final String[] OPEN_ENDPOINTS = {
             "/eureka",
-            "/auth/token",
-            "/auth/validate"
+            "/api/auth/token",
+            "/api/auth/validate",
+            "/api/employees/departments/options"
     };
 
     public Predicate<ServerHttpRequest> isSecured =

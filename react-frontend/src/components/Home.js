@@ -35,7 +35,7 @@ function Home() {
                         <div class="flip-card-back bg-info">
                             <h5 class="card-title">Operations</h5>
                             <p class="card-text">Manage the company's Operations.</p>
-                            <a href="/operations" class="btn btn-primary stretched-link bg-info border-0">Go to Operations</a>
+                            <a href="/operations/projects" class="btn btn-primary stretched-link bg-info border-0">Go to Operations</a>
                         </div>
                     </div>
                 </div>

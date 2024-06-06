@@ -33,7 +33,8 @@ export function warning(msg) {
 export function loading(msg) {
     return toast.loading(msg, {
         position: "top-center",
-        theme: "colored"
+        theme: "colored",
+        autoClose: 10000
     });
 }
 export function doneLoading(toastId, msg, type) {

@@ -18,7 +18,7 @@ import { useAuthentication } from './system/Authentication';
 
 
 const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Profile', 'Account', 'Dashboard'];
 
 function NavigationBar() {
   const auth = useAuthentication();
@@ -158,7 +158,7 @@ function NavigationBar() {
               </NavDropdown.Item>
             </NavDropdown>
 
-            <Nav.Link as={Link} to="/operations"><i class="bi bi-journal-check"></i> Operations</Nav.Link>
+            <Nav.Link as={Link} to="/operations/projects"><i class="bi bi-journal-check"></i> Operations</Nav.Link>
 
             <NavDropdown title={<span><i class="bi bi-coin"></i> Finances</span>} id="finances">
               <NavDropdown.Item href="#action/3.1">Activities</NavDropdown.Item>

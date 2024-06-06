@@ -100,7 +100,7 @@ function NewProjectModal(props) {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-            <form class="newPrjForm mx-3">
+            <form class="mx-3">
                 <div class="row my-2">
                     <div class="col-12">
                         <label htmlFor="newPrjName">Project name</label>

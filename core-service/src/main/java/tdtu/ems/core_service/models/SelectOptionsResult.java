@@ -1,4 +1,4 @@
-package tdtu.ems.main.models;
+package tdtu.ems.core_service.models;
 
 public class SelectOptionsResult {
     private String label;

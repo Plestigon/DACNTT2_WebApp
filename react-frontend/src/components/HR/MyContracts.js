@@ -25,11 +25,12 @@ function MyContracts() {
             if (result.statusCode === 200) {
                 setContracts(result.data);
             }
+            else {
+                error("Load contract data failed");
+            }
         })
         .catch (e => {
             console.log("ERROR_loadContractData: " + e);
-            dismiss(toastId);
-            error("Load contract data failed");
         })
     }
 

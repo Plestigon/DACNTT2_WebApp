@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import tdtu.ems.core_service.models.BaseResponse;
 import tdtu.ems.core_service.models.Enums;
-import tdtu.ems.main.models.*;
+import tdtu.ems.core_service.models.SelectOptionsResult;
 import tdtu.ems.main.models.operations.*;
 
 import java.util.ArrayList;
@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
+@ResponseBody
 @RequestMapping("/")
 public class OperationManagementController {
     private final String OPERATIONS_PAGE_TITLE = "Operations Management";
@@ -34,7 +35,6 @@ public class OperationManagementController {
     }
 
     @GetMapping("operations/project")
-    @ResponseBody
     public ResponseEntity<ProjectResult> getProject(@RequestParam int id) {
         try {
             ProjectResult res = null;
@@ -51,7 +51,6 @@ public class OperationManagementController {
     }
 
     @RequestMapping(value = "operations/projects", method = RequestMethod.GET)
-    @ResponseBody
     public ResponseEntity<BaseResponse> getProjects(@RequestParam(required = false) Integer employeeId, @RequestParam String token) {
         try {
 
@@ -70,7 +69,6 @@ public class OperationManagementController {
     }
 
     @GetMapping("operations/employees")
-    @ResponseBody
     public ResponseEntity<BaseResponse> getEmployees(@RequestParam(required = false) List<Integer> ids) {
         try {
             String query = "";
@@ -90,7 +88,6 @@ public class OperationManagementController {
     }
 
     @GetMapping("operations/employees/to-add")
-    @ResponseBody
     public ResponseEntity<BaseResponse> getEmployeesToAdd(@RequestParam(required = false) List<Integer> ids) {
         try {
             String query = "";
@@ -110,7 +107,6 @@ public class OperationManagementController {
     }
 
     @RequestMapping(value = "operations/project", method = RequestMethod.POST)
-    @ResponseBody
     public ResponseEntity<BaseResponse> createProject(@RequestBody ProjectCreateDto project) {
         try {
             BaseResponse result = _webClient.build().post()
@@ -126,7 +122,6 @@ public class OperationManagementController {
     }
 
     @PostMapping("operations/project/edit")
-    @ResponseBody
     public ResponseEntity<BaseResponse> editProject(@RequestBody ProjectEditDto project) {
         try {
             BaseResponse res = _webClient.build().post()
@@ -142,7 +137,6 @@ public class OperationManagementController {
     }
 
     @RequestMapping(value = "operations/project", method = RequestMethod.DELETE)
-    @ResponseBody
     public ResponseEntity<String> deleteProject(@RequestParam("id") String id) {
         String res = null;
         try {
@@ -158,7 +152,6 @@ public class OperationManagementController {
     }
 
     @GetMapping("operations/project/statuses")
-    @ResponseBody
     public ResponseEntity<List<SelectOptionsResult>> getProjectStatuses() {
         var statuses = Enums.ProjectStatus.values();
         List<SelectOptionsResult> res = new ArrayList<>();
@@ -169,7 +162,6 @@ public class OperationManagementController {
     }
 
     @GetMapping("operations/project/roles")
-    @ResponseBody
     public ResponseEntity<BaseResponse> getProjectRoles() {
         var roles = Enums.ProjectRole.values();
         List<SelectOptionsResult> res = new ArrayList<>();
@@ -180,7 +172,6 @@ public class OperationManagementController {
     }
 
     @PostMapping("operations/project/{id}/update")
-    @ResponseBody
     public ResponseEntity<BaseResponse> updateProjectStatus(@PathVariable int id, @RequestParam int status) {
         try {
             BaseResponse res = _webClient.build().post()
@@ -196,7 +187,6 @@ public class OperationManagementController {
     }
 
     @GetMapping("operations/project/updates/{projectId}")
-    @ResponseBody
     public ResponseEntity<BaseResponse> getProjectUpdates(@PathVariable int projectId) {
         try {
             BaseResponse res = _webClient.build().get()
@@ -212,7 +202,6 @@ public class OperationManagementController {
     }
 
     @GetMapping("operations/project/members")
-    @ResponseBody
     public ResponseEntity<BaseResponse> getProjectMembers(@RequestParam List<Integer> ids) {
         try {
             String query = "";
@@ -232,7 +221,6 @@ public class OperationManagementController {
     }
 
     @PostMapping("operations/project/{projectId}/member")
-    @ResponseBody
     public ResponseEntity<BaseResponse> addMember(@PathVariable int projectId, @RequestParam int memberId, @RequestParam int role) {
         try {
             BaseResponse res = _webClient.build().post()
@@ -249,7 +237,6 @@ public class OperationManagementController {
     }
 
     @DeleteMapping("operations/project/{projectId}/member")
-    @ResponseBody
     public ResponseEntity<BaseResponse> removeMember(@PathVariable int projectId, @RequestParam int memberId) {
         try {
             BaseResponse res = _webClient.build().delete()
@@ -265,7 +252,6 @@ public class OperationManagementController {
     }
 
     @GetMapping("operations/my-projects")
-    @ResponseBody
     public ResponseEntity<BaseResponse> getMyProjects(@RequestParam int employeeId) {
         try {
             BaseResponse res = _webClient.build().get()

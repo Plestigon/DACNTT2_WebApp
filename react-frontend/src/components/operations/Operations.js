@@ -14,7 +14,7 @@ import { useAuthentication } from "../system/Authentication";
 
  function Operations() {
     const auth = useAuthentication();
-    const[projects,setProjects] = useState([]);
+    const[projects, setProjects] = useState([]);
     const[newPrjModalShow, setNewPrjModalShow] = useState(false);
     const[showDeleteModal, setShowDeleteModal] = useState(false);
     const[deleteTarget, setDeleteTarget] = useState({
@@ -33,9 +33,12 @@ import { useAuthentication } from "../system/Authentication";
         })
         .then(result=>result.json())
         .then((result)=>{
+            dismiss(toastId);
             if (result.statusCode === 200) {
-                dismiss(toastId);
                 setProjects(result.data);
+            }
+            else {
+                error("Load project data failed");
             }
         })
         .catch (e => {
@@ -121,7 +124,7 @@ import { useAuthentication } from "../system/Authentication";
                             <td>{dateTimeFormat(p.createDate)}</td>
                             <td>{dateTimeFormat(p.dueDate)}</td>
                             <td>{p.description}</td>
-                            <td><button type="button" class="btn btn-primary bi bi-trash delete-prj-btn"
+                            <td><button type="button" class="btn btn-danger bi bi-trash delete-prj-btn"
                                 onClick={(e) => deleteBtnClick(e, p.id, p.name)}></button></td>
                         </tr>
                     ))}

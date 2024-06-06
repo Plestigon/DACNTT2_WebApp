@@ -4,6 +4,7 @@ import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import tdtu.ems.core_service.utils.Logger;
 import tdtu.ems.employee_service.models.EmployeeResult;
@@ -12,6 +13,7 @@ import tdtu.ems.employee_service.services.EmployeeService;
 import tdtu.ems.employee_service.models.Employee;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
@@ -20,29 +22,34 @@ import java.util.concurrent.ExecutionException;
 public class EmployeeRepository implements IEmployeeRepository {
     private final Firestore _db;
     private final Logger<EmployeeRepository> _logger;
+    private final PasswordEncoder _passwordEncoder;
 
-    public EmployeeRepository() {
+    public EmployeeRepository(PasswordEncoder passwordEncoder) {
         _db = FirestoreClient.getFirestore();
         _logger = new Logger<>(EmployeeRepository.class);
+        _passwordEncoder = passwordEncoder;
     }
 
-    public int addEmployee(Employee e) throws ExecutionException, InterruptedException {
+    public Employee addEmployee(Employee e) throws ExecutionException, InterruptedException {
         CollectionReference employeesDb = _db.collection("employees");
         //region Check if email already used
         QuerySnapshot query = employeesDb.whereEqualTo("email", e.getEmail()).get().get();
         if (!query.getDocuments().isEmpty()) {
-            return -1;
+            throw new RuntimeException("Email already exists");
         }
         //endregion
+
         DocumentReference idTracerDoc = _db.collection("idTracer").document("employees");
         long id = Objects.requireNonNull(idTracerDoc.get().get().getLong("id")) + 1;
         e.setId((int) id);
+        e.setJoinDate(new Date());
+        //Encrypt password
+        String hashedPassword = _passwordEncoder.encode(e.getPassword());
+        e.setPassword(hashedPassword);
+
         ApiFuture<WriteResult> result = employeesDb.document(String.valueOf(id)).set(e);
         ApiFuture<WriteResult> resultUpdId = idTracerDoc.update("id", id);
-        _logger.Info("addEmployee", "update idTracer: " + resultUpdId.get().getUpdateTime());
-        //Add employee to department's employee list
-        //_logger.info("addEmployeeToDepartment: " + addEmployeeToDepartment((int) id, employee.getDepartmentId()));
-        return (int) id;
+        return e;
     }
 
     @Override

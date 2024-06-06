@@ -1,8 +1,12 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { useAuthentication } from './Authentication';
+import { useSearchParams } from 'react-router-dom';
+import Notify, { success, warning } from '../../utils/Notify';
 
 function Login() {
 	const auth = useAuthentication();
+	const [searchParams] = useSearchParams();
+
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [emailError, setEmailError] = React.useState('');
@@ -33,7 +37,19 @@ function Login() {
 		}
 	}
 
+	useEffect(()=>{
+		if (searchParams.get("loggedOut") === "true") {
+			success("Logged out");
+		}
+		if (searchParams.get("tokenExpired") === "true") {
+			warning("Access Token expired. Please login again.");
+		}
+    }, [searchParams])
+
 	return (
+	<div>
+
+		<Notify/>
 		<section class="vh-100">
 			<div class="container-fluid" style={{height:'90%'}}>
 				<div class="row d-flex justify-content-center align-items-center h-100">
@@ -78,6 +94,8 @@ function Login() {
 				{/* <!-- Copyright --> */}
 			</div>
 		</section>
+
+	</div>
 	)
 }
 export default Login;

@@ -64,16 +64,17 @@ function MyProjects() {
             })
             .then(result=>result.json())
             .then((result)=>{
+                dismiss(toastId);
                 if (result.statusCode === 200) {
-                    console.log(result.data);
-                    dismiss(toastId);
+                    // console.log(result.data);
                     setProjects(result.data);
+                }
+                else {
+                    error("Load projects failed");
                 }
             })
             .catch (e => {
                 console.log("ERROR_loadProjects: " + e);
-                dismiss(toastId);
-                error("Load project data failed");
             })
         }
         loadProjects();
@@ -86,16 +87,17 @@ function MyProjects() {
         })
         .then(result=>result.json())
         .then((result)=>{
+            dismiss(toastId);
             if (result.statusCode === 200) {
-                console.log(result.data);
-                dismiss(toastId);
+                // console.log(result.data);
                 setTasks(result.data);
+            }
+            else {
+                error("Load task data failed");
             }
         })
         .catch (e => {
             console.log("ERROR_loadTasks: " + e);
-            dismiss(toastId);
-            error("Load task data failed");
         })
     }
 
@@ -139,7 +141,7 @@ function MyProjects() {
                     );
                 }
                 for (let i = placeholders.length; i < 3-projects.length; i++) {
-                    placeholders.push(<div class="card" key={i}/>);
+                    placeholders.push(<div class="card"/>);
                 }
                 return placeholders;
             })()}
@@ -186,7 +188,7 @@ function MyProjects() {
             <hr ></hr>
 
             {/* <div class="col px-md-2" href="#">Selected project's Name hyperlink that goes to Projinfo</div> */}
-            <div class="card table-card table-responsive" style={{height:'50vh'}}>
+            <div class="card table-card table-responsive" style={{height:'48vh'}}>
                 <table className="table-clickable table table-hover table-collapsed">
                 <thead class="table-primary">
                 <tr>

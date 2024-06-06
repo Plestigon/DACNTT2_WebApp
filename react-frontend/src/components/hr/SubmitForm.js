@@ -125,7 +125,7 @@ function SubmitForm() {
             <Button onClick={() => navigate("/hr/my-forms")}><i class="bi bi-file-earmark-text"></i> My Forms</Button>
         </div>
         <div class="card text-dark bg-light" style={{marginLeft: '20%', marginRight: '20%'}}>
-        <form class="newPrjForm w-75 mt-3 mx-auto">
+        <form class="w-75 mt-3 mx-auto">
             <div class="row my-2">
                 <div class="col-12">
                     <label className="my-2">Type of Form</label>

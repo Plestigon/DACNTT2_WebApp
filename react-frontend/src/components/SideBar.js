@@ -12,18 +12,29 @@ import 'bootstrap/js/dist/dropdown'
 import 'bootstrap/js/dist/collapse'
 
 function SideBar() {
+    const [isOpMenuOpen, setOpMenuOpen] = useState(false);
     const [isHRMenuOpen, setHRMenuOpen] = useState(false);
     const [isFinanceMenuOpen, setFinanceMenuOpen] = useState(false);
     
-    const toggleHRMenu = () => {
+    function toggleOpMenu() {
+        if (!isOpMenuOpen) {
+            setHRMenuOpen(false);
+            setFinanceMenuOpen(false);
+        }
+        setOpMenuOpen(!isOpMenuOpen);
+    }
+
+    function toggleHRMenu() {
         if (!isHRMenuOpen) {
+            setOpMenuOpen(false);
             setFinanceMenuOpen(false);
         }
         setHRMenuOpen(!isHRMenuOpen);
     };
     
-    const toggleFinanceMenu = () => {
+    function toggleFinanceMenu() {
         if (!isFinanceMenuOpen) {
+            setOpMenuOpen(false);
             setHRMenuOpen(false);
         }
         setFinanceMenuOpen(!isFinanceMenuOpen);
@@ -56,9 +67,16 @@ function SideBar() {
         {/* <div class="w-100 mb-2" style={{borderBottom: '1px solid white'}}/> */}
         <Nav.Link as={Link} to="/"><i class="bi bi-house"></i> Home</Nav.Link>
 
-        <Nav.Link as={Link} to="/operations"><i class="bi bi-journal-check"></i> Operations</Nav.Link>
-        <Nav.Link as={Link} to="/operations/my-projects"><i class="bi bi-journal-check"></i> My Projects</Nav.Link>
 
+        <div className="nav-dropdown-container">
+            <div className="nav-dropdown-title" onClick={toggleOpMenu}>
+            <i className="bi bi-journal-check"></i> Operations<i className={isOpMenuOpen ? "bi bi-caret-up-fill" : "bi bi-caret-down-fill"}></i>
+            </div>
+        </div>
+        <div className={`nav-dropdown-content ${isOpMenuOpen ? 'active' : ''}`}>
+            <Nav.Link as={Link} to="/operations/projects"><i class="bi bi-journal-check"></i> All Projects</Nav.Link>
+            <Nav.Link as={Link} to="/operations/my-projects"><i class="bi bi-journal-check"></i> My Projects</Nav.Link>
+        </div>
 
 
         <div className="nav-dropdown-container">
@@ -71,6 +89,7 @@ function SideBar() {
             <Nav.Link as={Link} to="/hr/my-forms"><i class="bi bi-file-earmark-text"></i> My Forms</Nav.Link>
             <Nav.Link as={Link} to="/hr/submit-form"><i class ="bi bi-pen"></i> Submit Form</Nav.Link>
             <Nav.Link as={Link} to="/hr/contracts"><i class ="bi bi-newspaper"></i> My Contracts</Nav.Link>
+            <Nav.Link as={Link} to="/hr/employees"><i class ="bi bi-person"></i> Employees</Nav.Link>
         
         </div>
 

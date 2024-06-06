@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import tdtu.ems.core_service.models.BaseResponse;
 import tdtu.ems.core_service.models.Enums;
-import tdtu.ems.main.models.SelectOptionsResult;
+import tdtu.ems.core_service.models.SelectOptionsResult;
 import tdtu.ems.main.models.operations.TaskDiscussionDto;
 import tdtu.ems.main.models.operations.TaskDto;
 

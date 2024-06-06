@@ -110,7 +110,7 @@ function NewTaskModal(props) {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body style={{height: '500px', overflow: 'scroll'}}>
-            <form class="newPrjForm mx-3 h-100">
+            <form class="mx-3 h-100">
                 <div class="row my-2">
                     <div class="col-12">
                         <label>Task name</label>
