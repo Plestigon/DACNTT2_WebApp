@@ -100,33 +100,21 @@ public class EmployeeRepository implements IEmployeeRepository {
         return data.getDocuments().get(0).toObject(Employee.class);
     }
 
-//    @Override
-//    public List<Employee> getEmployeesByIds(List<Integer> ids) {
-//        CollectionReference employeesDb = _db.collection("employees");
-//        List<Employee> employees = new ArrayList<>();
-//        try {
-//
-//        }
-//        catch (Exception e) {
-//            _logger.Error("getEmployeesByIds", e.getMessage());
-//            return null;
-//        }
-//    }
+    @Override
+    public String removeEmployee(int id) throws ExecutionException, InterruptedException {
+        CollectionReference employeesDb = _db.collection("employees");
+        if (employeesDb.document(String.valueOf(id)).get().get() == null) {
+            throw new RuntimeException("Employee not found");
+        }
+        ApiFuture<WriteResult> result = _db.collection("employees").document(String.valueOf(id)).delete();
+        return result.get().getUpdateTime().toString();
+    }
 
     @Override
-    public ProjectUpdateEmployeeDataResult getProjectUpdateEmployeeData(int writerId, List<Integer> checkIds) {
+    public String changePassword(int id, String newPassword) throws ExecutionException, InterruptedException {
         CollectionReference employeesDb = _db.collection("employees");
-        ProjectUpdateEmployeeDataResult res = new ProjectUpdateEmployeeDataResult();
-        try {
-            res.writerName = employeesDb.document(String.valueOf(writerId)).get().get().getString("name");
-            for(int checkedId : checkIds) {
-                res.checked.add(employeesDb.document(String.valueOf(checkedId)).get().get().getString("name"));
-            }
-            return res;
-        }
-        catch (Exception e) {
-            _logger.Error("getProjectUpdateEmployeeData", e.getMessage());
-        }
-        return null;
+        String passwordHash = _passwordEncoder.encode(newPassword);
+        ApiFuture<WriteResult> result = employeesDb.document(String.valueOf(id)).update("password", passwordHash);
+        return result.get().getUpdateTime().toString();
     }
 }

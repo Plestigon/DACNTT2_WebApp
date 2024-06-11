@@ -105,7 +105,6 @@ function MyProjects() {
         
     <div>
 
-        <Notify/>
         <SideBar/>
         <TopBar/>
 

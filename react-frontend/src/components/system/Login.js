@@ -9,8 +9,8 @@ function Login() {
 
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const [emailError, setEmailError] = React.useState('');
-	const [passwordError, setPasswordError] = React.useState('');
+	const [emailError, setEmailError] = useState('');
+	const [passwordError, setPasswordError] = useState('');
 
 	function validate() {
 		setEmailError('');

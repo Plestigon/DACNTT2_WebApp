@@ -138,4 +138,20 @@ public class HRController {
             return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @DeleteMapping("hr/employees/{id}")
+    public ResponseEntity<BaseResponse> removeEmployee(@PathVariable int id, @RequestParam String token) {
+        try {
+            BaseResponse result = _webClient.build().delete()
+                    .uri("http://api-gateway/api/employees/" + id)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

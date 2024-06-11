@@ -49,21 +49,16 @@ public class EmployeeService implements IEmployeeService {
     }
 
     @Override
-    public String removeEmployee(int id) {
+    public String removeEmployee(int id) throws ExecutionException, InterruptedException {
         try {
-            Employee employee = getEmployeeById(id);
-            if (employee == null) {
-                String msg = "Employee not found";
-                _logger.Error("removeEmployee: ", msg);
-                return msg;
-            }
-            ApiFuture<WriteResult> result = _db.collection("employees").document(String.valueOf(id)).delete();
+            String result = _employeeRepository.removeEmployee(id);
             //Remove employee from department's employee list
-            //_logger.info("removeEmployeeFromDepartment: " + removeEmployeeFromDepartment(id, employee.getDepartmentId()));
-            return result.get().getUpdateTime().toString();
+            String result2 = _departmentRepository.removeEmployeeFromDepartments(id);
+            return result;
         }
         catch (Exception e) {
-            return null;
+            _logger.Error("removeEmployee", e.getMessage());
+            throw e;
         }
     }
 
@@ -121,92 +116,15 @@ public class EmployeeService implements IEmployeeService {
     }
 
     @Override
-    public ProjectUpdateEmployeeDataResult getProjectUpdateEmployeeData(int writerId, List<Integer> checkIds) {
-        return _employeeRepository.getProjectUpdateEmployeeData(writerId, checkIds);
+    public String changePassword(int id, String newPassword) throws ExecutionException, InterruptedException {
+        try {
+            return _employeeRepository.changePassword(id, newPassword);
+        }
+        catch (Exception e) {
+            _logger.Error("changePassword", e.getMessage());
+            throw e;
+        }
     }
 
-//    public List<Employee> getEmployeesByDepartment(String shortName) throws ExecutionException, InterruptedException {
-//        Department department = departmentService.getDepartmentByShortName(shortName);
-//        if (department == null || department.getEmployeeIds() == null) {
-//            logger.error("getemployeesByDepartment: " + "Department not found");
-//            return null;
-//        }
-//        return getEmployeesByIds(department.getEmployeeIds());
-//    }
 
-//    @Override
-//    public Department getDepartmentById(int id) {
-//        try {
-//            DocumentSnapshot data = _db.collection("departments").document(String.valueOf(id)).get().get();
-//            Department department = null;
-//            if (data.exists()) {
-//                department = data.toObject(Department.class);
-//            }
-//            return department;
-//        }
-//        catch (Exception e) {
-//            return null;
-//        }
-//    }
-
-//    @Override
-//    public String addEmployeeToDepartment(int employeeId, int departmentId) {
-//        try {
-//            Department department = getDepartmentById(departmentId);
-//            if (department != null) {
-//                List<Integer> employeeIds = new ArrayList<>();
-//                if (department.getEmployeeIds() != null) {
-//                    employeeIds = department.getEmployeeIds();
-//                    if (employeeIds.contains(employeeId)) {
-//                        String msg = "This employeeId already exist in this Department.";
-//                        _logger.error("addEmployeeToDepartment: " + msg);
-//                        return msg;
-//                    }
-//                }
-//                employeeIds.add(employeeId);
-//                ApiFuture<WriteResult> result = _db.collection("departments")
-//                        .document(String.valueOf(departmentId)).update("employeeIds", employeeIds);
-//                return result.get().toString();
-//            }
-//            String msg = "Department Not Found.";
-//            _logger.error("addEmployeeToDepartment: " + msg);
-//            return msg;
-//        }
-//        catch (Exception e) {
-//            return null;
-//        }
-//    }
-
-//    @Override
-//    public String removeEmployeeFromDepartment(int employeeId, int departmentId) {
-//        try {
-//            Department department = getDepartmentById(departmentId);
-//            if (department != null) {
-//                List<Integer> employeeIds = new ArrayList<>();
-//                if (department.getEmployeeIds() != null) {
-//                    employeeIds = department.getEmployeeIds();
-//                    if (!employeeIds.contains(employeeId)) {
-//                        String msg = "This employeeId does not exist in this Department.";
-//                        _logger.error("removeEmployeeFromDepartment: " + msg);
-//                        return msg;
-//                    }
-//                    employeeIds.remove(Integer.valueOf(employeeId));
-//                }
-//                ApiFuture<WriteResult> result = _db.collection("departments")
-//                        .document(String.valueOf(departmentId)).update("employeeIds", employeeIds);
-//                return result.get().toString();
-//            }
-//            String msg = "Department Not Found.";
-//            _logger.error("addEmployeeToDepartment: " + msg);
-//            return msg;
-//        }
-//        catch (Exception e) {
-//            return null;
-//        }
-//    }
-
-//    @RabbitListener(queues = {"${rabbitmq.queue.name}"})
-//    public void consume(String message) {
-//        _logger.info("Received message in EmployeeService: " + message);
-//    }
 }

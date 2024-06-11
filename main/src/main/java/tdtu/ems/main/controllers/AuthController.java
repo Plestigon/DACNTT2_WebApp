@@ -49,4 +49,21 @@ public class AuthController {
             return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PutMapping("/auth/change-password")
+    public ResponseEntity<BaseResponse> changePassword(@RequestBody ChangePasswordDto input, @RequestParam String token) {
+        try {
+            BaseResponse result = _webClient.build().put()
+                    .uri("http://api-gateway/api/auth/change-password")
+                    .bodyValue(input)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

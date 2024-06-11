@@ -21,9 +21,7 @@ import tdtu.ems.employee_service.services.MyUserDetailsService;
 public class AuthConfig {
     private final String[] REQUEST_URL_PERMIT_ALL = {
             "/error",
-            "/api/auth/token",
-            "/api/auth/validate",
-            "/api/auth/user",
+            "/api/auth/**",
             "/api/employees",
             "/api/employees/**"
     };

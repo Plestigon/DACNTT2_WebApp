@@ -24,13 +24,15 @@ public class JwtService {
     }
 
     public String generateToken(MyUserDetails user) {
-        Map<String, Object> claims = new HashMap<>();
         String token = Jwts.builder()
                 .setSubject(user.getEmail())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION))
                 .signWith(SignatureAlgorithm.HS256, getSignKey())
 //                .claim("userDetails", user)
+                .claim("id", user.getId())
+                .claim("name", user.getName())
+                .claim("role", user.getRoleDetail())
                 .compact();
         return token;
     }

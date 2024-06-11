@@ -5,6 +5,7 @@ import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.stereotype.Repository;
 import tdtu.ems.employee_service.models.Department;
+import tdtu.ems.employee_service.models.Employee;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,5 +75,21 @@ public class DepartmentRepository implements IDepartmentRepository {
             return result.get().getUpdateTime().toString();
         }
         throw new RuntimeException("Department with id " + departmentId + " not found");
+    }
+
+    @Override
+    public String removeEmployeeFromDepartments(int employeeId) throws ExecutionException, InterruptedException {
+        CollectionReference departmentsDb = _db.collection("departments");
+        String results = "";
+        for (QueryDocumentSnapshot data : departmentsDb.get().get().getDocuments()) {
+            Department d = data.toObject(Department.class);
+            List<Integer> empIds = d.getEmployeeIds();
+            if (empIds.contains(employeeId)) {
+                empIds.remove(Integer.valueOf(employeeId));
+                ApiFuture<WriteResult> result = departmentsDb.document(String.valueOf(d.getId())).update("employeeIds", empIds);
+                results += result.get().getUpdateTime().toString() + ";";
+            }
+        }
+        return results;
     }
 }

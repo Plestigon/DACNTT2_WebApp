@@ -117,7 +117,6 @@ function SubmitForm() {
 
     return (
 <div>
-    <Notify/>
     <SideBar/>
     <TopBar/>
     <div class="content container pt-3 px-3">

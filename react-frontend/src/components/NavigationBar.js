@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -15,6 +15,8 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { useAuthentication } from './system/Authentication';
+import NewPassword from './profile/NewPassword';
+import Notify from '../utils/Notify';
 
 
 const pages = ['Products', 'Pricing', 'Blog'];
@@ -22,6 +24,8 @@ const settings = ['Profile', 'Account', 'Dashboard'];
 
 function NavigationBar() {
   const auth = useAuthentication();
+  const navigate = useNavigate();
+  const [newPassModalShow, setNewPassModalShow] = useState(false);
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -51,6 +55,9 @@ function NavigationBar() {
 
   return (
     <Navbar bg="primary" data-bs-theme="dark" position="static">
+      
+      <Notify/>
+
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -174,8 +181,13 @@ function NavigationBar() {
           </Nav>
 
           {/* Profile */}
+          <div class="me-2">
+            <div class="" style={{fontSize: 15}}>{auth.name} {auth.email ? <span class="fst-italic" style={{fontSize: 12}}>({auth.email})</span> : ''}</div>
+            <div class="fw-bold text-end" style={{fontSize: 10}}>{auth.role}</div>
+          </div>
+          
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            <Tooltip title="Logged in">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="User" src={require('../assets/profile-user.png')} />
               </IconButton>
@@ -196,11 +208,17 @@ function NavigationBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
+              {/* {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
-              ))}
+              ))} */}
+              <MenuItem onClick={() => navigate("/profile")}>
+                <Typography textAlign="center">Profile</Typography>
+              </MenuItem>
+              <MenuItem onClick={() => {setNewPassModalShow(true);handleCloseUserMenu()}}>
+                <Typography textAlign="center">Change Password</Typography>
+              </MenuItem>
               <MenuItem onClick={handleLogOutClick}>
                 <div class="fw-bold">
                   <i class="fa fa-sign-out me-2" aria-hidden="true" style={{color:'#dc3545'}}></i><span class="text-danger">Log Out</span>
@@ -209,6 +227,7 @@ function NavigationBar() {
             </Menu>
           </Box>
           {/* End Profile */}
+          <NewPassword show={newPassModalShow} onHide={() => setNewPassModalShow(false)} userId={auth.id} token={auth.token} />
           
         </Toolbar>
       </Container>

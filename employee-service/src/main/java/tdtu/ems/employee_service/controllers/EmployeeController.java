@@ -83,22 +83,12 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/employees/{id}")
-    public String removeEmployee(@PathVariable int id) {
+    public BaseResponse removeEmployee(@PathVariable int id) {
         try {
             String result = _employeeService.removeEmployee(id);
-            return result;
+            return new BaseResponse(result, 200, "OK");
         } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @GetMapping("/employees/project-update-data")
-    public ResponseEntity<ProjectUpdateEmployeeDataResult> getProjectUpdateEmployeeData(@RequestParam int writerId, @RequestParam List<Integer> checkedIds) {
-        try {
-            ProjectUpdateEmployeeDataResult res = _employeeService.getProjectUpdateEmployeeData(writerId, checkedIds);
-            return new ResponseEntity<>(res, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new BaseResponse(null, 500, e.getMessage());
         }
     }
 }

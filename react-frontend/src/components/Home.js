@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import '../css/home.css';
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import NavigationBar from "./NavigationBar";
+import { info } from "../utils/Notify";
+import { useAuthentication } from "./system/Authentication";
  
 function Home() {
+	const auth = useAuthentication();
+	const [searchParams] = useSearchParams();
+
+    useEffect(()=>{
+		if (searchParams.get("loggedIn") === "true") {
+			info("Welcome, " + auth.name);
+		}
+    }, [searchParams])
+
     return (
     <div>
         <NavigationBar/>

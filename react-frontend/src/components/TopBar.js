@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -17,7 +17,8 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import "../css/topbar.css";
 import { Icon } from '@mui/material';
 import { useAuthentication } from './system/Authentication';
-import ProfilePage from './profile/ProfilePage';
+import NewPassword from './profile/NewPassword';
+import Notify from '../utils/Notify';
 
 
 const pages = ['Products', 'Pricing', 'Blog'];
@@ -26,6 +27,8 @@ const settings = ['Profile', 'Change Password', 'Dashboard'];
 function TopBar() {
   const auth = useAuthentication();
   const navigate = useNavigate();
+  const [newPassModalShow, setNewPassModalShow] = useState(false);
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -51,14 +54,22 @@ function TopBar() {
 
   return (
     <Navbar data-bs-theme="dark" position="static" className="topbar bg-secondary" >
+      
+      <Notify/>
+
       <Container maxWidth="xl">
         <div class="d-flex justify-content-end">
         <Toolbar disableGutters>
           <IconButton style={{marginRight:"10px"}}><i class="fa-solid fa-bell"></i></IconButton>
 
           {/* Profile */}
+          <div class="me-2">
+            <div class="" style={{fontSize: 15}}>{auth.name} {auth.email ? <span class="fst-italic" style={{fontSize: 12}}>({auth.email})</span> : ''}</div>
+            <div class="fw-bold text-end" style={{fontSize: 10}}>{auth.role}</div>
+          </div>
+          
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            <Tooltip title="Logged in">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="User" src={require('../assets/profile-user.png')} />
               </IconButton>
@@ -87,7 +98,7 @@ function TopBar() {
               <MenuItem onClick={() => navigate("/profile")}>
                 <Typography textAlign="center">Profile</Typography>
               </MenuItem>
-              <MenuItem onClick={() => navigate("/change-password")}>
+              <MenuItem onClick={() => {setNewPassModalShow(true);handleCloseUserMenu()}}>
                 <Typography textAlign="center">Change Password</Typography>
               </MenuItem>
               <MenuItem onClick={handleLogOutClick}>
@@ -98,7 +109,7 @@ function TopBar() {
             </Menu>
           </Box>
           {/* End Profile */}
-
+          <NewPassword show={newPassModalShow} onHide={() => setNewPassModalShow(false)} userId={auth.id} token={auth.token} />
         </Toolbar>
         </div>
       </Container>

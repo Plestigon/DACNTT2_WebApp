@@ -1,11 +1,15 @@
 import React, { useState, useContext, createContext } from "react";
 import { createSearchParams, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { error } from "../../utils/Notify";
 
 const AuthContext = createContext();
 
 function Authentication({ children }) {
-	const [user, setUser] = useState(localStorage.getItem("user") || null);
+	const [id, setId] = useState(localStorage.getItem("id") || null);
+	const [name, setName] = useState(localStorage.getItem("name") || null);
+	const [email, setEmail] = useState(localStorage.getItem("email") || null);
+	const [role, setRole] = useState(localStorage.getItem("role") || null);
 	const [token, setToken] = useState(localStorage.getItem("token") || '');
 	const navigate = useNavigate();
 
@@ -33,40 +37,43 @@ function Authentication({ children }) {
             if (result.statusCode === 200) {
 				setToken(result.data);
 				localStorage.setItem("token", result.data);
-				getUserData(email, result.data);
+
+				const userData = jwtDecode(result.data);
+				setId(userData.id);
+				localStorage.setItem("id", userData.id);
+				setName(userData.name);
+				localStorage.setItem("name", userData.name);
+				setEmail(userData.sub);
+				localStorage.setItem("email", userData.sub);
+				setRole(userData.role);
+				localStorage.setItem("role", userData.role);
+				
+				navigate("/?loggedIn=true");
             }
+			else {
+				error(result.message);
+			}
         })
         .catch (e => {
             console.log("ERROR_login: " + e);
         })
-		navigate("/");
 	}
 
 	function logOut() {
-		setUser(null);
 		setToken('');
+		setId(null);
+		setName(null);
+		setEmail(null);
+		setRole(null);
 		localStorage.removeItem("token");
-		localStorage.removeItem("user");
+		localStorage.removeItem("id");
+		localStorage.removeItem("name");
+		localStorage.removeItem("email");
+		localStorage.removeItem("role");
 		navigate({
 			pathname: "/login",
 			search: createSearchParams({loggedOut: true}).toString()
 		});
-	}
-
-	function getUserData(email, token) {
-		fetch("http://localhost:8080/auth/user?email=" + email + "&token=" + token,{
-            method:"GET"
-        })
-        .then(result=>result.json())
-        .then((result)=>{
-            if (result.statusCode === 200) {
-                setUser(result.data);
-				localStorage.setItem("user", result.data);
-            }
-        })
-        .catch (e => {
-            console.log("ERROR_getUserData: " + e);
-        })
 	}
 
 	function isExpired(token) {
@@ -93,7 +100,7 @@ function Authentication({ children }) {
 		return false;
 	}
 
-	return <AuthContext.Provider value={{user, token, login, logOut, isExpired, checkToken}}>{children}</AuthContext.Provider>;
+	return <AuthContext.Provider value={{id, name, email, role, token, login, logOut, isExpired, checkToken}}>{children}</AuthContext.Provider>;
 };
 
 export function useAuthentication() {

@@ -17,7 +17,6 @@ import Notify from '../../utils/Notify';
 export default function ProfilePage() {
   return (
     <div>
-        <Notify/>
         <SideBar/>
         <TopBar/>
     <section class="content">

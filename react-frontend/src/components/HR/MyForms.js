@@ -47,7 +47,6 @@ function MyForms() {
 
     return (
     <div>
-        <Notify/>
         <SideBar/>
         <TopBar/>
         <div class="content container">

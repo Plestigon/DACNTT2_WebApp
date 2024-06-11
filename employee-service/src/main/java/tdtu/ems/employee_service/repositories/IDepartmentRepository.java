@@ -12,4 +12,5 @@ public interface IDepartmentRepository {
     Department getDepartmentById(int id) throws ExecutionException, InterruptedException;
     Department getDepartmentByShortName(String shortName) throws ExecutionException, InterruptedException;
     String addEmployeeToDepartment(int employeeId, int departmentId) throws ExecutionException, InterruptedException;
+    String removeEmployeeFromDepartments(int employeeId) throws ExecutionException, InterruptedException;
 }

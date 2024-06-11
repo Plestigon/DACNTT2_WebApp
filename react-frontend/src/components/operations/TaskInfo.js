@@ -294,7 +294,6 @@ const TaskInfo = () => {
 
     return (
 <div>
-<Notify/>
 <SideBar/>
 <TopBar/>
     <div class="content mt-5">

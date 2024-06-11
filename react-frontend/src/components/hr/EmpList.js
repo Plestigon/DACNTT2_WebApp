@@ -53,21 +53,21 @@ function EmpList() {
 
     function deleteEmployee() {
         setShowDeleteModal(false);
-        // if (deleteTarget.id === null || deleteTarget.id <= 0) {return;}
-        // fetch("http://localhost:8080/operations/project?id=" + deleteTarget.id, {
-        //     method:"DELETE"
-        // })
-        // .then((response) => {
-        //     console.log(response);
-        //     if (response.ok) {
-        //         success("Project deleted");
-        //         fetchEmployees();
-        //     }
-        // })
-        // .catch(e => {
-        //     console.log("ERROR_deleteProject: " + e);
-        // })
-        // setDeleteTarget({'id': 0, 'name': ''});
+        if (deleteTarget.id === null || deleteTarget.id <= 0) {return;}
+        fetch("http://localhost:8080/hr/employees/" + deleteTarget.id + "?token=" + auth.token, {
+            method:"DELETE"
+        })
+        .then(result=>result.json())
+        .then((result)=>{
+            if (result.statusCode === 200) {
+                success("Employee deleted");
+                fetchEmployees();
+            }
+        })
+        .catch(e => {
+            console.log("ERROR_deleteEmployee: " + e);
+        })
+        setDeleteTarget({'id': 0, 'name': ''});
     }
 
     function projectDetails(id) {
@@ -78,7 +78,6 @@ function EmpList() {
 
     return (
     <div>
-        <Notify/>
         <SideBar/>
         <TopBar/>
         <div class="content container">
