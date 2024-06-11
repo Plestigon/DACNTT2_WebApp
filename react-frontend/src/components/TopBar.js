@@ -25,7 +25,7 @@ const settings = ['Profile', 'Change Password', 'Dashboard'];
 
 function TopBar() {
   const auth = useAuthentication();
-
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -79,11 +79,17 @@ function TopBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
+              {/* {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
-              ))}
+              ))} */}
+              <MenuItem onClick={() => navigate("/profile")}>
+                <Typography textAlign="center">Profile</Typography>
+              </MenuItem>
+              <MenuItem onClick={() => navigate("/change-password")}>
+                <Typography textAlign="center">Change Password</Typography>
+              </MenuItem>
               <MenuItem onClick={handleLogOutClick}>
                 <div class="fw-bold">
                   <i class="fa fa-sign-out me-2" aria-hidden="true" style={{color:'#dc3545'}}></i><span class="text-danger">Log Out</span>

@@ -7,10 +7,8 @@ import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFac
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import tdtu.ems.core_service.models.BaseResponse;
 import tdtu.ems.core_service.utils.Logger;
@@ -18,14 +16,14 @@ import tdtu.ems.core_service.utils.Logger;
 @Component
 public class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config> {
     private final RouteValidator _routeValidator;
-    private final JwtValidator _jwtValidator;
+    private final JwtUtils _jwtUtils;
     private final Logger<AuthenticationFilter> _logger;
     private final ObjectMapper _objectMapper;
 
-    public AuthenticationFilter(RouteValidator routeValidator, JwtValidator jwtValidator, ObjectMapper objectMapper) {
+    public AuthenticationFilter(RouteValidator routeValidator, JwtUtils jwtUtils, ObjectMapper objectMapper) {
         super(Config.class);
         _routeValidator = routeValidator;
-        _jwtValidator = jwtValidator;
+        _jwtUtils = jwtUtils;
         _objectMapper = objectMapper;
         _logger = new Logger<>(AuthenticationFilter.class);
     }
@@ -43,8 +41,9 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                     token = authHeader.substring(7);
                 }
                 try {
-                    Claims claims = _jwtValidator.validateToken(token);
-
+                    Claims claims = _jwtUtils.validateToken(token);
+                    String role = claims.get("role", String.class);
+                    int a = 0;
                 }
                 catch (Exception e) {
                     _logger.Error("GatewayFilter", e.getMessage());

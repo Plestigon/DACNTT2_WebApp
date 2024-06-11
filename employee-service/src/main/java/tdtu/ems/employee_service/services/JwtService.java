@@ -10,6 +10,8 @@ import tdtu.ems.employee_service.models.MyUserDetails;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class JwtService {
@@ -22,9 +24,8 @@ public class JwtService {
     }
 
     public String generateToken(MyUserDetails user) {
-//        Map<String, Object> claims = new HashMap<>();
+        Map<String, Object> claims = new HashMap<>();
         String token = Jwts.builder()
-//                .setClaims(claims)
                 .setSubject(user.getEmail())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION))

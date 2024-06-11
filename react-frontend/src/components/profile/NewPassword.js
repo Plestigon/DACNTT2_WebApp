@@ -38,8 +38,8 @@ function NewPassword(props) {
             </form>
              </Modal.Body>
              <Modal.Footer className="d-flex justify-content-center">
-                 <Button className="btn-primary w-25" onClick={handleSubmit}>Change Password</Button>
-                 <Button className="btn-secondary w-25" onClick={props.onHide}>Cancel</Button>
+                 <Button className="btn-primary w-25">Change Password</Button>
+                 <Button className="btn-secondary w-25">Cancel</Button>
              </Modal.Footer>
          </Modal>
     );

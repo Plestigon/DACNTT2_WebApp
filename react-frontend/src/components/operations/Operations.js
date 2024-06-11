@@ -36,6 +36,11 @@ import { useAuthentication } from "../system/Authentication";
             dismiss(toastId);
             if (result.statusCode === 200) {
                 setProjects(result.data);
+                console.log(auth.user);
+                console.log(auth.token);
+                console.log(localStorage.getItem("user"));
+                console.log(localStorage.getItem("user").name);
+                //console.log(localStorage.getItem("token"));
             }
             else {
                 error("Load project data failed");

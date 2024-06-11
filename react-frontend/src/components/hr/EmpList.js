@@ -93,9 +93,10 @@ function EmpList() {
                 <thead class="table-primary">
                     <tr>
                         <th scope="col" style={{width:'50px'}}>ID</th>
-                        <th scope="col" style={{width:'30%'}}>Full Name</th>
+                        <th scope="col" style={{width:'20%'}}>Full Name</th>
+                        <th scope="col" style={{width:'15%'}}>Email</th>
                         <th scope="col" style={{width:'10%'}}>Department</th>
-                        <th scope="col">Role</th>
+                        <th scope="col" style={{width:'15%'}}>Role</th>
                         <th scope="col">Join date</th>
                         <th scope="col" style={{width:'50px'}}></th>
                     </tr>
@@ -107,6 +108,7 @@ function EmpList() {
                         <tr key={em.id}>
                             <td>{em.id}</td>
                             <td>{em.name}</td>
+                            <td>{em.email}</td>
                             <td>{em.departmentName}</td>
                             <td>{em.roleDetail}</td>
                             <td>{dateTimeFormat(em.joinDate)}</td>

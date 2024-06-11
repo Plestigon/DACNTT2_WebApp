@@ -18,6 +18,7 @@ import Login from './components/system/Login';
 import PrivateRoute from './components/system/PrivateRoute';
 import Authentication from './components/system/Authentication';
 import EmpList from './components/hr/EmpList';
+import NewPassword from './components/profile/NewPassword';
 
 function App() {
 
@@ -35,7 +36,7 @@ function App() {
             <Route path="/operations/my-projects" element={<MyProjects/>}/>
             <Route path="/operations/task/:id" element={<TaskInfo/>}/>
             <Route path="/profile" element={<ProfilePage/>}/>
-
+            <Route path="/change-password" element={<NewPassword/>}/>
 
             <Route path="/hr/submit-form" element={<SubmitForm/>}/>
             <Route path="/hr/my-forms" element={<MyForms/>}/>

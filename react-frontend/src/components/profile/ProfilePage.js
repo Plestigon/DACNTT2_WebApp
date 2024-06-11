@@ -20,7 +20,7 @@ export default function ProfilePage() {
         <Notify/>
         <SideBar/>
         <TopBar/>
-    <section>
+    <section class="content">
       <MDBContainer className="py-5">
         <MDBRow>
           <MDBCol lg="4">

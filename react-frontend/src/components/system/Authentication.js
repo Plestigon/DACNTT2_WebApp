@@ -5,7 +5,7 @@ import { jwtDecode } from "jwt-decode";
 const AuthContext = createContext();
 
 function Authentication({ children }) {
-	const [user, setUser] = useState(null);
+	const [user, setUser] = useState(localStorage.getItem("user") || null);
 	const [token, setToken] = useState(localStorage.getItem("token") || '');
 	const navigate = useNavigate();
 
@@ -33,23 +33,40 @@ function Authentication({ children }) {
             if (result.statusCode === 200) {
 				setToken(result.data);
 				localStorage.setItem("token", result.data);
-				navigate("/");
-				return;
+				getUserData(email, result.data);
             }
         })
         .catch (e => {
             console.log("ERROR_login: " + e);
         })
+		navigate("/");
 	}
 
 	function logOut() {
 		setUser(null);
 		setToken('');
 		localStorage.removeItem("token");
+		localStorage.removeItem("user");
 		navigate({
 			pathname: "/login",
 			search: createSearchParams({loggedOut: true}).toString()
 		});
+	}
+
+	function getUserData(email, token) {
+		fetch("http://localhost:8080/auth/user?email=" + email + "&token=" + token,{
+            method:"GET"
+        })
+        .then(result=>result.json())
+        .then((result)=>{
+            if (result.statusCode === 200) {
+                setUser(result.data);
+				localStorage.setItem("user", result.data);
+            }
+        })
+        .catch (e => {
+            console.log("ERROR_getUserData: " + e);
+        })
 	}
 
 	function isExpired(token) {

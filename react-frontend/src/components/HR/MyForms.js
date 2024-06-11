@@ -63,7 +63,7 @@ function MyForms() {
                         <th scope="col">Start Date</th>
                         <th scope="col">End Date</th>
                         <th scope="col">Reason</th>
-                        <th scope="col" style={{width:'180px'}}>Status</th>
+                        <th scope="col" style={{width:'200px'}}>Status</th>
                         <th scope="col">Notes</th>
                     </tr>
                 </thead>

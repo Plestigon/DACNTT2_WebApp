@@ -3,6 +3,7 @@ package tdtu.ems.employee_service.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tdtu.ems.core_service.models.BaseResponse;
 import tdtu.ems.employee_service.models.EmployeeResult;
@@ -49,15 +50,22 @@ public class EmployeeController {
     }
 
     @GetMapping("/employees/{id}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable int id) {
+    public BaseResponse getEmployeeById(@PathVariable int id) {
         try {
             Employee employee = _employeeService.getEmployeeById(id);
-            if (employee == null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<>(employee, HttpStatus.OK);
+            return new BaseResponse(employee, 200, "OK");
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
+
+    @GetMapping("/employees/by-email")
+    public BaseResponse getEmployeeByEmail(@RequestParam String email) {
+        try {
+            Employee employee = _employeeService.getEmployeeByEmail(email);
+            return new BaseResponse(employee, 200, "OK");
+        } catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
         }
     }
 

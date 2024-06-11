@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import tdtu.ems.core_service.models.BaseResponse;
 import tdtu.ems.employee_service.models.Employee;
 import tdtu.ems.employee_service.models.LoginDto;
+import tdtu.ems.employee_service.models.LoginUser;
 import tdtu.ems.employee_service.services.*;
 
 @RestController
@@ -23,20 +24,6 @@ public class AuthController {
         _authService = authService;
         _authenticationManager = authenticationManager;
         _employeeService = employeeService;
-    }
-
-    @PostMapping("/auth/login")
-    public BaseResponse login(@RequestBody LoginDto loginDto) {
-        try {
-            Employee result = _employeeService.getEmployeeByEmail(loginDto.getEmail());
-            if (result == null) {
-                return new BaseResponse(null, 404, "Not found");
-            }
-            return new BaseResponse(result, 200, "OK");
-        }
-        catch (Exception e) {
-            return new BaseResponse(null, 500, e.getMessage());
-        }
     }
 
     @PostMapping("/auth/token")
@@ -60,6 +47,20 @@ public class AuthController {
         try {
             Claims claims = _authService.validateToken(token);
             return new BaseResponse(claims, 200, "OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
+
+    @GetMapping("/auth/user")
+    public BaseResponse getUser(@RequestParam String email) {
+        try {
+            Employee result = _employeeService.getEmployeeByEmail(email);
+            if (result == null) {
+                return new BaseResponse(null, 404, "Not found");
+            }
+            return new BaseResponse(new LoginUser(result), 200, "OK");
         }
         catch (Exception e) {
             return new BaseResponse(null, 500, e.getMessage());

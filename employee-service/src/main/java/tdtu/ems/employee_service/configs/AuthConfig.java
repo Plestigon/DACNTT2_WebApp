@@ -23,6 +23,7 @@ public class AuthConfig {
             "/error",
             "/api/auth/token",
             "/api/auth/validate",
+            "/api/auth/user",
             "/api/employees",
             "/api/employees/**"
     };

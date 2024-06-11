@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 
 @Component
-public class JwtValidator {
+public class JwtUtils {
     public static final String JWT_SECRET = "hYr9jfTUb68bt6B6h8HYu12W3sh19hIJiuRhi2i89ug8yg8UGhUwZai92jbAIaiEq";
 
     public Claims validateToken(String token) {
@@ -17,9 +17,18 @@ public class JwtValidator {
         return claims;
     }
 
-
     private Key getSignKey() {
         byte[] keyBytes = Decoders.BASE64.decode(JWT_SECRET);
         return Keys.hmacShaKeyFor(keyBytes);
     }
+
+//    public String extractEmail(String token) {
+//        return extractClaim(token, Claims::getSubject);
+//    }
+//
+//    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+//        final Claims claims = extractAllClaims(token);
+//    }
+//
+//    private Claims
 }
