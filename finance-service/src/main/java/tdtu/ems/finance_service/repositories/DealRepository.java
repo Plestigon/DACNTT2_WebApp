@@ -14,6 +14,7 @@ import tdtu.ems.finance_service.models.Deal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 @Repository
 public class DealRepository implements IDealRepository {
@@ -26,38 +27,36 @@ public class DealRepository implements IDealRepository {
     }
 
     @Override
-    public List<Deal> getDealsByIds(List<Integer> ids) {
-        try {
-            CollectionReference dealsDb = _db.collection("deals");
-            List<Deal> deals = new ArrayList<>();
-            for (int id : ids) {
-                Deal deal = dealsDb.document(String.valueOf(id)).get().get().toObject(Deal.class);
-                if (deal != null) {
-                    deals.add(deal);
-                }
+    public List<Deal> getDealsByIds(List<Integer> ids) throws ExecutionException, InterruptedException {
+        CollectionReference dealsDb = _db.collection("deals");
+        List<Deal> deals = new ArrayList<>();
+        for (int id : ids) {
+            Deal deal = dealsDb.document(String.valueOf(id)).get().get().toObject(Deal.class);
+            if (deal != null) {
+                deals.add(deal);
             }
-            return deals;
         }
-        catch (Exception e) {
-            _logger.Error("getDealsByIds", e.getMessage());
-            return null;
-        }
+        return deals;
     }
 
     @Override
-    public String addDeal(Deal entry) {
-        try {
-            CollectionReference dealsDb = _db.collection("deals");
-            DocumentReference idTracer = _db.collection("idTracer").document("deals");
-            long id = Objects.requireNonNull(idTracer.get().get().getLong("id")) + 1;
-            entry.setId((int) id);
-            ApiFuture<WriteResult> result = dealsDb.document(String.valueOf(id)).set(entry);
-            ApiFuture<WriteResult> updateIdResult = idTracer.update("id", id);
-            return result.get().getUpdateTime().toString();
+    public String addDeal(Deal entry) throws ExecutionException, InterruptedException {
+        CollectionReference dealsDb = _db.collection("deals");
+        DocumentReference idTracer = _db.collection("idTracer").document("deals");
+        long id = Objects.requireNonNull(idTracer.get().get().getLong("id")) + 1;
+        entry.setId((int) id);
+        ApiFuture<WriteResult> result = dealsDb.document(String.valueOf(id)).set(entry);
+        ApiFuture<WriteResult> updateIdResult = idTracer.update("id", id);
+        return result.get().getUpdateTime().toString();
+    }
+
+    @Override
+    public String removeDeal(int id) throws ExecutionException, InterruptedException {
+        CollectionReference dealsDb = _db.collection("deals");
+        if (dealsDb.document((String.valueOf(id))).get().get() == null) {
+            throw new RuntimeException("Deal not found");
         }
-        catch (Exception e) {
-            _logger.Error("addDeal", e.getMessage());
-            return null;
-        }
+        ApiFuture<WriteResult> result = dealsDb.document(String.valueOf(id)).delete();
+        return result.get().getUpdateTime().toString();
     }
 }

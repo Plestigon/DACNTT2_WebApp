@@ -3,6 +3,7 @@ package tdtu.ems.finance_service.controllers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tdtu.ems.core_service.models.BaseResponse;
 import tdtu.ems.finance_service.models.*;
 import tdtu.ems.finance_service.services.AssociateService;
 import tdtu.ems.finance_service.services.ContactService;
@@ -24,39 +25,101 @@ public class FinanceController {
     }
 
     @GetMapping("/finance/associates")
-    public ResponseEntity<List<AssociateResult>> getAssociates() {
-        List<AssociateResult> response = null;
-        response = _associateService.getAssociates();
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    public BaseResponse getAssociates() {
+        try {
+            List<AssociateResult> result = _associateService.getAssociates();
+            return new BaseResponse(result, 200, "OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
     }
 
-    @PostMapping("/finance/associate")
-    public ResponseEntity<String> addAssociate(@RequestBody Associate entry) {
-        String response = _associateService.addAssociate(entry);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    @PostMapping("/finance/associates")
+    public BaseResponse addAssociate(@RequestBody Associate entry) {
+        try {
+            String result = _associateService.addAssociate(entry);
+            return new BaseResponse(result, 200, "OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/finance/associates/{id}")
+    public BaseResponse removeAssociate(@PathVariable int id) {
+        try {
+            String result = _associateService.removeAssociate(id);
+            return new BaseResponse(result, 200, "OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
     }
 
     @GetMapping(value = "/finance/contacts")
-    public ResponseEntity<List<Contact>> getContacts(@RequestParam List<Integer> entry) {
-        List<Contact> response = _contactService.getContactsByIds(entry);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    public BaseResponse getContacts(@RequestParam List<Integer> entry) {
+        try {
+            List<Contact> result = _contactService.getContactsByIds(entry);
+            return new BaseResponse(result, 200, "OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
     }
 
-    @PostMapping("/finance/contact")
-    public ResponseEntity<String> addContact(@RequestBody Contact entry) {
-        String response = _contactService.addContact(entry);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    @PostMapping("/finance/contacts")
+    public BaseResponse addContact(@RequestBody Contact entry) {
+        try {
+            String result = _contactService.addContact(entry);
+            return new BaseResponse(result, 200, "OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/finance/contacts/{id}")
+    public BaseResponse removeContact(@PathVariable int id) {
+        try {
+            String result = _contactService.removeContact(id);
+            return new BaseResponse(result, 200, "OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
     }
 
     @GetMapping("/finance/deals")
-    public ResponseEntity<List<Deal>> getDeals(@RequestParam List<Integer> entry) {
-        List<Deal> response = _dealService.getDealsByIds(entry);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    public BaseResponse getDeals(@RequestParam List<Integer> entry) {
+        try {
+            List<Deal> result = _dealService.getDealsByIds(entry);
+            return new BaseResponse(result, 200, "OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
     }
 
-    @PostMapping("/finance/deal")
-    public ResponseEntity<String> addDeal(@RequestBody Deal entry) {
-        String response = _dealService.addDeal(entry);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    @PostMapping("/finance/deals")
+    public BaseResponse addDeal(@RequestBody Deal entry) {
+        try {
+            String result = _dealService.addDeal(entry);
+            return new BaseResponse(result, 200, "OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/finance/contacts/{id}")
+    public BaseResponse removeDeal(@PathVariable int id) {
+        try {
+            String result = _dealService.removeDeal(id);
+            return new BaseResponse(result, 200, "OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
     }
 }

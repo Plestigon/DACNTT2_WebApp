@@ -11,6 +11,7 @@ import tdtu.ems.finance_service.models.Contact;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 @Repository
 public class ContactRepository implements IContactRepository {
@@ -23,38 +24,36 @@ public class ContactRepository implements IContactRepository {
     }
 
     @Override
-    public List<Contact> getContactsByIds(List<Integer> ids) {
-        try {
-            CollectionReference contactsDb = _db.collection("contacts");
-            List<Contact> contacts = new ArrayList<>();
-            for (int id : ids) {
-                Contact contact = contactsDb.document(String.valueOf(id)).get().get().toObject(Contact.class);
-                if (contact != null) {
-                    contacts.add(contact);
-                }
+    public List<Contact> getContactsByIds(List<Integer> ids) throws ExecutionException, InterruptedException {
+        CollectionReference contactsDb = _db.collection("contacts");
+        List<Contact> contacts = new ArrayList<>();
+        for (int id : ids) {
+            Contact contact = contactsDb.document(String.valueOf(id)).get().get().toObject(Contact.class);
+            if (contact != null) {
+                contacts.add(contact);
             }
-            return contacts;
         }
-        catch (Exception e) {
-            _logger.Error("getContactsByIds", e.getMessage());
-            return null;
-        }
+        return contacts;
     }
 
     @Override
-    public String addContact(Contact entry) {
-        try {
-            CollectionReference contactsDb = _db.collection("contacts");
-            DocumentReference idTracer = _db.collection("idTracer").document("contacts");
-            long id = Objects.requireNonNull(idTracer.get().get().getLong("id")) + 1;
-            entry.setId((int) id);
-            ApiFuture<WriteResult> result = contactsDb.document(String.valueOf(id)).set(entry);
-            ApiFuture<WriteResult> updateIdResult = idTracer.update("id", id);
-            return result.get().getUpdateTime().toString();
+    public String addContact(Contact entry) throws ExecutionException, InterruptedException {
+        CollectionReference contactsDb = _db.collection("contacts");
+        DocumentReference idTracer = _db.collection("idTracer").document("contacts");
+        long id = Objects.requireNonNull(idTracer.get().get().getLong("id")) + 1;
+        entry.setId((int) id);
+        ApiFuture<WriteResult> result = contactsDb.document(String.valueOf(id)).set(entry);
+        ApiFuture<WriteResult> updateIdResult = idTracer.update("id", id);
+        return result.get().getUpdateTime().toString();
+    }
+
+    @Override
+    public String removeContact(int id) throws ExecutionException, InterruptedException {
+        CollectionReference contactsDb = _db.collection("contacts");
+        if (contactsDb.document((String.valueOf(id))).get().get() == null) {
+            throw new RuntimeException("Contact not found");
         }
-        catch (Exception e) {
-            _logger.Error("addContact", e.getMessage());
-            return null;
-        }
+        ApiFuture<WriteResult> result = contactsDb.document(String.valueOf(id)).delete();
+        return result.get().getUpdateTime().toString();
     }
 }
