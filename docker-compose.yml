@@ -1,0 +1,23 @@
+services:
+  main:
+    build:
+      context: main
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    depends_on:
+      - core-service
+
+  core-service:
+    build:
+      context: core-service
+      dockerfile: Dockerfile
+
+  react-frontend:
+    build:
+      context: react-frontend
+      dockerfile: Dockerfile
+    ports:
+      - 80:3000
+    depends_on:
+      - main
