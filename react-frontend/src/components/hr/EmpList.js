@@ -6,7 +6,7 @@ import TopBar from "../TopBar";
 import SideBar from "../SideBar";
 import '../../css/sidebar.css';
 import Notify, {success, error, loading, dismiss} from "../../utils/Notify";
-import DeleteConfirmModal from "../operations/DeleteConfirmModal";
+import DeleteConfirmModal from "../../utils/DeleteConfirmModal";
 import { Button } from "react-bootstrap";
 import { useAuthentication } from "../system/Authentication";
 import AddEmpModal from "./AddEmpModal";

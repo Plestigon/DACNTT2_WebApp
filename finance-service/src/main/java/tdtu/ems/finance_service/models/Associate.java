@@ -3,23 +3,21 @@ package tdtu.ems.finance_service.models;
 import java.util.List;
 
 public class Associate {
-    protected int id;
-    protected String name;
-    protected String domain;
-    protected List<Integer> contacts;
-    protected List<Integer> deals;
-    protected int priority;
-    protected String description;
+    private int id;
+    private String name;
+    private String domain;
+    private List<Integer> contacts;
+    private List<Integer> deals;
+    private String description;
 
     public Associate() {}
 
-    public Associate(int id, String name, String domain, List<Integer> contacts, List<Integer> deals, int priority, String description) {
+    public Associate(int id, String name, String domain, List<Integer> contacts, List<Integer> deals, String description) {
         this.id = id;
         this.name = name;
         this.domain = domain;
         this.contacts = contacts;
         this.deals = deals;
-        this.priority = priority;
         this.description = description;
     }
 
@@ -61,14 +59,6 @@ public class Associate {
 
     public void setDeals(List<Integer> deals) {
         this.deals = deals;
-    }
-
-    public int getPriority() {
-        return priority;
-    }
-
-    public void setPriority(int priority) {
-        this.priority = priority;
     }
 
     public String getDescription() {

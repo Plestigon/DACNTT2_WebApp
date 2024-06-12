@@ -115,3 +115,51 @@
 .hover-lightgray:hover {
     background-color: lightgray;
 }
+
+.card.contacts-card {
+    text-align: center;
+    border: none;
+    padding: 3px 10px;
+    margin-right: 3px;
+    background-color: rgb(194, 255, 133);
+    cursor: pointer;
+    display: inline-block;
+    width: 150px;
+    height: 30px;
+}
+
+.card.contacts-card:hover {
+    background-color: rgb(131, 180, 81);
+}
+
+.card.deal-stage {
+    text-align: center;
+    border: none;
+    padding: 3px;
+}
+
+.card.deal-stage-1 {
+    background-color: green;
+    color: white;
+}
+
+.card.deal-stage-2 {
+    background-color: blue;
+    color: white;
+}
+
+.card.deal-stage-3 {
+    background-color: yellow;
+}
+
+.card.deal-stage-4 {
+    background-color: red;
+    color: white;
+}
+
+.card.deal-stage-display {
+    height: 40vh;
+    width: 20%;
+    margin-left: 3.75%;
+    padding: 20px;
+}

@@ -4,22 +4,30 @@ import java.util.Date;
 import java.util.List;
 
 public class Deal {
-    protected int id;
-    protected int stage;
-    protected int associate;
-    protected int contact;
-    protected double dealValue;
-    protected Date closeDate;
-    protected List<Integer> dealStageDetails;
+    private int id;
+    private String title;
+    private int stage;
+    private int associate;
+    private String associateName;
+    private int contact;
+    private String contactName;
+    private double dealValue;
+    private Date createDate;
+    private Date closeDate;
+    private List<Integer> dealStageDetails;
 
     public Deal() {}
 
-    public Deal(int id, int stage, int associate, int contact, double dealValue, Date closeDate, List<Integer> dealStageDetails) {
+    public Deal(int id, String title, int stage, int associate, String associateName, int contact, String contactName, double dealValue, Date createDate, Date closeDate, List<Integer> dealStageDetails) {
         this.id = id;
+        this.title = title;
         this.stage = stage;
         this.associate = associate;
+        this.associateName = associateName;
         this.contact = contact;
+        this.contactName = contactName;
         this.dealValue = dealValue;
+        this.createDate = createDate;
         this.closeDate = closeDate;
         this.dealStageDetails = dealStageDetails;
     }
@@ -30,6 +38,14 @@ public class Deal {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public int getStage() {
@@ -48,6 +64,14 @@ public class Deal {
         this.associate = associate;
     }
 
+    public String getAssociateName() {
+        return associateName;
+    }
+
+    public void setAssociateName(String associateName) {
+        this.associateName = associateName;
+    }
+
     public int getContact() {
         return contact;
     }
@@ -56,12 +80,28 @@ public class Deal {
         this.contact = contact;
     }
 
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
+
     public double getDealValue() {
         return dealValue;
     }
 
     public void setDealValue(double dealValue) {
         this.dealValue = dealValue;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
     public Date getCloseDate() {

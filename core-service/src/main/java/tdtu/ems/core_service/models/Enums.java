@@ -110,8 +110,7 @@ public class Enums {
         Discovery,
         Proposal,
         Negotiate,
-        Lost,
-        Won
+        Ended
     }
 
     public enum LeadStatus {
