@@ -115,3 +115,19 @@
 .hover-lightgray:hover {
     background-color: lightgray;
 }
+
+.card.contacts-card {
+    text-align: center;
+    border: none;
+    padding: 3px 10px;
+    margin-right: 3px;
+    background-color: rgb(194, 255, 133);
+    cursor: pointer;
+    display: inline-block;
+    width: 150px;
+    height: 30px;
+}
+
+.card.contacts-card:hover {
+    background-color: rgb(131, 180, 81);
+}

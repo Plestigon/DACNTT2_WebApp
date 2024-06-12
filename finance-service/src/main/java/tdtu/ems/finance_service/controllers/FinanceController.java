@@ -112,7 +112,7 @@ public class FinanceController {
         }
     }
 
-    @DeleteMapping("/finance/contacts/{id}")
+    @DeleteMapping("/finance/deals/{id}")
     public BaseResponse removeDeal(@PathVariable int id) {
         try {
             String result = _dealService.removeDeal(id);

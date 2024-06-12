@@ -33,7 +33,7 @@ function Home() {
                         <div class="flip-card-back bg-success">
                                 <h5 class="card-title">Finance</h5>
                                 <p class="card-text">Manage the company's finance.</p>
-                            <a href="#" class="btn btn-primary stretched-link bg-success border-0">Go to finance</a>
+                            <a href="/finance/associates" class="btn btn-primary stretched-link bg-success border-0">Go to finance</a>
                         </div>
                     </div>
                 </div>

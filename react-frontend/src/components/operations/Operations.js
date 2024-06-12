@@ -6,13 +6,13 @@ import { dateTimeFormat } from "../../utils/DateHelper";
 import TopBar from "../TopBar";
 import SideBar from "../SideBar";
 import '../../css/sidebar.css';
-import Notify, {success, error, loading, dismiss} from "../../utils/Notify";
-import DeleteConfirmModal from "./DeleteConfirmModal";
+import {success, error, loading, dismiss} from "../../utils/Notify";
+import DeleteConfirmModal from "../../utils/DeleteConfirmModal";
 import { Button } from "react-bootstrap";
 import { useAuthentication } from "../system/Authentication";
 
 
- function Operations() {
+function Operations() {
     const auth = useAuthentication();
     const[projects, setProjects] = useState([]);
     const[newPrjModalShow, setNewPrjModalShow] = useState(false);

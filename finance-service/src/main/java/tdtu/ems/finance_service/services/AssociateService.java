@@ -34,11 +34,11 @@ public class AssociateService implements IAssociateService {
             for (Associate associate : associates) {
                 List<Contact> contacts = _contactRepository.getContactsByIds(associate.getContacts());
                 contacts.sort(Comparator.comparing(Contact::getName));
-                List<Deal> deals = _dealRepository.getDealsByIds(associate.getDeals());
-                deals.sort(Comparator.comparing(Deal::getId));
-                result.add(new AssociateResult(associate, contacts, deals));
+//                List<Deal> deals = _dealRepository.getDealsByIds(associate.getDeals());
+//                deals.sort(Comparator.comparing(Deal::getId));
+                result.add(new AssociateResult(associate, contacts));
             }
-            result.sort(Comparator.comparing(Associate::getId));
+            result.sort(Comparator.comparing(AssociateResult::getId));
             return result;
         }
         catch (Exception e) {

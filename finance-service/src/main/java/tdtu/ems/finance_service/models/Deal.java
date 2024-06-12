@@ -4,18 +4,20 @@ import java.util.Date;
 import java.util.List;
 
 public class Deal {
-    protected int id;
-    protected int stage;
-    protected int associate;
-    protected int contact;
-    protected double dealValue;
-    protected Date closeDate;
-    protected List<Integer> dealStageDetails;
+    private int id;
+    private String title;
+    private int stage;
+    private int associate;
+    private int contact;
+    private double dealValue;
+    private Date closeDate;
+    private List<Integer> dealStageDetails;
 
     public Deal() {}
 
-    public Deal(int id, int stage, int associate, int contact, double dealValue, Date closeDate, List<Integer> dealStageDetails) {
+    public Deal(int id, String title, int stage, int associate, int contact, double dealValue, Date closeDate, List<Integer> dealStageDetails) {
         this.id = id;
+        this.title = title;
         this.stage = stage;
         this.associate = associate;
         this.contact = contact;
@@ -30,6 +32,14 @@ public class Deal {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public int getStage() {
