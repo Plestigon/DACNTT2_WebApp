@@ -4,8 +4,8 @@ import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.stereotype.Repository;
-import tdtu.ems.core_service.models.Enums;
-import tdtu.ems.core_service.utils.Logger;
+import tdtu.ems.hr_service.utils.Enums;
+import tdtu.ems.hr_service.utils.Logger;
 import tdtu.ems.hr_service.models.Contract;
 import tdtu.ems.hr_service.models.Form;
 

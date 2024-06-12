@@ -2,7 +2,7 @@ package tdtu.ems.operation_management_service.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import tdtu.ems.core_service.utils.Logger;
+import tdtu.ems.operation_management_service.utils.Logger;
 import tdtu.ems.operation_management_service.models.*;
 import tdtu.ems.operation_management_service.repositories.ProjectRepository;
 import tdtu.ems.operation_management_service.repositories.TaskRepository;

@@ -7,9 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
-import tdtu.ems.core_service.models.BaseResponse;
-import tdtu.ems.core_service.models.Enums;
-import tdtu.ems.core_service.models.SelectOptionsResult;
+import tdtu.ems.main.utils.BaseResponse;
+import tdtu.ems.main.utils.Enums;
+import tdtu.ems.main.utils.SelectOptionsResult;
 import tdtu.ems.main.models.operations.*;
 
 import java.util.ArrayList;

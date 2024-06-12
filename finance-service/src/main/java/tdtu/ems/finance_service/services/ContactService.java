@@ -1,7 +1,7 @@
 package tdtu.ems.finance_service.services;
 
 import org.springframework.stereotype.Service;
-import tdtu.ems.core_service.utils.Logger;
+import tdtu.ems.finance_service.utils.Logger;
 import tdtu.ems.finance_service.models.Contact;
 import tdtu.ems.finance_service.repositories.ContactRepository;
 

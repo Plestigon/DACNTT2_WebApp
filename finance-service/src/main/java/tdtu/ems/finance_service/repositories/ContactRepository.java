@@ -4,8 +4,7 @@ import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.stereotype.Repository;
-import tdtu.ems.core_service.utils.Logger;
-import tdtu.ems.finance_service.models.Associate;
+import tdtu.ems.finance_service.utils.Logger;
 import tdtu.ems.finance_service.models.Contact;
 
 import java.util.ArrayList;

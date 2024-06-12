@@ -1,7 +1,7 @@
 package tdtu.ems.finance_service.controllers;
 
 import org.springframework.web.bind.annotation.*;
-import tdtu.ems.core_service.models.BaseResponse;
+import tdtu.ems.finance_service.utils.BaseResponse;
 import tdtu.ems.finance_service.models.*;
 import tdtu.ems.finance_service.services.AssociateService;
 import tdtu.ems.finance_service.services.ContactService;

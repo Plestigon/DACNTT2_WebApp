@@ -6,7 +6,7 @@ import com.google.firebase.cloud.FirestoreClient;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
-import tdtu.ems.core_service.utils.Logger;
+import tdtu.ems.employee_service.utils.Logger;
 import tdtu.ems.employee_service.models.EmployeeResult;
 import tdtu.ems.employee_service.models.ProjectUpdateEmployeeDataResult;
 import tdtu.ems.employee_service.services.EmployeeService;

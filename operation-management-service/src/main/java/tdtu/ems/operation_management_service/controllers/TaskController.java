@@ -1,7 +1,7 @@
 package tdtu.ems.operation_management_service.controllers;
 
 import org.springframework.web.bind.annotation.*;
-import tdtu.ems.core_service.models.BaseResponse;
+import tdtu.ems.operation_management_service.utils.BaseResponse;
 import tdtu.ems.operation_management_service.models.ProjectMemberResult;
 import tdtu.ems.operation_management_service.models.Task;
 import tdtu.ems.operation_management_service.models.TaskDiscussion;

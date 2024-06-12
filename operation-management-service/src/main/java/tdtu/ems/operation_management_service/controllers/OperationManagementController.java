@@ -3,7 +3,7 @@ package tdtu.ems.operation_management_service.controllers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tdtu.ems.core_service.models.BaseResponse;
+import tdtu.ems.operation_management_service.utils.BaseResponse;
 import tdtu.ems.operation_management_service.models.*;
 import tdtu.ems.operation_management_service.services.ProjectService;
 

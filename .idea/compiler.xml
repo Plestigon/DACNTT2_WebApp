@@ -8,16 +8,16 @@
         <outputRelativeToContentRoot value="true" />
         <module name="operation-management-service" />
         <module name="discovery-server" />
-        <module name="department-service" />
         <module name="finance-service" />
         <module name="api-gateway" />
         <module name="main" />
         <module name="hr-service" />
-        <module name="core-service" />
         <module name="employee-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="core-service" target="17" />
+      <module name="department-service" target="17" />
       <module name="user-service" target="17" />
     </bytecodeTargetLevel>
   </component>

@@ -1,6 +1,6 @@
 package tdtu.ems.operation_management_service.models;
 
-import tdtu.ems.core_service.models.Enums;
+import tdtu.ems.operation_management_service.utils.Enums;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

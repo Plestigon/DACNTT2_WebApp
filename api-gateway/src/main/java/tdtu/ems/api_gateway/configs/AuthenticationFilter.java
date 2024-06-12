@@ -10,8 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
-import tdtu.ems.core_service.models.BaseResponse;
-import tdtu.ems.core_service.utils.Logger;
+import tdtu.ems.api_gateway.utils.BaseResponse;
+import tdtu.ems.api_gateway.utils.Logger;
 
 @Component
 public class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config> {

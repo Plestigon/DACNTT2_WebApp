@@ -4,10 +4,8 @@ import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import jakarta.ws.rs.NotFoundException;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
-import tdtu.ems.core_service.models.BaseResponse;
-import tdtu.ems.core_service.utils.Logger;
+import tdtu.ems.operation_management_service.utils.Logger;
 import tdtu.ems.operation_management_service.models.*;
 
 import java.util.*;

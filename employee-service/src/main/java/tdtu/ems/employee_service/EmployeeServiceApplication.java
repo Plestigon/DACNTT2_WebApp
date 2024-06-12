@@ -19,13 +19,12 @@ public class EmployeeServiceApplication {
 		File file = new File(Objects.requireNonNull(classLoader.getResource("serviceAccountKey.json")).getFile());
 		FileInputStream serviceAccount =
 				new FileInputStream(file.getAbsolutePath());
-
 		FirebaseOptions options = new FirebaseOptions.Builder()
 				.setCredentials(GoogleCredentials.fromStream(serviceAccount))
 				.setDatabaseUrl("https://ems-dacntt2-default-rtdb.asia-southeast1.firebasedatabase.app")
 				.build();
-
 		FirebaseApp.initializeApp(options);
+
         SpringApplication.run(EmployeeServiceApplication.class, args);
 	}
 

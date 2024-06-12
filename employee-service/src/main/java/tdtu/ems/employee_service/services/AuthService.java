@@ -3,7 +3,7 @@ package tdtu.ems.employee_service.services;
 import io.jsonwebtoken.Claims;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import tdtu.ems.core_service.utils.Logger;
+import tdtu.ems.employee_service.utils.Logger;
 import tdtu.ems.employee_service.models.Employee;
 import tdtu.ems.employee_service.models.MyUserDetails;
 import tdtu.ems.employee_service.repositories.EmployeeRepository;

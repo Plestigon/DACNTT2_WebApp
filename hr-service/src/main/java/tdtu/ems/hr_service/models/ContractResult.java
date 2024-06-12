@@ -1,6 +1,6 @@
 package tdtu.ems.hr_service.models;
 
-import tdtu.ems.core_service.models.Enums;
+import tdtu.ems.hr_service.utils.Enums;
 
 import java.util.Date;
 

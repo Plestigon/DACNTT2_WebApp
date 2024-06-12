@@ -1,6 +1,6 @@
 package tdtu.ems.finance_service.models;
 
-import tdtu.ems.core_service.models.Enums;
+import tdtu.ems.finance_service.utils.Enums;
 
 import java.util.Date;
 import java.util.List;

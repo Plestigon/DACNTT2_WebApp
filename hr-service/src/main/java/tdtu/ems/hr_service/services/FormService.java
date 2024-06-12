@@ -2,8 +2,8 @@ package tdtu.ems.hr_service.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import tdtu.ems.core_service.models.Enums;
-import tdtu.ems.core_service.utils.Logger;
+import tdtu.ems.hr_service.utils.Enums;
+import tdtu.ems.hr_service.utils.Logger;
 import tdtu.ems.hr_service.models.Form;
 import tdtu.ems.hr_service.models.FormResult;
 import tdtu.ems.hr_service.repositories.ContractRepository;

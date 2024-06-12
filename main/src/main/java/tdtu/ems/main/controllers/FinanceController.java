@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
-import tdtu.ems.core_service.models.BaseResponse;
+import tdtu.ems.main.utils.BaseResponse;
 
 @Controller
 @ResponseBody

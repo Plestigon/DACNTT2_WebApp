@@ -5,7 +5,7 @@ import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import tdtu.ems.core_service.utils.Logger;
+import tdtu.ems.employee_service.utils.Logger;
 import tdtu.ems.employee_service.models.Department;
 import tdtu.ems.employee_service.repositories.IDepartmentRepository;
 

@@ -5,8 +5,8 @@ import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import jakarta.ws.rs.NotFoundException;
 import org.springframework.stereotype.Repository;
-import tdtu.ems.core_service.models.Enums;
-import tdtu.ems.core_service.utils.Logger;
+import tdtu.ems.operation_management_service.utils.Enums;
+import tdtu.ems.operation_management_service.utils.Logger;
 import tdtu.ems.operation_management_service.models.*;
 
 import java.util.*;

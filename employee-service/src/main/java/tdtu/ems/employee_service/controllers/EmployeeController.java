@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import tdtu.ems.core_service.models.BaseResponse;
+import tdtu.ems.employee_service.utils.BaseResponse;
 import tdtu.ems.employee_service.models.EmployeeResult;
 import tdtu.ems.employee_service.models.ProjectUpdateEmployeeDataResult;
 import tdtu.ems.employee_service.services.EmployeeService;

@@ -1,7 +1,7 @@
 package tdtu.ems.hr_service.controllers;
 
 import org.springframework.web.bind.annotation.*;
-import tdtu.ems.core_service.models.BaseResponse;
+import tdtu.ems.hr_service.utils.BaseResponse;
 import tdtu.ems.hr_service.models.Contract;
 import tdtu.ems.hr_service.models.ContractResult;
 import tdtu.ems.hr_service.services.ContractService;

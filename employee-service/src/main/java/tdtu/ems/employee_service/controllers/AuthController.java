@@ -9,7 +9,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
-import tdtu.ems.core_service.models.BaseResponse;
+import tdtu.ems.employee_service.utils.BaseResponse;
 import tdtu.ems.employee_service.models.ChangePasswordDto;
 import tdtu.ems.employee_service.models.Employee;
 import tdtu.ems.employee_service.models.LoginDto;
