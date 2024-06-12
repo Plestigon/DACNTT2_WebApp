@@ -5,13 +5,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - 8080:8080
-    depends_on:
-      - core-service
-
-  core-service:
-    build:
-      context: core-service
-      dockerfile: Dockerfile
 
   react-frontend:
     build:
