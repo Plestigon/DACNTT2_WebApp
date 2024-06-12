@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public interface IDealRepository {
-    List<Deal> getDealsByIds(List<Integer> ids) throws ExecutionException, InterruptedException;
+    List<Deal> getDealsByAssociateId(int id) throws ExecutionException, InterruptedException;
     String addDeal(Deal entry) throws ExecutionException, InterruptedException;
     String removeDeal(int id) throws ExecutionException, InterruptedException;
 }

@@ -28,24 +28,41 @@ function App() {
       <BrowserRouter>
         <Authentication>
           <Routes>
-            {/* <Route path="/" element={<Home/>}/> */}
-            <Route path="/" element={<PrivateRoute><Home/></PrivateRoute>}/>
-            
-            {/* <Route path="/operations/projects" element={<Operations/>}/> */}
-            <Route path="/operations/projects" element={<PrivateRoute><Operations/></PrivateRoute>}/>
+            {/* === Not secured */}
+
+            {/* <Route path="/" element={<Home/>}/>
+
+            <Route path="/operations/projects" element={<Operations/>}/>
             <Route path="/operations/project/:id" element={<ProjectInfo/>} />
             <Route path="/operations/my-projects" element={<MyProjects/>}/>
             <Route path="/operations/task/:id" element={<TaskInfo/>}/>
             <Route path="/profile" element={<ProfilePage/>}/>
-            <Route path="/change-password" element={<NewPassword/>}/>
 
             <Route path="/hr/submit-form" element={<SubmitForm/>}/>
             <Route path="/hr/my-forms" element={<MyForms/>}/>
             <Route path="/hr/summary" element={<HRSummary/>}/>
             <Route path="/hr/contracts" element={<MyContracts/>}/>
+            <Route path="/hr/employees" element={<EmpList/>}/>
+            
+            <Route path="/finance/associates" element={<Associates/>}/> */}
+
+            {/* === Secured */}
+            
+            <Route path="/" element={<PrivateRoute><Home/></PrivateRoute>}/>
+            
+            <Route path="/operations/projects" element={<PrivateRoute><Operations/></PrivateRoute>}/>
+            <Route path="/operations/project/:id" element={<PrivateRoute><ProjectInfo/></PrivateRoute>} />
+            <Route path="/operations/my-projects" element={<PrivateRoute><MyProjects/></PrivateRoute>}/>
+            <Route path="/operations/task/:id" element={<PrivateRoute><TaskInfo/></PrivateRoute>}/>
+            <Route path="/profile" element={<PrivateRoute><ProfilePage/></PrivateRoute>}/>
+
+            <Route path="/hr/submit-form" element={<PrivateRoute><SubmitForm/></PrivateRoute>}/>
+            <Route path="/hr/my-forms" element={<PrivateRoute><MyForms/></PrivateRoute>}/>
+            <Route path="/hr/summary" element={<PrivateRoute><HRSummary/></PrivateRoute>}/>
+            <Route path="/hr/contracts" element={<PrivateRoute><MyContracts/></PrivateRoute>}/>
             <Route path="/hr/employees" element={<PrivateRoute><EmpList/></PrivateRoute>}/>
             
-            <Route path="/finance/associates" element={<Associates/>}/>
+            <Route path="/finance/associates" element={<PrivateRoute><Associates/></PrivateRoute>}/>
             
             <Route path="/login" element={<Login/>}/>
           </Routes>

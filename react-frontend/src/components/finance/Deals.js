@@ -7,9 +7,10 @@ import DeleteConfirmModal from "../../utils/DeleteConfirmModal";
 import { Button } from "react-bootstrap";
 import { useAuthentication } from "../system/Authentication";
 
-function Associates() {
+function Deals() {
 	const auth = useAuthentication();
-	const [associates, setAssociates] = useState([]);
+	const params = useParams();
+	const [deals, setDeals] = useState([]);
 
 	const [showNewModal, setShowNewModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -19,10 +20,10 @@ function Associates() {
 	});
 
 	useEffect(() => {
-		fetchAssociates();
+		fetchDeals();
 	}, [])
 
-	function fetchAssociates() {
+	function fetchDeals() {
 		const toastId = loading("Loading associates data...");
 		fetch("http://localhost:8080/finance/associates" + "?token=" + auth.token, {
 			method: "GET"
@@ -31,7 +32,7 @@ function Associates() {
 		.then((result) => {
 			dismiss(toastId);
 			if (result.statusCode === 200) {
-				setAssociates(result.data);
+				setDeals(result.data);
 				// console.log(result.data);
 			}
 			else {
@@ -49,7 +50,7 @@ function Associates() {
 
 	}
 
-	function deleteAssociate() {
+	function deleteDeal() {
 
 	}
 
@@ -61,7 +62,7 @@ function Associates() {
 				{/* <NewProjectModal show={showNewModal} onHide={() => setShowNewModal(false)} reload={fetchProjectData} /> */}
 				<div class="row mb-2 px-5">
 					<Button class="btn btn-primary" onClick={() => setShowNewModal(true)}>
-						<i class="bi bi-plus-circle me-2"></i>Create New Associate
+						<i class="bi bi-plus-circle me-2"></i>Create New Deal
 					</Button>
 				</div>
 				<div class="card table-card table-responsive">
@@ -77,7 +78,7 @@ function Associates() {
 							</tr>
 						</thead>
 						<tbody>
-							{associates.map(x => (
+							{deals.map(x => (
 								<tr key={x.id}>
 									<td>{x.name}</td>
 									<td>{x.domain}</td>
@@ -96,8 +97,8 @@ function Associates() {
 				</div>
 			</div>
 			<DeleteConfirmModal show={showDeleteModal} onHide={() => { setShowDeleteModal(false); setDeleteTarget({ 'id': 0, 'name': '' }) }}
-				message={"Delete project \"" + deleteTarget.name + "\"?"} delete={deleteAssociate} />
+				message={"Delete project \"" + deleteTarget.name + "\"?"} delete={deleteDeal} />
 		</div>
 	);
 }
-export default Associates;
+export default Deals;

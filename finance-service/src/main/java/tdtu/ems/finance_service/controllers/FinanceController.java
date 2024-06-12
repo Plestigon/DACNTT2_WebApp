@@ -1,7 +1,5 @@
 package tdtu.ems.finance_service.controllers;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tdtu.ems.core_service.models.BaseResponse;
 import tdtu.ems.finance_service.models.*;
@@ -90,10 +88,10 @@ public class FinanceController {
         }
     }
 
-    @GetMapping("/finance/deals")
-    public BaseResponse getDeals(@RequestParam List<Integer> entry) {
+    @GetMapping("/finance/associates/{id}/deals")
+    public BaseResponse getDeals(@PathVariable int id) {
         try {
-            List<Deal> result = _dealService.getDealsByIds(entry);
+            List<Deal> result = _dealService.getDealsByAssociateId(id);
             return new BaseResponse(result, 200, "OK");
         }
         catch (Exception e) {

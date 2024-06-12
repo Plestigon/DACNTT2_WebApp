@@ -1,10 +1,7 @@
 package tdtu.ems.finance_service.repositories;
 
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.CollectionReference;
-import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.WriteResult;
+import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.stereotype.Repository;
 import tdtu.ems.core_service.utils.Logger;
@@ -27,12 +24,12 @@ public class DealRepository implements IDealRepository {
     }
 
     @Override
-    public List<Deal> getDealsByIds(List<Integer> ids) throws ExecutionException, InterruptedException {
+    public List<Deal> getDealsByAssociateId(int id) throws ExecutionException, InterruptedException {
         CollectionReference dealsDb = _db.collection("deals");
         List<Deal> deals = new ArrayList<>();
-        for (int id : ids) {
-            Deal deal = dealsDb.document(String.valueOf(id)).get().get().toObject(Deal.class);
-            if (deal != null) {
+        for (QueryDocumentSnapshot data : dealsDb.get().get().getDocuments()) {
+            Deal deal = data.toObject(Deal.class);
+            if (deal.getAssociate() == id) {
                 deals.add(deal);
             }
         }

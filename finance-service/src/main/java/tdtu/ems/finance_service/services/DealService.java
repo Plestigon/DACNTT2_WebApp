@@ -19,9 +19,9 @@ public class DealService implements IDealService {
     }
 
     @Override
-    public List<Deal> getDealsByIds(List<Integer> ids) throws ExecutionException, InterruptedException {
+    public List<Deal> getDealsByAssociateId(int id) throws ExecutionException, InterruptedException {
         try {
-            List<Deal> result = _dealRepository.getDealsByIds(ids);
+            List<Deal> result = _dealRepository.getDealsByAssociateId(id);
             return result;
         }
         catch (Exception e) {
