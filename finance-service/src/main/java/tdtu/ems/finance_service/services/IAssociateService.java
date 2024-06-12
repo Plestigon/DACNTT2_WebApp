@@ -8,6 +8,7 @@ import java.util.concurrent.ExecutionException;
 
 public interface IAssociateService {
     List<AssociateResult> getAssociates() throws ExecutionException, InterruptedException;
+    AssociateResult getAssociateById(int id) throws ExecutionException, InterruptedException;
     String addAssociate(Associate entry) throws ExecutionException, InterruptedException;
     String removeAssociate(int id) throws ExecutionException, InterruptedException;
 }

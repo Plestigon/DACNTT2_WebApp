@@ -8,20 +8,26 @@ public class Deal {
     private String title;
     private int stage;
     private int associate;
+    private String associateName;
     private int contact;
+    private String contactName;
     private double dealValue;
+    private Date createDate;
     private Date closeDate;
     private List<Integer> dealStageDetails;
 
     public Deal() {}
 
-    public Deal(int id, String title, int stage, int associate, int contact, double dealValue, Date closeDate, List<Integer> dealStageDetails) {
+    public Deal(int id, String title, int stage, int associate, String associateName, int contact, String contactName, double dealValue, Date createDate, Date closeDate, List<Integer> dealStageDetails) {
         this.id = id;
         this.title = title;
         this.stage = stage;
         this.associate = associate;
+        this.associateName = associateName;
         this.contact = contact;
+        this.contactName = contactName;
         this.dealValue = dealValue;
+        this.createDate = createDate;
         this.closeDate = closeDate;
         this.dealStageDetails = dealStageDetails;
     }
@@ -58,6 +64,14 @@ public class Deal {
         this.associate = associate;
     }
 
+    public String getAssociateName() {
+        return associateName;
+    }
+
+    public void setAssociateName(String associateName) {
+        this.associateName = associateName;
+    }
+
     public int getContact() {
         return contact;
     }
@@ -66,12 +80,28 @@ public class Deal {
         this.contact = contact;
     }
 
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
+
     public double getDealValue() {
         return dealValue;
     }
 
     public void setDealValue(double dealValue) {
         this.dealValue = dealValue;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
     public Date getCloseDate() {

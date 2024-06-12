@@ -33,6 +33,17 @@ public class FinanceController {
         }
     }
 
+    @GetMapping("/finance/associates/{id}")
+    public BaseResponse getAssociateById(@PathVariable int id) {
+        try {
+            AssociateResult result = _associateService.getAssociateById(id);
+            return new BaseResponse(result, 200, "OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
+
     @PostMapping("/finance/associates")
     public BaseResponse addAssociate(@RequestBody Associate entry) {
         try {
@@ -91,7 +102,29 @@ public class FinanceController {
     @GetMapping("/finance/associates/{id}/deals")
     public BaseResponse getDeals(@PathVariable int id) {
         try {
-            List<Deal> result = _dealService.getDealsByAssociateId(id);
+            List<DealResult> result = _dealService.getDealsByAssociateId(id);
+            return new BaseResponse(result, 200, "OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
+
+    @GetMapping("/finance/deals/{id}")
+    public BaseResponse getDeal(@PathVariable int id) {
+        try {
+            DealResult result = _dealService.getDealById(id);
+            return new BaseResponse(result, 200, "OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
+
+    @GetMapping("/finance/deals/{id}/stages")
+    public BaseResponse getDealStageDetails(@PathVariable int id) {
+        try {
+            List<DealStageDetail> result = _dealService.getDealStageDetailsByDealId(id);
             return new BaseResponse(result, 200, "OK");
         }
         catch (Exception e) {
@@ -102,7 +135,7 @@ public class FinanceController {
     @PostMapping("/finance/deals")
     public BaseResponse addDeal(@RequestBody Deal entry) {
         try {
-            String result = _dealService.addDeal(entry);
+            int result = _dealService.addDeal(entry);
             return new BaseResponse(result, 200, "OK");
         }
         catch (Exception e) {

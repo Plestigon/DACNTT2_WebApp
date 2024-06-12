@@ -86,8 +86,8 @@ function Associates() {
 										<div class="card contacts-card text-truncate">{y.name}</div>
 									))}
 									</td>
-									<td><button type="button" class="btn btn-info">Go to Deals</button></td>
-									<td><button type="button" class="btn btn-danger bi bi-trash delete-prj-btn"
+									<td><button class="btn btn-info" onClick={() => window.open('/finance/associates/' + x.id + '/deals', '_blank').focus()}>Go to Deals</button></td>
+									<td><button class="btn btn-danger bi bi-trash delete-prj-btn"
 										onClick={(e) => deleteBtnClick(e, x.id, x.name)}></button></td>
 								</tr>
 							))}

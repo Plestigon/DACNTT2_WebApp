@@ -33,6 +33,12 @@ public class AssociateRepository implements IAssociateRepository {
     }
 
     @Override
+    public Associate getAssociateById(int id) throws ExecutionException, InterruptedException {
+        CollectionReference associatesDb = _db.collection("associates");
+        return associatesDb.document(String.valueOf(id)).get().get().toObject(Associate.class);
+    }
+
+    @Override
     public String addAssociate(Associate entry) throws ExecutionException, InterruptedException {
         CollectionReference associatesDb = _db.collection("associates");
         DocumentReference idTracer = _db.collection("idTracer").document("associates");
@@ -52,4 +58,24 @@ public class AssociateRepository implements IAssociateRepository {
         ApiFuture<WriteResult> result = associatesDb.document(String.valueOf(id)).delete();
         return result.get().getUpdateTime().toString();
     }
+
+    @Override
+    public String updateAssociateDealId(int associateId, int dealId, boolean isAdding) throws ExecutionException, InterruptedException {
+        CollectionReference associatesDb = _db.collection("associates");
+        Associate a = associatesDb.document(String.valueOf(associateId)).get().get().toObject(Associate.class);
+        if (a == null) {
+            throw new RuntimeException("Associate with id " + associateId + " not found");
+        }
+        List<Integer> dealIds = a.getDeals();
+        if (isAdding && !dealIds.contains(dealId)) {
+            dealIds.add(dealId);
+        }
+        else {
+            dealIds.remove(Integer.valueOf(dealId));
+        }
+        ApiFuture<WriteResult> result = associatesDb.document(String.valueOf(associateId)).update("deals", dealIds);
+        return result.get().getUpdateTime().toString();
+    }
+
+
 }

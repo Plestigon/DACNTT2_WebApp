@@ -48,6 +48,20 @@ public class AssociateService implements IAssociateService {
     }
 
     @Override
+    public AssociateResult getAssociateById(int id) throws ExecutionException, InterruptedException {
+        try {
+            Associate associate = _associateRepository.getAssociateById(id);
+            List<Contact> contacts = _contactRepository.getContactsByIds(associate.getContacts());
+            contacts.sort(Comparator.comparing(Contact::getName));
+            return new AssociateResult(associate, contacts);
+        }
+        catch (Exception e) {
+            _logger.Error("getAssociateById", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Override
     public String addAssociate(Associate entry) throws ExecutionException, InterruptedException {
         try {
             return _associateRepository.addAssociate(entry);

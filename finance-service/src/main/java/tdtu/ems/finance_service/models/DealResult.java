@@ -13,23 +13,26 @@ public class DealResult{
     private int associate;
     private String associateName;
     private int contact;
+    private String contactName;
     private double dealValue;
+    private Date createDate;
     private Date closeDate;
-    private List<DealStageDetail> dealStageDetailsObj;
 
     public DealResult() {}
 
-    public DealResult(Deal o, String associateName, List<DealStageDetail> dealStageDetailsObj) {
+    public DealResult(Deal o) {
         this.id = o.getId();
         this.title = o.getTitle();
         this.stage = o.getStage();
         this.stageName = Enums.DealStage.values()[o.getStage()].name();
         this.associate = o.getAssociate();
-        this.associateName = associateName;
+        this.associateName = o.getAssociateName();
         this.contact = o.getContact();
+        this.contactName = o.getContactName();
         this.dealValue = o.getDealValue();
+        this.createDate = o.getCreateDate();
         this.closeDate = o.getCloseDate();
-        this.dealStageDetailsObj = dealStageDetailsObj;
+        this.associateName = associateName;
     }
 
     public int getId() {
@@ -80,6 +83,14 @@ public class DealResult{
         this.associateName = associateName;
     }
 
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
+
     public int getContact() {
         return contact;
     }
@@ -96,19 +107,19 @@ public class DealResult{
         this.dealValue = dealValue;
     }
 
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
     public Date getCloseDate() {
         return closeDate;
     }
 
     public void setCloseDate(Date closeDate) {
         this.closeDate = closeDate;
-    }
-
-    public List<DealStageDetail> getDealStageDetailsObj() {
-        return dealStageDetailsObj;
-    }
-
-    public void setDealStageDetailsObj(List<DealStageDetail> dealStageDetailsObj) {
-        this.dealStageDetailsObj = dealStageDetailsObj;
     }
 }

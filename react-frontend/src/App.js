@@ -20,6 +20,8 @@ import Authentication from './components/system/Authentication';
 import EmpList from './components/hr/EmpList';
 import NewPassword from './components/profile/NewPassword';
 import Associates from './components/finance/Associates';
+import Deals from './components/finance/Deals';
+import DealDetails from './components/finance/DealDetails';
 
 function App() {
 
@@ -63,6 +65,8 @@ function App() {
             <Route path="/hr/employees" element={<PrivateRoute><EmpList/></PrivateRoute>}/>
             
             <Route path="/finance/associates" element={<PrivateRoute><Associates/></PrivateRoute>}/>
+            <Route path="/finance/associates/:id/deals" element={<PrivateRoute><Deals/></PrivateRoute>}/>
+            <Route path="/finance/deals/:id/stages" element={<PrivateRoute><DealDetails/></PrivateRoute>}/>
             
             <Route path="/login" element={<Login/>}/>
           </Routes>

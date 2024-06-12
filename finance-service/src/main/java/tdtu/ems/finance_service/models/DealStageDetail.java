@@ -6,16 +6,18 @@ public class DealStageDetail {
     private int id;
     private int dealId;
     private int stage;
+    private String stageName;
     private Date startDate;
     private Date endDate;
     private String notes;
 
     public DealStageDetail() {}
 
-    public DealStageDetail(int id, int dealId, int stage, Date startDate, Date endDate, String notes) {
+    public DealStageDetail(int id, int dealId, int stage, String stageName, Date startDate, Date endDate, String notes) {
         this.id = id;
         this.dealId = dealId;
         this.stage = stage;
+        this.stageName = stageName;
         this.startDate = startDate;
         this.endDate = endDate;
         this.notes = notes;
@@ -43,6 +45,14 @@ public class DealStageDetail {
 
     public void setStage(int stage) {
         this.stage = stage;
+    }
+
+    public String getStageName() {
+        return stageName;
+    }
+
+    public void setStageName(String stageName) {
+        this.stageName = stageName;
     }
 
     public Date getStartDate() {
