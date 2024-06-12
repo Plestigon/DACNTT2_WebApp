@@ -16,87 +16,81 @@ import Notify from '../../utils/Notify';
 
 export default function ProfilePage() {
   return (
-    <div>
-        <SideBar/>
-        <TopBar/>
-    <section class="content">
+      <div>
+          <SideBar/>
+          <TopBar/>
+      <section class="content">
       <MDBContainer className="py-5">
-        <MDBRow>
-          <MDBCol lg="4">
-            <Card className="mb-9">
+        <div class="row align-items-center center">
+          <div class="col"></div>
+          <div class="col col-lg-4 center" >
+            <Card className="mb-5">
               <Card className="text-center">
                 <Card
                   src=""
                   alt="Avatar goes here"
                   className="rounded-circle"
-                  class="shadow-none"
-                  style={{ width: '150px' }}
+                  style={{ width: '150px', align: "center" }}
                   fluid> Avatar goes here</Card>
-                <p className="text-muted mb-1" >Role Goes here</p>
+                <p className=" mb-1" >Role Goes here</p>
               </Card>
             </Card>
-
-          </MDBCol>
-          <MDBCol lg="8">
-            <Card className="mb-4">
+          </div>
+          <div class="col col-lg-6 center">
+            <Card>
               <Card>
-                <MDBRow>
+                <div class="row align-items-center">
                   <MDBCol sm="3">
-                    <Card class="shadow-none">Full Name</Card>
+                    <div >Full Name</div>
                   </MDBCol>
                   <MDBCol sm="9">
-                    <Card className="text-muted" class="shadow-none">Johnathan Doe</Card>
+                    <div  >Johnathan Doe</div>
                   </MDBCol>
-                </MDBRow>
+                </div>
+                
                 <hr />
-                <MDBRow>
+                <div class="row align-items-center">
                   <MDBCol sm="3">
-                    <Card class="shadow-none">Email</Card>
+                    <div >Email</div>
                   </MDBCol>
                   <MDBCol sm="9">
-                    <Card className="text-muted" class="shadow-none">example@example.com</Card>
+                    <div >example@example.com</div>
                   </MDBCol>
-                </MDBRow>
-                <hr />
-                <MDBRow>
-                  <MDBCol sm="3">
-                    <Card class="shadow-none">Phone</Card>
-                  </MDBCol>
-                  <MDBCol sm="9">
-                    <Card className="text-muted" class="shadow-none">(097) 234-5678</Card>
-                  </MDBCol>
-                </MDBRow>
-                <hr/>
-                <MDBRow>
-                  <MDBCol sm="3">
-                    <Card class="shadow-none">Joined Date</Card>
-                  </MDBCol>
-                  <MDBCol sm="9">
-                    <Card className="text-muted" class="shadow-none">Insert date here</Card>
-                  </MDBCol>
-                </MDBRow>
+                </div>
 
                 <hr />
-                <MDBRow>
+                <div class="row align-items-center">
                   <MDBCol sm="3">
-                    <Card class="shadow-none">Address</Card>
+                    <div >Phone</div>
                   </MDBCol>
                   <MDBCol sm="9">
-                    <Card className="text-muted" class="shadow-none">Bay Area, San Francisco, CA</Card>
+                    <div >(097) 234-5678</div>
                   </MDBCol>
-                </MDBRow>
+                </div>
+
+                <hr/>
+                <div class="row align-items-center">
+                  <MDBCol sm="3">
+                    <div >Joined Date</div>
+                  </MDBCol>
+                  <MDBCol sm="9">
+                    <div  >Insert date here</div>
+                  </MDBCol>
+                </div>
+
+                <hr />
+                <div class="row align-items-center">
+                  <MDBCol sm="3">
+                    <div >Address</div>
+                  </MDBCol>
+                  <MDBCol sm="9">
+                    <div >Bay Area, San Francisco, CA</div>
+                  </MDBCol>
+                </div>
               </Card>
             </Card>
-
-            <MDBRow>
-              <MDBCol md="6">
-              </MDBCol>
-
-              <MDBCol md="6">
-              </MDBCol>
-            </MDBRow>
-          </MDBCol>
-        </MDBRow>
+          </div>
+        </div>
       </MDBContainer>
     </section>
     </div>
