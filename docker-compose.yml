@@ -1,16 +1,93 @@
 services:
+  discovery-server:
+    build:
+      context: discovery-server
+      dockerfile: Dockerfile
+    ports:
+      - 8761:8761
+
+  api-gateway:
+    build:
+      context: api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - 8079:8079
+    environment:
+      - eureka.client.service-url.defaultZone=http://discovery-server:8761/eureka
+    depends_on:
+      - discovery-server
+
   main:
     build:
       context: main
       dockerfile: Dockerfile
     ports:
       - 8080:8080
+    environment:
+      - eureka.client.service-url.defaultZone=http://discovery-server:8761/eureka
+    depends_on:
+      - discovery-server
+      - api-gateway
+
+  employee-service:
+    build:
+      context: employee-service
+      dockerfile: Dockerfile
+    ports:
+      - 8081:8081
+    environment:
+      - eureka.client.service-url.defaultZone=http://discovery-server:8761/eureka
+    depends_on:
+      - discovery-server
+      - api-gateway
+
+  operation-management-service:
+    build:
+      context: operation-management-service
+      dockerfile: Dockerfile
+    ports:
+      - 8083:8083
+    environment:
+      - eureka.client.service-url.defaultZone=http://discovery-server:8761/eureka
+    depends_on:
+      - discovery-server
+      - api-gateway
+
+  finance-service:
+    build:
+      context: finance-service
+      dockerfile: Dockerfile
+    ports:
+      - 8084:8084
+    environment:
+      - eureka.client.service-url.defaultZone=http://discovery-server:8761/eureka
+    depends_on:
+      - discovery-server
+      - api-gateway
+
+  hr-service:
+    build:
+      context: hr-service
+      dockerfile: Dockerfile
+    ports:
+      - 8085:8085
+    environment:
+      - eureka.client.service-url.defaultZone=http://discovery-server:8761/eureka
+    depends_on:
+      - discovery-server
+      - api-gateway
 
   react-frontend:
     build:
       context: react-frontend
       dockerfile: Dockerfile
     ports:
-      - 80:3000
+      - 3000:3000
+    environment:
+      - WDS_SOCKET_PORT=0
     depends_on:
       - main
+      - employee-service
+      - operation-management-service
+      - finance-service
+      - hr-service
