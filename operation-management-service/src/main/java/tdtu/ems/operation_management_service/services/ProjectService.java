@@ -73,7 +73,7 @@ public class ProjectService implements IProjectService {
                             else if (t.getState() == Enums.TaskState.ToDo.ordinal()) {
                                 notStartedCnt++;
                             }
-                            if (t.getDueDate().before(nearestDueDate) && t.getDueDate().after(new Date())) {
+                            if (t.getDueDate() != null && t.getDueDate().before(nearestDueDate) && t.getDueDate().after(new Date())) {
                                 nearestDueDate = t.getDueDate();
                             }
                         }

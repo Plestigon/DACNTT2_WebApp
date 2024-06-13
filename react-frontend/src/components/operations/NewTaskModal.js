@@ -7,6 +7,7 @@ import Select from 'react-select';
 import { success } from "../../utils/Notify";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { getDefaultDueDate } from "../../utils/DateHelper";
 
 function NewTaskModal(props) {
     const [inputs, setInputs] = useState({
@@ -15,19 +16,15 @@ function NewTaskModal(props) {
         assigneeName: '',
         priority: 0,
         priorityName: '',
+        dueDate: getDefaultDueDate(),
         description: ''
     });
     const [assigneeOptions, setAssigneeOptions] = useState([]);
     const [priorityOptions, setPriorityOptions] = useState([]);
-    const [value, setValue] = useState('');
 
     const editorConfiguration = {
         toolbar: [ 'bold', 'italic' ]
     };
-
-    function handleSelectPrio(event){
-        setValue(event.target.value)
-    }
 
     useEffect(() => {
         function loadAssignees() {
@@ -86,6 +83,7 @@ function NewTaskModal(props) {
                 projectId: props.projectId,
                 assigneeId: inputs.assignee,
                 priority: inputs.priority,
+                dueDate: inputs.dueDate,
                 description: inputs.description
             }),
             headers: { 
@@ -131,6 +129,12 @@ function NewTaskModal(props) {
                         <label>Priority</label>
                         <Select class="form-select" name="priority" value={{label: inputs.priorityName, value: inputs.priority}}
                         options={priorityOptions} onChange={handlePriorityChange}/>
+                    </div>
+                </div>
+                <div class="row my-2">
+                    <div class="col-6">
+                        <label>Due Date</label>
+                        <input type="datetime-local" class="form-control" name="dueDate" value={inputs.dueDate} onChange={handleInputChange}/>
                     </div>
                 </div>
                 <div class="row my-2">

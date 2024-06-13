@@ -89,13 +89,16 @@ public class ProjectRepository implements IProjectRepository {
     public List<ProjectResult> getProjectsByEmployeeId(int id) throws ExecutionException, InterruptedException {
         CollectionReference projectsDb = _db.collection("projects");
         CollectionReference employeesDb = _db.collection("employees");
+        CollectionReference projectMembersDb = _db.collection("projectMembers");
         List<ProjectResult> projects = new ArrayList<>();
-        for (DocumentSnapshot data : projectsDb.get().get().getDocuments()) {
-            Project prj = data.toObject(Project.class);
-            if (prj != null && prj.getMemberIds().contains(id)) {
-                DocumentSnapshot ownerData = employeesDb.document(String.valueOf(prj.getOwnerId())).get().get();
-                ProjectResult prjRes = new ProjectResult(prj, ownerData.getString("name"));
-                projects.add(prjRes);
+        for (DocumentSnapshot data : projectMembersDb.get().get().getDocuments()) {
+            ProjectMember pm = data.toObject(ProjectMember.class);
+            if (pm != null && pm.getEmployeeId() == id) {
+                Project prj = projectsDb.document(String.valueOf(pm.getProjectId())).get().get().toObject(Project.class);
+                if (prj != null) {
+                    DocumentSnapshot ownerData = employeesDb.document(String.valueOf(prj.getOwnerId())).get().get();
+                    projects.add(new ProjectResult(prj, ownerData.getString("name")));
+                }
             }
         }
         return projects;
