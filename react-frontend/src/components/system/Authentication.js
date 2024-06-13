@@ -1,7 +1,7 @@
 import React, { useState, useContext, createContext } from "react";
 import { createSearchParams, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import { error } from "../../utils/Notify";
+import { success, error, loading, dismiss } from "../../utils/Notify";
 
 const AuthContext = createContext();
 
@@ -24,6 +24,7 @@ function Authentication({ children }) {
 		// else {
 		// 	console.log("login failed");
 		// }
+        const toastId = loading("Processing...");
 		fetch("http://localhost:8080/auth/login",{
             method:"POST",
             body: JSON.stringify({
@@ -34,6 +35,7 @@ function Authentication({ children }) {
         })
 		.then(result=>result.json())
         .then((result)=>{
+            dismiss(toastId);
             if (result.statusCode === 200) {
 				setToken(result.data);
 				localStorage.setItem("token", result.data);
@@ -55,7 +57,9 @@ function Authentication({ children }) {
 			}
         })
         .catch (e => {
+            dismiss(toastId);
             console.log("ERROR_login: " + e);
+			error(e);
         })
 	}
 
