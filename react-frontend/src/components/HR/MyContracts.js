@@ -16,8 +16,9 @@ function MyContracts() {
 
     function loadContractData() {
         const toastId = loading("Loading contract data...");
-        fetch("http://localhost:8080/hr/contracts/1",{
-            method:"GET"
+        fetch(process.env.REACT_APP_API_URI + "/hr/contracts/1",{
+            method:"GET",
+            headers: { "ngrok-skip-browser-warning" : "true" }
         })
         .then(result=>result.json())
         .then((result)=>{

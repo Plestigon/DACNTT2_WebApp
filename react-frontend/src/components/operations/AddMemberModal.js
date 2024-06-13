@@ -17,8 +17,9 @@ function AddMemberModal(props) {
 
     useEffect(() => {
         function loadProjectRoles() {
-            fetch("http://localhost:8080/operations/project/roles",{
-                method:"GET"
+            fetch(process.env.REACT_APP_API_URI + "/operations/project/roles",{
+                method:"GET",
+                headers: { "ngrok-skip-browser-warning" : "true" }
             })
             .then(result=>result.json())
             .then((result)=>{
@@ -37,8 +38,9 @@ function AddMemberModal(props) {
                 let memberIds = props.members.map(m => m.employeeId);
                 query = '?ids=' + memberIds.join(',');
             }
-            fetch("http://localhost:8080/operations/employees/to-add" + query,{
-                method:"GET"
+            fetch(process.env.REACT_APP_API_URI + "/operations/employees/to-add" + query,{
+                method:"GET",
+                headers: { "ngrok-skip-browser-warning" : "true" }
             })
             .then(result=>result.json())
             .then((result)=>{
@@ -67,15 +69,22 @@ function AddMemberModal(props) {
     }
 
     function handleSubmit() {
-        fetch("http://localhost:8080/operations/project/" + props.projectId + "/member?memberId=" + data.memberId + "&role=" + data.role,{
-            method:"POST"
+        fetch(process.env.REACT_APP_API_URI + "/operations/project/" + props.projectId + "/member?memberId=" + data.memberId + "&role=" + data.role,{
+            method:"POST",
+            headers: { "ngrok-skip-browser-warning" : "true" }
         })
         .then(result=>result.json())
         .then((result)=>{
             if (result.statusCode === 200) {
                 success("Member added");
+                setData({
+                    memberId: 0,
+                    name: 'Select new member',
+                    role: 0,
+                    roleName: ''
+                });
                 props.reload();
-                props.close();
+                props.onHide();
             }
         })
         .catch (e => {

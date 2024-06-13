@@ -42,8 +42,9 @@ const TaskInfo = () => {
     const [comment, setComment] = useState();
 
     const loadTaskData = useCallback(() => {
-        fetch("http://localhost:8080/operations/task/" + params.id,{
-            method:"GET"
+        fetch(process.env.REACT_APP_API_URI + "/operations/task/" + params.id,{
+            method:"GET",
+            headers: { "ngrok-skip-browser-warning" : "true" }
         })
         .then(result=>result.json())
         .then((result)=>{
@@ -78,8 +79,9 @@ const TaskInfo = () => {
 
     useEffect(() => {
         function loadStates() {
-            fetch("http://localhost:8080/operations/tasks/states",{
-                method:"GET"
+            fetch(process.env.REACT_APP_API_URI + "/operations/tasks/states",{
+                method:"GET",
+                headers: { "ngrok-skip-browser-warning" : "true" }
             })
             .then(result=>result.json())
             .then((result)=>{
@@ -94,8 +96,9 @@ const TaskInfo = () => {
         loadStates();
         
         function loadPriorities() {
-            fetch("http://localhost:8080/operations/tasks/priorities",{
-                method:"GET"
+            fetch(process.env.REACT_APP_API_URI + "/operations/tasks/priorities",{
+                method:"GET",
+                headers: { "ngrok-skip-browser-warning" : "true" }
             })
             .then(result=>result.json())
             .then((result)=>{
@@ -113,8 +116,9 @@ const TaskInfo = () => {
     const loadAssignees = useCallback(() => {
         //console.log("load " + data.id);
         if (data.id <= 0) return;
-        fetch("http://localhost:8080/operations/task/" + data.id + "/members",{
-            method:"GET"
+        fetch(process.env.REACT_APP_API_URI + "/operations/task/" + data.id + "/members",{
+            method:"GET",
+            headers: { "ngrok-skip-browser-warning" : "true" }
         })
         .then(result=>result.json())
         .then((result)=>{
@@ -135,8 +139,9 @@ const TaskInfo = () => {
 
     const loadDiscussions = useCallback(() => {
         if (data.id <= 0) return;
-        fetch("http://localhost:8080/operations/task/" + data.id + "/discussions",{
-            method:"GET"
+        fetch(process.env.REACT_APP_API_URI + "/operations/task/" + data.id + "/discussions",{
+            method:"GET",
+            headers: { "ngrok-skip-browser-warning" : "true" }
         })
         .then(result=>result.json())
         .then((result)=>{
@@ -181,8 +186,9 @@ const TaskInfo = () => {
     function handleStateChange(e) {
         if (e.value !== data.state) {
             setData(prevState => ({...prevState, 'state': e.value, 'stateName': e.label}));
-            fetch("http://localhost:8080/operations/task/" + params.id + "/state?newValue=" + e.value,{
-                method:"POST"
+            fetch(process.env.REACT_APP_API_URI + "/operations/task/" + params.id + "/state?newValue=" + e.value,{
+                method:"POST",
+                headers: { "ngrok-skip-browser-warning" : "true" }
             })
             .then(result=>result.json())
             .then((result)=>{
@@ -200,8 +206,9 @@ const TaskInfo = () => {
     function handlePriorityChange(e) {
         if (e.value !== data.priority) {
             setData(prevState => ({...prevState, 'priority': e.value, 'priorityName': e.label}));
-            fetch("http://localhost:8080/operations/task/" + params.id + "/priority?newValue=" + e.value,{
-                method:"POST"
+            fetch(process.env.REACT_APP_API_URI + "/operations/task/" + params.id + "/priority?newValue=" + e.value,{
+                method:"POST",
+                headers: { "ngrok-skip-browser-warning" : "true" }
             })
             .then(result=>result.json())
             .then((result)=>{
@@ -219,8 +226,9 @@ const TaskInfo = () => {
     function handleAssigning(e) {
         if (e.value !== data.assignee) {
             setData(prevState => ({...prevState, 'assignee': e.value, assigneeName: e.label}));
-            fetch("http://localhost:8080/operations/task/" + params.id + "/assign?assigneeId=" + e.value,{
-                method:"POST"
+            fetch(process.env.REACT_APP_API_URI + "/operations/task/" + params.id + "/assign?assigneeId=" + e.value,{
+                method:"POST",
+                headers: { "ngrok-skip-browser-warning" : "true" }
             })
             .then(result=>result.json())
             .then((result)=>{
@@ -246,7 +254,7 @@ const TaskInfo = () => {
 
     function handleEditSubmit() {
         // console.log(data);
-        fetch("http://localhost:8080/operations/project/edit",{
+        fetch(process.env.REACT_APP_API_URI + "/operations/project/edit",{
             method:"POST",
             body: JSON.stringify({
                 'id': params.id,
@@ -254,7 +262,10 @@ const TaskInfo = () => {
                 'dueDate': data.dueDate,
                 'description': data.description
             }),
-            headers: { "Content-type": "application/json; charset=UTF-8" }
+            headers: { 
+                "Content-type": "application/json; charset=UTF-8",
+                "ngrok-skip-browser-warning" : "true" 
+            }
         })
         .then(result=>result.json())
         .then((result)=>{
@@ -270,14 +281,17 @@ const TaskInfo = () => {
 
     function handleSubmitComment() {
         // console.log(data);
-        fetch("http://localhost:8080/operations/task/discussion",{
+        fetch(process.env.REACT_APP_API_URI + "/operations/task/discussion",{
             method:"POST",
             body: JSON.stringify({
                 'taskId': data.id,
                 'writerId': userId,
                 'content': comment,
             }),
-            headers: { "Content-type": "application/json; charset=UTF-8" }
+            headers: { 
+                "Content-type": "application/json; charset=UTF-8",
+                "ngrok-skip-browser-warning" : "true" 
+            }
         })
         .then(result=>result.json())
         .then((result)=>{

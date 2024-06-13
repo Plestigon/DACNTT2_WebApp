@@ -27,8 +27,9 @@ function MyForms() {
 
     function loadFormData() {
         const toastId = loading("Loading form data...");
-        fetch("http://localhost:8080/hr/forms/1",{
-            method:"GET"
+        fetch(process.env.REACT_APP_API_URI + "/hr/forms/1",{
+            method:"GET",
+            headers: { "ngrok-skip-browser-warning" : "true" }
         })
         .then(result=>result.json())
         .then((result)=>{

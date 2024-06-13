@@ -22,8 +22,9 @@ function AddEmpModal(props) {
 
     useEffect(() => {
         function loadEmployeeRoles() {
-            fetch("http://localhost:8080/hr/employees/roles",{
-                method:"GET"
+            fetch(process.env.REACT_APP_API_URI + "/hr/employees/roles",{
+                method:"GET",
+                headers: { "ngrok-skip-browser-warning" : "true" }
             })
             .then(result=>result.json())
             .then((result)=>{
@@ -38,8 +39,9 @@ function AddEmpModal(props) {
 
     useEffect(() => {
         function loadDepartments() {
-            fetch("http://localhost:8080/hr/employees/departments",{
-                method:"GET"
+            fetch(process.env.REACT_APP_API_URI + "/hr/employees/departments",{
+                method:"GET",
+                headers: { "ngrok-skip-browser-warning" : "true" }
             })
             .then(result=>result.json())
             .then((result)=>{
@@ -69,7 +71,7 @@ function AddEmpModal(props) {
     }
 
     function handleSubmit() {
-        fetch("http://localhost:8080/hr/employees?token=" + auth.token,{
+        fetch(process.env.REACT_APP_API_URI + "/hr/employees?token=" + auth.token,{
             method:"POST",
             body: JSON.stringify({
                 'name': inputs.name,
@@ -80,7 +82,10 @@ function AddEmpModal(props) {
                 'roleDetail': inputs.roleName,
                 'password': inputs.password
             }),
-            headers: { "Content-type": "application/json; charset=UTF-8" }
+            headers: { 
+                "Content-type": "application/json; charset=UTF-8",
+                "ngrok-skip-browser-warning" : "true" 
+            }
         })
         .then(result=>result.json())
         .then((result)=>{

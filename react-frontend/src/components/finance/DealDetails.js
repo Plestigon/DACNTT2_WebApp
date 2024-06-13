@@ -34,8 +34,9 @@ function DealDetails() {
 	}, [])
 
 	function fetchDeal() {
-		fetch("http://localhost:8080/finance/deals/" + params.id + "?token=" + auth.token, {
-			method: "GET"
+		fetch(process.env.REACT_APP_API_URI + "/finance/deals/" + params.id + "?token=" + auth.token, {
+			method: "GET",
+            headers: { "ngrok-skip-browser-warning" : "true" }
 		})
 		.then(result => result.json())
 		.then((result) => {
@@ -63,8 +64,9 @@ function DealDetails() {
 
 	function fetchDealStageDetails() {
 		const toastId = loading("Loading deal stages data...");
-		fetch("http://localhost:8080/finance/deals/" + params.id + "/stages" + "?token=" + auth.token, {
-			method: "GET"
+		fetch(process.env.REACT_APP_API_URI + "/finance/deals/" + params.id + "/stages" + "?token=" + auth.token, {
+			method: "GET",
+            headers: { "ngrok-skip-browser-warning" : "true" }
 		})
 			.then(result => result.json())
 			.then((result) => {

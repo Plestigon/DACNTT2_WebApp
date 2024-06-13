@@ -24,8 +24,9 @@ function Associates() {
 
 	function fetchAssociates() {
 		const toastId = loading("Loading associates data...");
-		fetch("http://localhost:8080/finance/associates" + "?token=" + auth.token, {
-			method: "GET"
+		fetch(process.env.REACT_APP_API_URI + "/finance/associates" + "?token=" + auth.token, {
+			method: "GET",
+            headers: { "ngrok-skip-browser-warning" : "true" }
 		})
 		.then(result => result.json())
 		.then((result) => {

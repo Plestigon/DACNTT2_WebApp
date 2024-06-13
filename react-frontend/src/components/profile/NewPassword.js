@@ -45,14 +45,17 @@ function NewPassword(props) {
             return;
         }
         
-        fetch("http://localhost:8080/auth/change-password" + "?token=" + props.token,{
+        fetch(process.env.REACT_APP_API_URI + "/auth/change-password" + "?token=" + props.token,{
             method:"PUT",
             body: JSON.stringify({
                 'userId': props.userId,
                 'oldPass': oldPass,
                 'newPass': newPass
             }),
-            headers: { "Content-type": "application/json; charset=UTF-8" }
+            headers: { 
+                "Content-type": "application/json; charset=UTF-8",
+                "ngrok-skip-browser-warning" : "true" 
+            }
         })
         .then(result=>result.json())
         .then((result)=>{

@@ -59,8 +59,9 @@ function MyProjects() {
     useEffect(() => {
         function loadProjects() {
             const toastId = loading("Loading project data...");
-            fetch("http://localhost:8080/operations/my-projects?employeeId=" + employeeId,{
-                method:"GET"
+            fetch(process.env.REACT_APP_API_URI + "/operations/my-projects?employeeId=" + employeeId,{
+                method:"GET",
+                headers: { "ngrok-skip-browser-warning" : "true" }
             })
             .then(result=>result.json())
             .then((result)=>{
@@ -82,8 +83,9 @@ function MyProjects() {
 
     function loadTasks(projectId) {
         const toastId = loading("Loading task data...");
-        fetch("http://localhost:8080/operations/my-project/" + projectId + "/tasks?employeeId=" + employeeId,{
-            method:"GET"
+        fetch(process.env.REACT_APP_API_URI + "/operations/my-project/" + projectId + "/tasks?employeeId=" + employeeId,{
+            method:"GET",
+            headers: { "ngrok-skip-browser-warning" : "true" }
         })
         .then(result=>result.json())
         .then((result)=>{

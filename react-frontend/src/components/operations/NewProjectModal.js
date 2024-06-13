@@ -18,8 +18,9 @@ function NewProjectModal(props) {
     const [options, setOptions] = useState([]);
 
     const loadOwners = useCallback(() => {
-        fetch("http://localhost:8080/operations/employees",{
-            method:"GET"
+        fetch(process.env.REACT_APP_API_URI + "/operations/employees",{
+            method:"GET",
+            headers: { "ngrok-skip-browser-warning" : "true" }
         })
         .then(result=>result.json())
         .then((result)=>{
@@ -67,7 +68,7 @@ function NewProjectModal(props) {
     function handleSubmitProject(e) {
         e.preventDefault();
         // console.log(inputs);
-        fetch("http://localhost:8080/operations/project",{
+        fetch(process.env.REACT_APP_API_URI + "/operations/project",{
             method:"POST",
             body: JSON.stringify({
                 'name': inputs.name,
@@ -76,7 +77,10 @@ function NewProjectModal(props) {
                 'dueDate': inputs.dueDate,
                 'description': inputs.description
             }),
-            headers: { "Content-type": "application/json; charset=UTF-8" }
+            headers: { 
+                "Content-type": "application/json; charset=UTF-8",
+                "ngrok-skip-browser-warning" : "true" 
+            }
         })
         .then(result=>result.json())
         .then((result)=>{

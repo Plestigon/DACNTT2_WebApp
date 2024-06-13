@@ -27,8 +27,9 @@ function EmpList() {
 
     function fetchEmployees() {
         const toastId = loading("Loading employee data...");
-        fetch("http://localhost:8080/hr/employees?token=" + auth.token,{
-            method:"GET"
+        fetch(process.env.REACT_APP_API_URI + "/hr/employees?token=" + auth.token,{
+            method:"GET",
+            headers: { "ngrok-skip-browser-warning" : "true" }
         })
         .then(result=>result.json())
         .then((result)=>{
@@ -54,8 +55,9 @@ function EmpList() {
     function deleteEmployee() {
         setShowDeleteModal(false);
         if (deleteTarget.id === null || deleteTarget.id <= 0) {return;}
-        fetch("http://localhost:8080/hr/employees/" + deleteTarget.id + "?token=" + auth.token, {
-            method:"DELETE"
+        fetch(process.env.REACT_APP_API_URI + "/hr/employees/" + deleteTarget.id + "?token=" + auth.token, {
+            method:"DELETE",
+            headers: { "ngrok-skip-browser-warning" : "true" }
         })
         .then(result=>result.json())
         .then((result)=>{

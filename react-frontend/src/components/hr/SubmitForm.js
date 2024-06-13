@@ -34,8 +34,9 @@ function SubmitForm() {
 
     useEffect(() => {
         function loadFormTypes() {
-            fetch("http://localhost:8080/hr/submit-form/types",{
-                method:"GET"
+            fetch(process.env.REACT_APP_API_URI + "/hr/submit-form/types",{
+                method:"GET",
+                headers: { "ngrok-skip-browser-warning" : "true" }
             })
             .then(result=>result.json())
             .then((result)=>{
@@ -93,7 +94,7 @@ function SubmitForm() {
             setInputs(prevState => ({...prevState, 'startDate': '', 'endDate': ''}));
         }
         console.log(inputs);
-        fetch("http://localhost:8080/hr/submit-form",{
+        fetch(process.env.REACT_APP_API_URI + "/hr/submit-form",{
             method:"POST",
             body: JSON.stringify({
                 'type': inputs.type,
@@ -102,7 +103,10 @@ function SubmitForm() {
                 'endDate': inputs.endDate,
                 'reason': inputs.reason
             }),
-            headers: { "Content-type": "application/json; charset=UTF-8" }
+            headers: { 
+                "Content-type": "application/json; charset=UTF-8",
+                "ngrok-skip-browser-warning" : "true"
+            }
         })
         .then(result=>result.json())
         .then((result)=>{

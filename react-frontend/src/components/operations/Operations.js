@@ -28,8 +28,9 @@ function Operations() {
 
     function fetchProjectData() {
         const toastId = loading("Loading project data...");
-        fetch("http://localhost:8080/operations/projects" + "?token=" + auth.token,{
-            method:"GET"
+        fetch(process.env.REACT_APP_API_URI + "/operations/projects" + "?token=" + auth.token,{
+            method:"GET",
+            headers: { "ngrok-skip-browser-warning" : "true" }
         })
         .then(result=>result.json())
         .then((result)=>{
@@ -57,8 +58,9 @@ function Operations() {
     function deleteProject() {
         setShowDeleteModal(false);
         if (deleteTarget.id === null || deleteTarget.id <= 0) {return;}
-        fetch("http://localhost:8080/operations/project?id=" + deleteTarget.id, {
-            method:"DELETE"
+        fetch(process.env.REACT_APP_API_URI + "/operations/project?id=" + deleteTarget.id, {
+            method:"DELETE",
+            headers: { "ngrok-skip-browser-warning" : "true" }
         })
         .then(result=>result.json())
         .then((result)=>{

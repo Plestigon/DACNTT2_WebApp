@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 //     }, [])
 
 //     function fetchProjectData() {
-//         fetch("http://localhost:8080/operations/projects",{
+//         fetch(process.env.REACT_APP_API_URI + "/operations/projects",{
 //             method:"GET"
 //         })
 //         .then(result=>result.json())
@@ -30,7 +30,7 @@ import { useNavigate } from 'react-router-dom';
 //     function deleteProject(id) {
 //         try {
 //             if (window.confirm("Are you sure you want to delete project with id \"" + id + "\"?")) {
-//                 fetch("http://localhost:8080/operations/project?id=" + id, {
+//                 fetch(process.env.REACT_APP_API_URI + "/operations/project?id=" + id, {
 //                     method:"DELETE"
 //                 })
 //                 .then((response) => {

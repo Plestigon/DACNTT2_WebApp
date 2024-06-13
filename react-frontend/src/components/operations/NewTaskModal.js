@@ -42,8 +42,9 @@ function NewTaskModal(props) {
 
     useEffect(() => {
         function loadPriorities() {
-            fetch("http://localhost:8080/operations/tasks/priorities",{
-                method:"GET"
+            fetch(process.env.REACT_APP_API_URI + "/operations/tasks/priorities",{
+                method:"GET",
+                headers: { "ngrok-skip-browser-warning" : "true" }
             })
             .then(result=>result.json())
             .then((result)=>{
@@ -78,7 +79,7 @@ function NewTaskModal(props) {
 
     function handleSubmit() {
         console.log(inputs);
-        fetch("http://localhost:8080/operations/task",{
+        fetch(process.env.REACT_APP_API_URI + "/operations/task",{
             method:"POST",
             body: JSON.stringify({
                 name: inputs.name,
@@ -87,7 +88,10 @@ function NewTaskModal(props) {
                 priority: inputs.priority,
                 description: inputs.description
             }),
-            headers: { "Content-type": "application/json; charset=UTF-8" }
+            headers: { 
+                "Content-type": "application/json; charset=UTF-8",
+                "ngrok-skip-browser-warning" : "true" 
+            }
         })
         .then(result=>result.json())
         .then((result)=>{

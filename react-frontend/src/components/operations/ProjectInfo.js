@@ -35,8 +35,9 @@ const ProjectInfo = () => {
     const [newTaskModalShow, setNewTaskModalShow] = useState(false);
 
     const loadProjectData = useCallback(() => {
-        fetch("http://localhost:8080/operations/project?id=" + params.id,{
-            method:"GET"
+        fetch(process.env.REACT_APP_API_URI + "/operations/project?id=" + params.id,{
+            method:"GET",
+            headers: { "ngrok-skip-browser-warning" : "true" }
         })
         .then(result=>result.json())
         .then((result)=>{
@@ -58,8 +59,9 @@ const ProjectInfo = () => {
         })
 
         // Get status options
-        fetch("http://localhost:8080/operations/project/statuses",{
-            method:"GET"
+        fetch(process.env.REACT_APP_API_URI + "/operations/project/statuses",{
+            method:"GET",
+            headers: { "ngrok-skip-browser-warning" : "true" }
         })
         .then(result=>result.json())
         .then((result)=>{
@@ -70,8 +72,9 @@ const ProjectInfo = () => {
         })
 
         //Get project updates
-        fetch("http://localhost:8080/operations/project/updates/" + params.id,{
-            method:"GET"
+        fetch(process.env.REACT_APP_API_URI + "/operations/project/updates/" + params.id,{
+            method:"GET",
+            headers: { "ngrok-skip-browser-warning" : "true" }
         })
         .then(result=>result.json())
         .then((result)=>{
@@ -96,8 +99,9 @@ const ProjectInfo = () => {
             if (data.memberIds.length > 0) {
                 query = "?ids=" + data.memberIds.join(",");
             }
-            fetch("http://localhost:8080/operations/project/members" + query,{
-                method:"GET"
+            fetch(process.env.REACT_APP_API_URI + "/operations/project/members" + query,{
+                method:"GET",
+                headers: { "ngrok-skip-browser-warning" : "true" }
             })
             .then(result=>result.json())
             .then((result)=>{
@@ -118,8 +122,9 @@ const ProjectInfo = () => {
 
     const loadTasks = useCallback(() => {
         console.log("Load");
-        fetch("http://localhost:8080/operations/project/" + params.id + "/tasks",{
-            method:"GET"
+        fetch(process.env.REACT_APP_API_URI + "/operations/project/" + params.id + "/tasks",{
+            method:"GET",
+            headers: { "ngrok-skip-browser-warning" : "true" }
         })
         .then(result=>result.json())
         .then((result)=>{
@@ -154,8 +159,9 @@ const ProjectInfo = () => {
     }
 
     function handleUpdateStatus(status) {
-        fetch("http://localhost:8080/operations/project/" + params.id + "/update?status=" + status,{
-            method:"POST"
+        fetch(process.env.REACT_APP_API_URI + "/operations/project/" + params.id + "/update?status=" + status,{
+            method:"POST",
+            headers: { "ngrok-skip-browser-warning" : "true" }
         })
         .then(result=>result.json())
         .then((result)=>{
@@ -180,7 +186,7 @@ const ProjectInfo = () => {
 
     function handleEditSubmit() {
         // console.log(data);
-        fetch("http://localhost:8080/operations/project/edit",{
+        fetch(process.env.REACT_APP_API_URI + "/operations/project/edit",{
             method:"POST",
             body: JSON.stringify({
                 'id': params.id,
@@ -188,7 +194,10 @@ const ProjectInfo = () => {
                 'dueDate': data.dueDate,
                 'description': data.description
             }),
-            headers: { "Content-type": "application/json; charset=UTF-8" }
+            headers: { 
+                "Content-type": "application/json; charset=UTF-8",
+                "ngrok-skip-browser-warning" : "true" 
+            }
         })
         .then(result=>result.json())
         .then((result)=>{
@@ -204,8 +213,9 @@ const ProjectInfo = () => {
 
     function handleRemoveMember(memberId) {
         // console.log("remove " + memberId + " from " + params.id);
-        fetch("http://localhost:8080/operations/project/" + params.id + "/member?memberId=" + memberId,{
-            method:"DELETE"
+        fetch(process.env.REACT_APP_API_URI + "/operations/project/" + params.id + "/member?memberId=" + memberId,{
+            method:"DELETE",
+            headers: { "ngrok-skip-browser-warning" : "true" }
         })
         .then(result=>result.json())
         .then((result)=>{

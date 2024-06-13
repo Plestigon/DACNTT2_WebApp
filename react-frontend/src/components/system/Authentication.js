@@ -25,13 +25,16 @@ function Authentication({ children }) {
 		// 	console.log("login failed");
 		// }
         const toastId = loading("Processing...");
-		fetch("http://localhost:8080/auth/login",{
+		fetch(process.env.REACT_APP_API_URI + "/auth/login",{
             method:"POST",
             body: JSON.stringify({
                 "email": email,
                 "password": password
             }),
-            headers: { "Content-type": "application/json; charset=UTF-8" }
+            headers: { 
+				"Content-type": "application/json; charset=UTF-8",
+				"ngrok-skip-browser-warning" : "true" 
+			}
         })
 		.then(result=>result.json())
         .then((result)=>{

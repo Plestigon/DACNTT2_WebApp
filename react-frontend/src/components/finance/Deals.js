@@ -29,8 +29,9 @@ function Deals() {
 
 	function fetchDeals() {
 		const toastId = loading("Loading deals data...");
-		fetch("http://localhost:8080/finance/associates/" + params.id + "/deals" + "?token=" + auth.token, {
-			method: "GET"
+		fetch(process.env.REACT_APP_API_URI + "/finance/associates/" + params.id + "/deals" + "?token=" + auth.token, {
+			method: "GET",
+            headers: { "ngrok-skip-browser-warning" : "true" }
 		})
 		.then(result => result.json())
 		.then((result) => {
@@ -51,8 +52,9 @@ function Deals() {
 	}
 
 	function fetchAssociate() {
-		fetch("http://localhost:8080/finance/associates/" + params.id + "?token=" + auth.token, {
-			method: "GET"
+		fetch(process.env.REACT_APP_API_URI + "/finance/associates/" + params.id + "?token=" + auth.token, {
+			method: "GET",
+            headers: { "ngrok-skip-browser-warning" : "true" }
 		})
 		.then(result => result.json())
 		.then((result) => {
