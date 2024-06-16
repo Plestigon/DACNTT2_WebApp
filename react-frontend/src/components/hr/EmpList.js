@@ -26,7 +26,7 @@ function EmpList() {
     }, [])
 
     function fetchEmployees() {
-        const toastId = loading("Loading employee data...");
+        const toastId = loading("Loading employees...");
         fetch(process.env.REACT_APP_API_URI + "/hr/employees?token=" + auth.token,{
             method:"GET",
             headers: { "ngrok-skip-browser-warning" : "true" }
@@ -38,11 +38,12 @@ function EmpList() {
                 setEmployees(result.data);
             }
             else {
-                error("Load employee data failed");
+                error("Load employees failed");
             }
         })
         .catch (e => {
             console.log("ERROR_fetchEmployees: " + e);
+            error("Load employees failed");
         })
     }
     

@@ -11,4 +11,6 @@ public interface IAssociateService {
     AssociateResult getAssociateById(int id) throws ExecutionException, InterruptedException;
     String addAssociate(Associate entry) throws ExecutionException, InterruptedException;
     String removeAssociate(int id) throws ExecutionException, InterruptedException;
+
+    String addContactToAssociate(int id, int contactId) throws ExecutionException, InterruptedException;
 }

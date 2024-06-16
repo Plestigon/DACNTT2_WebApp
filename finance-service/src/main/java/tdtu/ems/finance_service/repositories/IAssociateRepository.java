@@ -11,4 +11,6 @@ public interface IAssociateRepository {
     String addAssociate(Associate entry) throws ExecutionException, InterruptedException;
     String removeAssociate(int id) throws ExecutionException, InterruptedException;
     String updateAssociateDealId(int associateId, int dealId, boolean isAdding) throws ExecutionException, InterruptedException;
+
+    String addContactToAssociate(int id, int contactId) throws ExecutionException, InterruptedException;
 }

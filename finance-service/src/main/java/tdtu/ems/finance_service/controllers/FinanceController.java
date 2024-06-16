@@ -67,9 +67,9 @@ public class FinanceController {
     }
 
     @GetMapping(value = "/finance/contacts")
-    public BaseResponse getContacts(@RequestParam List<Integer> entry) {
+    public BaseResponse getContacts(@RequestParam(required = false) List<Integer> entry) {
         try {
-            List<Contact> result = _contactService.getContactsByIds(entry);
+            List<Contact> result = _contactService.getContacts(entry);
             return new BaseResponse(result, 200, "OK");
         }
         catch (Exception e) {
@@ -103,6 +103,17 @@ public class FinanceController {
     public BaseResponse getDeals(@PathVariable int id) {
         try {
             List<DealResult> result = _dealService.getDealsByAssociateId(id);
+            return new BaseResponse(result, 200, "OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
+
+    @PutMapping("/finance/associates/{id}/contacts")
+    public BaseResponse addContactToAssociate(@PathVariable int id, @RequestParam int contactId) {
+        try {
+            String result = _associateService.addContactToAssociate(id, contactId);
             return new BaseResponse(result, 200, "OK");
         }
         catch (Exception e) {

@@ -26,7 +26,7 @@ function MyForms() {
     }, [])
 
     function loadFormData() {
-        const toastId = loading("Loading form data...");
+        const toastId = loading("Loading forms...");
         fetch(process.env.REACT_APP_API_URI + "/hr/forms/1",{
             method:"GET",
             headers: { "ngrok-skip-browser-warning" : "true" }
@@ -38,11 +38,12 @@ function MyForms() {
                 setForms(result.data);
             }
             else {
-                error("Load form data failed");
+                error("Load forms failed");
             }
         })
         .catch (e => {
             console.log("ERROR_loadFormData: " + e);
+            error("Load forms failed");
         })
     }
 

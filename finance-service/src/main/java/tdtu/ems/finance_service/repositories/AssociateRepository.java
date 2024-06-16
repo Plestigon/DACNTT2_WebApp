@@ -3,6 +3,7 @@ package tdtu.ems.finance_service.repositories;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
+import jakarta.ws.rs.NotFoundException;
 import org.springframework.stereotype.Repository;
 import tdtu.ems.finance_service.utils.Logger;
 import tdtu.ems.finance_service.models.Associate;
@@ -74,6 +75,21 @@ public class AssociateRepository implements IAssociateRepository {
             dealIds.remove(Integer.valueOf(dealId));
         }
         ApiFuture<WriteResult> result = associatesDb.document(String.valueOf(associateId)).update("deals", dealIds);
+        return result.get().getUpdateTime().toString();
+    }
+
+    @Override
+    public String addContactToAssociate(int id, int contactId) throws ExecutionException, InterruptedException {
+        CollectionReference associatesDb = _db.collection("associates");
+        Associate a = associatesDb.document(String.valueOf(id)).get().get().toObject(Associate.class);
+        if (a == null) {
+            throw new NotFoundException("Associate with id " + " not found");
+        }
+        if (a.getContacts().contains(contactId)) {
+            throw new IllegalArgumentException("This associate already has that contact");
+        }
+        a.getContacts().add(contactId);
+        ApiFuture<WriteResult> result = associatesDb.document(String.valueOf(id)).update("contacts", a.getContacts());
         return result.get().getUpdateTime().toString();
     }
 

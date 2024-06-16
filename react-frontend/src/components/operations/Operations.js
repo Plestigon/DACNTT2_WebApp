@@ -27,7 +27,7 @@ function Operations() {
     }, [])
 
     function fetchProjectData() {
-        const toastId = loading("Loading project data...");
+        const toastId = loading("Loading projects...");
         fetch(process.env.REACT_APP_API_URI + "/operations/projects" + "?token=" + auth.token,{
             method:"GET",
             headers: { "ngrok-skip-browser-warning" : "true" }
@@ -39,13 +39,13 @@ function Operations() {
                 setProjects(result.data);
             }
             else {
-                error("Load project data failed");
+                error("Load projects failed");
             }
         })
         .catch (e => {
             console.log("ERROR_fetchProjectData: " + e);
             dismiss(toastId);
-            error("Load project data failed");
+            error("Load projects failed");
         })
     }
     

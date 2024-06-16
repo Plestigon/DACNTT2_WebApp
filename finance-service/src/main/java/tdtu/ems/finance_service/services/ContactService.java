@@ -20,9 +20,9 @@ public class ContactService implements IContactService {
     }
 
     @Override
-    public List<Contact> getContactsByIds(List<Integer> ids) throws ExecutionException, InterruptedException {
+    public List<Contact> getContacts(List<Integer> ids) throws ExecutionException, InterruptedException {
         try {
-            List<Contact> result = _contactRepository.getContactsByIds(ids);
+            List<Contact> result = _contactRepository.getContacts(ids);
             result.sort(Comparator.comparing(Contact::getId));
             return result;
         }

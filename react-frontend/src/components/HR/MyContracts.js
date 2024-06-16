@@ -15,7 +15,7 @@ function MyContracts() {
     }, [])
 
     function loadContractData() {
-        const toastId = loading("Loading contract data...");
+        const toastId = loading("Loading contracts...");
         fetch(process.env.REACT_APP_API_URI + "/hr/contracts/1",{
             method:"GET",
             headers: { "ngrok-skip-browser-warning" : "true" }
@@ -27,11 +27,12 @@ function MyContracts() {
                 setContracts(result.data);
             }
             else {
-                error("Load contract data failed");
+                error("Load contracts failed");
             }
         })
         .catch (e => {
             console.log("ERROR_loadContractData: " + e);
+            error("Load contracts failed");
         })
     }
 

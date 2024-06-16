@@ -23,13 +23,20 @@ public class ContactRepository implements IContactRepository {
     }
 
     @Override
-    public List<Contact> getContactsByIds(List<Integer> ids) throws ExecutionException, InterruptedException {
+    public List<Contact> getContacts(List<Integer> ids) throws ExecutionException, InterruptedException {
         CollectionReference contactsDb = _db.collection("contacts");
         List<Contact> contacts = new ArrayList<>();
-        for (int id : ids) {
-            Contact contact = contactsDb.document(String.valueOf(id)).get().get().toObject(Contact.class);
-            if (contact != null) {
-                contacts.add(contact);
+        if (ids == null || ids.isEmpty()) {
+            for (QueryDocumentSnapshot data : contactsDb.get().get().getDocuments()) {
+                contacts.add(data.toObject(Contact.class));
+            }
+        }
+        else {
+            for (int id : ids) {
+                Contact contact = contactsDb.document(String.valueOf(id)).get().get().toObject(Contact.class);
+                if (contact != null) {
+                    contacts.add(contact);
+                }
             }
         }
         return contacts;

@@ -69,6 +69,7 @@ function AddMemberModal(props) {
     }
 
     function handleSubmit() {
+        if (data.memberId === 0) return;
         fetch(process.env.REACT_APP_API_URI + "/operations/project/" + props.projectId + "/member?memberId=" + data.memberId + "&role=" + data.role,{
             method:"POST",
             headers: { "ngrok-skip-browser-warning" : "true" }

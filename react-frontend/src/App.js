@@ -22,6 +22,7 @@ import NewPassword from './components/profile/NewPassword';
 import Associates from './components/finance/Associates';
 import Deals from './components/finance/Deals';
 import DealDetails from './components/finance/DealDetails';
+import Contacts from './components/finance/Contacts';
 
 function App() {
 
@@ -32,7 +33,7 @@ function App() {
           <Routes>
             {/* === Not secured */}
 
-            {/* <Route path="/" element={<Home/>}/>
+            <Route path="/" element={<Home/>}/>
 
             <Route path="/operations/projects" element={<Operations/>}/>
             <Route path="/operations/project/:id" element={<ProjectInfo/>} />
@@ -46,11 +47,14 @@ function App() {
             <Route path="/hr/contracts" element={<MyContracts/>}/>
             <Route path="/hr/employees" element={<EmpList/>}/>
             
-            <Route path="/finance/associates" element={<Associates/>}/> */}
+            <Route path="/finance/associates" element={<Associates/>}/>
+            <Route path="/finance/associates/:id/deals" element={<Deals/>}/>
+            <Route path="/finance/deals/:id/stages" element={<DealDetails/>}/>
+            <Route path="/finance/contacts/" element={<Contacts/>}/>
 
             {/* === Secured */}
             
-            <Route path="/" element={<PrivateRoute><Home/></PrivateRoute>}/>
+            {/* <Route path="/" element={<PrivateRoute><Home/></PrivateRoute>}/>
             
             <Route path="/operations/projects" element={<PrivateRoute><Operations/></PrivateRoute>}/>
             <Route path="/operations/project/:id" element={<PrivateRoute><ProjectInfo/></PrivateRoute>} />
@@ -67,6 +71,7 @@ function App() {
             <Route path="/finance/associates" element={<PrivateRoute><Associates/></PrivateRoute>}/>
             <Route path="/finance/associates/:id/deals" element={<PrivateRoute><Deals/></PrivateRoute>}/>
             <Route path="/finance/deals/:id/stages" element={<PrivateRoute><DealDetails/></PrivateRoute>}/>
+            <Route path="/finance/contacts/" element={<PrivateRoute><Contacts/></PrivateRoute>}/> */}
             
             <Route path="/login" element={<Login/>}/>
           </Routes>

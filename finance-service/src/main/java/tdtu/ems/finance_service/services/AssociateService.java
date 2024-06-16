@@ -32,10 +32,12 @@ public class AssociateService implements IAssociateService {
             List<AssociateResult> result = new ArrayList<>();
             List<Associate> associates = _associateRepository.getAssociates();
             for (Associate associate : associates) {
-                List<Contact> contacts = _contactRepository.getContactsByIds(associate.getContacts());
-                contacts.sort(Comparator.comparing(Contact::getName));
-//                List<Deal> deals = _dealRepository.getDealsByIds(associate.getDeals());
-//                deals.sort(Comparator.comparing(Deal::getId));
+                List<Integer> contactIds = associate.getContacts();
+                List<Contact> contacts = new ArrayList<>();
+                if (contactIds != null && !contactIds.isEmpty()) {
+                    contacts = _contactRepository.getContacts(contactIds);
+                    contacts.sort(Comparator.comparing(Contact::getName));
+                }
                 result.add(new AssociateResult(associate, contacts));
             }
             result.sort(Comparator.comparing(AssociateResult::getId));
@@ -51,7 +53,7 @@ public class AssociateService implements IAssociateService {
     public AssociateResult getAssociateById(int id) throws ExecutionException, InterruptedException {
         try {
             Associate associate = _associateRepository.getAssociateById(id);
-            List<Contact> contacts = _contactRepository.getContactsByIds(associate.getContacts());
+            List<Contact> contacts = _contactRepository.getContacts(associate.getContacts());
             contacts.sort(Comparator.comparing(Contact::getName));
             return new AssociateResult(associate, contacts);
         }
@@ -79,6 +81,17 @@ public class AssociateService implements IAssociateService {
         }
         catch (Exception e) {
             _logger.Error("addAssociate", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Override
+    public String addContactToAssociate(int id, int contactId) throws ExecutionException, InterruptedException {
+        try {
+            return _associateRepository.addContactToAssociate(id, contactId);
+        }
+        catch (Exception e) {
+            _logger.Error("addContactToAssociate", e.getMessage());
             throw e;
         }
     }

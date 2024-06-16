@@ -63,7 +63,7 @@ function DealDetails() {
 	}
 
 	function fetchDealStageDetails() {
-		const toastId = loading("Loading deal stages data...");
+		const toastId = loading("Loading deal stages...");
 		fetch(process.env.REACT_APP_API_URI + "/finance/deals/" + params.id + "/stages" + "?token=" + auth.token, {
 			method: "GET",
             headers: { "ngrok-skip-browser-warning" : "true" }
@@ -76,13 +76,13 @@ function DealDetails() {
 					console.log(result.data);
 				}
 				else {
-					error("Load deal stages data failed");
+					error("Load deal stages failed");
 				}
 			})
 			.catch(e => {
 				console.log("ERROR_fetchDealStageDetails: " + e);
 				dismiss(toastId);
-				error("Load deal stages data failed");
+				error("Load deal stages failed");
 			})
 	}
 
@@ -149,7 +149,7 @@ function DealDetails() {
 							<div class="col-6">{x.closeDate ? dateFormat(x.closeDate) : "-/-"}</div>
 						</div>
 						<div class="mt-3">Notes:</div>
-						<input type="text-area" class="form-control" rows={3} value={x.notes}/>
+						<textarea class="form-control" rows={3} value={x.notes}/>
 					</div>
 					))}
 					{/* <div class="card deal-stage-display">

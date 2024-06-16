@@ -28,7 +28,7 @@ function Deals() {
 	}, [])
 
 	function fetchDeals() {
-		const toastId = loading("Loading deals data...");
+		const toastId = loading("Loading deals...");
 		fetch(process.env.REACT_APP_API_URI + "/finance/associates/" + params.id + "/deals" + "?token=" + auth.token, {
 			method: "GET",
             headers: { "ngrok-skip-browser-warning" : "true" }
@@ -41,13 +41,13 @@ function Deals() {
 				// console.log(result.data);
 			}
 			else {
-				error("Load deals data failed");
+				error("Load deals failed");
 			}
 		})
 		.catch(e => {
 			console.log("ERROR_fetchDeals: " + e);
 			dismiss(toastId);
-			error("Load deals data failed");
+			error("Load deals failed");
 		})
 	}
 

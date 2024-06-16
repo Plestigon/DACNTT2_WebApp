@@ -124,13 +124,13 @@
     background-color: rgb(194, 255, 133);
     cursor: pointer;
     display: inline-block;
-    width: 150px;
+    width: 100px;
     height: 30px;
 }
 
-.card.contacts-card:hover {
+/* .card.contacts-card:hover {
     background-color: rgb(131, 180, 81);
-}
+} */
 
 .card.deal-stage {
     text-align: center;

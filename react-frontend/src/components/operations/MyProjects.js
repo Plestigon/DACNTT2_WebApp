@@ -58,7 +58,7 @@ function MyProjects() {
 
     useEffect(() => {
         function loadProjects() {
-            const toastId = loading("Loading project data...");
+            const toastId = loading("Loading projects...");
             fetch(process.env.REACT_APP_API_URI + "/operations/my-projects?employeeId=" + employeeId,{
                 method:"GET",
                 headers: { "ngrok-skip-browser-warning" : "true" }
@@ -76,13 +76,14 @@ function MyProjects() {
             })
             .catch (e => {
                 console.log("ERROR_loadProjects: " + e);
+                error("Load projects failed");
             })
         }
         loadProjects();
     }, [])
 
     function loadTasks(projectId) {
-        const toastId = loading("Loading task data...");
+        const toastId = loading("Loading tasks...");
         fetch(process.env.REACT_APP_API_URI + "/operations/my-project/" + projectId + "/tasks?employeeId=" + employeeId,{
             method:"GET",
             headers: { "ngrok-skip-browser-warning" : "true" }
@@ -95,11 +96,12 @@ function MyProjects() {
                 setTasks(result.data);
             }
             else {
-                error("Load task data failed");
+                error("Load tasks failed");
             }
         })
         .catch (e => {
             console.log("ERROR_loadTasks: " + e);
+            error("Load tasks failed");
         })
     }
 

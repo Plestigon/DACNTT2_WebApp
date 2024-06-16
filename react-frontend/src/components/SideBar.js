@@ -99,10 +99,9 @@ function SideBar() {
             </div>
         </div>
         <div className={`nav-dropdown-content ${isFinanceMenuOpen ? 'active' : ''}`}>
-            <Nav.Link as={Link} to="/hr/submit-form"><i class ="bi bi-wallet"></i> Accounts</Nav.Link>
-            <Nav.Link as={Link} to="/hr/submit-form"><i class ="bi bi-person-bounding-box"></i> Contacts</Nav.Link>
-            <Nav.Link as={Link} to="/hr/submit-form"><i class ="bi bi-hand-thumbs-up"></i> Deals</Nav.Link>
-            <Nav.Link as={Link} to="/hr/submit-form"><i class ="bi bi-fingerprint"></i> Leads</Nav.Link>
+            <Nav.Link as={Link} to="/finance/associates"><i class ="bi bi-wallet"></i> Associates</Nav.Link>
+            <Nav.Link as={Link} to="/finance/contacts"><i class ="bi bi-person-bounding-box"></i> Contacts</Nav.Link>
+            <Nav.Link as={Link} to="/finance/deals"><i class ="bi bi-hand-thumbs-up"></i> Deals</Nav.Link>
         </div>
 
     </Nav>

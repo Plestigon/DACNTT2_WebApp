@@ -1,28 +1,18 @@
-package tdtu.ems.finance_service.models;
+package tdtu.ems.main.models.finance;
 
-public class Contact {
-    private int id;
+public class ContactDto {
     private String name;
     private String role;
     private String email;
     private String phoneNumber;
 
-    public Contact() {}
+    public ContactDto() {}
 
-    public Contact(int id, String name, String role, String email, String phoneNumber) {
-        this.id = id;
+    public ContactDto(String name, String role, String email, String phoneNumber) {
         this.name = name;
         this.role = role;
         this.email = email;
         this.phoneNumber = phoneNumber;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {
