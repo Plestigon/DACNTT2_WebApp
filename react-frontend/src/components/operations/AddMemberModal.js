@@ -4,8 +4,10 @@ import Modal from 'react-bootstrap/Modal';
 import Select from 'react-select';
 import Button from 'react-bootstrap/Button';
 import Notify, {success} from "../../utils/Notify";
+import { useAuthentication } from "../system/Authentication";
 
 function AddMemberModal(props) {
+    const auth = useAuthentication();
     const [data, setData] = useState({
         memberId: 0,
         name: 'Select new member',
@@ -36,9 +38,9 @@ function AddMemberModal(props) {
             let query = "";
             if (props.members.length > 0) {
                 let memberIds = props.members.map(m => m.employeeId);
-                query = '?ids=' + memberIds.join(',');
+                query = '&ids=' + memberIds.join(',');
             }
-            fetch(process.env.REACT_APP_API_URI + "/operations/employees/to-add" + query,{
+            fetch(process.env.REACT_APP_API_URI + "/operations/employees/to-add" + "?token=" + auth.token + query,{
                 method:"GET",
                 headers: { "ngrok-skip-browser-warning" : "true" }
             })
@@ -70,7 +72,8 @@ function AddMemberModal(props) {
 
     function handleSubmit() {
         if (data.memberId === 0) return;
-        fetch(process.env.REACT_APP_API_URI + "/operations/projects/" + props.projectId + "/member?memberId=" + data.memberId + "&role=" + data.role,{
+        fetch(process.env.REACT_APP_API_URI + "/operations/projects/" + props.projectId + "/member?memberId=" + 
+                data.memberId + "&role=" + data.role + "&token=" + auth.token,{
             method:"POST",
             headers: { "ngrok-skip-browser-warning" : "true" }
         })

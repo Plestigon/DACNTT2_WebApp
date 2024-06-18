@@ -33,12 +33,12 @@ function App() {
           <Routes>
             {/* === Not secured */}
 
-            <Route path="/" element={<Home/>}/>
+            {/* <Route path="/" element={<Home/>}/>
 
             <Route path="/operations/projects" element={<Operations/>}/>
             <Route path="/operations/projects/:id" element={<ProjectInfo/>} />
             <Route path="/operations/my-projects" element={<MyProjects/>}/>
-            <Route path="/operations/task/:id" element={<TaskInfo/>}/>
+            <Route path="/operations/tasks/:id" element={<TaskInfo/>}/>
             <Route path="/profile" element={<ProfilePage/>}/>
 
             <Route path="/hr/submit-form" element={<SubmitForm/>}/>
@@ -50,16 +50,16 @@ function App() {
             <Route path="/finance/associates" element={<Associates/>}/>
             <Route path="/finance/associates/:id/deals" element={<Deals/>}/>
             <Route path="/finance/deals/:id/stages" element={<DealDetails/>}/>
-            <Route path="/finance/contacts/" element={<Contacts/>}/>
+            <Route path="/finance/contacts/" element={<Contacts/>}/> */}
 
             {/* === Secured */}
             
-            {/* <Route path="/" element={<PrivateRoute><Home/></PrivateRoute>}/>
+            <Route path="/" element={<PrivateRoute><Home/></PrivateRoute>}/>
             
             <Route path="/operations/projects" element={<PrivateRoute><Operations/></PrivateRoute>}/>
             <Route path="/operations/projects/:id" element={<PrivateRoute><ProjectInfo/></PrivateRoute>} />
             <Route path="/operations/my-projects" element={<PrivateRoute><MyProjects/></PrivateRoute>}/>
-            <Route path="/operations/task/:id" element={<PrivateRoute><TaskInfo/></PrivateRoute>}/>
+            <Route path="/operations/tasks/:id" element={<PrivateRoute><TaskInfo/></PrivateRoute>}/>
             <Route path="/profile" element={<PrivateRoute><ProfilePage/></PrivateRoute>}/>
 
             <Route path="/hr/submit-form" element={<PrivateRoute><SubmitForm/></PrivateRoute>}/>
@@ -71,8 +71,10 @@ function App() {
             <Route path="/finance/associates" element={<PrivateRoute><Associates/></PrivateRoute>}/>
             <Route path="/finance/associates/:id/deals" element={<PrivateRoute><Deals/></PrivateRoute>}/>
             <Route path="/finance/deals/:id/stages" element={<PrivateRoute><DealDetails/></PrivateRoute>}/>
-            <Route path="/finance/contacts/" element={<PrivateRoute><Contacts/></PrivateRoute>}/> */}
+            <Route path="/finance/contacts/" element={<PrivateRoute><Contacts/></PrivateRoute>}/>
             
+            {/* === Always public */}
+
             <Route path="/login" element={<Login/>}/>
           </Routes>
         </Authentication>

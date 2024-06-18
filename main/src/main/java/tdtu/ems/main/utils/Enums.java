@@ -38,6 +38,7 @@ public class Enums {
 
     public enum ProjectRole {
         None,
+        PM,
         Lead,
         Dev,
         BA,

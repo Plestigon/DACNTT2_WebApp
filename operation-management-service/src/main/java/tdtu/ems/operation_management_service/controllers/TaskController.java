@@ -20,7 +20,7 @@ public class TaskController {
         _taskService = taskService;
     }
 
-    @PostMapping("/operations/task")
+    @PostMapping("/operations/tasks")
     public BaseResponse createTask(@RequestBody Task task) {
         try {
             //Task task = new Task(0, "test2", 2, 2, null, null, 1, 0, "Description2", new ArrayList<>());
@@ -32,7 +32,7 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/operations/project/{projectId}/tasks")
+    @GetMapping("/operations/projects/{projectId}/tasks")
     public BaseResponse getTasksByProjectId(@PathVariable int projectId) {
         try {
             List<TaskResult> result = _taskService.getTasksByProjectId(projectId);
@@ -54,7 +54,7 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/operations/task/{id}")
+    @GetMapping("/operations/tasks/{id}")
     public BaseResponse getTask(@PathVariable int id) {
         try {
             TaskResult result = _taskService.getTask(id);
@@ -65,7 +65,7 @@ public class TaskController {
         }
     }
 
-    @PostMapping("/operations/task/edit")
+    @PostMapping("/operations/tasks/edit")
     public BaseResponse editTask(@RequestBody Task task) {
         try {
             String result = _taskService.editTask(task);
@@ -76,7 +76,7 @@ public class TaskController {
         }
     }
 
-    @PostMapping("/operations/task/{id}/state")
+    @PostMapping("/operations/tasks/{id}/state")
     public BaseResponse updateTaskStateById(@PathVariable int id, @RequestParam int newValue) {
         try {
             String result = _taskService.updateTaskStateById(id, newValue);
@@ -87,7 +87,7 @@ public class TaskController {
         }
     }
 
-    @PostMapping("/operations/task/{id}/priority")
+    @PostMapping("/operations/tasks/{id}/priority")
     public BaseResponse updateTaskPriorityById(@PathVariable int id, @RequestParam int newValue) {
         try {
             String result = _taskService.updateTaskPriorityById(id, newValue);
@@ -98,7 +98,7 @@ public class TaskController {
         }
     }
 
-    @PostMapping("/operations/task/{id}/assign")
+    @PostMapping("/operations/tasks/{id}/assign")
     public BaseResponse assignTask(@PathVariable int id, @RequestParam int assigneeId) {
         try {
             String result = _taskService.assignTask(id, assigneeId);
@@ -109,7 +109,7 @@ public class TaskController {
         }
     }
 
-    @PostMapping("/operations/task/discussion")
+    @PostMapping("/operations/tasks/discussions")
     public BaseResponse addDiscussion(@RequestBody TaskDiscussion d) {
         try {
             //TaskDiscussion dd = new TaskDiscussion(0, 1, 1, "tva", "a@a", "Dev", null, "hello");
@@ -121,7 +121,7 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/operations/task/{id}/discussions")
+    @GetMapping("/operations/tasks/{id}/discussions")
     public BaseResponse getDiscussions(@PathVariable int id) {
         try {
             List<TaskDiscussion> result = _taskService.getDiscussions(id);
@@ -132,7 +132,7 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/operations/task/{id}/members")
+    @GetMapping("/operations/tasks/{id}/members")
     public BaseResponse getMembers(@PathVariable int id) {
         try {
             List<ProjectMemberResult> result = _taskService.getMembersByTaskId(id);

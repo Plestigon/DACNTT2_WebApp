@@ -28,12 +28,13 @@ public class OperationManagementController {
         _webClient = webClient;
     }
 
-    @GetMapping("operations/projects")
-    public ResponseEntity<ProjectResult> getProject(@RequestParam int id) {
+    @GetMapping("operations/projects/{id}")
+    public ResponseEntity<ProjectResult> getProject(@PathVariable int id, @RequestParam String token) {
         try {
             ProjectResult res = null;
             res = _webClient.build().get()
-                    .uri("http://operation-management-service/api/operations/projects?id=" + id)
+                    .uri("http://api-gateway/api/operations/projects/" + id)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()
                     .bodyToMono(ProjectResult.class)
                     .block();
@@ -63,14 +64,15 @@ public class OperationManagementController {
     }
 
     @GetMapping("operations/employees")
-    public ResponseEntity<BaseResponse> getEmployees(@RequestParam(required = false) List<Integer> ids) {
+    public ResponseEntity<BaseResponse> getEmployees(@RequestParam(required = false) List<Integer> ids, @RequestParam String token) {
         try {
             String query = "";
             if (ids != null && !ids.isEmpty()) {
                 query = "?ids=" + ids.stream().map(String::valueOf).collect(Collectors.joining(","));
             }
             BaseResponse res = _webClient.build().get()
-                    .uri("http://employee-service/api/employees" + query)
+                    .uri("http://api-gateway/api/employees" + query)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();
@@ -82,14 +84,15 @@ public class OperationManagementController {
     }
 
     @GetMapping("operations/employees/to-add")
-    public ResponseEntity<BaseResponse> getEmployeesToAdd(@RequestParam(required = false) List<Integer> ids) {
+    public ResponseEntity<BaseResponse> getEmployeesToAdd(@RequestParam(required = false) List<Integer> ids, @RequestParam String token) {
         try {
             String query = "";
             if (ids != null && !ids.isEmpty()) {
                 query = "/except?ids=" + ids.stream().map(String::valueOf).collect(Collectors.joining(","));
             }
             BaseResponse res = _webClient.build().get()
-                    .uri("http://employee-service/api/employees" + query)
+                    .uri("http://api-gateway/api/employees" + query)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();
@@ -101,10 +104,11 @@ public class OperationManagementController {
     }
 
     @PostMapping("operations/projects")
-    public ResponseEntity<BaseResponse> createProject(@RequestBody ProjectCreateDto project) {
+    public ResponseEntity<BaseResponse> createProject(@RequestBody ProjectCreateDto project, @RequestParam String token) {
         try {
             BaseResponse result = _webClient.build().post()
-                    .uri("http://operation-management-service/api/operations/projects")
+                    .uri("http://api-gateway/api/operations/projects")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .bodyValue(project)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
@@ -116,10 +120,11 @@ public class OperationManagementController {
     }
 
     @PostMapping("operations/projects/edit")
-    public ResponseEntity<BaseResponse> editProject(@RequestBody ProjectEditDto project) {
+    public ResponseEntity<BaseResponse> editProject(@RequestBody ProjectEditDto project, @RequestParam String token) {
         try {
             BaseResponse res = _webClient.build().post()
-                    .uri("http://operation-management-service/api/operations/projects/edit")
+                    .uri("http://api-gateway/api/operations/projects/edit")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .bodyValue(project)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
@@ -131,18 +136,18 @@ public class OperationManagementController {
     }
 
     @DeleteMapping("operations/projects/{id}")
-    public ResponseEntity<String> deleteProject(@PathVariable int id) {
-        String res = null;
+    public ResponseEntity<BaseResponse> deleteProject(@PathVariable int id, @RequestParam String token) {
         try {
-            res = _webClient.build().delete()
-                    .uri("http://operation-management-service/api/operations/projects/" + id)
+            BaseResponse res = _webClient.build().delete()
+                    .uri("http://api-gateway/api/operations/projects/" + id)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()
-                    .bodyToMono(String.class)
+                    .bodyToMono(BaseResponse.class)
                     .block();
+            return new ResponseEntity<>(res, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 
     @GetMapping("operations/projects/statuses")
@@ -166,10 +171,11 @@ public class OperationManagementController {
     }
 
     @PostMapping("operations/projects/{id}/update")
-    public ResponseEntity<BaseResponse> updateProjectStatus(@PathVariable int id, @RequestParam int status) {
+    public ResponseEntity<BaseResponse> updateProjectStatus(@PathVariable int id, @RequestParam int status, @RequestParam String token) {
         try {
             BaseResponse res = _webClient.build().post()
-                    .uri("http://operation-management-service/api/operations/projects/" + id + "/update?status=" + status)
+                    .uri("http://api-gateway/api/operations/projects/" + id + "/update?status=" + status)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();
@@ -180,11 +186,29 @@ public class OperationManagementController {
         }
     }
 
-    @GetMapping("operations/projects/updates/{projectId}")
-    public ResponseEntity<BaseResponse> getProjectUpdates(@PathVariable int projectId) {
+    @GetMapping("operations/projects/{id}/updates")
+    public ResponseEntity<BaseResponse> getProjectUpdates(@PathVariable int id, @RequestParam String token) {
         try {
             BaseResponse res = _webClient.build().get()
-                    .uri("http://operation-management-service/api/operations/projects/updates/" + projectId)
+                    .uri("http://api-gateway/api/operations/projects/" + id + "/updates")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("operations/projects/{id}/updates")
+    public ResponseEntity<BaseResponse> addProjectUpdates(@RequestBody ProjectUpdateDto input, @PathVariable int id, @RequestParam String token) {
+        try {
+            BaseResponse res = _webClient.build().post()
+                    .uri("http://api-gateway/api/operations/projects/" + id + "/updates")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                    .bodyValue(input)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();
@@ -196,14 +220,15 @@ public class OperationManagementController {
     }
 
     @GetMapping("operations/projects/members")
-    public ResponseEntity<BaseResponse> getProjectMembers(@RequestParam List<Integer> ids) {
+    public ResponseEntity<BaseResponse> getProjectMembers(@RequestParam List<Integer> ids, @RequestParam String token) {
         try {
             String query = "";
             if (ids != null && !ids.isEmpty()) {
                 query = "?ids=" + ids.stream().map(String::valueOf).collect(Collectors.joining(","));
             }
             BaseResponse res = _webClient.build().get()
-                    .uri("http://operation-management-service/api/operations/projects/members" + query)
+                    .uri("http://api-gateway/api/operations/projects/members" + query)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();
@@ -215,11 +240,12 @@ public class OperationManagementController {
     }
 
     @PostMapping("operations/projects/{projectId}/member")
-    public ResponseEntity<BaseResponse> addMember(@PathVariable int projectId, @RequestParam int memberId, @RequestParam int role) {
+    public ResponseEntity<BaseResponse> addMember(@PathVariable int projectId, @RequestParam int memberId, @RequestParam int role, @RequestParam String token) {
         try {
             BaseResponse res = _webClient.build().post()
-                    .uri("http://operation-management-service/api/operations/projects/" + projectId +
+                    .uri("http://api-gateway/api/operations/projects/" + projectId +
                             "/member?memberId=" + memberId + "&role=" + role)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();
@@ -231,10 +257,11 @@ public class OperationManagementController {
     }
 
     @DeleteMapping("operations/projects/{projectId}/member")
-    public ResponseEntity<BaseResponse> removeMember(@PathVariable int projectId, @RequestParam int memberId) {
+    public ResponseEntity<BaseResponse> removeMember(@PathVariable int projectId, @RequestParam int memberId, @RequestParam String token) {
         try {
             BaseResponse res = _webClient.build().delete()
-                    .uri("http://operation-management-service/api/operations/projects/" + projectId + "/member?memberId=" + memberId)
+                    .uri("http://api-gateway/api/operations/projects/" + projectId + "/member?memberId=" + memberId)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();
@@ -246,10 +273,11 @@ public class OperationManagementController {
     }
 
     @GetMapping("operations/my-projects")
-    public ResponseEntity<BaseResponse> getMyProjects(@RequestParam int employeeId) {
+    public ResponseEntity<BaseResponse> getMyProjects(@RequestParam int employeeId, @RequestParam String token) {
         try {
             BaseResponse res = _webClient.build().get()
-                    .uri("http://operation-management-service/api/operations/my-projects?employeeId=" + employeeId)
+                    .uri("http://api-gateway/api/operations/my-projects?employeeId=" + employeeId)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();

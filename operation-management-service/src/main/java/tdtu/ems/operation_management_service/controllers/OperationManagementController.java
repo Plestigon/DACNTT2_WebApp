@@ -28,8 +28,8 @@ public class OperationManagementController {
         }
     }
 
-    @GetMapping("/operations/projects")
-    public ResponseEntity<ProjectResult> getProjectById(@RequestParam int id) {
+    @GetMapping("/operations/projects/{id}")
+    public ResponseEntity<ProjectResult> getProjectById(@PathVariable int id) {
         ProjectResult response = null;
         try {
             response = _projectService.getProjectById(id);
@@ -89,21 +89,21 @@ public class OperationManagementController {
         }
     }
 
-    @GetMapping("/operations/projects/updates/{projectId}")
-    public BaseResponse getProjectUpdates(@PathVariable int projectId) {
+    @GetMapping("/operations/projects/{id}/updates")
+    public BaseResponse getProjectUpdates(@PathVariable int id) {
         List<ProjectUpdateResult> response = null;
         try {
-            response = _projectService.getProjectUpdates(projectId);
+            response = _projectService.getProjectUpdates(id);
             return new BaseResponse(response, 200, "OK");
         } catch (Exception e) {
             return new BaseResponse(null, 500, e.getMessage());
         }
     }
 
-    @PostMapping("/operations/projects/updates")
-    public BaseResponse addProjectUpdate(@RequestBody ProjectUpdate projectUpdate, @RequestParam int projectId) {
+    @PostMapping("/operations/projects/{id}/updates")
+    public BaseResponse addProjectUpdate(@RequestBody ProjectUpdate projectUpdate, @PathVariable int id) {
         try {
-            int response = _projectService.addProjectUpdate(projectUpdate, projectId);
+            int response = _projectService.addProjectUpdate(projectUpdate, id);
             return new BaseResponse(null, 200,"OK");
         } catch (Exception e) {
             return new BaseResponse(null, 500, e.getMessage());

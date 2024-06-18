@@ -8,8 +8,10 @@ import { success } from "../../utils/Notify";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { getDefaultDueDate } from "../../utils/DateHelper";
+import { useAuthentication } from "../system/Authentication";
 
 function NewTaskModal(props) {
+    const auth = useAuthentication();
     const [inputs, setInputs] = useState({
         name: '',
         assignee: 0,
@@ -76,7 +78,7 @@ function NewTaskModal(props) {
 
     function handleSubmit() {
         console.log(inputs);
-        fetch(process.env.REACT_APP_API_URI + "/operations/task",{
+        fetch(process.env.REACT_APP_API_URI + "/operations/tasks" + "?token=" + auth.token,{
             method:"POST",
             body: JSON.stringify({
                 name: inputs.name,

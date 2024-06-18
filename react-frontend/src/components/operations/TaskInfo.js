@@ -14,9 +14,10 @@ import Notify, {success, error} from "../../utils/Notify";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import "../../css/editor.css";
+import { useAuthentication } from "../system/Authentication";
   
 const TaskInfo = () => {
-    const userId = 1;
+    const auth = useAuthentication();
     const params = useParams();
     const [data, setData] = useState({
         id: 0,
@@ -42,14 +43,14 @@ const TaskInfo = () => {
     const [comment, setComment] = useState();
 
     const loadTaskData = useCallback(() => {
-        fetch(process.env.REACT_APP_API_URI + "/operations/task/" + params.id,{
+        fetch(process.env.REACT_APP_API_URI + "/operations/tasks/" + params.id + "?token=" + auth.token,{
             method:"GET",
             headers: { "ngrok-skip-browser-warning" : "true" }
         })
         .then(result=>result.json())
         .then((result)=>{
             if (result.statusCode===200) {
-                console.log(result.data);
+                // console.log(result.data);
                 setData({
                     id: result.data.id,
                     name: result.data.name,
@@ -116,7 +117,7 @@ const TaskInfo = () => {
     const loadAssignees = useCallback(() => {
         //console.log("load " + data.id);
         if (data.id <= 0) return;
-        fetch(process.env.REACT_APP_API_URI + "/operations/task/" + data.id + "/members",{
+        fetch(process.env.REACT_APP_API_URI + "/operations/tasks/" + data.id + "/members" + "?token=" + auth.token,{
             method:"GET",
             headers: { "ngrok-skip-browser-warning" : "true" }
         })
@@ -139,7 +140,7 @@ const TaskInfo = () => {
 
     const loadDiscussions = useCallback(() => {
         if (data.id <= 0) return;
-        fetch(process.env.REACT_APP_API_URI + "/operations/task/" + data.id + "/discussions",{
+        fetch(process.env.REACT_APP_API_URI + "/operations/tasks/" + data.id + "/discussions" + "?token=" + auth.token,{
             method:"GET",
             headers: { "ngrok-skip-browser-warning" : "true" }
         })
@@ -186,7 +187,7 @@ const TaskInfo = () => {
     function handleStateChange(e) {
         if (e.value !== data.state) {
             setData(prevState => ({...prevState, 'state': e.value, 'stateName': e.label}));
-            fetch(process.env.REACT_APP_API_URI + "/operations/task/" + params.id + "/state?newValue=" + e.value,{
+            fetch(process.env.REACT_APP_API_URI + "/operations/tasks/" + params.id + "/state?newValue=" + e.value + "&token=" + auth.token,{
                 method:"POST",
                 headers: { "ngrok-skip-browser-warning" : "true" }
             })
@@ -206,7 +207,7 @@ const TaskInfo = () => {
     function handlePriorityChange(e) {
         if (e.value !== data.priority) {
             setData(prevState => ({...prevState, 'priority': e.value, 'priorityName': e.label}));
-            fetch(process.env.REACT_APP_API_URI + "/operations/task/" + params.id + "/priority?newValue=" + e.value,{
+            fetch(process.env.REACT_APP_API_URI + "/operations/tasks/" + params.id + "/priority?newValue=" + e.value + "&token=" + auth.token,{
                 method:"POST",
                 headers: { "ngrok-skip-browser-warning" : "true" }
             })
@@ -226,7 +227,7 @@ const TaskInfo = () => {
     function handleAssigning(e) {
         if (e.value !== data.assignee) {
             setData(prevState => ({...prevState, 'assignee': e.value, assigneeName: e.label}));
-            fetch(process.env.REACT_APP_API_URI + "/operations/task/" + params.id + "/assign?assigneeId=" + e.value,{
+            fetch(process.env.REACT_APP_API_URI + "/operations/tasks/" + params.id + "/assign?assigneeId=" + e.value + "&token=" + auth.token,{
                 method:"POST",
                 headers: { "ngrok-skip-browser-warning" : "true" }
             })
@@ -254,7 +255,7 @@ const TaskInfo = () => {
 
     function handleEditSubmit() {
         // console.log(data);
-        fetch(process.env.REACT_APP_API_URI + "/operations/projects/edit",{
+        fetch(process.env.REACT_APP_API_URI + "/operations/projects/edit" + "?token=" + auth.token,{
             method:"POST",
             body: JSON.stringify({
                 'id': params.id,
@@ -281,11 +282,11 @@ const TaskInfo = () => {
 
     function handleSubmitComment() {
         // console.log(data);
-        fetch(process.env.REACT_APP_API_URI + "/operations/task/discussion",{
+        fetch(process.env.REACT_APP_API_URI + "/operations/tasks/discussions" + "?token=" + auth.token,{
             method:"POST",
             body: JSON.stringify({
                 'taskId': data.id,
-                'writerId': userId,
+                'writerId': auth.id,
                 'content': comment,
             }),
             headers: { 

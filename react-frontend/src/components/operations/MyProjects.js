@@ -13,8 +13,10 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css"; 
 import styled from "@emotion/styled/macro";
+import { useAuthentication } from "../system/Authentication";
 
 function MyProjects() {
+    const auth = useAuthentication();
     const [projects, setProjects] = useState([]);
     const [tasks, setTasks] = useState([]);
     const employeeId = 1;
@@ -84,7 +86,7 @@ function MyProjects() {
 
     function loadTasks(projectId) {
         const toastId = loading("Loading tasks...");
-        fetch(process.env.REACT_APP_API_URI + "/operations/my-project/" + projectId + "/tasks?employeeId=" + employeeId,{
+        fetch(process.env.REACT_APP_API_URI + "/operations/my-project/" + projectId + "/tasks?employeeId=" + employeeId + "?token=" + auth.token,{
             method:"GET",
             headers: { "ngrok-skip-browser-warning" : "true" }
         })
@@ -208,7 +210,7 @@ function MyProjects() {
                     tasks.length > 0 && (
                         tasks.map(t => (
                             <tr key={t.id} title="See task details" style={{cursor:"pointer"}} onClick={() => {
-                                var win = window.open('/operations/task/' + t.id, '_blank');
+                                var win = window.open('/operations/tasks/' + t.id, '_blank');
                                 win.focus();
                             }}>
                             <td>{t.name}</td>

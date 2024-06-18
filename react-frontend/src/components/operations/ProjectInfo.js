@@ -13,8 +13,10 @@ import SideBar from "../SideBar";
 import TopBar from "../TopBar";
 import Notify, {success} from "../../utils/Notify";
 import NewTaskModal from "./NewTaskModal";
+import { useAuthentication } from "../system/Authentication";
   
 const ProjectInfo = () => {
+    const auth = useAuthentication();
     const params = useParams();
     const [options, setOptions] = useState([]);
     const [data, setData] = useState({
@@ -33,9 +35,10 @@ const ProjectInfo = () => {
     const [inputDisabled, setInputDisabled] = useState(true);
     const [addMemberModalShow, setAddMemberModalShow] = useState(false);
     const [newTaskModalShow, setNewTaskModalShow] = useState(false);
+    const [comment, setComment] = useState('');
 
     const loadProjectData = useCallback(() => {
-        fetch(process.env.REACT_APP_API_URI + "/operations/projects?id=" + params.id,{
+        fetch(process.env.REACT_APP_API_URI + "/operations/projects/" + params.id + "?token=" + auth.token,{
             method:"GET",
             headers: { "ngrok-skip-browser-warning" : "true" }
         })
@@ -70,9 +73,11 @@ const ProjectInfo = () => {
         .catch (e => {
             console.log("ERROR_loadProjectData_statuses: " + e);
         })
-
+    }, [params])
+    
+    const loadProjectUpdates = useCallback(() => {
         //Get project updates
-        fetch(process.env.REACT_APP_API_URI + "/operations/projects/updates/" + params.id,{
+        fetch(process.env.REACT_APP_API_URI + "/operations/projects/" + params.id + "/updates?token=" + auth.token,{
             method:"GET",
             headers: { "ngrok-skip-browser-warning" : "true" }
         })
@@ -86,20 +91,21 @@ const ProjectInfo = () => {
         .catch (e => {
             console.log("ERROR_loadProjectData_updates: " + e);
         })
-    }, [params])
+    }, [])
 
     useEffect(() => {
         loadProjectData();
-    }, [params, loadProjectData])
-    
+        loadProjectUpdates();
+    }, [params, loadProjectData, loadProjectUpdates])
+
     const loadMembers = useCallback(() => {
         //Get member list
         if (data.memberIds != null && data.memberIds.length > 0) {
             var query = "";
             if (data.memberIds.length > 0) {
-                query = "?ids=" + data.memberIds.join(",");
+                query = "&ids=" + data.memberIds.join(",");
             }
-            fetch(process.env.REACT_APP_API_URI + "/operations/projects/members" + query,{
+            fetch(process.env.REACT_APP_API_URI + "/operations/projects/members" + "?token=" + auth.token + query,{
                 method:"GET",
                 headers: { "ngrok-skip-browser-warning" : "true" }
             })
@@ -121,8 +127,7 @@ const ProjectInfo = () => {
     }, [data.memberIds, loadMembers])
 
     const loadTasks = useCallback(() => {
-        console.log("Load");
-        fetch(process.env.REACT_APP_API_URI + "/operations/projects/" + params.id + "/tasks",{
+        fetch(process.env.REACT_APP_API_URI + "/operations/projects/" + params.id + "/tasks" + "?token=" + auth.token,{
             method:"GET",
             headers: { "ngrok-skip-browser-warning" : "true" }
         })
@@ -131,6 +136,9 @@ const ProjectInfo = () => {
             //console.log(result);
             if (result.statusCode === 200) {
                 setTasks(result.data);
+            }
+            else {
+                console.log(result.message);
             }
         })
         .catch (e => {
@@ -159,7 +167,7 @@ const ProjectInfo = () => {
     }
 
     function handleUpdateStatus(status) {
-        fetch(process.env.REACT_APP_API_URI + "/operations/projects/" + params.id + "/update?status=" + status,{
+        fetch(process.env.REACT_APP_API_URI + "/operations/projects/" + params.id + "/update?status=" + status + "&token=" + auth.token,{
             method:"POST",
             headers: { "ngrok-skip-browser-warning" : "true" }
         })
@@ -186,7 +194,7 @@ const ProjectInfo = () => {
 
     function handleEditSubmit() {
         // console.log(data);
-        fetch(process.env.REACT_APP_API_URI + "/operations/projects/edit",{
+        fetch(process.env.REACT_APP_API_URI + "/operations/projects/edit" + "?token=" + auth.token,{
             method:"POST",
             body: JSON.stringify({
                 'id': params.id,
@@ -213,7 +221,7 @@ const ProjectInfo = () => {
 
     function handleRemoveMember(memberId) {
         // console.log("remove " + memberId + " from " + params.id);
-        fetch(process.env.REACT_APP_API_URI + "/operations/projects/" + params.id + "/member?memberId=" + memberId,{
+        fetch(process.env.REACT_APP_API_URI + "/operations/projects/" + params.id + "/member?memberId=" + memberId + "&token=" + auth.token,{
             method:"DELETE",
             headers: { "ngrok-skip-browser-warning" : "true" }
         })
@@ -227,6 +235,30 @@ const ProjectInfo = () => {
         })
         .catch (e => {
             console.log("handleRemoveMember: " + e);
+        })
+    }
+
+    function handleProjectUpdateSubmit() {
+        fetch(process.env.REACT_APP_API_URI + "/operations/projects/" + params.id + "/updates" + "?token=" + auth.token,{
+            method:"POST",
+            body: JSON.stringify({
+                'writerId': auth.id,
+                'comment': comment
+            }),
+            headers: { 
+                "Content-type": "application/json; charset=UTF-8",
+                "ngrok-skip-browser-warning" : "true" 
+            }
+        })
+        .then(result=>result.json())
+        .then((result)=>{
+            // console.log(result);
+            if (result.statusCode === 200) {
+                loadProjectUpdates();
+            }
+        })
+        .catch (e => {
+            console.log("ERROR_handleEditSubmit: " + e);
         })
     }
 
@@ -278,11 +310,11 @@ const ProjectInfo = () => {
                 <div class="row">
                     <div class="col-2">Comment</div>
                     <div class="col-10">
-                        <textarea class="form-control" rows={2} cols={10}/>
+                        <textarea class="form-control" name="comment" rows={2} cols={10} onChange={(e) => setComment(e.target.value)}/>
                     </div>
                 </div>
                 <div class="row w-100">
-                    <Button className="ms-auto mt-2" style={{width: '150px'}}>Submit</Button>
+                    <Button className="ms-auto mt-2" style={{width: '150px'}} onClick={handleProjectUpdateSubmit}>Submit</Button>
                 </div>
                 <hr/>
                 {prjUpdates.map(p => 
@@ -334,7 +366,7 @@ const ProjectInfo = () => {
                     <div class="row my-1" key={t.id}>
                         <div class="card hover-lightgray p-2" style={{width: '90%', cursor:"pointer"}} title="See Task's details"
                         onClick={() => {
-                            var win = window.open('/operations/task/' + t.id, '_blank');
+                            var win = window.open('/operations/tasks/' + t.id, '_blank');
                             win.focus();
                         }}>
                             <div class="d-flex">

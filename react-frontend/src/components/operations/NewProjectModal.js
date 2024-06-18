@@ -6,8 +6,10 @@ import Modal from 'react-bootstrap/Modal';
 import Select from 'react-select';
 import { getDefaultDueDate } from "../../utils/DateHelper";
 import { success, error } from "../../utils/Notify";
+import { useAuthentication } from "../system/Authentication";
 
 function NewProjectModal(props) {
+    const auth = useAuthentication();
     const [inputs, setInputs] = useState({
         name: '',
         owner: 0,
@@ -18,7 +20,7 @@ function NewProjectModal(props) {
     const [options, setOptions] = useState([]);
 
     const loadOwners = useCallback(() => {
-        fetch(process.env.REACT_APP_API_URI + "/operations/employees",{
+        fetch(process.env.REACT_APP_API_URI + "/operations/employees" + "?token=" + auth.token,{
             method:"GET",
             headers: { "ngrok-skip-browser-warning" : "true" }
         })
@@ -68,7 +70,7 @@ function NewProjectModal(props) {
     function handleSubmitProject(e) {
         e.preventDefault();
         // console.log(inputs);
-        fetch(process.env.REACT_APP_API_URI + "/operations/projects",{
+        fetch(process.env.REACT_APP_API_URI + "/operations/projects" + "?token=" + auth.token,{
             method:"POST",
             body: JSON.stringify({
                 'name': inputs.name,
@@ -89,7 +91,7 @@ function NewProjectModal(props) {
                 props.onHide();
                 props.reload();
             }   
-            console.log(result);
+            // console.log(result);
         })
         .catch (e => {
             console.log("ERROR_handleSubmitProject: " + e);
@@ -97,7 +99,7 @@ function NewProjectModal(props) {
     }
 
     return (
-        <Modal show={props.show} onHide={props.onHide} reload={props.reload} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
+        <Modal show={props.show} onHide={props.onHide} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
             <Modal.Header closeButton>
                 <Modal.Title class="w-100" id="contained-modal-title-vcenter">
                     <p class="h4 text-center">Create New Project</p>

@@ -1,5 +1,6 @@
 package tdtu.ems.main.controllers;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,11 +24,28 @@ public class TaskController {
         _webClient = webClient;
     }
 
-    @GetMapping("operations/project/{projectId}/tasks")
-    public ResponseEntity<BaseResponse> getTasks(@PathVariable int projectId) {
+    @GetMapping("operations/projects/{projectId}/tasks")
+    public ResponseEntity<BaseResponse> getTasks(@PathVariable int projectId, @RequestParam String token) {
         try {
             BaseResponse result = _webClient.build().get()
-                    .uri("http://operation-management-service/api/operations/project/" + projectId + "/tasks")
+                    .uri("http://api-gateway/api/operations/projects/" + projectId + "/tasks")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("operations/tasks/{id}")
+    public ResponseEntity<BaseResponse> getTask(@PathVariable int id, @RequestParam String token) {
+        try {
+            BaseResponse result = _webClient.build().get()
+                    .uri("http://api-gateway/api/operations/tasks/" + id)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();
@@ -38,26 +56,12 @@ public class TaskController {
         }
     }
 
-    @GetMapping("operations/task/{id}")
-    public ResponseEntity<BaseResponse> getTask(@PathVariable int id) {
-        try {
-            BaseResponse result = _webClient.build().get()
-                    .uri("http://operation-management-service/api/operations/task/" + id)
-                    .retrieve()
-                    .bodyToMono(BaseResponse.class)
-                    .block();
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        }
-        catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @PostMapping("operations/task")
-    public ResponseEntity<BaseResponse> createTask(@RequestBody TaskDto task) {
+    @PostMapping("operations/tasks")
+    public ResponseEntity<BaseResponse> createTask(@RequestBody TaskDto task, @RequestParam String token) {
         try {
             BaseResponse result = _webClient.build().post()
-                    .uri("http://operation-management-service/api/operations/task")
+                    .uri("http://api-gateway/api/operations/tasks")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .bodyValue(task)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
@@ -69,11 +73,12 @@ public class TaskController {
         }
     }
 
-    @PostMapping("/operations/task/edit")
-    public ResponseEntity<BaseResponse> editTask(@RequestBody TaskDto task) {
+    @PostMapping("/operations/tasks/edit")
+    public ResponseEntity<BaseResponse> editTask(@RequestBody TaskDto task, @RequestParam String token) {
         try {
             BaseResponse result = _webClient.build().post()
-                    .uri("http://operation-management-service/api/operations/task/edit")
+                    .uri("http://api-gateway/api/operations/tasks/edit")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .bodyValue(task)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
@@ -85,11 +90,12 @@ public class TaskController {
         }
     }
 
-    @PostMapping("/operations/task/{id}/state")
-    public ResponseEntity<BaseResponse> updateTaskStateById(@PathVariable int id, @RequestParam int newValue) {
+    @PostMapping("/operations/tasks/{id}/state")
+    public ResponseEntity<BaseResponse> updateTaskStateById(@PathVariable int id, @RequestParam int newValue, @RequestParam String token) {
         try {
             BaseResponse result = _webClient.build().post()
-                    .uri("http://operation-management-service/api/operations/task/" + id + "/state?newValue=" + newValue)
+                    .uri("http://api-gateway/api/operations/tasks/" + id + "/state?newValue=" + newValue)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();
@@ -100,11 +106,12 @@ public class TaskController {
         }
     }
 
-    @PostMapping("/operations/task/{id}/priority")
-    public ResponseEntity<BaseResponse> updateTaskPriorityById(@PathVariable int id, @RequestParam int newValue) {
+    @PostMapping("/operations/tasks/{id}/priority")
+    public ResponseEntity<BaseResponse> updateTaskPriorityById(@PathVariable int id, @RequestParam int newValue, @RequestParam String token) {
         try {
             BaseResponse result = _webClient.build().post()
-                    .uri("http://operation-management-service/api/operations/task/" + id + "/priority?newValue=" + newValue)
+                    .uri("http://api-gateway/api/operations/tasks/" + id + "/priority?newValue=" + newValue)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();
@@ -135,11 +142,12 @@ public class TaskController {
         return new ResponseEntity<>(new BaseResponse(res, 200, "OK"), HttpStatus.OK);
     }
 
-    @GetMapping("operations/task/{id}/members")
-    public ResponseEntity<BaseResponse> getMembers(@PathVariable int id) {
+    @GetMapping("operations/tasks/{id}/members")
+    public ResponseEntity<BaseResponse> getMembers(@PathVariable int id, @RequestParam String token) {
         try {
             BaseResponse result = _webClient.build().get()
-                    .uri("http://operation-management-service/api/operations/task/" + id + "/members")
+                    .uri("http://api-gateway/api/operations/tasks/" + id + "/members")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();
@@ -150,11 +158,13 @@ public class TaskController {
         }
     }
 
-    @PostMapping("/operations/task/{id}/assign")
-    public ResponseEntity<BaseResponse> assignTask(@PathVariable int id, @RequestParam int assigneeId) {
+    @PostMapping("/operations/tasks/{id}/assign")
+    public ResponseEntity<BaseResponse> assignTask(@PathVariable int id, @RequestParam int assigneeId, @RequestParam String token) {
         try {
             BaseResponse result = _webClient.build().post()
-                    .uri("http://operation-management-service/api/operations/task/" + id + "/assign?assigneeId=" + assigneeId)
+                    .uri("http://api-gateway/api/operations/tasks/" + id + "/assign?assigneeId=" + assigneeId)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();
@@ -166,10 +176,11 @@ public class TaskController {
     }
 
     @GetMapping("operations/my-project/{projectId}/tasks")
-    public ResponseEntity<BaseResponse> getTasksFromMyProject(@PathVariable int projectId, @RequestParam int employeeId) {
+    public ResponseEntity<BaseResponse> getTasksFromMyProject(@PathVariable int projectId, @RequestParam int employeeId, @RequestParam String token) {
         try {
             BaseResponse result = _webClient.build().get()
-                    .uri("http://operation-management-service/api/operations/my-project/" + projectId + "/tasks?employeeId=" + employeeId)
+                    .uri("http://api-gateway/api/operations/my-project/" + projectId + "/tasks?employeeId=" + employeeId)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();
@@ -180,11 +191,12 @@ public class TaskController {
         }
     }
 
-    @GetMapping("operations/task/{id}/discussions")
-    public ResponseEntity<BaseResponse> getDiscussions(@PathVariable int id) {
+    @GetMapping("operations/tasks/{id}/discussions")
+    public ResponseEntity<BaseResponse> getDiscussions(@PathVariable int id, @RequestParam String token) {
         try {
             BaseResponse result = _webClient.build().get()
-                    .uri("http://operation-management-service/api/operations/task/" + id + "/discussions")
+                    .uri("http://api-gateway/api/operations/tasks/" + id + "/discussions")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();
@@ -195,11 +207,12 @@ public class TaskController {
         }
     }
 
-    @PostMapping("operations/task/discussion")
-    public ResponseEntity<BaseResponse> addDiscussion(@RequestBody TaskDiscussionDto entry) {
+    @PostMapping("operations/tasks/discussions")
+    public ResponseEntity<BaseResponse> addDiscussion(@RequestBody TaskDiscussionDto entry, @RequestParam String token) {
         try {
             BaseResponse result = _webClient.build().post()
-                    .uri("http://operation-management-service/api/operations/task/discussion")
+                    .uri("http://api-gateway/api/operations/tasks/discussions")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .bodyValue(entry)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
@@ -207,7 +220,7 @@ public class TaskController {
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
         catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

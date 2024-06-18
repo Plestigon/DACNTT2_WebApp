@@ -40,6 +40,7 @@ function Operations() {
             }
             else {
                 error("Load projects failed");
+                console.log(result.message);
             }
         })
         .catch (e => {
@@ -58,7 +59,7 @@ function Operations() {
     function deleteProject() {
         setShowDeleteModal(false);
         if (deleteTarget.id === null || deleteTarget.id <= 0) {return;}
-        fetch(process.env.REACT_APP_API_URI + "/operations/projects/" + deleteTarget.id, {
+        fetch(process.env.REACT_APP_API_URI + "/operations/projects/" + deleteTarget.id + "?token=" + auth.token, {
             method:"DELETE",
             headers: { "ngrok-skip-browser-warning" : "true" }
         })
