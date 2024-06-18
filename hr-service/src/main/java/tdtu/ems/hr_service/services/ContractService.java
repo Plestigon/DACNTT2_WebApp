@@ -8,6 +8,7 @@ import tdtu.ems.hr_service.models.ContractResult;
 import tdtu.ems.hr_service.repositories.ContractRepository;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -38,11 +39,8 @@ public class ContractService implements IContractService{
     @Override
     public List<ContractResult> getContractsByEmployeeId(int id) throws ExecutionException, InterruptedException {
         try {
-            List<Contract> contracts = _contractRepository.getContractsByEmployeeId(id);
-            List<ContractResult> result = new ArrayList<>();
-            for (Contract c : contracts) {
-                result.add(new ContractResult(c));
-            }
+            List<ContractResult> result = _contractRepository.getContractsByEmployeeId(id);
+            result.sort(Comparator.comparing(ContractResult::getTimeStart).reversed());
             return result;
         }
         catch (Exception e) {

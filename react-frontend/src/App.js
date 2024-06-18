@@ -23,6 +23,7 @@ import Associates from './components/finance/Associates';
 import Deals from './components/finance/Deals';
 import DealDetails from './components/finance/DealDetails';
 import Contacts from './components/finance/Contacts';
+import NewContract from './components/hr/NewContract';
 
 function App() {
 
@@ -45,6 +46,7 @@ function App() {
             <Route path="/hr/my-forms" element={<MyForms/>}/>
             <Route path="/hr/summary" element={<HRSummary/>}/>
             <Route path="/hr/contracts" element={<MyContracts/>}/>
+            <Route path="/hr/new-contract" element={<NewContract/>}/>
             <Route path="/hr/employees" element={<EmpList/>}/>
             
             <Route path="/finance/associates" element={<Associates/>}/>
@@ -66,6 +68,7 @@ function App() {
             <Route path="/hr/my-forms" element={<PrivateRoute><MyForms/></PrivateRoute>}/>
             <Route path="/hr/summary" element={<PrivateRoute><HRSummary/></PrivateRoute>}/>
             <Route path="/hr/contracts" element={<PrivateRoute><MyContracts/></PrivateRoute>}/>
+            <Route path="/hr/new-contract" element={<PrivateRoute><NewContract/></PrivateRoute>}/>
             <Route path="/hr/employees" element={<PrivateRoute><EmpList/></PrivateRoute>}/>
             
             <Route path="/finance/associates" element={<PrivateRoute><Associates/></PrivateRoute>}/>

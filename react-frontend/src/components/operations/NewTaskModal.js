@@ -15,9 +15,9 @@ function NewTaskModal(props) {
     const [inputs, setInputs] = useState({
         name: '',
         assignee: 0,
-        assigneeName: '',
+        assigneeName: '- Select assignee -',
         priority: 0,
-        priorityName: '',
+        priorityName: '- Select priority -',
         dueDate: getDefaultDueDate(),
         description: ''
     });

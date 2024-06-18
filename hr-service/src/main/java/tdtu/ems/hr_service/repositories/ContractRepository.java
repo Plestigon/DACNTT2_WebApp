@@ -4,6 +4,7 @@ import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.stereotype.Repository;
+import tdtu.ems.hr_service.models.ContractResult;
 import tdtu.ems.hr_service.utils.Enums;
 import tdtu.ems.hr_service.utils.Logger;
 import tdtu.ems.hr_service.models.Contract;
@@ -28,25 +29,42 @@ public class ContractRepository implements IContractRepository {
     @Override
     public Integer addContract(Contract entry) throws ExecutionException, InterruptedException {
         CollectionReference contractsDb = _db.collection("contracts");
+        CollectionReference departmentsDb = _db.collection("departments");
         DocumentReference idTracer = _db.collection("idTracer").document("contracts");
         long id = Objects.requireNonNull(idTracer.get().get().getLong("id")) + 1;
         entry.setId((int) id);
         entry.setStatus(Enums.ContractStatus.Inactive.ordinal());
+
+        String departmentShortname = departmentsDb.document(String.valueOf(entry.getDepartment())).get().get().get("shortName", String.class);
+        String contractType = Enums.ContractType.values()[entry.getId()].name();
+        StringBuilder contractCode = new StringBuilder();
+        for (int i = 0; i < contractType.length(); i++) {
+            if (Character.isUpperCase(contractType.charAt(i))) {
+                contractCode.append(contractType.charAt(i));
+            }
+        }
+        StringBuilder idCode = new StringBuilder(String.valueOf(id));
+        while (idCode.length() < 5) {
+            idCode.insert(0, "0");
+        }
+        entry.setCode(departmentShortname + "-" + contractCode + "-" + idCode);
         ApiFuture<WriteResult> result = contractsDb.document(String.valueOf(id)).set(entry);
         ApiFuture<WriteResult> updateIdResult = idTracer.update("id", id);
         return (int) id;
     }
 
     @Override
-    public List<Contract> getContractsByEmployeeId(int id) throws ExecutionException, InterruptedException {
+    public List<ContractResult> getContractsByEmployeeId(int id) throws ExecutionException, InterruptedException {
         CollectionReference contractsDb = _db.collection("contracts");
-        List<Contract> contracts = new ArrayList<>();
+        CollectionReference departmentsDb = _db.collection("departments");
+        List<ContractResult> result = new ArrayList<>();
         for (DocumentSnapshot data : contractsDb.get().get().getDocuments()) {
             Contract c = data.toObject(Contract.class);
             if (c != null && c.getOwnerId() == id) {
-                contracts.add(c);
+                String departmentLongName = departmentsDb.document(String.valueOf(c.getDepartment())).get().get().get("longName", String.class);
+                result.add(new ContractResult(c, departmentLongName));
             }
         }
-        return contracts;
+        return result;
     }
 }

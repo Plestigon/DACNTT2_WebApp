@@ -10,7 +10,7 @@ function AddMemberModal(props) {
     const auth = useAuthentication();
     const [data, setData] = useState({
         memberId: 0,
-        name: 'Select new member',
+        name: '- Select new member -',
         role: 0,
         roleName: ''
     });

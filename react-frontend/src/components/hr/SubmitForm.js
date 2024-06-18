@@ -1,5 +1,4 @@
 import React from "react";
-import NavigationBar from '../NavigationBar';
 import { useEffect, useState } from 'react';
 import SideBar from "../SideBar";
 import TopBar from "../TopBar";
@@ -55,10 +54,6 @@ function SubmitForm() {
                 var endDate = new Date(inputs.endDate);
                 var tomorrow = new Date();
                 tomorrow.setDate(tomorrow.getDate() + 1);
-                if (startDate < tomorrow) {
-                    error("Invalid Start date");
-                    return;
-                }
                 if (endDate <= startDate) {
                     endDate = new Date(startDate);
                     endDate.setDate(endDate.getDate() + 1);
@@ -90,7 +85,7 @@ function SubmitForm() {
         if (inputs.typeName === 'Resignation') {
             setInputs(prevState => ({...prevState, 'startDate': '', 'endDate': ''}));
         }
-        console.log(inputs);
+        // console.log(inputs);
         fetch(process.env.REACT_APP_API_URI + "/hr/submit-form" + "?token=" + auth.token,{
             method:"POST",
             body: JSON.stringify({
@@ -121,7 +116,7 @@ function SubmitForm() {
     <SideBar/>
     <TopBar/>
     <div class="content container pt-3 px-3">
-        <div class="d-flex justify-content-end mb-2 px-5">
+        <div class="d-flex justify-content-start mb-2 px-5">
             <Button onClick={() => navigate("/hr/my-forms")}><i class="bi bi-file-earmark-text"></i> My Forms</Button>
         </div>
         <div class="card text-dark bg-light" style={{marginLeft: '20%', marginRight: '20%'}}>

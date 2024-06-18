@@ -10,6 +10,7 @@ import tdtu.ems.employee_service.models.Department;
 import tdtu.ems.employee_service.repositories.IDepartmentRepository;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
@@ -46,7 +47,9 @@ public class DepartmentService implements IDepartmentService {
 
     public List<Department> getDepartments() throws ExecutionException, InterruptedException {
         try {
-            return _departmentRepository.getDepartments();
+            List<Department> result = _departmentRepository.getDepartments();
+            result.sort(Comparator.comparing(Department::getShortName));
+            return result;
         }
         catch (Exception e) {
             _logger.Error("getDepartments", e.getMessage());

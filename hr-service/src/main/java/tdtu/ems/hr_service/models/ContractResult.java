@@ -17,14 +17,14 @@ public class ContractResult {
     private int status; //ContractStatus
     private String statusName;
 
-    public ContractResult(Contract c) {
+    public ContractResult(Contract c, String departmentName) {
         this.id = c.getId();
         this.code = c.getCode();
         this.type = c.getType();
         this.typeName = Enums.ContractType.values()[c.getType()].name;
         this.department = c.getDepartment();
         this.ownerId = c.getOwnerId();
-        this.departmentName = "DEPARTMENT_NAME";
+        this.departmentName = departmentName;
         this.timeStart = c.getTimeStart();
         this.timeEnd = c.getTimeEnd();
         this.status = c.getStatus();

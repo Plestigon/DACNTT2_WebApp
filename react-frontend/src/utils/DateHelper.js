@@ -1,18 +1,18 @@
 export function getDefaultStartDate() {
-    var today = new Date();
-    var year = today.getFullYear();
-    var month = today.getMonth()+1; if (month < 10) {month = "0" + month};
-    var day = today.getDate(); if (day < 10) {day = "0" + day};
-    var result = `${year}-${month}-${day+1}`;
+    var tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+    var year = tomorrow.getFullYear();
+    var month = tomorrow.getMonth()+1; if (month < 10) {month = "0" + month};
+    var day = tomorrow.getDate(); if (day < 10) {day = "0" + day};
+    var result = `${year}-${month}-${day}`;
     return (result);
 }
 
 export function getDefaultEndDate() {
-    var today = new Date();
-    var year = today.getFullYear();
-    var month = today.getMonth()+1; if (month < 10) {month = "0" + month};
-    var day = today.getDate(); if (day < 10) {day = "0" + day};
-    var result = `${year}-${month}-${day+2}`;
+    var date = new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000)
+    var year = date.getFullYear();
+    var month = date.getMonth()+1; if (month < 10) {month = "0" + month};
+    var day = date.getDate(); if (day < 10) {day = "0" + day};
+    var result = `${year}-${month}-${day}`;
     return (result);
 }
 
@@ -22,6 +22,15 @@ export function getDefaultDueDate() {
     var month = today.getMonth()+1; if (month < 10) {month = "0" + month};
     var day = today.getDate(); if (day < 10) {day = "0" + day};
     var result = `${year}-${month}-${day}T23:59`;
+    return (result);
+}
+
+export function getDefaultContractExpireDate() {
+    var date = new Date(new Date().getTime() + 365 * 24 * 60 * 60 * 1000)
+    var year = date.getFullYear();
+    var month = date.getMonth()+1; if (month < 10) {month = "0" + month};
+    var day = date.getDate(); if (day < 10) {day = "0" + day};
+    var result = `${year}-${month}-${day}`;
     return (result);
 }
 

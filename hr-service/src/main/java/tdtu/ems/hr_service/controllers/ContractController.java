@@ -17,7 +17,7 @@ public class ContractController {
         _contractService = contractService;
     }
 
-    @PostMapping("hr/contract")
+    @PostMapping("hr/contracts")
     public BaseResponse addContract(@RequestBody Contract entry) {
         try {
             Integer res = _contractService.addContract(entry);

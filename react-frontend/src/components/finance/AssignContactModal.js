@@ -8,7 +8,7 @@ import Notify, {success} from "../../utils/Notify";
 function AssignContactModal(props) {
     const [data, setData] = useState({
         id: 0,
-        name: "Select contact"
+        name: "- Select contact -"
     });
     const [options, setOptions] = useState([]);
 

@@ -32,7 +32,7 @@ function NewProjectModal(props) {
                     data.push({label: o.name, value: o.id});
                 });
                 setOptions(data);
-                handleInputChange({label: "Select project's owner", value: 0});
+                handleInputChange({label: "- Select project's owner -", value: 0});
             }
         })
         .catch (e => {

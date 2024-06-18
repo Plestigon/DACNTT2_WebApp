@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
+import tdtu.ems.main.models.hr.ContractDto;
 import tdtu.ems.main.utils.BaseResponse;
 import tdtu.ems.main.utils.Enums;
 import tdtu.ems.main.utils.SelectOptionsResult;
@@ -74,6 +75,33 @@ public class HRController {
             BaseResponse result = _webClient.build().get()
                     .uri("http://api-gateway/api/hr/contracts/" + id)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("hr/contracts/types")
+    public ResponseEntity<List<SelectOptionsResult>> getContractTypes() {
+        var types = Enums.ContractType.values();
+        List<SelectOptionsResult> res = new ArrayList<>();
+        for(int i = 1; i < types.length; i++) {
+            res.add(new SelectOptionsResult(types[i].name, types[i].ordinal()));
+        }
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
+    @PostMapping("hr/contracts")
+    public ResponseEntity<BaseResponse> addContract(@RequestBody ContractDto input, @RequestParam String token) {
+        try {
+            BaseResponse result = _webClient.build().post()
+                    .uri("http://api-gateway/api/hr/contracts")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                    .bodyValue(input)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();
