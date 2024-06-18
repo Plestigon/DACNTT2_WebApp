@@ -35,30 +35,46 @@ function Associates() {
 			method: "GET",
 			headers: { "ngrok-skip-browser-warning": "true" }
 		})
-			.then(result => result.json())
-			.then((result) => {
-				dismiss(toastId);
-				if (result.statusCode === 200) {
-					setAssociates(result.data);
-					console.log(result.data);
-				}
-				else {
-					error("Load associates failed");
-				}
-			})
-			.catch(e => {
-				console.log("ERROR_fetchAssociates: " + e);
-				dismiss(toastId);
+		.then(result => result.json())
+		.then((result) => {
+			dismiss(toastId);
+			if (result.statusCode === 200) {
+				setAssociates(result.data);
+				// console.log(result.data);
+			}
+			else {
 				error("Load associates failed");
-			})
+			}
+		})
+		.catch(e => {
+			console.log("ERROR_fetchAssociates: " + e);
+			dismiss(toastId);
+			error("Load associates failed");
+		})
 	}
 
-	function deleteBtnClick(e, id, name) {
-
+	function deleteBtnClick(id, name) {
+		setDeleteTarget({'id': id, 'name': name});
+		setShowDeleteModal(true);
 	}
 
 	function deleteAssociate() {
-
+		setShowDeleteModal(false);
+		fetch(process.env.REACT_APP_API_URI + "/finance/associates/" + deleteTarget.id + "?token=" + auth.token, {
+			method: "DELETE",
+			headers: { "ngrok-skip-browser-warning": "true" }
+		})
+		.then(result => result.json())
+		.then((result) => {
+			if (result.statusCode === 200) {
+				fetchAssociates()
+				success("Deleted Associate");
+			}
+		})
+		.catch(e => {
+			console.log("ERROR_deleteAssociate: " + e);
+		})
+		setDeleteTarget({ 'id': 0, 'name': '' })
 	}
 
 	function addContactBtnClick(id) {
@@ -118,7 +134,7 @@ function Associates() {
 									{/* <td style={{padding:'10px'}}><button class="btn btn-primary">+ Contact</button></td> */}
 									<td style={{ padding: '10px' }}><button class="btn btn-info" onClick={() => window.open('/finance/associates/' + x.id + '/deals', '_blank').focus()}>Go to Deals</button></td>
 									<td><button class="btn btn-danger bi bi-trash delete-prj-btn"
-										onClick={(e) => deleteBtnClick(e, x.id, x.name)}></button></td>
+										onClick={(e) => deleteBtnClick(x.id, x.name)}></button></td>
 								</tr>
 							))}
 						</tbody>
@@ -126,7 +142,7 @@ function Associates() {
 				</div>
 			</div>
 			<DeleteConfirmModal show={showDeleteModal} onHide={() => { setShowDeleteModal(false); setDeleteTarget({ 'id': 0, 'name': '' }) }}
-				message={"Delete project \"" + deleteTarget.name + "\"?"} delete={deleteAssociate} />
+				message={"Delete associate \"" + deleteTarget.name + "\"?"} delete={deleteAssociate} />
 			<AssignContactModal show={showAddContactModal} onHide={() => setShowAddContactModal(false)}
 				associateId={addContactTarget.id} contacts={addContactTarget.contacts} reload={fetchAssociates} token={auth.token} />
 		</div>

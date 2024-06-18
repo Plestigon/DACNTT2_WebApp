@@ -68,7 +68,7 @@ function NewProjectModal(props) {
     function handleSubmitProject(e) {
         e.preventDefault();
         // console.log(inputs);
-        fetch(process.env.REACT_APP_API_URI + "/operations/project",{
+        fetch(process.env.REACT_APP_API_URI + "/operations/projects",{
             method:"POST",
             body: JSON.stringify({
                 'name': inputs.name,

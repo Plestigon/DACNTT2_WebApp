@@ -28,7 +28,7 @@ public class OperationManagementController {
         }
     }
 
-    @GetMapping("/operations/project")
+    @GetMapping("/operations/projects")
     public ResponseEntity<ProjectResult> getProjectById(@RequestParam int id) {
         ProjectResult response = null;
         try {
@@ -69,7 +69,7 @@ public class OperationManagementController {
         }
     }
 
-    @PostMapping("/operations/project/edit")
+    @PostMapping("/operations/projects/edit")
     public BaseResponse editProject(@RequestBody Project project) {
         try {
             String response = _projectService.editProject(project);
@@ -79,7 +79,7 @@ public class OperationManagementController {
         }
     }
 
-    @PostMapping("/operations/project/{id}/update")
+    @PostMapping("/operations/projects/{id}/update")
     public BaseResponse updateProjectStatus(@PathVariable int id, @RequestParam int status) {
         try {
             String response = _projectService.updateProjectStatus(id, status);
@@ -89,7 +89,7 @@ public class OperationManagementController {
         }
     }
 
-    @GetMapping("/operations/project/updates/{projectId}")
+    @GetMapping("/operations/projects/updates/{projectId}")
     public BaseResponse getProjectUpdates(@PathVariable int projectId) {
         List<ProjectUpdateResult> response = null;
         try {
@@ -100,7 +100,7 @@ public class OperationManagementController {
         }
     }
 
-    @PostMapping("/operations/project/updates")
+    @PostMapping("/operations/projects/updates")
     public BaseResponse addProjectUpdate(@RequestBody ProjectUpdate projectUpdate, @RequestParam int projectId) {
         try {
             int response = _projectService.addProjectUpdate(projectUpdate, projectId);
@@ -110,7 +110,7 @@ public class OperationManagementController {
         }
     }
 
-    @GetMapping("/operations/project/members")
+    @GetMapping("/operations/projects/members")
     public BaseResponse getProjectMembers(@RequestParam List<Integer> ids) {
         try {
             List<ProjectMemberResult> result = _projectService.getProjectMembers(ids);
@@ -120,7 +120,7 @@ public class OperationManagementController {
         }
     }
 
-    @PostMapping("operations/project/{projectId}/member")
+    @PostMapping("operations/projects/{projectId}/member")
     public BaseResponse addMember(@PathVariable int projectId, @RequestParam int memberId, @RequestParam int role) {
         try {
             String res = _projectService.addMemberToProject(memberId, projectId, role);
@@ -131,7 +131,7 @@ public class OperationManagementController {
         }
     }
 
-    @DeleteMapping("operations/project/{projectId}/member")
+    @DeleteMapping("operations/projects/{projectId}/member")
     public BaseResponse removeMember(@PathVariable int projectId, @RequestParam int memberId) {
         try {
             String res = _projectService.removeMemberFromProject(memberId, projectId);
@@ -140,16 +140,5 @@ public class OperationManagementController {
         catch (Exception e) {
             return new BaseResponse(null, 500, e.getMessage());
         }
-    }
-
-    @GetMapping("/test")
-    public Object test() {
-        Object res = null;
-        try {
-            res = _projectService.test();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return res;
     }
 }

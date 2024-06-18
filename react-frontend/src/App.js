@@ -36,7 +36,7 @@ function App() {
             <Route path="/" element={<Home/>}/>
 
             <Route path="/operations/projects" element={<Operations/>}/>
-            <Route path="/operations/project/:id" element={<ProjectInfo/>} />
+            <Route path="/operations/projects/:id" element={<ProjectInfo/>} />
             <Route path="/operations/my-projects" element={<MyProjects/>}/>
             <Route path="/operations/task/:id" element={<TaskInfo/>}/>
             <Route path="/profile" element={<ProfilePage/>}/>
@@ -57,7 +57,7 @@ function App() {
             {/* <Route path="/" element={<PrivateRoute><Home/></PrivateRoute>}/>
             
             <Route path="/operations/projects" element={<PrivateRoute><Operations/></PrivateRoute>}/>
-            <Route path="/operations/project/:id" element={<PrivateRoute><ProjectInfo/></PrivateRoute>} />
+            <Route path="/operations/projects/:id" element={<PrivateRoute><ProjectInfo/></PrivateRoute>} />
             <Route path="/operations/my-projects" element={<PrivateRoute><MyProjects/></PrivateRoute>}/>
             <Route path="/operations/task/:id" element={<PrivateRoute><TaskInfo/></PrivateRoute>}/>
             <Route path="/profile" element={<PrivateRoute><ProfilePage/></PrivateRoute>}/>

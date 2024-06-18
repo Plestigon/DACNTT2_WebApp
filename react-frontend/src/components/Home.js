@@ -23,7 +23,7 @@ function Home() {
 
         {/*Cards*/}
         <div class="container">
-            <div class="card-group">
+            <div class="card-group d-flex justify-content-center">
                 <div class="flip-card" style={{maxWidth: '18rem'}}>
                     <div class="flip-card-inner">
                         <div class="flip-card-front bg-success">
@@ -63,7 +63,7 @@ function Home() {
                         </div>
                     </div>
                 </div>
-                <div class="flip-card" style={{maxWidth: '18rem'}}>
+                {/* <div class="flip-card" style={{maxWidth: '18rem'}}>
                     <div class="flip-card-inner">
                         <div class="flip-card-front bg-warning">
                             <img src={require('../assets/Calendar.png')} class="card-img-top" alt="..." style={{width: '12rem'}}/>
@@ -75,7 +75,7 @@ function Home() {
                             <a href="#" class="btn btn-primary stretched-link bg-warning border-0">Go to Schedule</a>
                         </div>
                     </div>
-                </div>
+                </div> */}
             </div>
         </div>
     </div>

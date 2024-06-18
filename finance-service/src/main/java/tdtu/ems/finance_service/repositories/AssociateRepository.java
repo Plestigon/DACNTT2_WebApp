@@ -85,6 +85,9 @@ public class AssociateRepository implements IAssociateRepository {
         if (a == null) {
             throw new NotFoundException("Associate with id " + " not found");
         }
+        if (a.getContacts() == null) {
+            a.setContacts(new ArrayList<>());
+        }
         if (a.getContacts().contains(contactId)) {
             throw new IllegalArgumentException("This associate already has that contact");
         }

@@ -254,7 +254,7 @@ const TaskInfo = () => {
 
     function handleEditSubmit() {
         // console.log(data);
-        fetch(process.env.REACT_APP_API_URI + "/operations/project/edit",{
+        fetch(process.env.REACT_APP_API_URI + "/operations/projects/edit",{
             method:"POST",
             body: JSON.stringify({
                 'id': params.id,
@@ -326,7 +326,7 @@ const TaskInfo = () => {
                     <label className="w-100">
                         Parent Project: <div class="form-control link-primary hover-lightgray" title="See Project's details" style={{cursor:"pointer"}}
                         onClick={() => {
-                            var win = window.open('/operations/project/' + data.projectId, '_blank');
+                            var win = window.open('/operations/projects/' + data.projectId, '_blank');
                             win.focus();
                         }}>{data.projectName}</div>
                     </label>

@@ -79,6 +79,22 @@ public class FinanceController {
         }
     }
 
+    @DeleteMapping("finance/associates/{id}")
+    public ResponseEntity<BaseResponse> removeAssociate(@PathVariable int id, @RequestParam String token) {
+        try {
+            BaseResponse result = _webClient.build().delete()
+                    .uri("http://api-gateway/api/finance/associates/" + id)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping("finance/associates/{id}/deals")
     public ResponseEntity<BaseResponse> getDeals(@PathVariable int id, @RequestParam String token) {
         try {

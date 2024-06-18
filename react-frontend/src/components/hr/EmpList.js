@@ -74,8 +74,7 @@ function EmpList() {
     }
 
     function projectDetails(id) {
-        // navigate('/operations/project/' + id);
-        var win = window.open('/operations/project/' + id, '_blank');
+        var win = window.open('/operations/projects/' + id, '_blank');
         win.focus();
     }
 

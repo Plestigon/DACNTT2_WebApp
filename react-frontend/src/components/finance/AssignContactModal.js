@@ -46,7 +46,7 @@ function AssignContactModal(props) {
 
     function handleSubmit() {
         if (data.id === 0) return;
-        console.log("add " + data.id + " to " + props.associateId);
+        // console.log("add " + data.id + " to " + props.associateId);
         fetch(process.env.REACT_APP_API_URI + "/finance/associates/" + props.associateId + "/contacts?contactId=" + data.id + "&token=" + props.token,{
             method:"PUT",
             headers: { "ngrok-skip-browser-warning" : "true" }

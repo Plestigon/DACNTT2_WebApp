@@ -28,18 +28,12 @@ public class OperationManagementController {
         _webClient = webClient;
     }
 
-    @GetMapping("operations/index")
-    public String index(Model model) {
-        model.addAttribute("title", OPERATIONS_PAGE_TITLE);
-        return "Operations/Operations";
-    }
-
-    @GetMapping("operations/project")
+    @GetMapping("operations/projects")
     public ResponseEntity<ProjectResult> getProject(@RequestParam int id) {
         try {
             ProjectResult res = null;
             res = _webClient.build().get()
-                    .uri("http://operation-management-service/api/operations/project?id=" + id)
+                    .uri("http://operation-management-service/api/operations/projects?id=" + id)
                     .retrieve()
                     .bodyToMono(ProjectResult.class)
                     .block();
@@ -50,7 +44,7 @@ public class OperationManagementController {
         }
     }
 
-    @RequestMapping(value = "operations/projects", method = RequestMethod.GET)
+    @GetMapping("operations/projects")
     public ResponseEntity<BaseResponse> getProjects(@RequestParam(required = false) Integer employeeId, @RequestParam String token) {
         try {
 
@@ -106,7 +100,7 @@ public class OperationManagementController {
         }
     }
 
-    @RequestMapping(value = "operations/project", method = RequestMethod.POST)
+    @PostMapping("operations/projects")
     public ResponseEntity<BaseResponse> createProject(@RequestBody ProjectCreateDto project) {
         try {
             BaseResponse result = _webClient.build().post()
@@ -121,11 +115,11 @@ public class OperationManagementController {
         }
     }
 
-    @PostMapping("operations/project/edit")
+    @PostMapping("operations/projects/edit")
     public ResponseEntity<BaseResponse> editProject(@RequestBody ProjectEditDto project) {
         try {
             BaseResponse res = _webClient.build().post()
-                    .uri("http://operation-management-service/api/operations/project/edit")
+                    .uri("http://operation-management-service/api/operations/projects/edit")
                     .bodyValue(project)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
@@ -136,8 +130,8 @@ public class OperationManagementController {
         }
     }
 
-    @RequestMapping(value = "operations/project", method = RequestMethod.DELETE)
-    public ResponseEntity<String> deleteProject(@RequestParam("id") String id) {
+    @DeleteMapping("operations/projects/{id}")
+    public ResponseEntity<String> deleteProject(@PathVariable int id) {
         String res = null;
         try {
             res = _webClient.build().delete()
@@ -151,7 +145,7 @@ public class OperationManagementController {
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 
-    @GetMapping("operations/project/statuses")
+    @GetMapping("operations/projects/statuses")
     public ResponseEntity<List<SelectOptionsResult>> getProjectStatuses() {
         var statuses = Enums.ProjectStatus.values();
         List<SelectOptionsResult> res = new ArrayList<>();
@@ -161,7 +155,7 @@ public class OperationManagementController {
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
-    @GetMapping("operations/project/roles")
+    @GetMapping("operations/projects/roles")
     public ResponseEntity<BaseResponse> getProjectRoles() {
         var roles = Enums.ProjectRole.values();
         List<SelectOptionsResult> res = new ArrayList<>();
@@ -171,11 +165,11 @@ public class OperationManagementController {
         return new ResponseEntity<>(new BaseResponse(res, 200, "OK"), HttpStatus.OK);
     }
 
-    @PostMapping("operations/project/{id}/update")
+    @PostMapping("operations/projects/{id}/update")
     public ResponseEntity<BaseResponse> updateProjectStatus(@PathVariable int id, @RequestParam int status) {
         try {
             BaseResponse res = _webClient.build().post()
-                    .uri("http://operation-management-service/api/operations/project/" + id + "/update?status=" + status)
+                    .uri("http://operation-management-service/api/operations/projects/" + id + "/update?status=" + status)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();
@@ -186,11 +180,11 @@ public class OperationManagementController {
         }
     }
 
-    @GetMapping("operations/project/updates/{projectId}")
+    @GetMapping("operations/projects/updates/{projectId}")
     public ResponseEntity<BaseResponse> getProjectUpdates(@PathVariable int projectId) {
         try {
             BaseResponse res = _webClient.build().get()
-                    .uri("http://operation-management-service/api/operations/project/updates/" + projectId)
+                    .uri("http://operation-management-service/api/operations/projects/updates/" + projectId)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();
@@ -201,7 +195,7 @@ public class OperationManagementController {
         }
     }
 
-    @GetMapping("operations/project/members")
+    @GetMapping("operations/projects/members")
     public ResponseEntity<BaseResponse> getProjectMembers(@RequestParam List<Integer> ids) {
         try {
             String query = "";
@@ -209,7 +203,7 @@ public class OperationManagementController {
                 query = "?ids=" + ids.stream().map(String::valueOf).collect(Collectors.joining(","));
             }
             BaseResponse res = _webClient.build().get()
-                    .uri("http://operation-management-service/api/operations/project/members" + query)
+                    .uri("http://operation-management-service/api/operations/projects/members" + query)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();
@@ -220,11 +214,11 @@ public class OperationManagementController {
         }
     }
 
-    @PostMapping("operations/project/{projectId}/member")
+    @PostMapping("operations/projects/{projectId}/member")
     public ResponseEntity<BaseResponse> addMember(@PathVariable int projectId, @RequestParam int memberId, @RequestParam int role) {
         try {
             BaseResponse res = _webClient.build().post()
-                    .uri("http://operation-management-service/api/operations/project/" + projectId +
+                    .uri("http://operation-management-service/api/operations/projects/" + projectId +
                             "/member?memberId=" + memberId + "&role=" + role)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
@@ -236,11 +230,11 @@ public class OperationManagementController {
         }
     }
 
-    @DeleteMapping("operations/project/{projectId}/member")
+    @DeleteMapping("operations/projects/{projectId}/member")
     public ResponseEntity<BaseResponse> removeMember(@PathVariable int projectId, @RequestParam int memberId) {
         try {
             BaseResponse res = _webClient.build().delete()
-                    .uri("http://operation-management-service/api/operations/project/" + projectId + "/member?memberId=" + memberId)
+                    .uri("http://operation-management-service/api/operations/projects/" + projectId + "/member?memberId=" + memberId)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();

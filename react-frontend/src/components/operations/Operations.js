@@ -58,7 +58,7 @@ function Operations() {
     function deleteProject() {
         setShowDeleteModal(false);
         if (deleteTarget.id === null || deleteTarget.id <= 0) {return;}
-        fetch(process.env.REACT_APP_API_URI + "/operations/project?id=" + deleteTarget.id, {
+        fetch(process.env.REACT_APP_API_URI + "/operations/projects/" + deleteTarget.id, {
             method:"DELETE",
             headers: { "ngrok-skip-browser-warning" : "true" }
         })
@@ -76,8 +76,7 @@ function Operations() {
     }
 
     function projectDetails(id) {
-        // navigate('/operations/project/' + id);
-        var win = window.open('/operations/project/' + id, '_blank');
+        var win = window.open('/operations/projects/' + id, '_blank');
         win.focus();
     }
 

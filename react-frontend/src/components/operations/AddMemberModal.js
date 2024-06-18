@@ -17,7 +17,7 @@ function AddMemberModal(props) {
 
     useEffect(() => {
         function loadProjectRoles() {
-            fetch(process.env.REACT_APP_API_URI + "/operations/project/roles",{
+            fetch(process.env.REACT_APP_API_URI + "/operations/projects/roles",{
                 method:"GET",
                 headers: { "ngrok-skip-browser-warning" : "true" }
             })
@@ -70,7 +70,7 @@ function AddMemberModal(props) {
 
     function handleSubmit() {
         if (data.memberId === 0) return;
-        fetch(process.env.REACT_APP_API_URI + "/operations/project/" + props.projectId + "/member?memberId=" + data.memberId + "&role=" + data.role,{
+        fetch(process.env.REACT_APP_API_URI + "/operations/projects/" + props.projectId + "/member?memberId=" + data.memberId + "&role=" + data.role,{
             method:"POST",
             headers: { "ngrok-skip-browser-warning" : "true" }
         })

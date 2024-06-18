@@ -35,7 +35,7 @@ const ProjectInfo = () => {
     const [newTaskModalShow, setNewTaskModalShow] = useState(false);
 
     const loadProjectData = useCallback(() => {
-        fetch(process.env.REACT_APP_API_URI + "/operations/project?id=" + params.id,{
+        fetch(process.env.REACT_APP_API_URI + "/operations/projects?id=" + params.id,{
             method:"GET",
             headers: { "ngrok-skip-browser-warning" : "true" }
         })
@@ -59,7 +59,7 @@ const ProjectInfo = () => {
         })
 
         // Get status options
-        fetch(process.env.REACT_APP_API_URI + "/operations/project/statuses",{
+        fetch(process.env.REACT_APP_API_URI + "/operations/projects/statuses",{
             method:"GET",
             headers: { "ngrok-skip-browser-warning" : "true" }
         })
@@ -72,7 +72,7 @@ const ProjectInfo = () => {
         })
 
         //Get project updates
-        fetch(process.env.REACT_APP_API_URI + "/operations/project/updates/" + params.id,{
+        fetch(process.env.REACT_APP_API_URI + "/operations/projects/updates/" + params.id,{
             method:"GET",
             headers: { "ngrok-skip-browser-warning" : "true" }
         })
@@ -99,7 +99,7 @@ const ProjectInfo = () => {
             if (data.memberIds.length > 0) {
                 query = "?ids=" + data.memberIds.join(",");
             }
-            fetch(process.env.REACT_APP_API_URI + "/operations/project/members" + query,{
+            fetch(process.env.REACT_APP_API_URI + "/operations/projects/members" + query,{
                 method:"GET",
                 headers: { "ngrok-skip-browser-warning" : "true" }
             })
@@ -122,7 +122,7 @@ const ProjectInfo = () => {
 
     const loadTasks = useCallback(() => {
         console.log("Load");
-        fetch(process.env.REACT_APP_API_URI + "/operations/project/" + params.id + "/tasks",{
+        fetch(process.env.REACT_APP_API_URI + "/operations/projects/" + params.id + "/tasks",{
             method:"GET",
             headers: { "ngrok-skip-browser-warning" : "true" }
         })
@@ -159,7 +159,7 @@ const ProjectInfo = () => {
     }
 
     function handleUpdateStatus(status) {
-        fetch(process.env.REACT_APP_API_URI + "/operations/project/" + params.id + "/update?status=" + status,{
+        fetch(process.env.REACT_APP_API_URI + "/operations/projects/" + params.id + "/update?status=" + status,{
             method:"POST",
             headers: { "ngrok-skip-browser-warning" : "true" }
         })
@@ -186,7 +186,7 @@ const ProjectInfo = () => {
 
     function handleEditSubmit() {
         // console.log(data);
-        fetch(process.env.REACT_APP_API_URI + "/operations/project/edit",{
+        fetch(process.env.REACT_APP_API_URI + "/operations/projects/edit",{
             method:"POST",
             body: JSON.stringify({
                 'id': params.id,
@@ -213,7 +213,7 @@ const ProjectInfo = () => {
 
     function handleRemoveMember(memberId) {
         // console.log("remove " + memberId + " from " + params.id);
-        fetch(process.env.REACT_APP_API_URI + "/operations/project/" + params.id + "/member?memberId=" + memberId,{
+        fetch(process.env.REACT_APP_API_URI + "/operations/projects/" + params.id + "/member?memberId=" + memberId,{
             method:"DELETE",
             headers: { "ngrok-skip-browser-warning" : "true" }
         })
