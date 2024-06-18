@@ -6,8 +6,10 @@ import TopBar from "../TopBar";
 import SideBar from "../SideBar";
 import '../../css/sidebar.css';
 import Notify, {success, error, loading, dismiss} from "../../utils/Notify";
+import { useAuthentication } from "../system/Authentication";
  
 function MyContracts() {
+    const auth = useAuthentication();
     const [contracts, setContracts] = useState([]);
 
     useEffect(()=>{
@@ -16,7 +18,7 @@ function MyContracts() {
 
     function loadContractData() {
         const toastId = loading("Loading contracts...");
-        fetch(process.env.REACT_APP_API_URI + "/hr/contracts/1",{
+        fetch(process.env.REACT_APP_API_URI + "/hr/contracts/" + auth.id + "?token=" + auth.token,{
             method:"GET",
             headers: { "ngrok-skip-browser-warning" : "true" }
         })

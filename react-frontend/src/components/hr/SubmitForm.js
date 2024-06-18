@@ -6,16 +6,12 @@ import TopBar from "../TopBar";
 import Select from 'react-select';
 import { Button } from "react-bootstrap";
 import Notify, { info, error } from "../../utils/Notify";
-import { getDefaultStartDate, getDefaultEndDate } from "../../utils/DateHelper";
+import { getDefaultStartDate, getDefaultEndDate, handleDate } from "../../utils/DateHelper";
 import { useNavigate } from "react-router-dom";
+import { useAuthentication } from "../system/Authentication";
 
 function SubmitForm() {
-    // var defaultStartDate = new Date();
-    // defaultStartDate.setDate(defaultStartDate.getDate() + 1);
-    // var defaultEndDate = new Date();
-    // defaultEndDate.setDate(defaultEndDate.getDate() + 2);
-    // console.log(defaultStartDate);
-    // console.log(defaultEndDate);
+    const auth = useAuthentication();
     const navigate = useNavigate();
 
     const [inputs, setInputs] = useState({
@@ -64,15 +60,16 @@ function SubmitForm() {
                     return;
                 }
                 if (endDate <= startDate) {
-                    error("Start date must be smaller than End date");
-                    return;
+                    endDate = new Date(startDate);
+                    endDate.setDate(endDate.getDate() + 1);
+                    setInputs(prevState => ({...prevState, 'endDate': handleDate(endDate)}));
                 }
             }
             if (name === 'endDate') {
                 var startDate = new Date(inputs.startDate);
                 var endDate = new Date(value);
                 if (endDate <= startDate) {
-                    error("End date must be greater than Start date");
+                    error("End date must be after Start date");
                     return;
                 }
             }
@@ -94,11 +91,11 @@ function SubmitForm() {
             setInputs(prevState => ({...prevState, 'startDate': '', 'endDate': ''}));
         }
         console.log(inputs);
-        fetch(process.env.REACT_APP_API_URI + "/hr/submit-form",{
+        fetch(process.env.REACT_APP_API_URI + "/hr/submit-form" + "?token=" + auth.token,{
             method:"POST",
             body: JSON.stringify({
                 'type': inputs.type,
-                'ownerId': 1,
+                'ownerId': auth.id,
                 'startDate': inputs.startDate,
                 'endDate': inputs.endDate,
                 'reason': inputs.reason

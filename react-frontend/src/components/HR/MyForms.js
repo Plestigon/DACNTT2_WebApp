@@ -8,8 +8,10 @@ import Notify, {success, error, loading, dismiss} from "../../utils/Notify";
 import "../../css/utils.css"
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { useAuthentication } from "../system/Authentication";
  
 function MyForms() {
+    const auth = useAuthentication();
     const [forms, setForms] = useState([]);
     const navigate = useNavigate();
 
@@ -27,7 +29,7 @@ function MyForms() {
 
     function loadFormData() {
         const toastId = loading("Loading forms...");
-        fetch(process.env.REACT_APP_API_URI + "/hr/forms/1",{
+        fetch(process.env.REACT_APP_API_URI + "/hr/forms/" + auth.id + "?token=" + auth.token,{
             method:"GET",
             headers: { "ngrok-skip-browser-warning" : "true" }
         })

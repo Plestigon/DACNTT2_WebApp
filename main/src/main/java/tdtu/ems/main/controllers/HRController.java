@@ -36,10 +36,11 @@ public class HRController {
     }
 
     @PostMapping("hr/submit-form")
-    public ResponseEntity<BaseResponse> submitForm(@RequestBody FormSubmitDto entry) {
+    public ResponseEntity<BaseResponse> submitForm(@RequestBody FormSubmitDto entry, @RequestParam String token) {
         try {
             BaseResponse result = _webClient.build().post()
-                    .uri("http://hr-service/api/hr/form")
+                    .uri("http://api-gateway/api/hr/form")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .bodyValue(entry)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
@@ -52,10 +53,11 @@ public class HRController {
     }
 
     @GetMapping("hr/forms/{id}")
-    public ResponseEntity<BaseResponse> getForms(@PathVariable int id) {
+    public ResponseEntity<BaseResponse> getForms(@PathVariable int id, @RequestParam String token) {
         try {
             BaseResponse result = _webClient.build().get()
-                    .uri("http://hr-service/api/hr/forms/" + id)
+                    .uri("http://api-gateway/api/hr/forms/" + id)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();
@@ -67,10 +69,11 @@ public class HRController {
     }
 
     @GetMapping("hr/contracts/{id}")
-    public ResponseEntity<BaseResponse> getContracts(@PathVariable int id) {
+    public ResponseEntity<BaseResponse> getContracts(@PathVariable int id, @RequestParam String token) {
         try {
             BaseResponse result = _webClient.build().get()
-                    .uri("http://hr-service/api/hr/contracts/" + id)
+                    .uri("http://api-gateway/api/hr/contracts/" + id)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();

@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Select from 'react-select';
-import { dateTimeFormat, handleDate, getDaysSince, getHoursSince, getDaysUntil, getHoursUntil } from "../../utils/DateHelper";
+import { dateTimeFormat, handleDateTime, getDaysSince, getHoursSince, getDaysUntil, getHoursUntil } from "../../utils/DateHelper";
 import "react-datepicker/dist/react-datepicker.css";
 import { Button } from "react-bootstrap";
 import SideBar from "../SideBar";
@@ -60,7 +60,7 @@ const TaskInfo = () => {
                     assigneeName: result.data.assigneeName,
                     createDate: result.data.createDate,
                     updateDate: result.data.updateDate,
-                    dueDate: handleDate(result.data.dueDate),
+                    dueDate: handleDateTime(result.data.dueDate),
                     priority: result.data.priority,
                     priorityName: result.data.priorityName,
                     state: result.data.state,

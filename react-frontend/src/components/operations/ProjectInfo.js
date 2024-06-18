@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Select from 'react-select';
-import { handleDate, dateTimeFormat } from "../../utils/DateHelper";
+import { handleDateTime, dateTimeFormat } from "../../utils/DateHelper";
 import "react-datepicker/dist/react-datepicker.css";
 import { Button } from "react-bootstrap";
 import AddMemberModal from "./AddMemberModal";
@@ -45,7 +45,7 @@ const ProjectInfo = () => {
         .then(result=>result.json())
         .then((result)=>{
             // console.log(result);
-            var formattedDate = handleDate(result.dueDate);
+            var formattedDate = handleDateTime(result.dueDate);
             setData({
                 name: result.name,
                 owner: result.ownerId,
