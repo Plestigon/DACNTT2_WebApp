@@ -1,4 +1,0 @@
-{
-  "finance-service": "http://localhost:8084/webjars/swagger-ui/index.html",
-  "operation-service": "http://localhost:8083/swagger-ui/index.html"
-}
