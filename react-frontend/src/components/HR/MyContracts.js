@@ -5,11 +5,15 @@ import { dateFormat } from "../../utils/DateHelper";
 import TopBar from "../TopBar";
 import SideBar from "../SideBar";
 import '../../css/sidebar.css';
+import { Button } from "react-bootstrap";
 import Notify, {success, error, loading, dismiss} from "../../utils/Notify";
 import { useAuthentication } from "../system/Authentication";
+import { useNavigate } from "react-router-dom";
  
 function MyContracts() {
     const auth = useAuthentication();
+	const navigate = useNavigate();
+
     const [contracts, setContracts] = useState([]);
 
     useEffect(()=>{
@@ -43,7 +47,9 @@ function MyContracts() {
         <SideBar/>
         <TopBar/>
         <div class="content container">
-            
+            <div class="row mb-2 px-5">
+                <Button onClick={() => navigate("/hr/new-contract")}><i class="bi bi-file-earmark-text"></i> Create New Contract</Button>
+            </div>
             <div class="card table-card table-responsive">
                 <table class="table-clickable table table-hover table-collapsed" id="project-table" style={{width:'100%'}}>
                 <thead class="table-primary">

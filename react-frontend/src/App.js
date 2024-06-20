@@ -24,6 +24,7 @@ import Deals from './components/finance/Deals';
 import DealDetails from './components/finance/DealDetails';
 import Contacts from './components/finance/Contacts';
 import NewContract from './components/hr/NewContract';
+import ApproveForms from './components/hr/ApproveForms';
 
 function App() {
 
@@ -66,6 +67,7 @@ function App() {
 
             <Route path="/hr/submit-form" element={<PrivateRoute><SubmitForm/></PrivateRoute>}/>
             <Route path="/hr/my-forms" element={<PrivateRoute><MyForms/></PrivateRoute>}/>
+            <Route path="/hr/approve-forms" element={<PrivateRoute><ApproveForms/></PrivateRoute>}/>
             <Route path="/hr/summary" element={<PrivateRoute><HRSummary/></PrivateRoute>}/>
             <Route path="/hr/contracts" element={<PrivateRoute><MyContracts/></PrivateRoute>}/>
             <Route path="/hr/new-contract" element={<PrivateRoute><NewContract/></PrivateRoute>}/>

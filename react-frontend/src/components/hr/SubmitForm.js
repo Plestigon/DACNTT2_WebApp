@@ -16,6 +16,8 @@ function SubmitForm() {
     const [inputs, setInputs] = useState({
         type: 0,
         typeName: '',
+        approver: 0,
+        approverName: '- Select approver -',
         startDate: getDefaultStartDate(),
         endDate: getDefaultEndDate(),
         reason: ''
@@ -25,7 +27,9 @@ function SubmitForm() {
         // {label: 'Unpaid Leave', value: 2},
         // {label: 'Resignation', value: 3}
     ]);
+    const [approvers, setApprovers] = useState([]);
     const [disableDates, setDisableDates] = useState(false);
+    const [showErr, setShowErr] = useState(false);
 
     useEffect(() => {
         function loadFormTypes() {
@@ -45,43 +49,71 @@ function SubmitForm() {
         loadFormTypes();
     }, []);
 
+    useEffect(() => {
+        function loadApprovers() {
+            fetch(process.env.REACT_APP_API_URI + "/hr/forms/approvers?userId=" + auth.id + "&token=" + auth.token,{
+                method:"GET",
+                headers: { "ngrok-skip-browser-warning" : "true" }
+            })
+            .then(result=>result.json())
+            .then((result)=>{
+                console.log(result);
+                if (result.statusCode === 200) {
+                    setApprovers(result.data);
+                }
+            })
+            .catch (e => {
+                console.log("ERROR_loadFormTypes: " + e);
+            })
+        }
+        loadApprovers();
+    }, []);
+
     function handleInputChange(e) {
-        if (e.target) {
-            const name = e.target.name;
-            const value = e.target.value;
-            if (name === 'startDate') {
-                var startDate = new Date(value);
-                var endDate = new Date(inputs.endDate);
-                var tomorrow = new Date();
-                tomorrow.setDate(tomorrow.getDate() + 1);
-                if (endDate <= startDate) {
-                    endDate = new Date(startDate);
-                    endDate.setDate(endDate.getDate() + 1);
-                    setInputs(prevState => ({...prevState, 'endDate': handleDate(endDate)}));
-                }
+        const name = e.target.name;
+        const value = e.target.value;
+        if (name === 'startDate') {
+            var startDate = new Date(value);
+            var endDate = new Date(inputs.endDate);
+            var tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            if (endDate <= startDate) {
+                endDate = new Date(startDate);
+                endDate.setDate(endDate.getDate() + 1);
+                setInputs(prevState => ({...prevState, 'endDate': handleDate(endDate)}));
             }
-            if (name === 'endDate') {
-                var startDate = new Date(inputs.startDate);
-                var endDate = new Date(value);
-                if (endDate <= startDate) {
-                    error("End date must be after Start date");
-                    return;
-                }
-            }
-            setInputs(prevState => ({...prevState, [name]: value}));
         }
-        else {
-            if (e.label === 'Resignation') {
-                setDisableDates(true);
+        if (name === 'endDate') {
+            var startDate = new Date(inputs.startDate);
+            var endDate = new Date(value);
+            if (endDate <= startDate) {
+                error("End date must be after Start date");
+                return;
             }
-            else if (disableDates) {
-                setDisableDates(false);
-            }
-            setInputs(prevState => ({...prevState, 'type': e.value, 'typeName': e.label}));
         }
+        setInputs(prevState => ({...prevState, [name]: value}));
+    }
+
+    function handleFormTypeChange(e) {
+        if (e.label === 'Resignation') {
+            setDisableDates(true);
+        }
+        else if (disableDates) {
+            setDisableDates(false);
+        }
+        setInputs(prevState => ({...prevState, 'type': e.value, 'typeName': e.label}));
+    }
+
+    function handleApproverChange(e) {
+        setShowErr(false);
+        setInputs(prevState => ({...prevState, 'approver': e.value, 'approverName': e.label}));
     }
 
     function handleSubmit() {
+        if (inputs.approver === 0) {
+            setShowErr(true);
+            return;
+        }
         if (inputs.typeName === 'Resignation') {
             setInputs(prevState => ({...prevState, 'startDate': '', 'endDate': ''}));
         }
@@ -91,6 +123,7 @@ function SubmitForm() {
             body: JSON.stringify({
                 'type': inputs.type,
                 'ownerId': auth.id,
+                'approverId': inputs.approver,
                 'startDate': inputs.startDate,
                 'endDate': inputs.endDate,
                 'reason': inputs.reason
@@ -124,8 +157,15 @@ function SubmitForm() {
             <div class="row my-2">
                 <div class="col-12">
                     <label className="my-2">Type of Form</label>
-                    <Select class="form-select" name="type" value={{label: inputs.typeName, value: inputs.type}} onChange={handleInputChange}
+                    <Select class="form-select" name="type" value={{label: inputs.typeName, value: inputs.type}} onChange={handleFormTypeChange}
                     options={options}/>
+                </div>
+            </div>
+            <div class="row my-2">
+                <div class="col-12">
+                    <label className="my-2">Approver</label>
+                    <Select class="form-select" name="approver" value={{label: inputs.approverName, value: inputs.approver}} onChange={handleApproverChange}
+                    options={approvers}/>
                 </div>
             </div>
             <div class="row my-2" hidden={disableDates}>
@@ -148,6 +188,7 @@ function SubmitForm() {
                     placeholder="Reason" required/>
                 </div>
             </div>
+            <span class="text-danger">Please select approver</span>
         </form>
         <div class="row my-5 d-flex justify-content-center">
             <Button style={{width: '200px', height: '50px'}} onClick={handleSubmit}>Submit</Button>

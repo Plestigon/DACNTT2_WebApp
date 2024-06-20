@@ -3,7 +3,9 @@ package tdtu.ems.hr_service.repositories;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
+import jakarta.ws.rs.NotFoundException;
 import org.springframework.stereotype.Repository;
+import tdtu.ems.hr_service.models.FormResult;
 import tdtu.ems.hr_service.utils.Enums;
 import tdtu.ems.hr_service.utils.Logger;
 import tdtu.ems.hr_service.models.Form;
@@ -38,15 +40,49 @@ public class FormRepository implements IFormRepository {
     }
 
     @Override
-    public List<Form> getFormsByEmployeeId(int id) throws ExecutionException, InterruptedException {
+    public List<FormResult> getFormsByEmployeeId(int id) throws ExecutionException, InterruptedException {
         CollectionReference formsDb = _db.collection("forms");
-        List<Form> forms = new ArrayList<>();
+        List<FormResult> forms = new ArrayList<>();
         for (DocumentSnapshot data : formsDb.get().get().getDocuments()) {
             Form form = data.toObject(Form.class);
             if (form != null && form.getOwnerId() == id) {
-                forms.add(form);
+                forms.add(new FormResult(form));
             }
         }
         return forms;
+    }
+
+    @Override
+    public List<FormResult> getFormsForApproval(int id) throws ExecutionException, InterruptedException {
+        CollectionReference formsDb = _db.collection("forms");
+        CollectionReference employeesDb = _db.collection("employees");
+        List<FormResult> forms = new ArrayList<>();
+        for (DocumentSnapshot data : formsDb.get().get().getDocuments()) {
+            Form form = data.toObject(Form.class);
+            if (form != null && form.getApproverId() == id && form.getStatus() == Enums.FormStatus.WaitingForApproval.ordinal()) {
+                String name = employeesDb.document(String.valueOf(form.getOwnerId())).get().get().getString("name");
+                String email = employeesDb.document(String.valueOf(form.getOwnerId())).get().get().getString("email");
+                forms.add(new FormResult(form, name, email));
+            }
+        }
+        return forms;
+    }
+
+    @Override
+    public String approveForm(int id, boolean approve) throws ExecutionException, InterruptedException {
+        CollectionReference formsDb = _db.collection("forms");
+        Form form = formsDb.document(String.valueOf(id)).get().get().toObject(Form.class);
+        if (form != null) {
+            int status;
+            if (approve) {
+                status = Enums.FormStatus.Approved.ordinal();
+            }
+            else {
+                status = Enums.FormStatus.Rejected.ordinal();
+            }
+            ApiFuture<WriteResult> result = formsDb.document(String.valueOf(id)).update("status", status);
+            return approve ? "Form Approved" : "Form Rejected";
+        }
+        throw new NotFoundException("Form with id " + id + "not found");
     }
 }

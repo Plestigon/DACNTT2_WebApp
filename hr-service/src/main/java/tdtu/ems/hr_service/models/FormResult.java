@@ -7,6 +7,9 @@ import java.util.Date;
 public class FormResult {
     private int id;
     private int ownerId;
+    private String ownerName;
+    private String ownerEmail;
+    private int approverId;
     private int type;   //FormType
     private String typeName;
     private Date createDate;
@@ -31,6 +34,24 @@ public class FormResult {
         this.status = f.getStatus();
         this.statusName = Enums.FormStatus.values()[f.getStatus()].name;
         this.notes = f.getNotes();
+        this.approverId = f.getApproverId();
+    }
+
+    public FormResult(Form f, String ownerName, String ownerEmail) {
+        this.id = f.getId();
+        this.ownerId = f.getOwnerId();
+        this.type = f.getType();
+        this.typeName = Enums.FormType.values()[f.getType()].name;
+        this.createDate = f.getCreateDate();
+        this.startDate = f.getStartDate();
+        this.endDate = f.getEndDate();
+        this.reason = f.getReason();
+        this.status = f.getStatus();
+        this.statusName = Enums.FormStatus.values()[f.getStatus()].name;
+        this.notes = f.getNotes();
+        this.approverId = f.getApproverId();
+        this.ownerName = ownerName;
+        this.ownerEmail = ownerEmail;
     }
 
     public int getId() {
@@ -47,6 +68,14 @@ public class FormResult {
 
     public void setOwnerId(int ownerId) {
         this.ownerId = ownerId;
+    }
+
+    public int getApproverId() {
+        return approverId;
+    }
+
+    public void setApproverId(int approverId) {
+        this.approverId = approverId;
     }
 
     public int getType() {
@@ -119,5 +148,21 @@ public class FormResult {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
+
+    public String getOwnerEmail() {
+        return ownerEmail;
+    }
+
+    public void setOwnerEmail(String ownerEmail) {
+        this.ownerEmail = ownerEmail;
     }
 }

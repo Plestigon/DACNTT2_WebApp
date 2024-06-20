@@ -5,6 +5,7 @@ import java.util.Date;
 public class Form {
     private int id;
     private int ownerId;
+    private int approverId;
     private int type;   //FormType
     private Date createDate;
     private Date startDate;
@@ -15,8 +16,9 @@ public class Form {
 
     public Form() { }
 
-    public Form(int ownerId, int type, Date createDate, Date startDate, Date endDate, String reason, int status, String notes) {
+    public Form(int ownerId, int approverId, int type, Date createDate, Date startDate, Date endDate, String reason, int status, String notes) {
         this.ownerId = ownerId;
+        this.approverId = approverId;
         this.type = type;
         this.createDate = createDate;
         this.startDate = startDate;
@@ -96,5 +98,13 @@ public class Form {
 
     public void setOwnerId(int ownerId) {
         this.ownerId = ownerId;
+    }
+
+    public int getApproverId() {
+        return approverId;
+    }
+
+    public void setApproverId(int approverId) {
+        this.approverId = approverId;
     }
 }

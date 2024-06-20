@@ -5,6 +5,7 @@ import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.stereotype.Repository;
 import tdtu.ems.hr_service.models.ContractResult;
+import tdtu.ems.hr_service.models.SummaryResult;
 import tdtu.ems.hr_service.utils.Enums;
 import tdtu.ems.hr_service.utils.Logger;
 import tdtu.ems.hr_service.models.Contract;
@@ -65,6 +66,23 @@ public class ContractRepository implements IContractRepository {
                 result.add(new ContractResult(c, departmentLongName));
             }
         }
+        return result;
+    }
+
+    @Override
+    public SummaryResult getHRSummary(int id) throws ExecutionException, InterruptedException {
+        CollectionReference contractsDb = _db.collection("contracts");
+        CollectionReference formsDb = _db.collection("forms");
+        CollectionReference employeesDb = _db.collection("employees");
+
+        SummaryResult result = new SummaryResult();
+        var contracts = contractsDb.whereEqualTo("ownerId", id).get().get().getDocuments();
+        var forms = formsDb.whereEqualTo("ownerId", id).get().get().getDocuments();
+        var employees = employeesDb.get().get().getDocuments();
+        result.setContractCount(contracts.size());
+        result.setFormCount(forms.size());
+        result.setEmployeeCount(employees.size());
+
         return result;
     }
 }

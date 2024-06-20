@@ -41,16 +41,36 @@ public class FormService implements IFormService {
     @Override
     public List<FormResult> getFormsByEmployeeId(int id) throws ExecutionException, InterruptedException {
         try {
-            List<Form> forms = _formRepository.getFormsByEmployeeId(id);
-            List<FormResult> result = new ArrayList<>();
-            for(Form form : forms) {
-                result.add(new FormResult(form));
-            }
-            result.sort(Comparator.comparing(FormResult::getCreateDate));
+            List<FormResult> result = _formRepository.getFormsByEmployeeId(id);
+            result.sort(Comparator.comparing(FormResult::getCreateDate).reversed());
             return result;
         }
         catch (Exception e) {
             _logger.Error("getFormsByEmployeeId", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Override
+    public List<FormResult> getFormsForApproval(int id) throws ExecutionException, InterruptedException {
+        try {
+            List<FormResult> result = _formRepository.getFormsForApproval(id);
+            result.sort(Comparator.comparing(FormResult::getCreateDate).reversed());
+            return result;
+        }
+        catch (Exception e) {
+            _logger.Error("getFormsForApproval", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Override
+    public String approveForm(int id, boolean approve) throws ExecutionException, InterruptedException {
+        try {
+            return _formRepository.approveForm(id, approve);
+        }
+        catch (Exception e) {
+            _logger.Error("approveForm", e.getMessage());
             throw e;
         }
     }

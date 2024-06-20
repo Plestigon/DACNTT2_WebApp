@@ -69,6 +69,54 @@ public class HRController {
         }
     }
 
+    @GetMapping("hr/forms/{id}/approve")
+    public ResponseEntity<BaseResponse> getFormsForApproval(@PathVariable int id, @RequestParam String token) {
+        try {
+            BaseResponse result = _webClient.build().get()
+                    .uri("http://api-gateway/api/hr/forms/" + id + "/approve")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("hr/forms/{id}")
+    public ResponseEntity<BaseResponse> approveForm(@PathVariable int id, @RequestParam boolean approve, @RequestParam String token) {
+        try {
+            BaseResponse result = _webClient.build().put()
+                    .uri("http://api-gateway/api/hr/forms/" + id + "?approve=" + approve)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("hr/forms/approvers")
+    public ResponseEntity<BaseResponse> getApprovers(@RequestParam int userId, @RequestParam String token) {
+        try {
+            BaseResponse result = _webClient.build().get()
+                    .uri("http://api-gateway/api/employees/approvers?userId=" + userId)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping("hr/contracts/{id}")
     public ResponseEntity<BaseResponse> getContracts(@PathVariable int id, @RequestParam String token) {
         try {
@@ -175,6 +223,22 @@ public class HRController {
         try {
             BaseResponse result = _webClient.build().delete()
                     .uri("http://api-gateway/api/employees/" + id)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("hr/summary/{id}")
+    public ResponseEntity<BaseResponse> getSummary(@PathVariable int id, @RequestParam String token) {
+        try {
+            BaseResponse result = _webClient.build().get()
+                    .uri("http://api-gateway/api/hr/summary/" + id)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)

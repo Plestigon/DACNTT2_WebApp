@@ -2,6 +2,7 @@ package tdtu.ems.hr_service.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import tdtu.ems.hr_service.models.SummaryResult;
 import tdtu.ems.hr_service.utils.Logger;
 import tdtu.ems.hr_service.models.Contract;
 import tdtu.ems.hr_service.models.ContractResult;
@@ -45,6 +46,18 @@ public class ContractService implements IContractService{
         }
         catch (Exception e) {
             _logger.Error("getContractsByEmployeeId", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Override
+    public SummaryResult getHRSummary(int id) throws ExecutionException, InterruptedException {
+        try {
+            SummaryResult result = _contractRepository.getHRSummary(id);
+            return result;
+        }
+        catch (Exception e) {
+            _logger.Error("getHRSummary", e.getMessage());
             throw e;
         }
     }

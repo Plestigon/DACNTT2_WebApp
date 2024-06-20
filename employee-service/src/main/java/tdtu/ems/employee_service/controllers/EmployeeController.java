@@ -11,7 +11,10 @@ import tdtu.ems.employee_service.models.ProjectUpdateEmployeeDataResult;
 import tdtu.ems.employee_service.services.EmployeeService;
 import tdtu.ems.employee_service.services.IEmployeeService;
 import tdtu.ems.employee_service.models.Employee;
+import tdtu.ems.employee_service.utils.Enums;
+import tdtu.ems.employee_service.utils.SelectOptionsResult;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -88,6 +91,24 @@ public class EmployeeController {
             String result = _employeeService.removeEmployee(id);
             return new BaseResponse(result, 200, "OK");
         } catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
+
+    @GetMapping("/employees/approvers")
+    public BaseResponse getApprovers(@RequestParam int userId) {
+        try {
+            List<EmployeeResult> employees = _employeeService.getEmployees(null);
+            Employee user = _employeeService.getEmployeeById(userId);
+            List<SelectOptionsResult> result = new ArrayList<>();
+            for (EmployeeResult e : employees) {
+                if (e.getId() != userId && e.getRole() >= user.getRole()) {
+                    result.add(new SelectOptionsResult(e.getName(), e.getId()));
+                }
+            }
+            return new BaseResponse(result, 200, "OK");
+        }
+        catch (Exception e) {
             return new BaseResponse(null, 500, e.getMessage());
         }
     }
