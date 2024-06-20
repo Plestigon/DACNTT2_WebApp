@@ -25,6 +25,7 @@ import DealDetails from './components/finance/DealDetails';
 import Contacts from './components/finance/Contacts';
 import NewContract from './components/hr/NewContract';
 import ApproveForms from './components/hr/ApproveForms';
+import Forbidden from './components/system/Forbidden';
 
 function App() {
 
@@ -81,6 +82,7 @@ function App() {
             {/* === Always public */}
 
             <Route path="/login" element={<Login/>}/>
+            <Route path="/forbidden" element={<Forbidden/>}/>
           </Routes>
         </Authentication>
       </BrowserRouter>

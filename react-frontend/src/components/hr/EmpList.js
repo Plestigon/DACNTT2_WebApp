@@ -10,6 +10,7 @@ import DeleteConfirmModal from "../../utils/DeleteConfirmModal";
 import { Button } from "react-bootstrap";
 import { useAuthentication } from "../system/Authentication";
 import AddEmpModal from "./AddEmpModal";
+import { useNavigate } from "react-router-dom";
  
 function EmpList() {
     const auth = useAuthentication();
@@ -20,6 +21,13 @@ function EmpList() {
         id: 0,
         name: ''
     });
+    const navigate = useNavigate();
+
+    useEffect(()=>{
+        if (!auth.checkRole(auth.role, "Human Resources")) {
+            navigate("/forbidden");
+        }
+    }, [])
 
     useEffect(()=>{
         fetchEmployees();

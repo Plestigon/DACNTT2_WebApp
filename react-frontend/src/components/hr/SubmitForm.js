@@ -188,7 +188,7 @@ function SubmitForm() {
                     placeholder="Reason" required/>
                 </div>
             </div>
-            <span class="text-danger">Please select approver</span>
+            {showErr ? <span class="text-danger">Please select approver</span> : ""}
         </form>
         <div class="row my-5 d-flex justify-content-center">
             <Button style={{width: '200px', height: '50px'}} onClick={handleSubmit}>Submit</Button>

@@ -61,7 +61,7 @@ function MyProjects() {
     useEffect(() => {
         function loadProjects() {
             const toastId = loading("Loading projects...");
-            fetch(process.env.REACT_APP_API_URI + "/operations/my-projects?employeeId=" + employeeId,{
+            fetch(process.env.REACT_APP_API_URI + "/operations/my-projects?employeeId=" + employeeId + "&token=" + auth.token,{
                 method:"GET",
                 headers: { "ngrok-skip-browser-warning" : "true" }
             })
@@ -86,7 +86,7 @@ function MyProjects() {
 
     function loadTasks(projectId) {
         const toastId = loading("Loading tasks...");
-        fetch(process.env.REACT_APP_API_URI + "/operations/my-project/" + projectId + "/tasks?employeeId=" + employeeId + "?token=" + auth.token,{
+        fetch(process.env.REACT_APP_API_URI + "/operations/my-project/" + projectId + "/tasks?employeeId=" + employeeId + "&token=" + auth.token,{
             method:"GET",
             headers: { "ngrok-skip-browser-warning" : "true" }
         })
@@ -122,7 +122,7 @@ function MyProjects() {
                     projects.map(p=>(
                         <div class="card" key={p.id}>
                             <div class="card-body" style={{minHeight:"220px"}}>
-                                <h5 class="card-title text-nowrap d-inline-block text-truncate" style={{maxWidth:"100%"}}>{p.name}</h5>
+                                <h5 class="card-title text-nowrap d-inline-block text-truncate" style={{maxWidth:"100%"}}><a href={"/operations/projects/" + p.id}>{p.name}</a></h5>
                                 <p class={"card status-card project-status-" + p.status}>{p.statusName}</p>
                                 <p class="card-text text-end">You have <span class="fw-bold">{p.tasksInProgress}</span> task{p.tasksInProgress > 1 ? "s" : ""} in progress</p>
                                 <p class="card-text text-end">You have <span class="fw-bold">{p.tasksNotStarted}</span> task{p.tasksNotStarted > 1 ? "s" : ""} not started</p>

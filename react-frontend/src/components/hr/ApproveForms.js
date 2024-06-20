@@ -15,6 +15,12 @@ function ApproveForms() {
     const [forms, setForms] = useState([]);
     const navigate = useNavigate();
 
+    useEffect(()=>{
+        if (!auth.checkRole(auth.role, "Human Resources")) {
+            navigate("/forbidden");
+        }
+    }, [])
+
     function loadFormData() {
         const toastId = loading("Loading forms...");
         fetch(process.env.REACT_APP_API_URI + "/hr/forms/" + auth.id + "/approve?approverId=" + auth.id + "&token=" + auth.token,{
