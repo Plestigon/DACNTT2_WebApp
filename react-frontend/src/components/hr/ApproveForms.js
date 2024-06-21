@@ -81,7 +81,7 @@ function ApproveForms() {
                     <tr>
                         <th scope="col">Form Type</th>
                         <th scope="col">Submitter</th>
-                        <th scope="col">SubmitterEmail</th>
+                        <th scope="col">Submitter Email</th>
                         {/* <th scope="col">Create Date</th> */}
                         <th scope="col">Start Date</th>
                         <th scope="col">End Date</th>
@@ -102,8 +102,10 @@ function ApproveForms() {
                             <td>{f.reason}</td>
                             {/* <td><div class={"card status-card form-status-" + f.status}>{f.statusName}</div></td> */}
                             <td class="d-flex">
-                                <button type="button" class="btn btn-success" onClick={() => approveForm(f.id, true)}><i class="bi bi-check"></i></button>
-                                <button type="button" class="btn btn-danger" onClick={() => approveForm(f.id, false)}><i class="bi bi-x"></i></button>
+                                <button type="button" class="btn btn-success h1 mx-1" style={{padding:"0", width:"40px", height:"40px"}} 
+                                onClick={() => approveForm(f.id, true)} title="Approve"><i class="bi bi-check"></i></button>
+                                <button type="button" class="btn btn-danger h1 mx-1" style={{padding:"0", width:"40px", height:"40px"}} 
+                                onClick={() => approveForm(f.id, false)} title="Reject"><i class="bi bi-x"></i></button>
                             </td>
                         </tr>
                     ))}

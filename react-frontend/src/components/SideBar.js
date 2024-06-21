@@ -67,7 +67,7 @@ function SideBar() {
             </div>
         </div>
         {/* <div class="w-100 mb-2" style={{borderBottom: '1px solid white'}}/> */}
-        <Nav.Link as={Link} to="/"><i class="bi bi-house"></i> Home</Nav.Link>
+        <Nav.Link as={Link} to="/" class="home"><i class="bi bi-house"></i> Home</Nav.Link>
 
 
         <div className="nav-dropdown-container">
