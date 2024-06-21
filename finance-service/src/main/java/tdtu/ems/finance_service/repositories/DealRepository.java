@@ -139,4 +139,45 @@ public class DealRepository implements IDealRepository {
         }
         return results.toString();
     }
+
+    @Override
+    public String updateDealNotes(int id, String value) throws ExecutionException, InterruptedException {
+        CollectionReference dealStageDetailsDb = _db.collection("dealStageDetails");
+        if (dealStageDetailsDb.document(String.valueOf(id)).get().get() == null) {
+            throw new RuntimeException("DealStageDetail with id " + id + " not found");
+        }
+        ApiFuture<WriteResult> result = dealStageDetailsDb.document(String.valueOf(id)).update("notes", value);
+        return result.get().getUpdateTime().toString();
+    }
+
+    @Override
+    public String updateDealStage(int id, int value) throws ExecutionException, InterruptedException {
+        CollectionReference dealsDb = _db.collection("deals");
+        CollectionReference dealStageDetailsDb = _db.collection("dealStageDetails");
+        Deal deal = dealsDb.document((String.valueOf(id))).get().get().toObject(Deal.class);
+        if (deal == null) {
+            throw new RuntimeException("Deal with id " + id + " not found");
+        }
+        int oldStage = deal.getStage();
+        int newStage = value;
+        StringBuilder res = new StringBuilder();
+        ApiFuture<WriteResult> result = dealsDb.document(String.valueOf(id)).update("stage", value);
+        res.append("Stage update: ").append(result.get().getUpdateTime().toString()).append("; ");
+        List<Integer> dealStageDetailIds = deal.getDealStageDetails();
+        for (int i : dealStageDetailIds) {
+            DealStageDetail dealStageDetail = dealStageDetailsDb.document(String.valueOf(i)).get().get().toObject(DealStageDetail.class);
+            if (dealStageDetail == null) {
+                throw new RuntimeException("DealStageDetail with id " + i + " not found");
+            }
+            if (dealStageDetail.getStage() == oldStage) {
+                ApiFuture<WriteResult> result2 = dealStageDetailsDb.document(String.valueOf(i)).update("endDate", new Date());
+                res.append("StageDetail update: ").append(result2.get().getUpdateTime().toString()).append("; ");
+            }
+            if (dealStageDetail.getStage() == newStage) {
+                ApiFuture<WriteResult> result3 = dealStageDetailsDb.document(String.valueOf(i)).update("startDate", new Date());
+                res.append("StageDetail update: ").append(result3.get().getUpdateTime().toString()).append("; ");
+            }
+        }
+        return res.toString();
+    }
 }

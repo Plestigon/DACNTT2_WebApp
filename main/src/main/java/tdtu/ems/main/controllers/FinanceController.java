@@ -9,6 +9,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import tdtu.ems.main.models.finance.AssociateDto;
 import tdtu.ems.main.models.finance.ContactDto;
+import tdtu.ems.main.models.finance.DealDto;
 import tdtu.ems.main.utils.BaseResponse;
 
 import java.util.List;
@@ -149,6 +150,55 @@ public class FinanceController {
         try {
             BaseResponse result = _webClient.build().get()
                     .uri("http://api-gateway/api/finance/deals/" + id + "/stages")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("finance/deals")
+    public ResponseEntity<BaseResponse> addDeal(@RequestBody DealDto input, @RequestParam String token) {
+        try {
+            BaseResponse result = _webClient.build().post()
+                    .uri("http://api-gateway/api/finance/deals")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                    .bodyValue(input)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("finance/deals/{id}/notes")
+    public ResponseEntity<BaseResponse> updateDealNotes(@PathVariable int id, @RequestParam String value, @RequestParam String token) {
+        try {
+            BaseResponse result = _webClient.build().put()
+                    .uri("http://api-gateway/api/finance/deals/" + id + "/notes?value=" + value)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("finance/deals/{id}/stage")
+    public ResponseEntity<BaseResponse> updateDealStage(@PathVariable int id, @RequestParam int value, @RequestParam String token) {
+        try {
+            BaseResponse result = _webClient.build().post()
+                    .uri("http://api-gateway/api/finance/deals/" + id + "/stage?value=" + value)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)

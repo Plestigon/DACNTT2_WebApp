@@ -164,4 +164,26 @@ public class FinanceController {
             return new BaseResponse(null, 500, e.getMessage());
         }
     }
+
+    @PutMapping("/finance/deals/{id}/notes")
+    public BaseResponse updateDealNotes(@PathVariable int id, @RequestParam String value) {
+        try {
+            String result = _dealService.updateDealNotes(id, value);
+            return new BaseResponse(result, 200, "OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
+
+    @PutMapping("/finance/deals/{id}/stage")
+    public BaseResponse updateDealStage(@PathVariable int id, @RequestParam int value) {
+        try {
+            String result = _dealService.updateDealStage(id, value);
+            return new BaseResponse(result, 200, "OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
 }

@@ -41,20 +41,8 @@ function DealDetails() {
 		.then(result => result.json())
 		.then((result) => {
 			if (result.statusCode === 200) {
-				// setDeal({
-				// 	id: result.data.id,
-				// 	title: result.data.title,
-				// 	stage: result.data.stage,
-				// 	stageName: result.data.stageName,
-				// 	associateName: result.data.associateName,
-				// 	contact: result.data.contact,
-				// 	contactName: result.data.contactName,
-				// 	dealValue: result.data.dealValue,
-				// 	createDate: result.data.createDate,
-				// 	closeDate: result.data.closeDate
-				// });
 				setDeal(result.data);
-				console.log(result.data);
+				// console.log(result.data);
 			}
 		})
 		.catch(e => {
@@ -73,7 +61,7 @@ function DealDetails() {
 				dismiss(toastId);
 				if (result.statusCode === 200) {
 					setDealStageDetails(result.data);
-					console.log(result.data);
+					// console.log(result.data);
 				}
 				else {
 					error("Load deal stages failed");
@@ -86,19 +74,39 @@ function DealDetails() {
 			})
 	}
 
-	// function handleInputChange(e) {
-	// 	const name = e.target.name;
-	// 	const value = e.target.value;
-	// 	setDeal(prevState => ({...prevState, [name]: value}));
-	// 	console.log(deal.title);
-	// }
-
-	function deleteBtnClick(e, id, name) {
-
+	function handleNotesChange(e, id) {
+		var data = [...dealStageDetails];
+		data = data.map(x => {
+			if (x.id === id) {
+				x.notes = e.target.value;
+			}
+			return x;
+		})
+		setDealStageDetails(data);
 	}
 
-	function deleteDeal() {
-
+	function updateNotes(id) {
+		dealStageDetails.forEach(x => {
+			if (x.id === id) {
+				fetch(process.env.REACT_APP_API_URI + "/finance/deals/" + id + "/notes?value=" + x.notes + "&token=" + auth.token, {
+					method: "PUT",
+								headers: { "ngrok-skip-browser-warning" : "true" }
+				})
+				.then(result => result.json())
+				.then((result) => {
+					if (result.statusCode === 200) {
+						success("Notes updated");
+					}
+					else {
+						console.log(result.message);
+					}
+				})
+				.catch(e => {
+					console.log("ERROR_fetchDeal: " + e);
+				})
+				return;
+			}
+		})
 	}
 
 	return (
@@ -148,8 +156,11 @@ function DealDetails() {
 							<div class="col-6 text-end">End date:</div>
 							<div class="col-6">{x.closeDate ? dateFormat(x.closeDate) : "-/-"}</div>
 						</div>
-						<div class="mt-3">Notes:</div>
-						<textarea class="form-control" rows={3} value={x.notes}/>
+						<div class="mt-3 d-flex justify-content-between">
+							<p>Notes:</p>
+							<button class="btn btn-primary" style={{paddingTop:"0", paddingBottom:"0", height:"30px"}} onClick={() => updateNotes(x.id)}>Update</button>
+						</div>
+						<textarea class="form-control" rows={3} value={x.notes ? x.notes : ""} onChange={(e) => handleNotesChange(e, x.id)}/>
 					</div>
 					))}
 					{/* <div class="card deal-stage-display">

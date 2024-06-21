@@ -87,4 +87,26 @@ public class DealService implements IDealService {
             throw e;
         }
     }
+
+    @Override
+    public String updateDealNotes(int id, String value) throws ExecutionException, InterruptedException {
+        try {
+            return _dealRepository.updateDealNotes(id, value);
+        }
+        catch (Exception e) {
+            _logger.Error("updateDealNotes", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Override
+    public String updateDealStage(int id, int value) throws ExecutionException, InterruptedException {
+        try {
+            return _dealRepository.updateDealStage(id, value);
+        }
+        catch (Exception e) {
+            _logger.Error("updateDealStage", e.getMessage());
+            throw e;
+        }
+    }
 }

@@ -8,12 +8,13 @@ import { Button } from "react-bootstrap";
 import { useAuthentication } from "../system/Authentication";
 import { useParams } from "react-router-dom";
 import { dateFormat } from "../../utils/DateHelper";
+import NewDealModal from "./NewDealModal";
 
 function Deals() {
 	const auth = useAuthentication();
 	const params = useParams();
 	const [deals, setDeals] = useState([]);
-	const [associateName, setAssociateName] = useState('');
+	const [associate, setAssociate] = useState({});
 
 	const [showNewModal, setShowNewModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -58,9 +59,9 @@ function Deals() {
 		})
 		.then(result => result.json())
 		.then((result) => {
-			console.log(result);
+			// console.log(result);
 			if (result.statusCode === 200) {
-				setAssociateName(result.data.name);
+				setAssociate(result.data);
 			}
 		})
 		.catch(e => {
@@ -81,8 +82,8 @@ function Deals() {
 			<SideBar />
 			<TopBar />
 			<div class="content container">
-				{/* <NewProjectModal show={showNewModal} onHide={() => setShowNewModal(false)} reload={fetchProjectData} /> */}
-				<div class="row mb-2 px-5" style={{fontWeight: 'bold', fontSize: '26px'}}>Viewing deals of associate "{associateName}"</div>
+				<NewDealModal show={showNewModal} onHide={() => setShowNewModal(false)} reload={fetchDeals} associate={associate} token={auth.token} />
+				<div class="row mb-2 px-5" style={{fontWeight: 'bold', fontSize: '26px'}}>Viewing deals of associate "{associate.name}"</div>
 				<div class="row mb-2 px-5">
 					<Button class="btn btn-primary" onClick={() => setShowNewModal(true)}>
 						<i class="bi bi-plus-circle me-2"></i>Create New Deal
@@ -108,7 +109,7 @@ function Deals() {
 									<td>{x.title}</td>
 									<td>{x.stageName}</td>
 									<td>{x.contactName}</td>
-									<td>{x.dealValue}</td>
+									<td>{x.dealValue.toLocaleString()} VNĐ</td>
 									<td>{dateFormat(x.createDate)}</td>
 									<td>{x.closeDate ? dateFormat(x.closeDate) : '-/-'}</td>
 									<td><button type="button" class="btn btn-info" onClick={() => window.open('/finance/deals/' + x.id + '/stages', '_blank').focus()}>See Details</button></td>

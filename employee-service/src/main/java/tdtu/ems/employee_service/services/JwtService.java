@@ -16,7 +16,7 @@ import java.util.Map;
 @Service
 public class JwtService {
     public static final String JWT_SECRET = "hYr9jfTUb68bt6B6h8HYu12W3sh19hIJiuRhi2i89ug8yg8UGhUwZai92jbAIaiEq";
-    public static final long JWT_EXPIRATION = 1000 * 60 * 30;
+    public static final long JWT_EXPIRATION = 1000 * 60 * 60 * 2;
 
     public Claims validateToken(String token) {
         Claims claims = Jwts.parser().setSigningKey(getSignKey()).parseClaimsJws(token).getBody();

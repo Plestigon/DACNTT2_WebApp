@@ -190,8 +190,8 @@ function SubmitForm() {
             </div>
             {showErr ? <span class="text-danger">Please select approver</span> : ""}
         </form>
-        <div class="row my-5 d-flex justify-content-center">
-            <Button style={{width: '200px', height: '50px'}} onClick={handleSubmit}>Submit</Button>
+        <div class="row mt-4 mb-4 d-flex justify-content-center">
+            <button class="btn btn-primary" style={{width:"70%", height:"45px"}} onClick={handleSubmit}>Submit</button>
         </div>
         </div>
     </div>

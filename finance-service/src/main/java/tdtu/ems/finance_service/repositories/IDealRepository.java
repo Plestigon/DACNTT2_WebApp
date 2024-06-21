@@ -15,4 +15,6 @@ public interface IDealRepository {
     Deal removeDeal(int id) throws ExecutionException, InterruptedException;
     List<Integer> generateDealStageDetails(int dealId) throws ExecutionException, InterruptedException;
     String removeDealStageDetails(List<Integer> ids) throws ExecutionException, InterruptedException;
+    String updateDealNotes(int id, String value) throws ExecutionException, InterruptedException;
+    String updateDealStage(int id, int value) throws ExecutionException, InterruptedException;
 }
