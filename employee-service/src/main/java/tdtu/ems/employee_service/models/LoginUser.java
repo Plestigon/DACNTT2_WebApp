@@ -1,5 +1,7 @@
 package tdtu.ems.employee_service.models;
 
+import java.util.Date;
+
 public class LoginUser {
     private int id;
     private String name;
@@ -8,6 +10,7 @@ public class LoginUser {
     private String roleName;
     private int department;
     private String departmentName;
+    private Date joinDate;
 
     public LoginUser() {}
 
@@ -19,6 +22,7 @@ public class LoginUser {
         this.roleName = o.getRoleDetail();
         this.department = o.getDepartmentId();
         this.departmentName = o.getDepartmentName();
+        this.joinDate = o.getJoinDate();
     }
 
     public int getId() {
@@ -75,5 +79,13 @@ public class LoginUser {
 
     public void setDepartmentName(String departmentName) {
         this.departmentName = departmentName;
+    }
+
+    public Date getJoinDate() {
+        return joinDate;
+    }
+
+    public void setJoinDate(Date joinDate) {
+        this.joinDate = joinDate;
     }
 }
