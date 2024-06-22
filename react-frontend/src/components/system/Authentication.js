@@ -53,7 +53,7 @@ function Authentication({ children }) {
 			.catch(e => {
 				dismiss(toastId);
 				console.log("ERROR_login: " + e);
-				error(e);
+				error(e.message);
 			})
 	}
 
