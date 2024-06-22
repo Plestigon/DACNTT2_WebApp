@@ -87,7 +87,7 @@ function HRSummary() {
 							</div>
 							<div class="flip-card-back bg-info">
 								<h3>Manage my {data.contractCount} contracts</h3>
-								<a href="#" class="btn btn-primary stretched-link bg-info border-0">Go to my contracts</a>
+								<a href="/hr/contracts" class="btn btn-primary stretched-link bg-info border-0">Go to my contracts</a>
 							</div>
 						</div>
 					</div>
