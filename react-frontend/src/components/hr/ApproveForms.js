@@ -16,10 +16,10 @@ function ApproveForms() {
     const navigate = useNavigate();
 
     useEffect(()=>{
-        if (!auth.checkRole(auth.role, "Human Resources")) {
+        if (auth.roleList?.length > 0 && !auth.checkRole(auth.role, "Human Resources")) {
             navigate("/forbidden");
         }
-    }, [])
+    }, [auth.roleList])
 
     function loadFormData() {
         const toastId = loading("Loading forms...");

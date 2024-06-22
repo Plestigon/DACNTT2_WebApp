@@ -24,10 +24,10 @@ function EmpList() {
     const navigate = useNavigate();
 
     useEffect(()=>{
-        if (!auth.checkRole(auth.role, "Human Resources")) {
+        if (auth.roleList?.length > 0 && !auth.checkRole(auth.role, "Human Resources")) {
             navigate("/forbidden");
         }
-    }, [])
+    }, [auth.roleList])
 
     useEffect(()=>{
         fetchEmployees();

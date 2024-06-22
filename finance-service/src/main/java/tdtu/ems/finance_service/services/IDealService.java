@@ -12,6 +12,7 @@ public interface IDealService {
     List<DealResult> getDealsByAssociateId(int id) throws ExecutionException, InterruptedException;
     List<DealStageDetail> getDealStageDetailsByDealId(int id) throws ExecutionException, InterruptedException;
     int addDeal(Deal entry) throws ExecutionException, InterruptedException;
+    String editDeal(Deal entry) throws ExecutionException, InterruptedException;
     String removeDeal(int id) throws ExecutionException, InterruptedException;
     String updateDealNotes(int id, String value) throws ExecutionException, InterruptedException;
     String updateDealStage(int id, int value) throws ExecutionException, InterruptedException;

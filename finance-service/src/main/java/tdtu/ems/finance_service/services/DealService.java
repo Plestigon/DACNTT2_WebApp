@@ -73,6 +73,17 @@ public class DealService implements IDealService {
     }
 
     @Override
+    public String editDeal(Deal entry) throws ExecutionException, InterruptedException {
+        try {
+            return _dealRepository.editDeal(entry);
+        }
+        catch (Exception e) {
+            _logger.Error("editDeal", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Override
     public String removeDeal(int id) throws ExecutionException, InterruptedException {
         try {
             Deal removedDeal = _dealRepository.removeDeal(id);

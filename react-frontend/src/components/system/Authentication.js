@@ -132,9 +132,11 @@ function Authentication({ children }) {
 		if (roleOrdinal >= targetOrdinal) {
 			return true;
 		}
+		console.log(roleOrdinal + " " + targetOrdinal);
+		return false;
 	}
 
-	return <AuthContext.Provider value={{ id, name, email, role, token, login, logOut, isExpired, checkToken, checkRole }}>{children}</AuthContext.Provider>;
+	return <AuthContext.Provider value={{ id, name, email, role, token, roleList, login, logOut, isExpired, checkToken, checkRole }}>{children}</AuthContext.Provider>;
 };
 
 export function useAuthentication() {

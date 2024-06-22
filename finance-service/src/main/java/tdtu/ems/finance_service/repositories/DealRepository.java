@@ -3,6 +3,7 @@ package tdtu.ems.finance_service.repositories;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
+import jakarta.ws.rs.NotFoundException;
 import org.springframework.stereotype.Repository;
 import tdtu.ems.finance_service.utils.Enums;
 import tdtu.ems.finance_service.utils.Logger;
@@ -95,6 +96,19 @@ public class DealRepository implements IDealRepository {
         //Update deal
         ApiFuture<WriteResult> result2 = dealsDb.document(String.valueOf(id)).update("dealStageDetails", dealStageDetailsIds);
         return (int) id;
+    }
+
+    @Override
+    public String editDeal(Deal entry) throws ExecutionException, InterruptedException {
+        CollectionReference dealsDb = _db.collection("deals");
+        Deal deal = dealsDb.document(String.valueOf(entry.getId())).get().get().toObject(Deal.class);
+        if (deal == null) {
+            throw new NotFoundException("Deal with id " + entry.getId() + " not found");
+        }
+        deal.setTitle(entry.getTitle());
+        deal.setDealValue(entry.getDealValue());
+        ApiFuture<WriteResult> result = dealsDb.document(String.valueOf(entry.getId())).set(deal);
+        return result.get().getUpdateTime().toString();
     }
 
     @Override

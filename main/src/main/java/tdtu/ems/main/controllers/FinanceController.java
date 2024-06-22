@@ -178,6 +178,23 @@ public class FinanceController {
         }
     }
 
+    @PutMapping("finance/deals")
+    public ResponseEntity<BaseResponse> editDeal(@RequestBody DealDto input, @RequestParam String token) {
+        try {
+            BaseResponse result = _webClient.build().put()
+                    .uri("http://api-gateway/api/finance/deals")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                    .bodyValue(input)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PutMapping("finance/deals/{id}/notes")
     public ResponseEntity<BaseResponse> updateDealNotes(@PathVariable int id, @RequestParam String value, @RequestParam String token) {
         try {
@@ -197,7 +214,7 @@ public class FinanceController {
     @PutMapping("finance/deals/{id}/stage")
     public ResponseEntity<BaseResponse> updateDealStage(@PathVariable int id, @RequestParam int value, @RequestParam String token) {
         try {
-            BaseResponse result = _webClient.build().post()
+            BaseResponse result = _webClient.build().put()
                     .uri("http://api-gateway/api/finance/deals/" + id + "/stage?value=" + value)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()

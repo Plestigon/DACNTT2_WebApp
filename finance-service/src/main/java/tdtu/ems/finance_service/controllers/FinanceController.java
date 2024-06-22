@@ -154,6 +154,17 @@ public class FinanceController {
         }
     }
 
+    @PutMapping("/finance/deals")
+    public BaseResponse editDeal(@RequestBody Deal entry) {
+        try {
+            String result = _dealService.editDeal(entry);
+            return new BaseResponse(result, 200, "OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
+
     @DeleteMapping("/finance/deals/{id}")
     public BaseResponse removeDeal(@PathVariable int id) {
         try {

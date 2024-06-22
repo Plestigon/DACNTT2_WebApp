@@ -10,7 +10,6 @@ import {success, error, loading, dismiss} from "../../utils/Notify";
 import DeleteConfirmModal from "../../utils/DeleteConfirmModal";
 import { Button } from "react-bootstrap";
 import { useAuthentication } from "../system/Authentication";
-import { useNavigate } from "react-router-dom";
 
 
 function Operations() {
@@ -22,13 +21,6 @@ function Operations() {
         id: 0,
         name: ''
     });
-    const navigate = useNavigate();
-
-    useEffect(()=>{
-        if (!auth.checkRole(auth.role, "Team Lead")) {
-            navigate("/forbidden");
-        }
-    }, [])
 
     useEffect(()=>{
         fetchProjectData();
