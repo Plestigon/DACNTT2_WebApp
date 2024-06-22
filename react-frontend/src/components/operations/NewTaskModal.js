@@ -23,6 +23,7 @@ function NewTaskModal(props) {
     });
     const [assigneeOptions, setAssigneeOptions] = useState([]);
     const [priorityOptions, setPriorityOptions] = useState([]);
+    const [validateError, setValidateError] = useState('');
 
     const editorConfiguration = {
         toolbar: [ 'bold', 'italic' ]
@@ -77,7 +78,20 @@ function NewTaskModal(props) {
     }
 
     function handleSubmit() {
-        console.log(inputs);
+        // console.log(inputs);
+        if (inputs.name === '') {
+            setValidateError('Task name is required'); return;
+        }
+        if (inputs.assignee === 0) {
+            if (assigneeOptions.length === 0) {
+                setValidateError('This project does not have any member to assign. Please add members first.'); return;
+            }
+            setValidateError('Please select assignee'); return;
+        }
+        if (inputs.priority === 0) {
+            setValidateError('Please select priority'); return;
+        }
+        setValidateError('');
         fetch(process.env.REACT_APP_API_URI + "/operations/tasks" + "?token=" + auth.token,{
             method:"POST",
             body: JSON.stringify({
@@ -96,7 +110,16 @@ function NewTaskModal(props) {
         .then(result=>result.json())
         .then((result)=>{
             if (result.statusCode === 200) {
-                success("New task added successfully");
+                success("New task created successfully");
+                setInputs({
+                    name: '',
+                    assignee: 0,
+                    assigneeName: '- Select assignee -',
+                    priority: 0,
+                    priorityName: '- Select priority -',
+                    dueDate: getDefaultDueDate(),
+                    description: ''
+                });
                 props.onHide();
                 props.reload();
             }
@@ -162,6 +185,7 @@ function NewTaskModal(props) {
                         />
                     </div>
                 </div>
+                <span class="text-danger">{validateError}</span>
             </form>
              </Modal.Body>
              <Modal.Footer className="d-flex justify-content-center">

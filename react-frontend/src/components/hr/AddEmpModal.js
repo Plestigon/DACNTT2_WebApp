@@ -12,13 +12,14 @@ function AddEmpModal(props) {
         name: '',
         email: '',
         department: 0,
-        departmentName: '',
+        departmentName: '- Select department -',
         role: 0,
-        roleName: '',
+        roleName: '- Select role -',
         password: ''
     });
     const [depOptions, setDepOptions] = useState([]);
     const [roleOptions, setRoleOptions] = useState([]);
+    const [validateError, setValidateError] = useState('');
 
     useEffect(() => {
         function loadEmployeeRoles() {
@@ -71,6 +72,19 @@ function AddEmpModal(props) {
     }
 
     function handleSubmit() {
+        if (inputs.name === '' || inputs.email === '' || inputs.password === '') {
+            setValidateError("Please fill in all fields");
+            return;
+        }
+        if (!/^[\w-.]+@([\w-]+.)+[\w-]{2,4}$/.test(inputs.email.toLowerCase())) {
+            setValidateError("Invalid email");
+            return;
+        }
+        if (inputs.department === 0 || inputs.role === 0) {
+            setValidateError("Please select department and role");
+            return;
+        }
+        setValidateError('');
         fetch(process.env.REACT_APP_API_URI + "/hr/employees?token=" + auth.token,{
             method:"POST",
             body: JSON.stringify({
@@ -91,11 +105,20 @@ function AddEmpModal(props) {
         .then((result)=>{
             if (result.statusCode === 200) {
                 success("Employee added");
+                setInputs({
+                    name: '',
+                    email: '',
+                    department: 0,
+                    departmentName: '- Select department -',
+                    role: 0,
+                    roleName: '- Select role -',
+                    password: ''
+                });
                 props.reload();
                 props.onHide();
             }
             else {
-                error("Some errors occurred");
+                error(result.message);
             }
         })
         .catch (e => {
@@ -136,6 +159,9 @@ function AddEmpModal(props) {
                     <div class="col-6">
                         <label class="form-label">Password:</label>
                         <input type="text" class="form-control" name="password" onChange={handleInputChange}/>
+                    </div>
+                    <div class="col-6 pt-4">
+                        <span class="text-danger">{validateError}</span>
                     </div>
                 </div>
             </form>

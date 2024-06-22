@@ -11,6 +11,7 @@ function NewAssociateModal(props) {
 		domain: '',
 		description: ''
 	});
+	const [validateError, setValidateError] = useState('');
 
 	function handleInputChange(e) {
 		const name = e.target.name;
@@ -19,7 +20,18 @@ function NewAssociateModal(props) {
 	}
 
 	function handleSubmit() {
-		console.log(inputs);
+		// console.log(inputs);
+		if (inputs.name === '') {
+			setValidateError("Associate name required"); return;
+		}
+		if (inputs.domain === '') {
+			setValidateError("Associate domain required"); return;
+		}
+		if (!/[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+/.test(inputs.domain)) {
+			setValidateError("Invalid domain");
+			return;
+		}
+		setValidateError('');
 		fetch(process.env.REACT_APP_API_URI + "/finance/associates?token=" + props.token, {
 			method: "POST",
 			body: JSON.stringify(inputs),
@@ -60,7 +72,7 @@ function NewAssociateModal(props) {
 					<div class="row my-2">
 						<div class="col-12">
 							Domain: <input type="text" class="form-control" name="domain" value={inputs.domain} onChange={handleInputChange}
-								placeholder="Associate domain" required />
+								placeholder="Associate domain. Ex: tdtu.edu.vn" required />
 						</div>
 					</div>
 					<div class="row my-2">
@@ -69,6 +81,7 @@ function NewAssociateModal(props) {
 								placeholder="Description" required />
 						</div>
 					</div>
+					<span class="text-danger">{validateError}</span>
 				</form>
 			</Modal.Body>
 			<Modal.Footer className="d-flex justify-content-center">

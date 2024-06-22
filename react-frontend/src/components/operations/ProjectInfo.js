@@ -254,6 +254,7 @@ const ProjectInfo = () => {
         .then((result)=>{
             // console.log(result);
             if (result.statusCode === 200) {
+                setComment('');
                 loadProjectUpdates();
             }
         })
@@ -310,7 +311,7 @@ const ProjectInfo = () => {
                 <div class="row">
                     <div class="col-2">Comment</div>
                     <div class="col-10">
-                        <textarea class="form-control" name="comment" rows={2} cols={10} onChange={(e) => setComment(e.target.value)}/>
+                        <textarea class="form-control" name="comment" value={comment} rows={2} cols={10} onChange={(e) => setComment(e.target.value)}/>
                     </div>
                 </div>
                 <div class="row w-100">
@@ -335,7 +336,7 @@ const ProjectInfo = () => {
             <div class="col-6 px-5">
                 <div class="h5">
                     <i class="bi bi-person"></i> Members
-                    <Button className="btn-primary ms-3" onClick={() => setAddMemberModalShow(true)}><i class="bi bi-person-plus"></i></Button>
+                    <Button className="btn-primary ms-3" onClick={() => setAddMemberModalShow(true)} title="Add Member"><i class="bi bi-person-plus"></i></Button>
                     <AddMemberModal show={addMemberModalShow} onHide={() => setAddMemberModalShow(false)}
                     projectId={params.id} members={members} reload={loadProjectData}/>
                 </div>
@@ -356,8 +357,8 @@ const ProjectInfo = () => {
                 )) : ""}
 
                 <div class="h5 mt-5">
-                    <i class="bi bi-person"></i> Tasks
-                    <Button className="btn-primary ms-3" onClick={() => setNewTaskModalShow(true)}><i class="bi bi-person-plus"></i></Button>
+                    <i class="bi bi-list-task"></i> Tasks
+                    <Button className="btn-primary ms-3" onClick={() => setNewTaskModalShow(true)} title="New Task"><i class="bi bi-list-task"></i>+</Button>
                     <NewTaskModal show={newTaskModalShow} onHide={() => setNewTaskModalShow(false)}
                     projectId={params.id} members={members} reload={loadTasks}/>
                 </div>

@@ -121,8 +121,12 @@ function EmpList() {
                             <td>{em.departmentName}</td>
                             <td>{em.roleDetail}</td>
                             <td>{dateTimeFormat(em.joinDate)}</td>
-                            <td><button type="button" class="btn btn-danger bi bi-trash"
-                                onClick={(e) => deleteBtnClick(e, em.id, em.name)}></button></td>
+                            <td>{em.id != auth.id
+                                ?<button type="button" class="btn btn-danger bi bi-trash"
+                                onClick={(e) => deleteBtnClick(e, em.id, em.name)}></button>
+                                :<button type="button" class="btn btn-secondary bi bi-trash"
+                                onClick={(e) => deleteBtnClick(e, em.id, em.name)} disabled={true}></button>}
+                            </td>
                         </tr>
                     ))}
                 </tbody>

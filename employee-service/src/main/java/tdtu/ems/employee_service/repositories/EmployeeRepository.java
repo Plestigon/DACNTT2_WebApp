@@ -35,7 +35,7 @@ public class EmployeeRepository implements IEmployeeRepository {
         //region Check if email already used
         QuerySnapshot query = employeesDb.whereEqualTo("email", e.getEmail()).get().get();
         if (!query.getDocuments().isEmpty()) {
-            throw new RuntimeException("Email already exists");
+            throw new RuntimeException("Email has already been used");
         }
         //endregion
 

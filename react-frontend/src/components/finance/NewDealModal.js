@@ -15,7 +15,7 @@ function NewDealModal(props) {
 	});
 
 	const [options, setOptions] = useState([]);
-	const [showErr, setShowErr] = useState(false);
+	const [validateError, setValidateError] = useState('');
 
 	useEffect(() => {
 		if (props.associate.contacts) {
@@ -53,13 +53,16 @@ function NewDealModal(props) {
 
 	function handleContactChange(e) {
 		setInputs(prevState => ({ ...prevState, 'contact': e.value, 'contactName': e.label}));
-		setShowErr(false);
 	}
 
 	function handleSubmit() {
-		if (inputs.contact === 0 || inputs.title === '') {
-			setShowErr(true);
+		if (inputs.title === ''){
+			setValidateError("Title is required"); return;
 		}
+		if (inputs.contact === 0) {
+			setValidateError("Please select contact"); return;
+		}
+		setValidateError('');
 		// console.log(inputs);
 		fetch(process.env.REACT_APP_API_URI + "/finance/deals?token=" + props.token, {
 			method: "POST",
@@ -78,6 +81,12 @@ function NewDealModal(props) {
 		.then((result) => {
 			if (result.statusCode === 200) {
 				success("New associate added successfully!");
+				setInputs({
+					title: '',
+					contact: 0,
+					contactName: '- Select contact -',
+					dealValue: 0
+				});
 				props.onHide();
 				props.reload();
 			}
@@ -122,7 +131,7 @@ function NewDealModal(props) {
 								<span style={{ marginLeft: "10px", marginTop: "5px" }}>VNĐ</span></div>
 						</div>
 						<div class="col-6">
-							{showErr ? <span class="text-danger">Please fill in title and select contact</span> : ""}
+							<span class="text-danger">{validateError}</span>
 						</div>
 					</div>
 				</form>

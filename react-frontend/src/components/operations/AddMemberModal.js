@@ -16,6 +16,7 @@ function AddMemberModal(props) {
     });
     const [options, setOptions] = useState([]);
     const [roleOptions, setRoleOptions] = useState([]);
+    const [validateError, setValidateError] = useState('');
 
     useEffect(() => {
         function loadProjectRoles() {
@@ -71,7 +72,13 @@ function AddMemberModal(props) {
     }
 
     function handleSubmit() {
-        if (data.memberId === 0) return;
+        if (data.memberId === 0) {
+            setValidateError('Please select member'); return;
+        }
+        if (data.role === 0) {
+            setValidateError('Please select role'); return;
+        }
+        setValidateError('');
         fetch(process.env.REACT_APP_API_URI + "/operations/projects/" + props.projectId + "/member?memberId=" + 
                 data.memberId + "&role=" + data.role + "&token=" + auth.token,{
             method:"POST",
@@ -114,6 +121,7 @@ function AddMemberModal(props) {
                         <Select name="role" value={{label: data.roleName, value: data.role}} onChange={handleRoleSelect} options={roleOptions}/>
                     </div>
                 </div>
+                <span class="text-danger">{validateError}</span>
             </Modal.Body>
             <Modal.Footer>
                 <div className="w-100 d-flex justify-content-center">

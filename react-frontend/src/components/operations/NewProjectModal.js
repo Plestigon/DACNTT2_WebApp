@@ -13,11 +13,12 @@ function NewProjectModal(props) {
     const [inputs, setInputs] = useState({
         name: '',
         owner: 0,
-        ownerName: '',
+        ownerName: '- Select project owner -',
         dueDate: getDefaultDueDate(),
         description: ''
     });
     const [options, setOptions] = useState([]);
+    const [validateError, setValidateError] = useState('');
 
     const loadOwners = useCallback(() => {
         fetch(process.env.REACT_APP_API_URI + "/operations/employees" + "?token=" + auth.token,{
@@ -70,6 +71,13 @@ function NewProjectModal(props) {
     function handleSubmitProject(e) {
         e.preventDefault();
         // console.log(inputs);
+        if (inputs.name === '') {
+            setValidateError('Project name is required'); return;
+        }
+        if (inputs.owner === 0) {
+            setValidateError('Please select project owner'); return;
+        }
+        setValidateError('');
         fetch(process.env.REACT_APP_API_URI + "/operations/projects" + "?token=" + auth.token,{
             method:"POST",
             body: JSON.stringify({
@@ -132,6 +140,7 @@ function NewProjectModal(props) {
                         placeholder="New project's description" required/>
                     </div>
                 </div>
+                <span class="text-danger">{validateError}</span>
             </form>
             </Modal.Body>
             <Modal.Footer className="d-flex justify-content-center">

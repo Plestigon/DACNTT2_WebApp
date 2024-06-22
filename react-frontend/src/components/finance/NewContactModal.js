@@ -12,6 +12,7 @@ function NewContactModal(props) {
 		email: '',
 		phoneNumber: ''
 	});
+	const [validateError, setValidateError] = useState('');
 
 	function handleInputChange(e) {
 		const name = e.target.name;
@@ -21,7 +22,14 @@ function NewContactModal(props) {
 	}
 
 	function handleSubmit() {
-		console.log(inputs);
+		// console.log(inputs);
+		if (inputs.name === '' || inputs.role === '' || inputs.email === '' || inputs.phoneNumber === '') {
+			setValidateError("Please fill in all required fields"); return;
+		}
+		if (!/^[\w-.]+@([\w-]+.)+[\w-]{2,4}$/.test(inputs.email.toLowerCase())) {
+			setValidateError("Invalid email"); return;
+		}
+		setValidateError('');
 		fetch(process.env.REACT_APP_API_URI + "/finance/contacts?token=" + props.token, {
 			method: "POST",
 			body: JSON.stringify(inputs),
@@ -34,6 +42,12 @@ function NewContactModal(props) {
 		.then((result) => {
 			if (result.statusCode === 200) {
 				success("New contact added successfully!");
+				setInputs({
+					name: '',
+					role: '',
+					email: '',
+					phoneNumber: ''
+				});
 				props.onHide();
 				props.reload();
 			}
@@ -74,6 +88,7 @@ function NewContactModal(props) {
 							Phone number: <input type="text" class="form-control" name="phoneNumber" value={inputs.phoneNumber} onChange={handleInputChange} />
 						</div>
 					</div>
+					<span class="text-danger">{validateError}</span>
 				</form>
 			</Modal.Body>
 			<Modal.Footer className="d-flex justify-content-center">
