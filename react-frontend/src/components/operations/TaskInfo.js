@@ -254,8 +254,8 @@ const TaskInfo = () => {
     }
 
     function handleEditSubmit() {
-        // console.log(data);
-        fetch(process.env.REACT_APP_API_URI + "/operations/projects/edit" + "?token=" + auth.token,{
+        console.log(data);
+        fetch(process.env.REACT_APP_API_URI + "/operations/tasks/edit" + "?token=" + auth.token,{
             method:"POST",
             body: JSON.stringify({
                 'id': params.id,
@@ -272,7 +272,11 @@ const TaskInfo = () => {
         .then((result)=>{
             if (result.statusCode === 200) {
                 success("Project updated");
-                window.location.reload();
+                setInputDisabled(true);
+                loadTaskData();
+            }
+            else {
+                console.log(result.message);
             }
         })
         .catch (e => {

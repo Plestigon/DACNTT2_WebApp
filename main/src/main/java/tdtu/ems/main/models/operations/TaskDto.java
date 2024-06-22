@@ -3,6 +3,7 @@ package tdtu.ems.main.models.operations;
 import java.util.Date;
 
 public class TaskDto {
+    private int id;
     private String name;
     private int projectId;
     private int assigneeId;
@@ -12,13 +13,22 @@ public class TaskDto {
 
     public TaskDto() {}
 
-    public TaskDto(String name, int projectId, int assigneeId, int priority, Date dueDate, String description) {
+    public TaskDto(int id, String name, int projectId, int assigneeId, int priority, Date dueDate, String description) {
+        this.id = id;
         this.name = name;
         this.projectId = projectId;
         this.assigneeId = assigneeId;
         this.priority = priority;
         this.dueDate = dueDate;
         this.description = description;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
