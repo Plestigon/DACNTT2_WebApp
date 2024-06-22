@@ -32,8 +32,10 @@ public class ProjectRepository implements IProjectRepository {
                 Project prj = data.toObject(Project.class);
                 if (prj != null) {
                     DocumentSnapshot ownerData = employeesDb.document(String.valueOf(prj.getOwnerId())).get().get();
-                    ProjectResult prjRes = new ProjectResult(prj, ownerData.getString("name"));
-                    projects.add(prjRes);
+                    if (ownerData.exists()) {
+                        ProjectResult prjRes = new ProjectResult(prj, ownerData.getString("name"));
+                        projects.add(prjRes);
+                    }
                 }
             }
             return projects;
@@ -70,8 +72,10 @@ public class ProjectRepository implements IProjectRepository {
                 Project project = data.toObject(Project.class);
                 if (project != null) {
                     DocumentSnapshot ownerData = employeesDb.document(String.valueOf(project.getOwnerId())).get().get();
-                    ProjectResult result = new ProjectResult(project, ownerData.getString("name"));
-                    return result;
+                    if (ownerData.exists()) {
+                        ProjectResult result = new ProjectResult(project, ownerData.getString("name"));
+                        return result;
+                    }
                 }
                 _logger.Error("getProjectResultById", "Project is null.");
                 return null;

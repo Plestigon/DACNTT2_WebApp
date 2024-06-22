@@ -36,9 +36,23 @@ public class DealRepository implements IDealRepository {
     }
 
     @Override
+    public List<DealResult> getDeals() throws ExecutionException, InterruptedException {
+        CollectionReference dealsDb = _db.collection("deals");
+        List<DealResult> result = new ArrayList<>();
+        for (QueryDocumentSnapshot data : dealsDb.get().get().getDocuments()) {
+            Deal deal = data.toObject(Deal.class);
+            result.add(new DealResult(deal));
+        }
+        return result;
+    }
+
+    @Override
     public List<DealResult> getDealsByAssociateId(int id) throws ExecutionException, InterruptedException {
         CollectionReference dealsDb = _db.collection("deals");
         CollectionReference associatesDb = _db.collection("associates");
+        if (associatesDb.document(String.valueOf(id)).get().get() == null) {
+            throw new NotFoundException("Associate with id " + id + " not found");
+        }
         List<DealResult> result = new ArrayList<>();
         for (QueryDocumentSnapshot data : dealsDb.get().get().getDocuments()) {
             Deal deal = data.toObject(Deal.class);

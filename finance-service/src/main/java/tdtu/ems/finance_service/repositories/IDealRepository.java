@@ -9,6 +9,7 @@ import java.util.concurrent.ExecutionException;
 
 public interface IDealRepository {
     DealResult getDealById(int id) throws ExecutionException, InterruptedException;
+    List<DealResult> getDeals() throws ExecutionException, InterruptedException;
     List<DealResult> getDealsByAssociateId(int id) throws ExecutionException, InterruptedException;
     List<DealStageDetail> getDealStageDetailsByDealId(int id) throws ExecutionException, InterruptedException;
     int addDeal(Deal entry) throws ExecutionException, InterruptedException;

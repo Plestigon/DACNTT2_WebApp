@@ -74,7 +74,7 @@ function Contacts() {
 								<th scope="col">Role</th>
 								<th scope="col">Email</th>
 								<th scope="col">Phone number</th>
-								<th scope="col" style={{ width: '50px' }}></th>
+								{/* <th scope="col" style={{ width: '50px' }}></th> */}
 							</tr>
 						</thead>
 						<tbody>
@@ -84,8 +84,8 @@ function Contacts() {
 									<td>{x.role}</td>
 									<td>{x.email}</td>
 									<td>{x.phoneNumber}</td>
-									<td><button class="btn btn-danger bi bi-trash delete-prj-btn"
-										onClick={(e) => deleteBtnClick(e, x.id, x.name)}></button></td>
+									{/* <td><button class="btn btn-danger bi bi-trash delete-prj-btn"
+										onClick={(e) => deleteBtnClick(e, x.id, x.name)}></button></td> */}
 								</tr>
 							))}
 						</tbody>

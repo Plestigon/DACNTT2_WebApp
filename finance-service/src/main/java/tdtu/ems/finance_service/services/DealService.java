@@ -8,6 +8,7 @@ import tdtu.ems.finance_service.models.DealStageDetail;
 import tdtu.ems.finance_service.repositories.DealRepository;
 import tdtu.ems.finance_service.repositories.IAssociateRepository;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -30,6 +31,19 @@ public class DealService implements IDealService {
         }
         catch (Exception e) {
             _logger.Error("getDealsByIds", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Override
+    public List<DealResult> getDeals() throws ExecutionException, InterruptedException {
+        try {
+            List<DealResult> result = _dealRepository.getDeals();
+            result.sort(Comparator.comparing(DealResult::getCreateDate).reversed());
+            return result;
+        }
+        catch (Exception e) {
+            _logger.Error("getDeals", e.getMessage());
             throw e;
         }
     }

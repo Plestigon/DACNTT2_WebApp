@@ -96,11 +96,11 @@ public class FinanceController {
         }
     }
 
-    @GetMapping("finance/associates/{id}/deals")
-    public ResponseEntity<BaseResponse> getDeals(@PathVariable int id, @RequestParam String token) {
+    @GetMapping("finance/deals")
+    public ResponseEntity<BaseResponse> getDeals(@RequestParam(required = false) Integer associate, @RequestParam String token) {
         try {
             BaseResponse result = _webClient.build().get()
-                    .uri("http://api-gateway/api/finance/associates/" + id + "/deals")
+                    .uri("http://api-gateway/api/finance/deals" + (associate != null ? "?associate=" + associate : ""))
                     .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)

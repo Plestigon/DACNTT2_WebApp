@@ -81,11 +81,6 @@ function EmpList() {
         setDeleteTarget({'id': 0, 'name': ''});
     }
 
-    function projectDetails(id) {
-        var win = window.open('/operations/projects/' + id, '_blank');
-        win.focus();
-    }
-
     return (
     <div>
         <SideBar/>
@@ -101,13 +96,13 @@ function EmpList() {
                 <table class="table-clickable table table-hover table-collapsed" id="project-table" style={{width:'100%'}}>
                 <thead class="table-primary">
                     <tr>
-                        <th scope="col" style={{width:'50px'}}>ID</th>
-                        <th scope="col" style={{width:'20%'}}>Full Name</th>
-                        <th scope="col" style={{width:'15%'}}>Email</th>
-                        <th scope="col" style={{width:'10%'}}>Department</th>
-                        <th scope="col" style={{width:'15%'}}>Role</th>
+                        <th scope="col">ID</th>
+                        <th scope="col">Full Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Department</th>
+                        <th scope="col">Role</th>
                         <th scope="col">Join date</th>
-                        <th scope="col" style={{width:'50px'}}></th>
+                        {/* <th scope="col" style={{width:'50px'}}></th> */}
                     </tr>
                 </thead>
                 <tbody>
@@ -121,12 +116,12 @@ function EmpList() {
                             <td>{em.departmentName}</td>
                             <td>{em.roleDetail}</td>
                             <td>{dateTimeFormat(em.joinDate)}</td>
-                            <td>{em.id != auth.id
+                            {/* <td>{em.id !== auth.id
                                 ?<button type="button" class="btn btn-danger bi bi-trash"
                                 onClick={(e) => deleteBtnClick(e, em.id, em.name)}></button>
                                 :<button type="button" class="btn btn-secondary bi bi-trash"
                                 onClick={(e) => deleteBtnClick(e, em.id, em.name)} disabled={true}></button>}
-                            </td>
+                            </td> */}
                         </tr>
                     ))}
                 </tbody>

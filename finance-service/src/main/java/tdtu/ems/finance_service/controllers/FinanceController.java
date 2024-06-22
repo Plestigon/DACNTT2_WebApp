@@ -99,10 +99,12 @@ public class FinanceController {
         }
     }
 
-    @GetMapping("/finance/associates/{id}/deals")
-    public BaseResponse getDeals(@PathVariable int id) {
+    @GetMapping("/finance/deals")
+    public BaseResponse getDeals(@RequestParam(required = false) Integer associate) {
         try {
-            List<DealResult> result = _dealService.getDealsByAssociateId(id);
+            List<DealResult> result = associate == null ?
+                    _dealService.getDeals() :
+                    _dealService.getDealsByAssociateId(associate);
             return new BaseResponse(result, 200, "OK");
         }
         catch (Exception e) {

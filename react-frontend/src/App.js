@@ -75,7 +75,7 @@ function App() {
             <Route path="/hr/employees" element={<PrivateRoute><EmpList/></PrivateRoute>}/>
             
             <Route path="/finance/associates" element={<PrivateRoute><Associates/></PrivateRoute>}/>
-            <Route path="/finance/associates/:id/deals" element={<PrivateRoute><Deals/></PrivateRoute>}/>
+            <Route path="/finance/deals" element={<PrivateRoute><Deals/></PrivateRoute>}/>
             <Route path="/finance/deals/:id/stages" element={<PrivateRoute><DealDetails/></PrivateRoute>}/>
             <Route path="/finance/contacts/" element={<PrivateRoute><Contacts/></PrivateRoute>}/>
             

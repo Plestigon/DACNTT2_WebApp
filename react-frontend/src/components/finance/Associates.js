@@ -8,9 +8,11 @@ import { Button } from "react-bootstrap";
 import { useAuthentication } from "../system/Authentication";
 import AssignContactModal from "./AssignContactModal.js";
 import NewAssociateModal from "./NewAssociateModal.js";
+import { createSearchParams, useNavigate } from "react-router-dom";
 
 function Associates() {
 	const auth = useAuthentication();
+	const navigate = useNavigate();
 	const [associates, setAssociates] = useState([]);
 
 	const [showNewModal, setShowNewModal] = useState(false);
@@ -88,6 +90,13 @@ function Associates() {
 		setShowAddContactModal(true);
 	}
 
+	function goToDeals(id) {
+		navigate({
+			pathname: "/finance/deals",
+			search: createSearchParams({ associate: id }).toString()
+		});
+	}
+
 	return (
 		<div>
 			<SideBar />
@@ -132,7 +141,7 @@ function Associates() {
 										</div>
 									</td>
 									{/* <td style={{padding:'10px'}}><button class="btn btn-primary">+ Contact</button></td> */}
-									<td style={{paddingLeft:"10px", paddingRight:"10px"}}><button class="btn btn-info" onClick={() => window.open('/finance/associates/' + x.id + '/deals', '_blank').focus()}>Go to Deals</button></td>
+									<td style={{paddingLeft:"10px", paddingRight:"10px"}}><button class="btn btn-info" onClick={() => goToDeals(x.id)}>Go to Deals</button></td>
 									<td><button class="btn btn-danger bi bi-trash delete-prj-btn"
 										onClick={(e) => deleteBtnClick(x.id, x.name)}></button></td>
 								</tr>

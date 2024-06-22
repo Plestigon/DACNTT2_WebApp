@@ -66,10 +66,9 @@ public class DepartmentRepository implements IDepartmentRepository {
         CollectionReference departmentsDb = _db.collection("departments");
         Department d = departmentsDb.document(String.valueOf(departmentId)).get().get().toObject(Department.class);
         if (d != null) {
-            List<Integer> empIds = d.getEmployeeIds();
-            if (empIds == null) empIds = new ArrayList<>();
-            if (!empIds.contains(employeeId)) {
-                empIds.add(employeeId);
+            if (d.getEmployeeIds() == null) d.setEmployeeIds(new ArrayList<>());
+            if (!d.getEmployeeIds().contains(employeeId)) {
+                d.getEmployeeIds().add(employeeId);
             }
             ApiFuture<WriteResult> result = departmentsDb.document(String.valueOf(departmentId)).set(d);
             return result.get().getUpdateTime().toString();
@@ -84,7 +83,7 @@ public class DepartmentRepository implements IDepartmentRepository {
         for (QueryDocumentSnapshot data : departmentsDb.get().get().getDocuments()) {
             Department d = data.toObject(Department.class);
             List<Integer> empIds = d.getEmployeeIds();
-            if (empIds.contains(employeeId)) {
+            if (empIds != null && empIds.contains(employeeId)) {
                 empIds.remove(Integer.valueOf(employeeId));
                 ApiFuture<WriteResult> result = departmentsDb.document(String.valueOf(d.getId())).update("employeeIds", empIds);
                 results += result.get().getUpdateTime().toString() + ";";
