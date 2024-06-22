@@ -1,4 +1,4 @@
-package tdtu.ems.main.controllers;
+package tdtu.ems.main.models;
 
 public class ChangePasswordDto {
     private int userId;
