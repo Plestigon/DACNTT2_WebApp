@@ -54,11 +54,16 @@ public class TaskRepository implements ITaskRepository {
     public List<TaskResult> getTasksByProjectId(int projectId) throws ExecutionException, InterruptedException {
         CollectionReference tasksDb = _db.collection("tasks");
         CollectionReference employeeDb = _db.collection("employees");
+        CollectionReference projectMembersDb = _db.collection("projectMembers");
         List<TaskResult> result = new ArrayList<>();
         for (DocumentSnapshot data : tasksDb.get().get().getDocuments()) {
             Task task = data.toObject(Task.class);
             if (task != null && task.getProjectId() == projectId) {
-                String assigneeName = employeeDb.document(String.valueOf(task.getAssigneeId())).get().get().getString("name");
+                String assigneeName = "";
+                ProjectMember pm = projectMembersDb.document(String.valueOf(task.getAssigneeId())).get().get().toObject(ProjectMember.class);
+                if (pm != null) {
+                    assigneeName = employeeDb.document(String.valueOf(pm.getEmployeeId())).get().get().getString("name");
+                }
                 result.add(new TaskResult(task, assigneeName));
             }
         }
@@ -170,15 +175,20 @@ public class TaskRepository implements ITaskRepository {
     public List<TaskResult> getTasksFromMyProject(int projectId, int employeeId) throws ExecutionException, InterruptedException {
         CollectionReference tasksDb = _db.collection("tasks");
         CollectionReference employeeDb = _db.collection("employees");
-        CollectionReference projectsDb = _db.collection("projects");
+        CollectionReference projectMembersDb = _db.collection("projectMembers");
+
         List<TaskResult> result = new ArrayList<>();
-        for (DocumentSnapshot data : tasksDb.get().get().getDocuments()) {
-            Task task = data.toObject(Task.class);
-            if (task != null && task.getProjectId() == projectId && task.getAssigneeId() == employeeId) {
-                if (task.getState() == Enums.TaskState.ToDo.ordinal() ||
-                    task.getState() == Enums.TaskState.InProgress.ordinal()) {
-                    String name = employeeDb.document(String.valueOf(task.getAssigneeId())).get().get().getString("name");
-                    result.add(new TaskResult(task, name));
+        var pmData = projectMembersDb.whereEqualTo("projectId", projectId).whereEqualTo("employeeId", employeeId).get().get().getDocuments();
+        if (!pmData.isEmpty()) {
+            ProjectMember pm = pmData.get(0).toObject(ProjectMember.class);
+            for (DocumentSnapshot data : tasksDb.get().get().getDocuments()) {
+                Task task = data.toObject(Task.class);
+                if (task != null && task.getProjectId() == projectId && task.getAssigneeId() == pm.getId()) {
+                    if (task.getState() == Enums.TaskState.ToDo.ordinal() ||
+                            task.getState() == Enums.TaskState.InProgress.ordinal()) {
+                        String name = employeeDb.document(String.valueOf(pm.getEmployeeId())).get().get().getString("name");
+                        result.add(new TaskResult(task, name));
+                    }
                 }
             }
         }

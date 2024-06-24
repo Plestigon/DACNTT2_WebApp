@@ -30,6 +30,10 @@ function NewContract(props) {
 	const [showValidate, setShowValidate] = useState(false);
 
 	useEffect(() => {
+		document.title = 'New Contract - TDTU EMS';
+	}, []);
+
+	useEffect(() => {
 		function loadContractTypes() {
 			fetch(process.env.REACT_APP_API_URI + "/hr/contracts/types", {
 				method: "GET",

@@ -16,6 +16,10 @@ function MyContracts() {
 
     const [contracts, setContracts] = useState([]);
 
+    useEffect(() => {
+		document.title = 'My Contracts - TDTU EMS';
+	}, []);
+
     useEffect(()=>{
         loadContractData();
     }, [])

@@ -12,6 +12,10 @@ function Login() {
 	const [emailError, setEmailError] = useState('');
 	const [passwordError, setPasswordError] = useState('');
 
+	useEffect(() => {
+    document.title = 'Login - TDTU EMS';
+  }, []);
+
 	function validate() {
 		setEmailError('');
 		setPasswordError('');

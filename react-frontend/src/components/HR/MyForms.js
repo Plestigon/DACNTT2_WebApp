@@ -16,6 +16,10 @@ function MyForms() {
     const navigate = useNavigate();
 
     useEffect(() => {
+		document.title = 'My Forms - TDTU EMS';
+	}, []);
+
+    useEffect(() => {
         const query = new URLSearchParams(window.location.search);
         const submitted = query.get("submitted");
         if (submitted) {

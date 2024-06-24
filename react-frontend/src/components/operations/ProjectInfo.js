@@ -37,6 +37,10 @@ const ProjectInfo = () => {
     const [newTaskModalShow, setNewTaskModalShow] = useState(false);
     const [comment, setComment] = useState('');
 
+    useEffect(() => {
+        document.title = 'Project Info - TDTU EMS';
+    }, []);
+
     const loadProjectData = useCallback(() => {
         fetch(process.env.REACT_APP_API_URI + "/operations/projects/" + params.id + "?token=" + auth.token,{
             method:"GET",
@@ -111,7 +115,7 @@ const ProjectInfo = () => {
             })
             .then(result=>result.json())
             .then((result)=>{
-                // console.log(result);
+                console.log(result);
                 if (result.statusCode === 200) {
                     setMembers(result.data);
                 }

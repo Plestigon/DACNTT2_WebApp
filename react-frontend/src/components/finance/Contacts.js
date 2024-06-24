@@ -20,6 +20,10 @@ function Contacts() {
 	});
 
 	useEffect(() => {
+		document.title = 'Contracts - TDTU EMS';
+	}, []);
+
+	useEffect(() => {
 		fetchContacts();
 	}, [])
 

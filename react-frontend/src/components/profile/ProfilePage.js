@@ -21,6 +21,10 @@ export default function ProfilePage() {
   const [newPassModalShow, setNewPassModalShow] = useState(false);
 
   useEffect(() => {
+    document.title = 'Profile - TDTU EMS';
+  }, []);
+
+  useEffect(() => {
     function fetchUser() {
       fetch(process.env.REACT_APP_API_URI + "/auth/user?email=" + auth.email + "&token=" + auth.token, {
         method: "GET",

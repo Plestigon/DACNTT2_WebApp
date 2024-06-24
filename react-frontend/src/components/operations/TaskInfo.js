@@ -42,6 +42,10 @@ const TaskInfo = () => {
     const [inputDisabled, setInputDisabled] = useState(true);
     const [comment, setComment] = useState();
 
+    useEffect(() => {
+        document.title = 'Task Info - TDTU EMS';
+    }, []);
+
     const loadTaskData = useCallback(() => {
         fetch(process.env.REACT_APP_API_URI + "/operations/tasks/" + params.id + "?token=" + auth.token,{
             method:"GET",

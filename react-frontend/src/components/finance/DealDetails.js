@@ -30,6 +30,10 @@ function DealDetails() {
 	const [disableEdit, setDisableEdit] = useState(true);
 
 	useEffect(() => {
+		document.title = 'Deal Details - TDTU EMS';
+	}, []);
+
+	useEffect(() => {
 		fetchDeal();
 		fetchDealStageDetails();
 	}, [])

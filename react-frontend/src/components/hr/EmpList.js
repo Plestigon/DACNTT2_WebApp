@@ -23,6 +23,10 @@ function EmpList() {
     });
     const navigate = useNavigate();
 
+    useEffect(() => {
+		document.title = 'Employees - TDTU EMS';
+	}, []);
+
     useEffect(()=>{
         if (auth.roleList?.length > 0 && !auth.checkRole(auth.role, "Human Resources")) {
             navigate("/forbidden");

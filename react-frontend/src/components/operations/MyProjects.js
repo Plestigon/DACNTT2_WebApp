@@ -19,7 +19,6 @@ function MyProjects() {
     const auth = useAuthentication();
     const [projects, setProjects] = useState([]);
     const [tasks, setTasks] = useState([]);
-    const employeeId = 1;
 
     var settings = {
     infinite: false,
@@ -59,9 +58,13 @@ function MyProjects() {
     });
 
     useEffect(() => {
+        document.title = 'My Projects - TDTU EMS';
+    }, []);
+
+    useEffect(() => {
         function loadProjects() {
             const toastId = loading("Loading projects...");
-            fetch(process.env.REACT_APP_API_URI + "/operations/my-projects?employeeId=" + employeeId + "&token=" + auth.token,{
+            fetch(process.env.REACT_APP_API_URI + "/operations/my-projects?employeeId=" + auth.id + "&token=" + auth.token,{
                 method:"GET",
                 headers: { "ngrok-skip-browser-warning" : "true" }
             })
@@ -69,7 +72,7 @@ function MyProjects() {
             .then((result)=>{
                 dismiss(toastId);
                 if (result.statusCode === 200) {
-                    // console.log(result.data);
+                    console.log(result.data);
                     setProjects(result.data);
                 }
                 else {
@@ -86,7 +89,7 @@ function MyProjects() {
 
     function loadTasks(projectId) {
         const toastId = loading("Loading tasks...");
-        fetch(process.env.REACT_APP_API_URI + "/operations/my-project/" + projectId + "/tasks?employeeId=" + employeeId + "&token=" + auth.token,{
+        fetch(process.env.REACT_APP_API_URI + "/operations/my-project/" + projectId + "/tasks?employeeId=" + auth.id + "&token=" + auth.token,{
             method:"GET",
             headers: { "ngrok-skip-browser-warning" : "true" }
         })
@@ -198,7 +201,7 @@ function MyProjects() {
                 <thead class="table-primary">
                 <tr>
                     <th scope="col">Task Name</th>
-                    <th scope="col">Asigned To</th>
+                    <th scope="col">Assigned To</th>
                     <th scope="col" style={{width:'15%'}}>Priority</th>
                     <th scope="col" style={{width:'15%'}}>Last Updated</th>
                     <th scope="col" style={{width:'15%'}}>Due Date</th>

@@ -28,6 +28,10 @@ function Associates() {
 	});
 
 	useEffect(() => {
+		document.title = 'Associates - TDTU EMS';
+	}, []);
+
+	useEffect(() => {
 		fetchAssociates();
 	}, [])
 

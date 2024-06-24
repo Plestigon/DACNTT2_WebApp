@@ -14,6 +14,10 @@ function HRSummary() {
 	const [data, setData] = useState({});
 
 	useEffect(() => {
+		document.title = 'HR Summary - TDTU EMS';
+	}, []);
+
+	useEffect(() => {
 		function loadSummary() {
 			fetch(process.env.REACT_APP_API_URI + "/hr/summary/" + auth.id + "?token=" + auth.token, {
 				method: "GET",

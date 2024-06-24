@@ -22,6 +22,10 @@ function Operations() {
         name: ''
     });
 
+    useEffect(() => {
+        document.title = 'All Projects - TDTU EMS';
+    }, []);
+
     useEffect(()=>{
         fetchProjectData();
     }, [])

@@ -15,6 +15,10 @@ function ApproveForms() {
     const [forms, setForms] = useState([]);
     const navigate = useNavigate();
 
+    useEffect(() => {
+		document.title = 'Form Management - TDTU EMS';
+	}, []);
+
     useEffect(()=>{
         if (auth.roleList?.length > 0 && !auth.checkRole(auth.role, "Human Resources")) {
             navigate("/forbidden");

@@ -66,7 +66,7 @@ public class ProjectService implements IProjectService {
                     int notStartedCnt = 0;
                     Date nearestDueDate = new Date(Long.MAX_VALUE);
                     for (TaskResult t : tasks) {
-                        if (t.getAssigneeId() == employeeId) {
+                        if (t.getAssigneeId() == memberInfo.getId()) {
                             if (t.getState() == Enums.TaskState.InProgress.ordinal()) {
                                 inProgressCnt++;
                             }

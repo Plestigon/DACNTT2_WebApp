@@ -9,6 +9,10 @@ function Home() {
 	const auth = useAuthentication();
 	const [searchParams] = useSearchParams();
 
+    useEffect(() => {
+        document.title = 'Home - TDTU EMS';
+      }, []);
+
     useEffect(()=>{
 		if (searchParams.get("loggedIn") === "true") {
 			info("Welcome, " + auth.name);

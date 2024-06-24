@@ -29,6 +29,10 @@ function Deals() {
 	const [associateName, setAssociateName] = useState('- Filter by associate -');
 
 	useEffect(() => {
+		document.title = 'Deals - TDTU EMS';
+	}, []);
+
+	useEffect(() => {
 		fetchDeals();
 		fetchAssociate();
 	}, [])

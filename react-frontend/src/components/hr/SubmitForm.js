@@ -32,6 +32,10 @@ function SubmitForm() {
     const [showErr, setShowErr] = useState(false);
 
     useEffect(() => {
+        document.title = 'Submit Form - TDTU EMS';
+    }, []);
+
+    useEffect(() => {
         function loadFormTypes() {
             fetch(process.env.REACT_APP_API_URI + "/hr/submit-form/types",{
                 method:"GET",
