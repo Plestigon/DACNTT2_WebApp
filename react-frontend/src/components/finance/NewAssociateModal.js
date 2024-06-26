@@ -24,9 +24,9 @@ function NewAssociateModal(props) {
 		if (inputs.name === '') {
 			setValidateError("Associate name required"); return;
 		}
-		if (inputs.domain === '') {
-			setValidateError("Associate domain required"); return;
-		}
+		// if (inputs.domain === '') {
+		// 	setValidateError("Associate domain required"); return;
+		// }
 		// if (!/[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+/.test(inputs.domain)) {
 		// 	setValidateError("Invalid domain");
 		// 	return;
