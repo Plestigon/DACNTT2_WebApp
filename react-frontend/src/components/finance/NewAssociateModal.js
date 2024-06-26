@@ -27,10 +27,10 @@ function NewAssociateModal(props) {
 		if (inputs.domain === '') {
 			setValidateError("Associate domain required"); return;
 		}
-		if (!/[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+/.test(inputs.domain)) {
-			setValidateError("Invalid domain");
-			return;
-		}
+		// if (!/[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+/.test(inputs.domain)) {
+		// 	setValidateError("Invalid domain");
+		// 	return;
+		// }
 		setValidateError('');
 		fetch(process.env.REACT_APP_API_URI + "/finance/associates?token=" + props.token, {
 			method: "POST",
