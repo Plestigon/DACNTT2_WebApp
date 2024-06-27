@@ -5,15 +5,17 @@ import java.util.Date;
 public class FormSubmitDto {
     private int type;
     private int ownerId;
+    private int approverId;
     private Date startDate;
     private Date endDate;
     private String reason;
 
     public FormSubmitDto() {}
 
-    public FormSubmitDto(int type, int ownerId, Date startDate, Date endDate, String reason) {
+    public FormSubmitDto(int type, int ownerId, int approverId, Date startDate, Date endDate, String reason) {
         this.type = type;
         this.ownerId = ownerId;
+        this.approverId = approverId;
         this.startDate = startDate;
         this.endDate = endDate;
         this.reason = reason;
@@ -57,5 +59,13 @@ public class FormSubmitDto {
 
     public void setOwnerId(int ownerId) {
         this.ownerId = ownerId;
+    }
+
+    public int getApproverId() {
+        return approverId;
+    }
+
+    public void setApproverId(int approverId) {
+        this.approverId = approverId;
     }
 }
