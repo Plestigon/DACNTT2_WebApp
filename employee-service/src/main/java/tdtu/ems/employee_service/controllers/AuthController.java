@@ -9,12 +9,11 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
+import tdtu.ems.employee_service.models.*;
 import tdtu.ems.employee_service.utils.BaseResponse;
-import tdtu.ems.employee_service.models.ChangePasswordDto;
-import tdtu.ems.employee_service.models.Employee;
-import tdtu.ems.employee_service.models.LoginDto;
-import tdtu.ems.employee_service.models.LoginUser;
 import tdtu.ems.employee_service.services.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -84,6 +83,17 @@ public class AuthController {
                 return new BaseResponse(null, 400, "Incorrect password");
             }
             String result = _employeeService.changePassword(input.getUserId(), input.getNewPass());
+            return new BaseResponse(result, 200, "OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
+
+    @GetMapping("/auth/access-log")
+    public BaseResponse getAccessLog(@RequestParam(required = false) Integer amount) {
+        try {
+            List<AccessLog> result = _authService.getAccessLog(amount);
             return new BaseResponse(result, 200, "OK");
         }
         catch (Exception e) {

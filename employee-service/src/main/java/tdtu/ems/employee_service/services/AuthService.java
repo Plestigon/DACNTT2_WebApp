@@ -3,11 +3,14 @@ package tdtu.ems.employee_service.services;
 import io.jsonwebtoken.Claims;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import tdtu.ems.employee_service.models.AccessLog;
+import tdtu.ems.employee_service.models.AccessLogDto;
 import tdtu.ems.employee_service.utils.Logger;
 import tdtu.ems.employee_service.models.Employee;
 import tdtu.ems.employee_service.models.MyUserDetails;
 import tdtu.ems.employee_service.repositories.EmployeeRepository;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @Service
@@ -42,6 +45,27 @@ public class AuthService {
         }
         catch (Exception e) {
             _logger.Error("validateToken", e.getMessage());
+            throw e;
+        }
+    }
+
+    public void logAccess(AccessLogDto input) {
+        try {
+            String result = _employeeRepository.logAccess(input);
+            _logger.Info("logAccess", result);
+        }
+        catch (Exception e) {
+            _logger.Error("logAccess", e.getMessage());
+        }
+    }
+
+    public List<AccessLog> getAccessLog(Integer amount) throws ExecutionException, InterruptedException {
+        try {
+            List<AccessLog> result = _employeeRepository.getAccessLog(amount);
+            return result;
+        }
+        catch (Exception e) {
+            _logger.Error("getAccessLog", e.getMessage());
             throw e;
         }
     }

@@ -6,10 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
+import tdtu.ems.main.models.AccessLogDto;
 import tdtu.ems.main.models.ChangePasswordDto;
 import tdtu.ems.main.services.RabbitMQProducerService;
 import tdtu.ems.main.utils.BaseResponse;
 import tdtu.ems.main.models.LoginDto;
+
+import java.util.Date;
 
 @Controller
 @RequestMapping("/")
@@ -31,10 +34,14 @@ public class AuthController {
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
                     .block();
+            if (result != null) {
+                AccessLogDto log = new AccessLogDto(input.getEmail(), new Date());
+                _rabbitMQService.sendJsonMessage(log);
+            }
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
         catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -65,17 +72,6 @@ public class AuthController {
                     .bodyToMono(BaseResponse.class)
                     .block();
             return new ResponseEntity<>(result, HttpStatus.OK);
-        }
-        catch (Exception e) {
-            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @GetMapping("auth/test")
-    public ResponseEntity<BaseResponse> test(@RequestParam String s) {
-        try {
-            _rabbitMQService.sendMessage(s);
-            return new ResponseEntity<>(new BaseResponse(null, 200, "OK"), HttpStatus.OK);
         }
         catch (Exception e) {
             return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);

@@ -3,14 +3,10 @@ package tdtu.ems.employee_service.repositories;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
+import tdtu.ems.employee_service.models.*;
 import tdtu.ems.employee_service.utils.Logger;
-import tdtu.ems.employee_service.models.EmployeeResult;
-import tdtu.ems.employee_service.models.ProjectUpdateEmployeeDataResult;
-import tdtu.ems.employee_service.services.EmployeeService;
-import tdtu.ems.employee_service.models.Employee;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -116,5 +112,32 @@ public class EmployeeRepository implements IEmployeeRepository {
         String passwordHash = _passwordEncoder.encode(newPassword);
         ApiFuture<WriteResult> result = employeesDb.document(String.valueOf(id)).update("password", passwordHash);
         return result.get().getUpdateTime().toString();
+    }
+
+    @Override
+    public String logAccess(AccessLogDto input) throws ExecutionException, InterruptedException {
+        CollectionReference accessLogDb = _db.collection("accessLog");
+        DocumentReference idTracer = _db.collection("idTracer").document("accessLog");
+
+        long id = Objects.requireNonNull(idTracer.get().get().getLong("id")) + 1;
+        AccessLog log = new AccessLog((int)id, input.getEmail(), input.getLoginTime());
+        ApiFuture<WriteResult> result = accessLogDb.document(String.valueOf(id)).set(log);
+        ApiFuture<WriteResult> idResult = idTracer.update("id", id);
+        return result.get().getUpdateTime().toString();
+    }
+
+    @Override
+    public List<AccessLog> getAccessLog(Integer amount) throws ExecutionException, InterruptedException {
+        CollectionReference accessLogDb = _db.collection("accessLog");
+        Query query = accessLogDb.orderBy("loginTime", Query.Direction.DESCENDING);
+        if (amount != null) {
+            query = query.limit(amount);
+        }
+        List<AccessLog> result = new ArrayList<>();
+        for (QueryDocumentSnapshot data : query.get().get().getDocuments()) {
+            AccessLog log = data.toObject(AccessLog.class);
+            result.add(log);
+        }
+        return result;
     }
 }

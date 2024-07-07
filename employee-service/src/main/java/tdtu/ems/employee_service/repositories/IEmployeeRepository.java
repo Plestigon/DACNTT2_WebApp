@@ -1,8 +1,6 @@
 package tdtu.ems.employee_service.repositories;
 
-import tdtu.ems.employee_service.models.Employee;
-import tdtu.ems.employee_service.models.EmployeeResult;
-import tdtu.ems.employee_service.models.ProjectUpdateEmployeeDataResult;
+import tdtu.ems.employee_service.models.*;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -14,4 +12,6 @@ public interface IEmployeeRepository {
     Employee getEmployeeByEmail(String email) throws ExecutionException, InterruptedException;
     String removeEmployee(int id) throws ExecutionException, InterruptedException;
     String changePassword(int id, String newPassword) throws ExecutionException, InterruptedException;
+    String logAccess(AccessLogDto input) throws ExecutionException, InterruptedException;
+    List<AccessLog> getAccessLog(Integer amount) throws ExecutionException, InterruptedException;
 }
