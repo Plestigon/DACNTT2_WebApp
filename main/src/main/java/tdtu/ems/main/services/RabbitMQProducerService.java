@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class HomeService {
+public class RabbitMQProducerService {
     @Value("${rabbitmq.queue.name}")
     private String queue;
     @Value("${rabbitmq.exchange.name}")
@@ -18,13 +18,13 @@ public class HomeService {
     private final Logger logger;
     private RabbitTemplate rabbitTemplate;
 
-    public HomeService(RabbitTemplate rabbitTemplate) {
+    public RabbitMQProducerService(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
-        logger = LoggerFactory.getLogger(HomeService.class);
+        logger = LoggerFactory.getLogger(RabbitMQProducerService.class);
     }
 
     public void sendMessage(String message) {
-        logger.info("Sent message from HomeService: " + message);
+        logger.info("<Sent> " + message);
         rabbitTemplate.convertAndSend(exchange, routingKey, message);
     }
 }

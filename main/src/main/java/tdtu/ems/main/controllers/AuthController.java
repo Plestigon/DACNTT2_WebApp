@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import tdtu.ems.main.models.ChangePasswordDto;
+import tdtu.ems.main.services.RabbitMQProducerService;
 import tdtu.ems.main.utils.BaseResponse;
 import tdtu.ems.main.models.LoginDto;
 
@@ -14,9 +15,11 @@ import tdtu.ems.main.models.LoginDto;
 @RequestMapping("/")
 public class AuthController {
     private WebClient.Builder _webClient;
+    private final RabbitMQProducerService _rabbitMQService;
 
-    public AuthController(WebClient.Builder _webClient) {
+    public AuthController(WebClient.Builder _webClient, RabbitMQProducerService rabbitMQService) {
         this._webClient = _webClient;
+        _rabbitMQService = rabbitMQService;
     }
 
     @PostMapping("auth/login")
@@ -62,6 +65,17 @@ public class AuthController {
                     .bodyToMono(BaseResponse.class)
                     .block();
             return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("auth/test")
+    public ResponseEntity<BaseResponse> test(@RequestParam String s) {
+        try {
+            _rabbitMQService.sendMessage(s);
+            return new ResponseEntity<>(new BaseResponse(null, 200, "OK"), HttpStatus.OK);
         }
         catch (Exception e) {
             return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);

@@ -53,8 +53,4 @@ public class RabbitMQConfig {
                 .to(exchange())
                 .with(routingJsonKey);
     }
-
-    //ConnectionFactory
-    //RabbitTemplate
-    //RabbitAdmin
 }
