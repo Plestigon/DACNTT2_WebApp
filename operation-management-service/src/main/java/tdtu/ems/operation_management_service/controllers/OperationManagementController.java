@@ -19,9 +19,12 @@ public class OperationManagementController {
     }
 
     @GetMapping("/operations/projects")
-    public BaseResponse getProjects(@RequestParam(required = false) Integer employeeId) {
+    public BaseResponse getProjects(@RequestParam int page,
+                                    @RequestParam(required = false) String search,
+                                    @RequestParam(required = false) Integer status,
+                                    @RequestParam(required = false) Integer employeeId) {
         try {
-            List<ProjectResult> response = _projectService.getProjects(employeeId);
+            List<ProjectResult> response = _projectService.getProjects(page, search, status, employeeId);
             return new BaseResponse(response, 200, "OK");
         } catch (Exception e) {
             return new BaseResponse(null, 500, e.getMessage());

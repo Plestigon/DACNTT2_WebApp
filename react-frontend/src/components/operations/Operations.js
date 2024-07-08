@@ -125,7 +125,7 @@ function Operations() {
 								<th scope="col">Status</th>
 								<th scope="col">Create date</th>
 								<th scope="col">Due date</th>
-								<th scope="col">Description</th>
+								<th scope="col" style={{ width: '20%' }}>Description</th>
 								<th scope="col" style={{ width: '50px' }}></th>
 							</tr>
 						</thead>

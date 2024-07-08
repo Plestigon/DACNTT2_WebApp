@@ -29,15 +29,11 @@ public class ProjectService implements IProjectService {
     }
 
     @Override
-    public List<ProjectResult> getProjects(Integer employeeId) throws ExecutionException, InterruptedException {
+    public List<ProjectResult> getProjects(int page, String search, Integer status, Integer employeeId) throws ExecutionException, InterruptedException {
         try {
             List<ProjectResult> result = null;
-            if (employeeId == null) {
-                result = _projectRepository.getProjects();
-            } else {
-                result = _projectRepository.getProjectsByEmployeeId(employeeId);
-            }
-            result.sort(Comparator.comparing(ProjectResult::getCreateDate).reversed());
+            result = _projectRepository.getProjects(page, search, status, employeeId);
+            //result.sort(Comparator.comparing(ProjectResult::getCreateDate).reversed());
             return result;
         }
         catch (Exception e) {

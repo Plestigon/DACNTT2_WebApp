@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public interface IProjectRepository {
-    List<ProjectResult> getProjects();
+    List<ProjectResult> getProjects(int page, String search, Integer status, Integer employeeId) throws ExecutionException, InterruptedException;
     Project getProjectById(int id);
     ProjectResult getProjectResultById(int id);
     List<ProjectResult> getProjectsByEmployeeId(int id) throws ExecutionException, InterruptedException;

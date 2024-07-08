@@ -23,27 +23,41 @@ public class ProjectRepository implements IProjectRepository {
 
 
     @Override
-    public List<ProjectResult> getProjects() {
-        try {
-            CollectionReference projectsDb = _db.collection("projects");
-            CollectionReference employeesDb = _db.collection("employees");
-            List<ProjectResult> projects = new ArrayList<>();
-            for (DocumentSnapshot data : projectsDb.get().get().getDocuments()) {
-                Project prj = data.toObject(Project.class);
-                if (prj != null) {
-                    DocumentSnapshot ownerData = employeesDb.document(String.valueOf(prj.getOwnerId())).get().get();
-                    if (ownerData.exists()) {
-                        ProjectResult prjRes = new ProjectResult(prj, ownerData.getString("name"));
-                        projects.add(prjRes);
-                    }
+    public List<ProjectResult> getProjects(int page, String search, Integer status, Integer employeeId) throws ExecutionException, InterruptedException {
+        CollectionReference projectsDb = _db.collection("projects");
+        CollectionReference employeesDb = _db.collection("employees");
+//        Query query = projectsDb.orderBy("name");
+//        if (search != null && !search.isEmpty()) {
+//            query = query.whereGreaterThanOrEqualTo("name", search).whereLessThanOrEqualTo("name", search + "~");
+//        }
+//        //Skip
+//        if (page > 1) {
+//            List<QueryDocumentSnapshot> skipped = query.limit(10 * (page-1)).get().get().getDocuments();
+//            query = query.startAfter(skipped.get(skipped.size() - 1));
+//        }
+//        query = query.limit(10);
+//        List<QueryDocumentSnapshot> docs = query.get().get().getDocuments();
+        List<ProjectResult> projects = new ArrayList<>();
+        for (DocumentSnapshot data : projectsDb.get().get().getDocuments()) {
+            Project prj = data.toObject(Project.class);
+            if (prj != null) {
+                if (search != null && !search.isEmpty() && !prj.getName().toLowerCase().contains(search.toLowerCase())) {
+                    continue;
                 }
+                if (status != null && prj.getStatus() != status) {
+                    continue;
+                }
+                DocumentSnapshot ownerData = employeesDb.document(String.valueOf(prj.getOwnerId())).get().get();
+                ProjectResult prjRes = new ProjectResult(prj, ownerData.exists() ? ownerData.getString("name") : "N/A");
+                projects.add(prjRes);
             }
-            return projects;
         }
-        catch (Exception e) {
-            _logger.Error("getProjectsWithData", e.getMessage());
-            return null;
+        projects.sort(Comparator.comparing(ProjectResult::getCreateDate).reversed());
+        int startIndex = (page-1)*10;
+        if (startIndex >= projects.size()) {
+            return new ArrayList<>();
         }
+        return projects.subList(startIndex, Math.min(startIndex + 10, projects.size()));
     }
 
     @Override

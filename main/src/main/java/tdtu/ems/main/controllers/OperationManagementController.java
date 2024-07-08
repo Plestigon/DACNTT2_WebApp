@@ -46,12 +46,18 @@ public class OperationManagementController {
     }
 
     @GetMapping("operations/projects")
-    public ResponseEntity<BaseResponse> getProjects(@RequestParam(required = false) Integer employeeId, @RequestParam String token) {
+    public ResponseEntity<BaseResponse> getProjects(@RequestParam int page,
+                                                    @RequestParam(required = false) String search,
+                                                    @RequestParam(required = false) Integer status,
+                                                    @RequestParam(required = false) Integer employeeId,
+                                                    @RequestParam String token) {
         try {
-
             BaseResponse res = _webClient.build().get()
                     .uri("http://api-gateway/api/operations/projects" +
-                            (employeeId != null ? "?employeeId=" + employeeId : ""))
+                            "?page=" + page +
+                            "&search=" + (search != null ? search : "") +
+                            "&status=" + (status != null ? status : "") +
+                            "&employeeId=" + (employeeId != null ? employeeId : ""))
                     .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)

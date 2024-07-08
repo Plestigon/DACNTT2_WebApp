@@ -17,5 +17,9 @@
 }
 
 .nav-tabs .nav-link.active {
-  border-color: black;
+  font-weight: bold;
+}
+
+.nav-tabs .nav-link:not(.active):hover {
+  border-color: lightgray;
 }
