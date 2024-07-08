@@ -105,13 +105,6 @@
     color: white;
 }
 
-
-.card.table-card {
-    height: calc(100vh - 120px);
-    margin: 0px 40px;
-    padding: 20px;
-}
-
 .hover-lightgray:hover {
     background-color: lightgray;
 }
