@@ -21,10 +21,9 @@ public class OperationManagementController {
     @GetMapping("/operations/projects")
     public BaseResponse getProjects(@RequestParam int page,
                                     @RequestParam(required = false) String search,
-                                    @RequestParam(required = false) Integer status,
-                                    @RequestParam(required = false) Integer employeeId) {
+                                    @RequestParam(required = false) Integer status) {
         try {
-            List<ProjectResult> response = _projectService.getProjects(page, search, status, employeeId);
+            List<ProjectResult> response = _projectService.getProjects(page, search, status);
             return new BaseResponse(response, 200, "OK");
         } catch (Exception e) {
             return new BaseResponse(null, 500, e.getMessage());
@@ -141,6 +140,16 @@ public class OperationManagementController {
             return new BaseResponse(null, 200,"OK");
         }
         catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
+
+    @GetMapping("/operations/projects/status-count")
+    public BaseResponse getProjectStatuses() {
+        try {
+            List<ProjectStatusResult> result = _projectService.getStatusResults();
+            return new BaseResponse(result, 200, "OK");
+        } catch (Exception e) {
             return new BaseResponse(null, 500, e.getMessage());
         }
     }

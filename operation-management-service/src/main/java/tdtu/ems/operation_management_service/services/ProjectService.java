@@ -29,10 +29,10 @@ public class ProjectService implements IProjectService {
     }
 
     @Override
-    public List<ProjectResult> getProjects(int page, String search, Integer status, Integer employeeId) throws ExecutionException, InterruptedException {
+    public List<ProjectResult> getProjects(int page, String search, Integer status) throws ExecutionException, InterruptedException {
         try {
             List<ProjectResult> result = null;
-            result = _projectRepository.getProjects(page, search, status, employeeId);
+            result = _projectRepository.getProjects(page, search, status);
             //result.sort(Comparator.comparing(ProjectResult::getCreateDate).reversed());
             return result;
         }
@@ -221,13 +221,13 @@ public class ProjectService implements IProjectService {
     }
 
     @Override
-    public Object test() {
-        Object res = null;
-        res = _webClient.build().get()
-                .uri("http://employee-service/api/employees")
-                .retrieve()
-                .bodyToMono(Object.class)
-                .block();
-        return res;
+    public List<ProjectStatusResult> getStatusResults() throws ExecutionException, InterruptedException {
+        try {
+            return _projectRepository.getStatusResults();
+        }
+        catch (Exception e) {
+            _logger.Error("getStatusResults", e.getMessage());
+            throw e;
+        }
     }
 }

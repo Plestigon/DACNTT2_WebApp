@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public interface IProjectService {
-    List<ProjectResult> getProjects(int page, String search, Integer status, Integer employeeId) throws ExecutionException, InterruptedException;
+    List<ProjectResult> getProjects(int page, String search, Integer status) throws ExecutionException, InterruptedException;
     ProjectResult getProjectById(int id);
     List<MyProjectResult> getMyProjects(int employeeId) throws ExecutionException, InterruptedException;
     String addProject(Project project);
@@ -20,5 +20,5 @@ public interface IProjectService {
     List<ProjectMemberResult> getProjectMembers(List<Integer> ids) throws ExecutionException, InterruptedException;
     String addMemberToProject(int memberId, int projectId, int role) throws ExecutionException, InterruptedException;
     String removeMemberFromProject(int memberId, int projectId) throws ExecutionException, InterruptedException;
-    Object test();
+    List<ProjectStatusResult> getStatusResults() throws ExecutionException, InterruptedException;
 }

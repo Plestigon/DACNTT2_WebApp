@@ -23,6 +23,10 @@ function Operations() {
 		id: 0,
 		name: ''
 	});
+	const [page, setPage] = useState(1);
+	const [search, setSearch] = useState('');
+	const [status, setStatus] = useState(0);
+	const [statuses, setStatuses] = useState([]);
 
 	useEffect(() => {
 		document.title = 'All Projects - TDTU EMS';
@@ -30,11 +34,20 @@ function Operations() {
 
 	useEffect(() => {
 		fetchProjectData();
+	}, [status])
+
+	useEffect(() => {
+		fetchStatusCount();
 	}, [])
 
 	function fetchProjectData() {
 		const toastId = loading("Loading projects...");
-		fetch(process.env.REACT_APP_API_URI + "/operations/projects" + "?token=" + auth.token, {
+		let uri = process.env.REACT_APP_API_URI + "/operations/projects";
+		uri += "?page=" + page;
+		uri += "&search=" + search;
+		uri += "&status=" + (status === 0 ? '' : status);
+		uri += "&token=" + auth.token;
+		fetch(uri, {
 			method: "GET",
 			headers: { "ngrok-skip-browser-warning": "true" }
 		})
@@ -82,9 +95,35 @@ function Operations() {
 		setDeleteTarget({ 'id': 0, 'name': '' });
 	}
 
+	function fetchStatusCount() {
+		fetch(process.env.REACT_APP_API_URI + "/operations/projects/status-count?token=" + auth.token, {
+			method: "GET",
+			headers: { "ngrok-skip-browser-warning": "true" }
+		})
+			.then(result => result.json())
+			.then((result) => {
+				if (result.statusCode === 200) {
+					setStatuses(result.data);
+				}
+			})
+			.catch(e => {
+				console.log("ERROR_getStatusCount: " + e);
+			})
+	}
+
 	function projectDetails(id) {
 		var win = window.open('/operations/projects/' + id, '_blank');
 		win.focus();
+	}
+
+	function handleSearch(e) {
+		if (e.type === 'keydown') {
+			if (e.key === 'Enter') {
+				fetchProjectData();
+			}
+			return;
+		}
+		fetchProjectData();
 	}
 
 	return (
@@ -95,7 +134,7 @@ function Operations() {
 				<NewProjectModal show={newPrjModalShow} onHide={() => setNewPrjModalShow(false)} reload={fetchProjectData} />
 				<div class="d-flex row mb-2 px-5">
 					<ul class="nav nav-tabs w-auto">
-						<li class="nav-item">
+						{/* <li class="nav-item">
 							<button class="nav-link active">Active<div>10</div></button>
 						</li>
 						<li class="nav-item">
@@ -106,13 +145,24 @@ function Operations() {
 						</li>
 						<li class="nav-item">
 							<button class="nav-link">Active<div>10</div></button>
-						</li>
+						</li> */}
+						{statuses.map(x => (
+							x.status === status ?
+								(<li class="nav-item" key={x.status}>
+									<button class="nav-link active">{x.statusName}<div>{x.count}</div></button>
+								</li>)
+								: 
+								(<li class="nav-item" key={x.status}>
+									<button class="nav-link" onClick={() => setStatus(x.status)}>{x.statusName}<div>{x.count}</div></button>
+								</li>)
+						))}
 					</ul>
 				</div>
 				<div class="d-flex row mb-2 px-5 align-items-center">
-					<input type="text" class="form-control" style={{width:'400px', height:'35px'}} placeholder="Search project"/>
-					<button type="button" class="btn btn-primary btn-search"><i class="bi bi-search"></i></button>
-					<button class="btn btn-primary ms-auto me-3" style={{width:'150px', height:'35px'}} onClick={() => setNewPrjModalShow(true)}>
+					<input type="text" class="form-control" style={{ width: '400px', height: '35px' }} placeholder="Search project"
+						value={search} onChange={e => setSearch(e.target.value)} onKeyDown={handleSearch} />
+					<button type="button" class="btn btn-primary btn-search" onClick={handleSearch}><i class="bi bi-search"></i></button>
+					<button class="btn btn-primary ms-auto me-3" style={{ width: '150px', height: '35px' }} onClick={() => setNewPrjModalShow(true)}>
 						<i class="bi bi-plus-circle me-2"></i>New Project
 					</button>
 				</div>

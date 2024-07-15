@@ -7,6 +7,7 @@ import jakarta.ws.rs.NotFoundException;
 import org.springframework.stereotype.Repository;
 import tdtu.ems.operation_management_service.utils.Logger;
 import tdtu.ems.operation_management_service.models.*;
+import tdtu.ems.operation_management_service.utils.Enums;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -23,7 +24,7 @@ public class ProjectRepository implements IProjectRepository {
 
 
     @Override
-    public List<ProjectResult> getProjects(int page, String search, Integer status, Integer employeeId) throws ExecutionException, InterruptedException {
+    public List<ProjectResult> getProjects(int page, String search, Integer status) throws ExecutionException, InterruptedException {
         CollectionReference projectsDb = _db.collection("projects");
         CollectionReference employeesDb = _db.collection("employees");
 //        Query query = projectsDb.orderBy("name");
@@ -41,6 +42,8 @@ public class ProjectRepository implements IProjectRepository {
         for (DocumentSnapshot data : projectsDb.get().get().getDocuments()) {
             Project prj = data.toObject(Project.class);
             if (prj != null) {
+                String a = search.toLowerCase();
+                String b = prj.getName().toLowerCase();
                 if (search != null && !search.isEmpty() && !prj.getName().toLowerCase().contains(search.toLowerCase())) {
                     continue;
                 }
@@ -283,5 +286,23 @@ public class ProjectRepository implements IProjectRepository {
         prj.getMemberIds().remove(Integer.valueOf(memberId));
         ApiFuture<WriteResult> result2 = projectsDb.document(String.valueOf(projectId)).set(prj);
         return result.get().getUpdateTime().toString();
+    }
+
+    @Override
+    public List<ProjectStatusResult> getStatusResults() throws ExecutionException, InterruptedException {
+        CollectionReference projectsDb = _db.collection("projects");
+        List<ProjectStatusResult> result = new ArrayList<>();
+        result.add(new ProjectStatusResult(0, "All", 0));
+        for (var status : Enums.ProjectStatus.values()) {
+            if (status == Enums.ProjectStatus.None) continue;
+            result.add(new ProjectStatusResult(status.ordinal(), status.name, 0));
+        }
+
+        for (var data : projectsDb.get().get().getDocuments()) {
+            Project prj = data.toObject(Project.class);
+            result.get(0).count++;
+            result.get(prj.getStatus()).count++;
+        }
+        return result;
     }
 }

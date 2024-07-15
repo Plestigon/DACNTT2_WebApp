@@ -76,8 +76,8 @@ function SideBar() {
             </div>
         </div>
         <div className={`nav-dropdown-content ${isOpMenuOpen ? 'active' : ''}`}>
-            <Nav.Link as={Link} to="/operations/my-projects"><i class="bi bi-journal-check"></i> My Projects</Nav.Link>
             <Nav.Link as={Link} to="/operations/projects"><i class="bi bi-journal-check"></i> All Projects</Nav.Link>
+            <Nav.Link as={Link} to="/operations/my-projects"><i class="bi bi-journal-check"></i> My Projects</Nav.Link>
         </div>
 
 

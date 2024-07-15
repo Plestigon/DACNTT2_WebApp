@@ -49,15 +49,13 @@ public class OperationManagementController {
     public ResponseEntity<BaseResponse> getProjects(@RequestParam int page,
                                                     @RequestParam(required = false) String search,
                                                     @RequestParam(required = false) Integer status,
-                                                    @RequestParam(required = false) Integer employeeId,
                                                     @RequestParam String token) {
         try {
             BaseResponse res = _webClient.build().get()
                     .uri("http://api-gateway/api/operations/projects" +
                             "?page=" + page +
                             "&search=" + (search != null ? search : "") +
-                            "&status=" + (status != null ? status : "") +
-                            "&employeeId=" + (employeeId != null ? employeeId : ""))
+                            "&status=" + (status != null ? status : ""))
                     .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
@@ -283,6 +281,22 @@ public class OperationManagementController {
         try {
             BaseResponse res = _webClient.build().get()
                     .uri("http://api-gateway/api/operations/my-projects?employeeId=" + employeeId)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("operations/projects/status-count")
+    public ResponseEntity<BaseResponse> getStatus(@RequestParam String token) {
+        try {
+            BaseResponse res = _webClient.build().get()
+                    .uri("http://api-gateway/api/operations/projects/status-count")
                     .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()
                     .bodyToMono(BaseResponse.class)
