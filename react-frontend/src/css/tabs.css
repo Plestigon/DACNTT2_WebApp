@@ -23,3 +23,28 @@
 .nav-tabs .nav-link:not(.active):hover {
   border-color: lightgray;
 }
+
+/* All */
+.tab-status-0 {
+  background-color: black !important;
+}
+/* Not started */
+.tab-status-1 {
+  background-color: gray !important;
+}
+/* In Progress */
+.tab-status-2 {
+  background-color: blue !important;
+}
+/* Finished */
+.tab-status-3 {
+  background-color: green !important;
+}
+/* Stopped */
+.tab-status-4 {
+  background-color: orange !important;
+}
+/* Cancelled */
+.tab-status-5 {
+  background-color: red !important;
+}

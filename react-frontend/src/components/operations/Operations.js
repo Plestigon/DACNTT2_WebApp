@@ -148,12 +148,12 @@ function Operations() {
 						</li> */}
 						{statuses.map(x => (
 							x.status === status ?
-								(<li class="nav-item" key={x.status}>
-									<button class="nav-link active">{x.statusName}<div>{x.count}</div></button>
+								(<li class="nav-item">
+									<button class="nav-link active">{x.statusName}<div class={`tab-status-${x.status}`}>{x.count}</div></button>
 								</li>)
-								: 
-								(<li class="nav-item" key={x.status}>
-									<button class="nav-link" onClick={() => setStatus(x.status)}>{x.statusName}<div>{x.count}</div></button>
+								:
+								(<li class="nav-item">
+									<button class="nav-link" onClick={() => setStatus(x.status)}>{x.statusName}<div class={`tab-status-${x.status}`}>{x.count}</div></button>
 								</li>)
 						))}
 					</ul>
