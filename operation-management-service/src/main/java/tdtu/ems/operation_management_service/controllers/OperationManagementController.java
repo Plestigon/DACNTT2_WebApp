@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import tdtu.ems.operation_management_service.utils.BaseResponse;
 import tdtu.ems.operation_management_service.models.*;
 import tdtu.ems.operation_management_service.services.ProjectService;
+import tdtu.ems.operation_management_service.utils.ChartData;
 import tdtu.ems.operation_management_service.utils.PagedResponse;
 
 import java.util.List;
@@ -158,7 +159,7 @@ public class OperationManagementController {
     @GetMapping("/operations/projects/chart-data")
     public BaseResponse getProjectChartData() {
         try {
-            List<ProjectChartData> result = _projectService.getChartData();
+            List<ChartData> result = _projectService.getChartData();
             return new BaseResponse(result, 200, "OK");
         } catch (Exception e) {
             return new BaseResponse(null, 500, e.getMessage());

@@ -6,6 +6,8 @@ import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import tdtu.ems.employee_service.models.*;
+import tdtu.ems.employee_service.utils.ChartData;
+import tdtu.ems.employee_service.utils.Enums;
 import tdtu.ems.employee_service.utils.Logger;
 
 import java.util.ArrayList;
@@ -137,6 +139,22 @@ public class EmployeeRepository implements IEmployeeRepository {
         for (QueryDocumentSnapshot data : query.get().get().getDocuments()) {
             AccessLog log = data.toObject(AccessLog.class);
             result.add(log);
+        }
+        return result;
+    }
+
+    @Override
+    public List<ChartData> getChartData() throws ExecutionException, InterruptedException {
+        CollectionReference employeesDb = _db.collection("employees");
+        List<ChartData> result = new ArrayList<>();
+        for (var status : Enums.Role.values()) {
+            if (status == Enums.Role.None) continue;
+            result.add(new ChartData(status.ordinal(), status.name, 0));
+        }
+
+        for (var data : employeesDb.get().get().getDocuments()) {
+            Employee e = data.toObject(Employee.class);
+            result.get(e.getRole()-1).value++;
         }
         return result;
     }

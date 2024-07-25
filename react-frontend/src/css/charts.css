@@ -5,3 +5,24 @@
 .chart-container {
   height: 45vh;
 }
+
+.card.chart .card-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card.chart .card-title div {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  text-align: center;
+  flex: 1;
+}
+
+.card.chart .card-title a {
+  margin-left: auto;
+  padding-right: 15px;
+}
+
+.card.chart .card-title a:hover {
+  text-decoration: underline;
+}

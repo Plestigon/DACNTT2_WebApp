@@ -11,6 +11,7 @@ import tdtu.ems.employee_service.models.ProjectUpdateEmployeeDataResult;
 import tdtu.ems.employee_service.services.EmployeeService;
 import tdtu.ems.employee_service.services.IEmployeeService;
 import tdtu.ems.employee_service.models.Employee;
+import tdtu.ems.employee_service.utils.ChartData;
 import tdtu.ems.employee_service.utils.Enums;
 import tdtu.ems.employee_service.utils.SelectOptionsResult;
 
@@ -106,6 +107,17 @@ public class EmployeeController {
                     result.add(new SelectOptionsResult(e.getName(), e.getId()));
                 }
             }
+            return new BaseResponse(result, 200, "OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
+
+    @GetMapping("/employees/chart-data")
+    public BaseResponse getChartData() {
+        try {
+            List<ChartData> result = _employeeService.getChartData();
             return new BaseResponse(result, 200, "OK");
         }
         catch (Exception e) {

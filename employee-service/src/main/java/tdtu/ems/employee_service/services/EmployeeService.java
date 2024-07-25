@@ -5,6 +5,7 @@ import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import tdtu.ems.employee_service.utils.ChartData;
 import tdtu.ems.employee_service.utils.Logger;
 import tdtu.ems.employee_service.models.EmployeeResult;
 import tdtu.ems.employee_service.models.ProjectUpdateEmployeeDataResult;
@@ -122,6 +123,17 @@ public class EmployeeService implements IEmployeeService {
         }
         catch (Exception e) {
             _logger.Error("changePassword", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Override
+    public List<ChartData> getChartData() throws ExecutionException, InterruptedException {
+        try {
+            return _employeeRepository.getChartData();
+        }
+        catch (Exception e) {
+            _logger.Error("getChartData", e.getMessage());
             throw e;
         }
     }

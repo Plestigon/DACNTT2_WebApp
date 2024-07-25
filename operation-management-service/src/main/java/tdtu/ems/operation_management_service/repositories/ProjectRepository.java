@@ -5,12 +5,12 @@ import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import jakarta.ws.rs.NotFoundException;
 import org.springframework.stereotype.Repository;
+import tdtu.ems.operation_management_service.utils.ChartData;
 import tdtu.ems.operation_management_service.utils.Logger;
 import tdtu.ems.operation_management_service.models.*;
 import tdtu.ems.operation_management_service.utils.Enums;
 import tdtu.ems.operation_management_service.utils.PagedResponse;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -302,9 +302,9 @@ public class ProjectRepository implements IProjectRepository {
     }
 
     @Override
-    public List<ProjectChartData> getChartData() throws ExecutionException, InterruptedException {
+    public List<ChartData> getChartData() throws ExecutionException, InterruptedException {
         CollectionReference projectsDb = _db.collection("projects");
-        List<ProjectChartData> result = new ArrayList<>();
+        List<ChartData> result = new ArrayList<>();
         for (var status : Enums.ProjectStatus.values()) {
             if (status == Enums.ProjectStatus.None) continue;
             String color = "";
@@ -315,7 +315,7 @@ public class ProjectRepository implements IProjectRepository {
                 case Paused -> color = "#FFA500";
                 case Cancelled -> color = "#FF0000";
             }
-            result.add(new ProjectChartData(status.ordinal(), status.name, 0, color));
+            result.add(new ChartData(status.ordinal(), status.name, 0, color));
         }
 
         for (var data : projectsDb.get().get().getDocuments()) {

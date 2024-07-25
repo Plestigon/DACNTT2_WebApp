@@ -3,6 +3,7 @@ package tdtu.ems.employee_service.services;
 import tdtu.ems.employee_service.models.Employee;
 import tdtu.ems.employee_service.models.EmployeeResult;
 import tdtu.ems.employee_service.models.ProjectUpdateEmployeeDataResult;
+import tdtu.ems.employee_service.utils.ChartData;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -15,4 +16,5 @@ public interface IEmployeeService {
     Employee getEmployeeById(int id);
     Employee getEmployeeByEmail(String email) throws ExecutionException, InterruptedException;
     String changePassword(int id, String newPassword) throws ExecutionException, InterruptedException;
+    List<ChartData> getChartData() throws ExecutionException, InterruptedException;
 }

@@ -1,6 +1,7 @@
 package tdtu.ems.employee_service.repositories;
 
 import tdtu.ems.employee_service.models.*;
+import tdtu.ems.employee_service.utils.ChartData;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -14,4 +15,5 @@ public interface IEmployeeRepository {
     String changePassword(int id, String newPassword) throws ExecutionException, InterruptedException;
     String logAccess(AccessLogDto input) throws ExecutionException, InterruptedException;
     List<AccessLog> getAccessLog(Integer amount) throws ExecutionException, InterruptedException;
+    List<ChartData> getChartData() throws ExecutionException, InterruptedException;
 }

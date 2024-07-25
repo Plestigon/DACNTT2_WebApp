@@ -1,6 +1,7 @@
 package tdtu.ems.operation_management_service.services;
 
 import tdtu.ems.operation_management_service.models.*;
+import tdtu.ems.operation_management_service.utils.ChartData;
 import tdtu.ems.operation_management_service.utils.PagedResponse;
 
 import java.util.List;
@@ -22,5 +23,5 @@ public interface IProjectService {
     String addMemberToProject(int memberId, int projectId, int role) throws ExecutionException, InterruptedException;
     String removeMemberFromProject(int memberId, int projectId) throws ExecutionException, InterruptedException;
     List<ProjectStatusResult> getStatusResults() throws ExecutionException, InterruptedException;
-    List<ProjectChartData> getChartData() throws ExecutionException, InterruptedException;
+    List<ChartData> getChartData() throws ExecutionException, InterruptedException;
 }

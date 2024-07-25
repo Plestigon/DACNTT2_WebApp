@@ -16,6 +16,7 @@ function Home() {
 	const auth = useAuthentication();
 	const [searchParams] = useSearchParams();
 	const [projectData, setProjectData] = useState([]);
+	const [employeeRoleData, setEmployeeRoleData] = useState([]);
 
 	useEffect(() => {
 		document.title = 'Home - TDTU EMS';
@@ -27,28 +28,50 @@ function Home() {
 		}
 	}, [searchParams])
 
-	useEffect(() => {
-		const fetchProjectData = () => {
-			fetch(process.env.REACT_APP_API_URI + "/operations/projects/chart-data?token=" + auth.token, {
-				method: "GET",
-				headers: { "ngrok-skip-browser-warning": "true" }
+	const fetchProjectData = () => {
+		fetch(process.env.REACT_APP_API_URI + "/operations/projects/chart-data?token=" + auth.token, {
+			method: "GET",
+			headers: { "ngrok-skip-browser-warning": "true" }
+		})
+			.then(result => result.json())
+			.then((result) => {
+				console.log(result.data);
+				if (result.statusCode === 200) {
+					setProjectData(result.data);
+				}
+				else {
+					console.log(result.message);
+				}
 			})
-				.then(result => result.json())
-				.then((result) => {
-					console.log(result.data);
-					if (result.statusCode === 200) {
-						setProjectData(result.data);
-					}
-					else {
-						console.log(result.message);
-					}
-				})
-				.catch(e => {
-					console.log("ERROR_fetchProjectData: " + e);
-				})
-		}
+			.catch(e => {
+				console.log("ERROR_fetchProjectData: " + e);
+			})
+	}
+
+	const fetchEmployeeRoleData = () => {
+		fetch(process.env.REACT_APP_API_URI + "/hr/employees/chart-data?token=" + auth.token, {
+			method: "GET",
+			headers: { "ngrok-skip-browser-warning": "true" }
+		})
+			.then(result => result.json())
+			.then((result) => {
+				console.log(result.data);
+				if (result.statusCode === 200) {
+					setEmployeeRoleData(result.data);
+				}
+				else {
+					console.log(result.message);
+				}
+			})
+			.catch(e => {
+				console.log("ERROR_fetchProjectData: " + e);
+			})
+	}
+
+	useEffect(() => {
 		fetchProjectData();
-	}, [])
+		fetchEmployeeRoleData();
+	}, [fetchProjectData, fetchEmployeeRoleData])
 
 	// return (
 	// <div>
@@ -125,7 +148,9 @@ function Home() {
 					{/* Projects */}
 					<div className="col-6 chart-container">
 						<Card className="chart mx-2 my-2">
-							<CardTitle className="mt-3 text-center">Projects</CardTitle>
+							<CardTitle className="mt-3"><div>Projects</div>
+								<a href="#">See all</a>
+							</CardTitle>
 							<CardBody>
 								<PieChart
 									series={[
@@ -153,7 +178,7 @@ function Home() {
 								<PieChart
 									series={[
 										{
-											data: projectData,
+											data: employeeRoleData,
 											innerRadius: 30,
 											outerRadius: 100,
 											paddingAngle: 5,

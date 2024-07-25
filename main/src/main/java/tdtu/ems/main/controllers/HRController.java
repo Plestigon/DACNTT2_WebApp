@@ -249,4 +249,20 @@ public class HRController {
             return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("hr/employees/chart-data")
+    public ResponseEntity<BaseResponse> getEmployeeRoleChartData(@RequestParam String token) {
+        try {
+            BaseResponse result = _webClient.build().get()
+                    .uri("http://api-gateway/api/employees/chart-data")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
