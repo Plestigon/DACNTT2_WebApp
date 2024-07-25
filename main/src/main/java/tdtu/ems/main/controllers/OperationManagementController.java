@@ -308,4 +308,20 @@ public class OperationManagementController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("operations/projects/chart-data")
+    public ResponseEntity<BaseResponse> getChartData(@RequestParam String token) {
+        try {
+            BaseResponse res = _webClient.build().get()
+                    .uri("http://api-gateway/api/operations/projects/chart-data")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

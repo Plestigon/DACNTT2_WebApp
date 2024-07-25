@@ -229,4 +229,15 @@ public class ProjectService implements IProjectService {
             throw e;
         }
     }
+
+    @Override
+    public List<ProjectChartData> getChartData() throws ExecutionException, InterruptedException {
+        try {
+            return _projectRepository.getChartData();
+        }
+        catch (Exception e) {
+            _logger.Error("getChartData", e.getMessage());
+            throw e;
+        }
+    }
 }

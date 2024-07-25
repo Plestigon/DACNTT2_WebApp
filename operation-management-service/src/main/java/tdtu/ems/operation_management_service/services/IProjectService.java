@@ -22,4 +22,5 @@ public interface IProjectService {
     String addMemberToProject(int memberId, int projectId, int role) throws ExecutionException, InterruptedException;
     String removeMemberFromProject(int memberId, int projectId) throws ExecutionException, InterruptedException;
     List<ProjectStatusResult> getStatusResults() throws ExecutionException, InterruptedException;
+    List<ProjectChartData> getChartData() throws ExecutionException, InterruptedException;
 }

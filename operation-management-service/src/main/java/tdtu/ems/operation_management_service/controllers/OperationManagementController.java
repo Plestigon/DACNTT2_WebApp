@@ -154,4 +154,14 @@ public class OperationManagementController {
             return new BaseResponse(null, 500, e.getMessage());
         }
     }
+
+    @GetMapping("/operations/projects/chart-data")
+    public BaseResponse getProjectChartData() {
+        try {
+            List<ProjectChartData> result = _projectService.getChartData();
+            return new BaseResponse(result, 200, "OK");
+        } catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
 }

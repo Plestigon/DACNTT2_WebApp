@@ -10,7 +10,9 @@ import tdtu.ems.operation_management_service.models.*;
 import tdtu.ems.operation_management_service.utils.Enums;
 import tdtu.ems.operation_management_service.utils.PagedResponse;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @Repository
@@ -295,6 +297,30 @@ public class ProjectRepository implements IProjectRepository {
             Project prj = data.toObject(Project.class);
             result.get(0).count++;
             result.get(prj.getStatus()).count++;
+        }
+        return result;
+    }
+
+    @Override
+    public List<ProjectChartData> getChartData() throws ExecutionException, InterruptedException {
+        CollectionReference projectsDb = _db.collection("projects");
+        List<ProjectChartData> result = new ArrayList<>();
+        for (var status : Enums.ProjectStatus.values()) {
+            if (status == Enums.ProjectStatus.None) continue;
+            String color = "";
+            switch (status) {
+                case NotStarted -> color = "#808080";
+                case InProgress -> color = "#00FF00";
+                case Finished -> color = "#0000FF";
+                case Paused -> color = "#FFA500";
+                case Cancelled -> color = "#FF0000";
+            }
+            result.add(new ProjectChartData(status.ordinal(), status.name, 0, color));
+        }
+
+        for (var data : projectsDb.get().get().getDocuments()) {
+            Project prj = data.toObject(Project.class);
+            result.get(prj.getStatus()-1).value++;
         }
         return result;
     }
