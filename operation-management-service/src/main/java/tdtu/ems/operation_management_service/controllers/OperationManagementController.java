@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import tdtu.ems.operation_management_service.utils.BaseResponse;
 import tdtu.ems.operation_management_service.models.*;
 import tdtu.ems.operation_management_service.services.ProjectService;
+import tdtu.ems.operation_management_service.utils.PagedResponse;
 
 import java.util.List;
 
@@ -19,14 +20,14 @@ public class OperationManagementController {
     }
 
     @GetMapping("/operations/projects")
-    public BaseResponse getProjects(@RequestParam int page,
-                                    @RequestParam(required = false) String search,
-                                    @RequestParam(required = false) Integer status) {
+    public PagedResponse getProjects(@RequestParam int page,
+                                     @RequestParam(required = false) String search,
+                                     @RequestParam(required = false) Integer status) {
         try {
-            List<ProjectResult> response = _projectService.getProjects(page, search, status);
-            return new BaseResponse(response, 200, "OK");
+            PagedResponse result = _projectService.getProjects(page, search, status);
+            return result;
         } catch (Exception e) {
-            return new BaseResponse(null, 500, e.getMessage());
+            return new PagedResponse(null, 500, e.getMessage(), 0, page, 10);
         }
     }
 

@@ -39,13 +39,14 @@
 .table-page .page-nums div {
   margin-left: 5px;
   margin-right: 5px;
+  cursor: default;
 }
 
-.table-page .page-nums div:not(.active) {
+.table-page .page-nums div:not(.active):not(.disabled) {
   cursor: pointer;
 }
 
-.table-page .page-nums div:not(.active):hover {
+.table-page .page-nums div:not(.active):not(.disabled):hover {
   color: blue;
   text-decoration: underline;
 }
@@ -53,4 +54,8 @@
 .table-page .page-nums div.active {
   font-weight: bold;
   text-decoration: underline;
+}
+
+.table-page .page-nums div.disabled {
+  color: rgb(170, 170, 170);
 }

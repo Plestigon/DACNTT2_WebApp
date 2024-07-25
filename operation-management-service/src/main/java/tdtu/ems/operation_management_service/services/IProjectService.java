@@ -1,12 +1,13 @@
 package tdtu.ems.operation_management_service.services;
 
 import tdtu.ems.operation_management_service.models.*;
+import tdtu.ems.operation_management_service.utils.PagedResponse;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public interface IProjectService {
-    List<ProjectResult> getProjects(int page, String search, Integer status) throws ExecutionException, InterruptedException;
+    PagedResponse getProjects(int page, String search, Integer status) throws ExecutionException, InterruptedException;
     ProjectResult getProjectById(int id);
     List<MyProjectResult> getMyProjects(int employeeId) throws ExecutionException, InterruptedException;
     String addProject(Project project);

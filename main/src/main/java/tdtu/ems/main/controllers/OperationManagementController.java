@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import tdtu.ems.main.utils.BaseResponse;
 import tdtu.ems.main.utils.Enums;
+import tdtu.ems.main.utils.PagedResponse;
 import tdtu.ems.main.utils.SelectOptionsResult;
 import tdtu.ems.main.models.operations.*;
 
@@ -46,24 +47,24 @@ public class OperationManagementController {
     }
 
     @GetMapping("operations/projects")
-    public ResponseEntity<BaseResponse> getProjects(@RequestParam int page,
-                                                    @RequestParam(required = false) String search,
-                                                    @RequestParam(required = false) Integer status,
-                                                    @RequestParam String token) {
+    public ResponseEntity<PagedResponse> getProjects(@RequestParam int page,
+                                                     @RequestParam(required = false) String search,
+                                                     @RequestParam(required = false) Integer status,
+                                                     @RequestParam String token) {
         try {
-            BaseResponse res = _webClient.build().get()
+            PagedResponse res = _webClient.build().get()
                     .uri("http://api-gateway/api/operations/projects" +
                             "?page=" + page +
                             "&search=" + (search != null ? search : "") +
                             "&status=" + (status != null ? status : ""))
                     .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()
-                    .bodyToMono(BaseResponse.class)
+                    .bodyToMono(PagedResponse.class)
                     .block();
             return new ResponseEntity<>(res, HttpStatus.OK);
         }
         catch (Exception e) {
-            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new PagedResponse(null, 500, e.getMessage(), 0, page, 10), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

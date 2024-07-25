@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useEffect, useState } from 'react';
 import NewProjectModal from "./NewProjectModal";
@@ -24,23 +24,17 @@ function Operations() {
 		name: ''
 	});
 	const [page, setPage] = useState(1);
+	const [pages, setPages] = useState([]);
 	const [search, setSearch] = useState('');
 	const [status, setStatus] = useState(0);
 	const [statuses, setStatuses] = useState([]);
+	const [totalCount, setTotalCount] = useState(0);
 
 	useEffect(() => {
 		document.title = 'All Projects - TDTU EMS';
 	}, []);
 
-	useEffect(() => {
-		fetchProjectData();
-	}, [status])
-
-	useEffect(() => {
-		fetchStatusCount();
-	}, [])
-
-	function fetchProjectData() {
+	const fetchProjectData = useCallback(() => {
 		const toastId = loading("Loading projects...");
 		let uri = process.env.REACT_APP_API_URI + "/operations/projects";
 		uri += "?page=" + page;
@@ -56,6 +50,7 @@ function Operations() {
 				dismiss(toastId);
 				if (result.statusCode === 200) {
 					setProjects(result.data);
+					setTotalCount(result.totalCount);
 				}
 				else {
 					error("Load projects failed");
@@ -67,7 +62,15 @@ function Operations() {
 				dismiss(toastId);
 				error("Load projects failed");
 			})
-	}
+	}, [auth.token, page, search, status])
+
+	useEffect(() => {
+		fetchProjectData();
+	}, [fetchProjectData])
+
+	useEffect(() => {
+		fetchStatusCount();
+	}, [])
 
 	function deleteBtnClick(e, id, name) {
 		e.stopPropagation();
@@ -126,6 +129,31 @@ function Operations() {
 		fetchProjectData();
 	}
 
+	const handleChangeStatus = (value) => {
+		setStatus(value);
+		setPage(1);
+	}
+
+	const generatePages = useCallback(() => {
+		var list = [];
+		for (let i = 1; i <= Math.ceil(totalCount / 10); i++) {
+			list.push(i);
+		}
+		setPages(list);
+		console.log(list);
+	}, [totalCount])
+
+	useEffect(() => {
+		generatePages();
+	}, [generatePages])
+
+	const handlePageChange = (doChange, value) => {
+		if (!doChange) return;
+		if (page + value < 1) return;
+		if (page + value > Math.ceil(totalCount / 10)) return;
+		setPage(page + value);
+	}
+
 	return (
 		<div>
 			<SideBar />
@@ -153,7 +181,7 @@ function Operations() {
 								</li>)
 								:
 								(<li class="nav-item">
-									<button class="nav-link" onClick={() => setStatus(x.status)}>{x.statusName}<div class={`tab-status-${x.status}`}>{x.count}</div></button>
+									<button class="nav-link" onClick={() => handleChangeStatus(x.status)}>{x.statusName}<div class={`tab-status-${x.status}`}>{x.count}</div></button>
 								</li>)
 						))}
 					</ul>
@@ -196,8 +224,15 @@ function Operations() {
 					</table>
 				</div>
 				<div class="d-flex row table-page">
-					<div class="page-nums">Page <div class="active">1</div><div>2</div><div>3</div></div>
-					<div>Showing 10 / 200 items</div>
+					<div class="page-nums">
+						<div className={page <= 1 ? "disabled" : ""} onClick={() => handlePageChange(page <= 1 ? false : true, -1)}>{`< Previous`}</div>
+						{pages.map((x) => (
+							<div key={x} class={x === page ? "active" : ""} onClick={() => setPage(x)}>{x}</div>
+						))}
+						<div className={page >= Math.ceil(totalCount / 10) ? "disabled" : ""} onClick={() => handlePageChange(page >= Math.ceil(totalCount / 10) ? false : true, 1)}>{`Next >`}</div>
+						{/* <div class="active">1</div><div>2</div><div>3</div> */}
+					</div>
+					<div>Showing items {(page - 1) * 10 + 1} ~ {Math.min(page * 10, totalCount)} / {totalCount}</div>
 				</div>
 			</div>
 			<DeleteConfirmModal show={showDeleteModal} onHide={() => { setShowDeleteModal(false); setDeleteTarget({ 'id': 0, 'name': '' }) }}

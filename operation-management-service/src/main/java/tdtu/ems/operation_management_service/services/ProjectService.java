@@ -7,6 +7,7 @@ import tdtu.ems.operation_management_service.utils.Logger;
 import tdtu.ems.operation_management_service.models.*;
 import tdtu.ems.operation_management_service.repositories.ProjectRepository;
 import tdtu.ems.operation_management_service.repositories.TaskRepository;
+import tdtu.ems.operation_management_service.utils.PagedResponse;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -29,11 +30,9 @@ public class ProjectService implements IProjectService {
     }
 
     @Override
-    public List<ProjectResult> getProjects(int page, String search, Integer status) throws ExecutionException, InterruptedException {
+    public PagedResponse getProjects(int page, String search, Integer status) throws ExecutionException, InterruptedException {
         try {
-            List<ProjectResult> result = null;
-            result = _projectRepository.getProjects(page, search, status);
-            //result.sort(Comparator.comparing(ProjectResult::getCreateDate).reversed());
+            PagedResponse result = _projectRepository.getProjects(page, search, status);
             return result;
         }
         catch (Exception e) {

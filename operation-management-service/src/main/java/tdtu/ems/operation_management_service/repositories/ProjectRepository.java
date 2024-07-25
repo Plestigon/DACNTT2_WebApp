@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import tdtu.ems.operation_management_service.utils.Logger;
 import tdtu.ems.operation_management_service.models.*;
 import tdtu.ems.operation_management_service.utils.Enums;
+import tdtu.ems.operation_management_service.utils.PagedResponse;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -24,20 +25,9 @@ public class ProjectRepository implements IProjectRepository {
 
 
     @Override
-    public List<ProjectResult> getProjects(int page, String search, Integer status) throws ExecutionException, InterruptedException {
+    public PagedResponse getProjects(int page, String search, Integer status) throws ExecutionException, InterruptedException {
         CollectionReference projectsDb = _db.collection("projects");
         CollectionReference employeesDb = _db.collection("employees");
-//        Query query = projectsDb.orderBy("name");
-//        if (search != null && !search.isEmpty()) {
-//            query = query.whereGreaterThanOrEqualTo("name", search).whereLessThanOrEqualTo("name", search + "~");
-//        }
-//        //Skip
-//        if (page > 1) {
-//            List<QueryDocumentSnapshot> skipped = query.limit(10 * (page-1)).get().get().getDocuments();
-//            query = query.startAfter(skipped.get(skipped.size() - 1));
-//        }
-//        query = query.limit(10);
-//        List<QueryDocumentSnapshot> docs = query.get().get().getDocuments();
         List<ProjectResult> projects = new ArrayList<>();
         for (DocumentSnapshot data : projectsDb.get().get().getDocuments()) {
             Project prj = data.toObject(Project.class);
@@ -55,12 +45,15 @@ public class ProjectRepository implements IProjectRepository {
                 projects.add(prjRes);
             }
         }
+        int totalCount = projects.size();
         projects.sort(Comparator.comparing(ProjectResult::getCreateDate).reversed());
+        //Paging
         int startIndex = (page-1)*10;
         if (startIndex >= projects.size()) {
-            return new ArrayList<>();
+            return new PagedResponse(new ArrayList<>(), 200, "OK", totalCount, page, 10);
         }
-        return projects.subList(startIndex, Math.min(startIndex + 10, projects.size()));
+        var result = projects.subList(startIndex, Math.min(startIndex + 10, projects.size()));
+        return new PagedResponse(result, 200, "OK", totalCount, page, 10);
     }
 
     @Override
