@@ -68,10 +68,6 @@ function Operations() {
 		fetchProjectData();
 	}, [fetchProjectData])
 
-	useEffect(() => {
-		fetchStatusCount();
-	}, [])
-
 	function deleteBtnClick(e, id, name) {
 		e.stopPropagation();
 		setDeleteTarget({ 'id': id, 'name': name });
@@ -98,7 +94,7 @@ function Operations() {
 		setDeleteTarget({ 'id': 0, 'name': '' });
 	}
 
-	function fetchStatusCount() {
+	const fetchStatusCount = useCallback(() => {
 		fetch(process.env.REACT_APP_API_URI + "/operations/projects/status-count?token=" + auth.token, {
 			method: "GET",
 			headers: { "ngrok-skip-browser-warning": "true" }
@@ -112,7 +108,12 @@ function Operations() {
 			.catch(e => {
 				console.log("ERROR_getStatusCount: " + e);
 			})
-	}
+	}, [])
+
+	useEffect(() => {
+		fetchStatusCount();
+	}, [fetchStatusCount])
+
 
 	function projectDetails(id) {
 		var win = window.open('/operations/projects/' + id, '_blank');
@@ -140,7 +141,7 @@ function Operations() {
 			list.push(i);
 		}
 		setPages(list);
-		console.log(list);
+		//console.log(list);
 	}, [totalCount])
 
 	useEffect(() => {
@@ -232,7 +233,7 @@ function Operations() {
 						<div className={page >= Math.ceil(totalCount / 10) ? "disabled" : ""} onClick={() => handlePageChange(page >= Math.ceil(totalCount / 10) ? false : true, 1)}>{`Next >`}</div>
 						{/* <div class="active">1</div><div>2</div><div>3</div> */}
 					</div>
-					<div>Showing items {(page - 1) * 10 + 1} ~ {Math.min(page * 10, totalCount)} / {totalCount}</div>
+					<div>Showing items {totalCount > 0 ? (page - 1) * 10 + 1 : 0} ~ {Math.min(page * 10, totalCount)} / {totalCount}</div>
 				</div>
 			</div>
 			<DeleteConfirmModal show={showDeleteModal} onHide={() => { setShowDeleteModal(false); setDeleteTarget({ 'id': 0, 'name': '' }) }}

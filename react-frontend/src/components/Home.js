@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import '../css/home.css';
 import "../css/charts.css";
 import { Link, useSearchParams } from "react-router-dom";
@@ -20,7 +20,7 @@ function Home() {
 
 	useEffect(() => {
 		document.title = 'Home - TDTU EMS';
-	}, []);
+	});
 
 	useEffect(() => {
 		if (searchParams.get("loggedIn") === "true") {
@@ -28,14 +28,14 @@ function Home() {
 		}
 	}, [searchParams])
 
-	const fetchProjectData = () => {
+	const fetchProjectChartData = useCallback(() => {
 		fetch(process.env.REACT_APP_API_URI + "/operations/projects/chart-data?token=" + auth.token, {
 			method: "GET",
 			headers: { "ngrok-skip-browser-warning": "true" }
 		})
 			.then(result => result.json())
 			.then((result) => {
-				console.log(result.data);
+				//console.log(result.data);
 				if (result.statusCode === 200) {
 					setProjectData(result.data);
 				}
@@ -44,11 +44,11 @@ function Home() {
 				}
 			})
 			.catch(e => {
-				console.log("ERROR_fetchProjectData: " + e);
+				console.log("ERROR_fetchProjectChartData: " + e);
 			})
-	}
+	}, [])
 
-	const fetchEmployeeRoleData = () => {
+	const fetchEmployeeRoleData = useCallback(() => {
 		fetch(process.env.REACT_APP_API_URI + "/hr/employees/chart-data?token=" + auth.token, {
 			method: "GET",
 			headers: { "ngrok-skip-browser-warning": "true" }
@@ -66,12 +66,12 @@ function Home() {
 			.catch(e => {
 				console.log("ERROR_fetchProjectData: " + e);
 			})
-	}
+	}, [])
 
 	useEffect(() => {
-		fetchProjectData();
+		fetchProjectChartData();
 		fetchEmployeeRoleData();
-	}, [fetchProjectData, fetchEmployeeRoleData])
+	}, [fetchProjectChartData, fetchEmployeeRoleData])
 
 	// return (
 	// <div>
