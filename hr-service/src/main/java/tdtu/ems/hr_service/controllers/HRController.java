@@ -65,13 +65,13 @@ public class HRController {
     }
 
     @GetMapping("hr/forms/{id}/approve")
-    public BaseResponse getFormsForApproval(@PathVariable int id) {
+    public PagedResponse getFormsForApproval(@PathVariable int id, @RequestParam int page) {
         try {
-            List<FormResult> result = _formService.getFormsForApproval(id);
-            return new BaseResponse(result, 200, "OK");
+            PagedResponse result = _formService.getFormsForApproval(id, page);
+            return result;
         }
         catch (Exception e) {
-            return new BaseResponse(null, 500, e.getMessage());
+            return new PagedResponse(null, 500, e.getMessage(), 0, page, 10);
         }
     }
 

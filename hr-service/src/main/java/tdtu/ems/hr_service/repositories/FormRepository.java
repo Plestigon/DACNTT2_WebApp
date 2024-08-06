@@ -59,7 +59,7 @@ public class FormRepository implements IFormRepository {
     }
 
     @Override
-    public List<FormResult> getFormsForApproval(int id) throws ExecutionException, InterruptedException {
+    public PagedResponse getFormsForApproval(int id, int page) throws ExecutionException, InterruptedException {
         CollectionReference formsDb = _db.collection("forms");
         CollectionReference employeesDb = _db.collection("employees");
         List<FormResult> forms = new ArrayList<>();
@@ -71,7 +71,14 @@ public class FormRepository implements IFormRepository {
                 forms.add(new FormResult(form, name, email));
             }
         }
-        return forms;
+        int totalCount = forms.size();
+        //Paging
+        int startIndex = (page-1)*10;
+        if (startIndex >= forms.size()) {
+            return new PagedResponse(new ArrayList<>(), 200, "OK", totalCount, page, 10);
+        }
+        var result = forms.subList(startIndex, Math.min(startIndex + 10, forms.size()));
+        return new PagedResponse(result, 200, "OK", totalCount, page, 10);
     }
 
     @Override

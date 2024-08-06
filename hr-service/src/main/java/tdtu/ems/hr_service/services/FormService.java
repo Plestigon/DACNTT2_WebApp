@@ -52,10 +52,9 @@ public class FormService implements IFormService {
     }
 
     @Override
-    public List<FormResult> getFormsForApproval(int id) throws ExecutionException, InterruptedException {
+    public PagedResponse getFormsForApproval(int id, int page) throws ExecutionException, InterruptedException {
         try {
-            List<FormResult> result = _formRepository.getFormsForApproval(id);
-            result.sort(Comparator.comparing(FormResult::getCreateDate).reversed());
+            PagedResponse result = _formRepository.getFormsForApproval(id, page);
             return result;
         }
         catch (Exception e) {

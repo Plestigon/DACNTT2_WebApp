@@ -10,6 +10,6 @@ import java.util.concurrent.ExecutionException;
 public interface IFormService {
     Integer addForm(Form entry) throws ExecutionException, InterruptedException;
     PagedResponse getFormsByEmployeeId(int id, int page) throws ExecutionException, InterruptedException;
-    List<FormResult> getFormsForApproval(int id) throws ExecutionException, InterruptedException;
+    PagedResponse getFormsForApproval(int id, int page) throws ExecutionException, InterruptedException;
     String approveForm(int id, boolean approve) throws ExecutionException, InterruptedException;
 }

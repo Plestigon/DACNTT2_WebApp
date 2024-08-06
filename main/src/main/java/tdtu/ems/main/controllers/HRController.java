@@ -71,18 +71,18 @@ public class HRController {
     }
 
     @GetMapping("hr/forms/{id}/approve")
-    public ResponseEntity<BaseResponse> getFormsForApproval(@PathVariable int id, @RequestParam String token) {
+    public ResponseEntity<PagedResponse> getFormsForApproval(@PathVariable int id, @RequestParam int page, @RequestParam String token) {
         try {
-            BaseResponse result = _webClient.build().get()
-                    .uri("http://api-gateway/api/hr/forms/" + id + "/approve")
+            PagedResponse result = _webClient.build().get()
+                    .uri("http://api-gateway/api/hr/forms/" + id + "/approve?page=" + page)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()
-                    .bodyToMono(BaseResponse.class)
+                    .bodyToMono(PagedResponse.class)
                     .block();
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
         catch (Exception e) {
-            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new PagedResponse(null, 500, e.getMessage(), 0, page, 10), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

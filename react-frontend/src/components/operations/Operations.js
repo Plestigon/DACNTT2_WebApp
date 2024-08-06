@@ -10,7 +10,6 @@ import '../../css/table.css';
 import '../../css/tabs.css';
 import { success, error, loading, dismiss } from "../../utils/Notify";
 import DeleteConfirmModal from "../../utils/DeleteConfirmModal";
-import { Button } from "react-bootstrap";
 import { useAuthentication } from "../system/Authentication";
 import Pagination from "../../utils/Pagination";
 
@@ -108,7 +107,7 @@ function Operations() {
 			.catch(e => {
 				console.log("ERROR_getStatusCount: " + e);
 			})
-	}, [])
+	}, [auth.token])
 
 	useEffect(() => {
 		fetchStatusCount();

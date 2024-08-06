@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { dateTimeFormat, dateFormat } from "../../utils/DateHelper";
 import TopBar from "../TopBar";
 import SideBar from "../SideBar";
-import Notify, {success, error, loading, dismiss} from "../../utils/Notify";
+import {success, error, loading, dismiss} from "../../utils/Notify";
 import "../../css/utils.css"
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -52,7 +52,7 @@ function MyForms() {
             console.log("ERROR_loadFormData: " + e);
             error("Load forms failed");
         })
-    }, [auth.token, page]);
+    }, [auth.token, auth.id, page]);
 
     useEffect(()=>{
         loadFormData();
@@ -63,10 +63,10 @@ function MyForms() {
         <SideBar/>
         <TopBar/>
         <div class="content container">
-            <div class="row mb-2 px-5">
+            <div class="row mt-2 mb-2 px-5">
                 <Button onClick={() => navigate("/hr/submit-form")}><i class ="bi bi-pen"></i> Write a form</Button>
             </div>
-            <div class="card table-card table-responsive">
+            <div class="card table-card table-responsive mt-3" style={{height: "calc(100vh - 180px)"}}>
                 <table class="table-clickable table table-hover table-collapsed" id="project-table" style={{width:'100%'}}>
                 <thead class="table-primary">
                     <tr>
@@ -94,11 +94,7 @@ function MyForms() {
                 </tbody>
                 </table>
             </div>
-            <Pagination 
-                page = {page}
-                setPage = {setPage}
-                totalCount = {totalCount}
-            />
+            <Pagination page={page} setPage={setPage} totalCount={totalCount} />
         </div>
     </div>
     );
