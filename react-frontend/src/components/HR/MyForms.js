@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useEffect, useState } from 'react';
 import { dateTimeFormat, dateFormat } from "../../utils/DateHelper";
@@ -9,10 +9,13 @@ import "../../css/utils.css"
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useAuthentication } from "../system/Authentication";
+import Pagination from "../../utils/Pagination";
  
 function MyForms() {
     const auth = useAuthentication();
     const [forms, setForms] = useState([]);
+    const [page, setPage] = useState(1);
+	const [totalCount, setTotalCount] = useState(0);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -27,21 +30,19 @@ function MyForms() {
         }
     }, []);
 
-    useEffect(()=>{
-        loadFormData();
-    }, [])
-
-    function loadFormData() {
+    const loadFormData = useCallback(() => {
         const toastId = loading("Loading forms...");
-        fetch(process.env.REACT_APP_API_URI + "/hr/forms/" + auth.id + "?token=" + auth.token,{
+        fetch(process.env.REACT_APP_API_URI + "/hr/forms/" + auth.id + "?page=" + page + "&token=" + auth.token,{
             method:"GET",
             headers: { "ngrok-skip-browser-warning" : "true" }
         })
         .then(result=>result.json())
         .then((result)=>{
             dismiss(toastId);
+            console.log(result);
             if (result.statusCode === 200) {
                 setForms(result.data);
+                setTotalCount(result.totalCount);
             }
             else {
                 error("Load forms failed");
@@ -51,7 +52,11 @@ function MyForms() {
             console.log("ERROR_loadFormData: " + e);
             error("Load forms failed");
         })
-    }
+    }, [auth.token, page]);
+
+    useEffect(()=>{
+        loadFormData();
+    }, [loadFormData])
 
     return (
     <div>
@@ -89,6 +94,11 @@ function MyForms() {
                 </tbody>
                 </table>
             </div>
+            <Pagination 
+                page = {page}
+                setPage = {setPage}
+                totalCount = {totalCount}
+            />
         </div>
     </div>
     );

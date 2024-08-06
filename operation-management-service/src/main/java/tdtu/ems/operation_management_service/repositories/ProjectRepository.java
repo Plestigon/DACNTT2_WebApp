@@ -36,7 +36,7 @@ public class ProjectRepository implements IProjectRepository {
             if (prj != null) {
                 String a = search.toLowerCase();
                 String b = prj.getName().toLowerCase();
-                if (search != null && !search.isEmpty() && !prj.getName().toLowerCase().contains(search.toLowerCase())) {
+                if (!search.isEmpty() && !prj.getName().toLowerCase().contains(search.toLowerCase())) {
                     continue;
                 }
                 if (status != null && prj.getStatus() != status) {

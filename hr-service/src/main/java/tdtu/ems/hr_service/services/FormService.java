@@ -8,6 +8,7 @@ import tdtu.ems.hr_service.models.Form;
 import tdtu.ems.hr_service.models.FormResult;
 import tdtu.ems.hr_service.repositories.ContractRepository;
 import tdtu.ems.hr_service.repositories.FormRepository;
+import tdtu.ems.hr_service.utils.PagedResponse;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -39,10 +40,9 @@ public class FormService implements IFormService {
     }
 
     @Override
-    public List<FormResult> getFormsByEmployeeId(int id) throws ExecutionException, InterruptedException {
+    public PagedResponse getFormsByEmployeeId(int id, int page) throws ExecutionException, InterruptedException {
         try {
-            List<FormResult> result = _formRepository.getFormsByEmployeeId(id);
-            result.sort(Comparator.comparing(FormResult::getCreateDate).reversed());
+            PagedResponse result = _formRepository.getFormsByEmployeeId(id, page);
             return result;
         }
         catch (Exception e) {

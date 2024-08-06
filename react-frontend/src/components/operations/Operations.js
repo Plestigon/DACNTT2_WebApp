@@ -12,6 +12,7 @@ import { success, error, loading, dismiss } from "../../utils/Notify";
 import DeleteConfirmModal from "../../utils/DeleteConfirmModal";
 import { Button } from "react-bootstrap";
 import { useAuthentication } from "../system/Authentication";
+import Pagination from "../../utils/Pagination";
 
 
 function Operations() {
@@ -24,7 +25,6 @@ function Operations() {
 		name: ''
 	});
 	const [page, setPage] = useState(1);
-	const [pages, setPages] = useState([]);
 	const [search, setSearch] = useState('');
 	const [status, setStatus] = useState(0);
 	const [statuses, setStatuses] = useState([]);
@@ -135,26 +135,6 @@ function Operations() {
 		setPage(1);
 	}
 
-	const generatePages = useCallback(() => {
-		var list = [];
-		for (let i = 1; i <= Math.ceil(totalCount / 10); i++) {
-			list.push(i);
-		}
-		setPages(list);
-		//console.log(list);
-	}, [totalCount])
-
-	useEffect(() => {
-		generatePages();
-	}, [generatePages])
-
-	const handlePageChange = (doChange, value) => {
-		if (!doChange) return;
-		if (page + value < 1) return;
-		if (page + value > Math.ceil(totalCount / 10)) return;
-		setPage(page + value);
-	}
-
 	return (
 		<div>
 			<SideBar />
@@ -224,17 +204,7 @@ function Operations() {
 						</tbody>
 					</table>
 				</div>
-				<div class="d-flex row table-page">
-					<div class="page-nums">
-						<div className={page <= 1 ? "disabled" : ""} onClick={() => handlePageChange(page <= 1 ? false : true, -1)}>{`< Previous`}</div>
-						{pages.map((x) => (
-							<div key={x} class={x === page ? "active" : ""} onClick={() => setPage(x)}>{x}</div>
-						))}
-						<div className={page >= Math.ceil(totalCount / 10) ? "disabled" : ""} onClick={() => handlePageChange(page >= Math.ceil(totalCount / 10) ? false : true, 1)}>{`Next >`}</div>
-						{/* <div class="active">1</div><div>2</div><div>3</div> */}
-					</div>
-					<div>Showing items {totalCount > 0 ? (page - 1) * 10 + 1 : 0} ~ {Math.min(page * 10, totalCount)} / {totalCount}</div>
-				</div>
+				<Pagination page={page} setPage={setPage} totalCount={totalCount} />
 			</div>
 			<DeleteConfirmModal show={showDeleteModal} onHide={() => { setShowDeleteModal(false); setDeleteTarget({ 'id': 0, 'name': '' }) }}
 				message={"Delete project \"" + deleteTarget.name + "\"?"} delete={deleteProject} />

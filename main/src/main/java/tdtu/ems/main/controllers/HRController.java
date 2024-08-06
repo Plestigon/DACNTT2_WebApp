@@ -9,6 +9,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import tdtu.ems.main.models.hr.ContractDto;
 import tdtu.ems.main.utils.BaseResponse;
 import tdtu.ems.main.utils.Enums;
+import tdtu.ems.main.utils.PagedResponse;
 import tdtu.ems.main.utils.SelectOptionsResult;
 import tdtu.ems.main.models.hr.EmployeeDto;
 import tdtu.ems.main.models.hr.FormSubmitDto;
@@ -54,18 +55,18 @@ public class HRController {
     }
 
     @GetMapping("hr/forms/{id}")
-    public ResponseEntity<BaseResponse> getForms(@PathVariable int id, @RequestParam String token) {
+    public ResponseEntity<PagedResponse> getForms(@PathVariable int id, @RequestParam int page, @RequestParam String token) {
         try {
-            BaseResponse result = _webClient.build().get()
-                    .uri("http://api-gateway/api/hr/forms/" + id)
+            PagedResponse result = _webClient.build().get()
+                    .uri("http://api-gateway/api/hr/forms/" + id + "?page=" + page)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()
-                    .bodyToMono(BaseResponse.class)
+                    .bodyToMono(PagedResponse.class)
                     .block();
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
         catch (Exception e) {
-            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new PagedResponse(null, 500, e.getMessage(), 0, page, 10), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

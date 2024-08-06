@@ -5,6 +5,7 @@ import tdtu.ems.hr_service.models.*;
 import tdtu.ems.hr_service.services.IContractService;
 import tdtu.ems.hr_service.services.IFormService;
 import tdtu.ems.hr_service.utils.BaseResponse;
+import tdtu.ems.hr_service.utils.PagedResponse;
 
 import java.util.List;
 
@@ -53,13 +54,13 @@ public class HRController {
     }
 
     @GetMapping("hr/forms/{id}")
-    public BaseResponse getForms(@PathVariable int id) {
+    public PagedResponse getForms(@PathVariable int id, @RequestParam int page) {
         try {
-            List<FormResult> result = _formService.getFormsByEmployeeId(id);
-            return new BaseResponse(result, 200, "OK");
+            PagedResponse result = _formService.getFormsByEmployeeId(id, page);
+            return result;
         }
         catch (Exception e) {
-            return new BaseResponse(null, 500, e.getMessage());
+            return new PagedResponse(null, 500, e.getMessage(), 0, page, 10);
         }
     }
 

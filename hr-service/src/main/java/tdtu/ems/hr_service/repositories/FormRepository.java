@@ -9,11 +9,9 @@ import tdtu.ems.hr_service.models.FormResult;
 import tdtu.ems.hr_service.utils.Enums;
 import tdtu.ems.hr_service.utils.Logger;
 import tdtu.ems.hr_service.models.Form;
+import tdtu.ems.hr_service.utils.PagedResponse;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 @Repository
@@ -40,7 +38,7 @@ public class FormRepository implements IFormRepository {
     }
 
     @Override
-    public List<FormResult> getFormsByEmployeeId(int id) throws ExecutionException, InterruptedException {
+    public PagedResponse getFormsByEmployeeId(int id, int page) throws ExecutionException, InterruptedException {
         CollectionReference formsDb = _db.collection("forms");
         List<FormResult> forms = new ArrayList<>();
         for (DocumentSnapshot data : formsDb.get().get().getDocuments()) {
@@ -49,7 +47,15 @@ public class FormRepository implements IFormRepository {
                 forms.add(new FormResult(form));
             }
         }
-        return forms;
+        int totalCount = forms.size();
+        forms.sort(Comparator.comparing(FormResult::getCreateDate).reversed());
+        //Paging
+        int startIndex = (page-1)*10;
+        if (startIndex >= forms.size()) {
+            return new PagedResponse(new ArrayList<>(), 200, "OK", totalCount, page, 10);
+        }
+        var result = forms.subList(startIndex, Math.min(startIndex + 10, forms.size()));
+        return new PagedResponse(result, 200, "OK", totalCount, page, 10);
     }
 
     @Override
