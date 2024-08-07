@@ -134,4 +134,15 @@ public class DealService implements IDealService {
             throw e;
         }
     }
+
+    @Override
+    public List<Double> getDealsChartData() throws ExecutionException, InterruptedException {
+        try {
+            return _dealRepository.getDealsChartData();
+        }
+        catch (Exception e) {
+            _logger.Error("getDealChartData", e.getMessage());
+            throw e;
+        }
+    }
 }

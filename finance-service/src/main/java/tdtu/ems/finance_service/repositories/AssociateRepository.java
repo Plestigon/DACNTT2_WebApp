@@ -68,6 +68,9 @@ public class AssociateRepository implements IAssociateRepository {
             throw new RuntimeException("Associate with id " + associateId + " not found");
         }
         List<Integer> dealIds = a.getDeals();
+        if (dealIds == null) {
+            dealIds = new ArrayList<>();
+        }
         if (isAdding && !dealIds.contains(dealId)) {
             dealIds.add(dealId);
         }

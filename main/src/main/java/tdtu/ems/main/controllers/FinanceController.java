@@ -241,6 +241,22 @@ public class FinanceController {
         }
     }
 
+    @GetMapping("finance/deals/chart-data")
+    public ResponseEntity<BaseResponse> getDealsChartData(@RequestParam String token) {
+        try {
+            BaseResponse result = _webClient.build().get()
+                    .uri("http://api-gateway/api/finance/deals/chart-data")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping("finance/contacts")
     public ResponseEntity<BaseResponse> getContacts(@RequestParam(required = false) List<Integer> ids, @RequestParam String token) {
         try {

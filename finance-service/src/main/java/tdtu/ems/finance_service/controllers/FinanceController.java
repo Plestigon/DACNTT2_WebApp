@@ -230,4 +230,15 @@ public class FinanceController {
             return new BaseResponse(null, 500, e.getMessage());
         }
     }
+
+    @GetMapping("/finance/deals/chart-data")
+    public BaseResponse getDealsChartData() {
+        try {
+            List<Double> result = _dealService.getDealsChartData();
+            return new BaseResponse(result, 200, "OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
 }

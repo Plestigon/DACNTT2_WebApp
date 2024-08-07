@@ -2,8 +2,7 @@ import React, { useCallback } from "react";
 import { useEffect, useState } from 'react';
 import TopBar from "../TopBar";
 import SideBar from "../SideBar";
-import { success, error, loading, dismiss } from "../../utils/Notify";
-import DeleteConfirmModal from "../../utils/DeleteConfirmModal";
+import { error, loading, dismiss, info } from "../../utils/Notify";
 import { Button } from "react-bootstrap";
 import { useAuthentication } from "../system/Authentication";
 import { createSearchParams, useNavigate, useParams, useSearchParams } from "react-router-dom";
@@ -77,7 +76,7 @@ function Deals() {
 	}, [fetchDeals])
 
 	function fetchAssociate() {
-		if (searchParams.get("associate") === null) return;
+		if (filter === null || filter === "0") return;
 		fetch(process.env.REACT_APP_API_URI + "/finance/associates/" + filter + "?token=" + auth.token, {
 			method: "GET",
 			headers: { "ngrok-skip-browser-warning": "true" }
@@ -135,6 +134,15 @@ function Deals() {
 		window.location.reload();
 	}
 
+	function handleNewDealBtnClick() {
+		if (associateId !== 0) {
+			setShowNewModal(true);
+		}
+		else {
+			info("Please select Associate to create new Deal");
+		}
+	}
+
 	// function deleteBtnClick(e, id, name) {
 
 	// }
@@ -157,7 +165,7 @@ function Deals() {
 						<Select class="form-select" value={{ label: associateName, value: associateId }} options={associateOptions} onChange={handleAssociateChange} />
 					</div>
 					<div class="col-6">
-						<Button className="btn btn-primary w-100" onClick={() => setShowNewModal(true)}>
+						<Button className="btn btn-primary w-100" onClick={() => handleNewDealBtnClick()}>
 							<i class="bi bi-plus-circle me-2"></i>Create New Deal
 						</Button>
 					</div>

@@ -19,4 +19,5 @@ public interface IDealRepository {
     String removeDealStageDetails(List<Integer> ids) throws ExecutionException, InterruptedException;
     String updateDealNotes(int id, String value) throws ExecutionException, InterruptedException;
     String updateDealStage(int id, int value) throws ExecutionException, InterruptedException;
+    List<Double> getDealsChartData() throws ExecutionException, InterruptedException;
 }

@@ -146,7 +146,7 @@ public class EmployeeRepository implements IEmployeeRepository {
         CollectionReference employeesDb = _db.collection("employees");
         List<ChartData> result = new ArrayList<>();
         for (var status : Enums.Role.values()) {
-            if (status == Enums.Role.None) continue;
+            if (status == Enums.Role.None || status == Enums.Role.Owner) continue;
             result.add(new ChartData(status.ordinal(), status.name, 0));
         }
 

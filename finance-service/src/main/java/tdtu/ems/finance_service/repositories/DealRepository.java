@@ -208,4 +208,19 @@ public class DealRepository implements IDealRepository {
         }
         return res.toString();
     }
+
+    @Override
+    public List<Double> getDealsChartData() throws ExecutionException, InterruptedException {
+        CollectionReference dealsDb = _db.collection("deals");
+        List<Double> result = new ArrayList<>();
+        for (int i = 1; i <= 12; i++) {
+            result.add((double) 0);
+        }
+        for (QueryDocumentSnapshot data : dealsDb.get().get().getDocuments()) {
+            Deal deal = data.toObject(Deal.class);
+            int monthIndex = deal.getCreateDate().getMonth();
+            result.set(monthIndex, result.get(monthIndex) + deal.getDealValue());
+        }
+        return result;
+    }
 }

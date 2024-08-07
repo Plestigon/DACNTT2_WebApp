@@ -1,22 +1,21 @@
 import React, { useCallback, useEffect, useState } from "react";
 import '../css/home.css';
 import "../css/charts.css";
-import { Link, useSearchParams } from "react-router-dom";
-import NavigationBar from "./NavigationBar";
+import { useSearchParams } from "react-router-dom";
 import TopBar from "./TopBar";
 import SideBar from "./SideBar";
 import { Card, CardBody, CardTitle } from "react-bootstrap";
 import { PieChart } from '@mui/x-charts/PieChart';
+import { LineChart } from '@mui/x-charts/LineChart';
 import { info } from "../utils/Notify";
 import { useAuthentication } from "./system/Authentication";
-import { CardContent } from "@mui/material";
-import { ResponsiveChartContainer } from "@mui/x-charts";
 
 function Home() {
 	const auth = useAuthentication();
 	const [searchParams] = useSearchParams();
 	const [projectData, setProjectData] = useState([]);
 	const [employeeRoleData, setEmployeeRoleData] = useState([]);
+	const [dealData, setDealData] = useState([]);
 
 	useEffect(() => {
 		document.title = 'Home - TDTU EMS';
@@ -46,7 +45,7 @@ function Home() {
 			.catch(e => {
 				console.log("ERROR_fetchProjectChartData: " + e);
 			})
-	}, [])
+	}, [auth.token])
 
 	const fetchEmployeeRoleData = useCallback(() => {
 		fetch(process.env.REACT_APP_API_URI + "/hr/employees/chart-data?token=" + auth.token, {
@@ -64,14 +63,35 @@ function Home() {
 				}
 			})
 			.catch(e => {
-				console.log("ERROR_fetchProjectData: " + e);
+				console.log("ERROR_fetchEmployeeRoleData: " + e);
 			})
-	}, [])
+	}, [auth.token])
+
+	const fetchDealData = useCallback(() => {
+		fetch(process.env.REACT_APP_API_URI + "/finance/deals/chart-data?token=" + auth.token, {
+			method: "GET",
+			headers: { "ngrok-skip-browser-warning": "true" }
+		})
+			.then(result => result.json())
+			.then((result) => {
+				console.log(result.data);
+				if (result.statusCode === 200) {
+					setDealData(result.data);
+				}
+				else {
+					console.log(result.message);
+				}
+			})
+			.catch(e => {
+				console.log("ERROR_fetchDealData: " + e);
+			})
+	}, [auth.token])
 
 	useEffect(() => {
 		fetchProjectChartData();
 		fetchEmployeeRoleData();
-	}, [fetchProjectChartData, fetchEmployeeRoleData])
+		fetchDealData();
+	}, [fetchProjectChartData, fetchEmployeeRoleData, fetchDealData])
 
 	// return (
 	// <div>
@@ -189,6 +209,27 @@ function Home() {
 											cy: 100,
 										}
 									]}
+								/>
+							</CardBody>
+						</Card>
+					</div>
+				</div>
+				<div className="row mt-3">
+					{/* Deals */}
+					<div className="col-6 chart-container">
+						<Card className="chart mx-2 my-2">
+							<CardTitle className="mt-3 text-center">Deals</CardTitle>
+							<CardBody style={{height: "90%"}}>
+								<LineChart
+									xAxis={[{ curve: "linear", data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] }]}
+									series={[
+										{
+											data: dealData
+										},
+									]}
+									width={550}
+									height={250}
+									margin={{ left: 90, right: 10, top: 10, bottom: 40 }}
 								/>
 							</CardBody>
 						</Card>
