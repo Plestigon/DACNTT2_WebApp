@@ -72,6 +72,7 @@ public class FormRepository implements IFormRepository {
             }
         }
         int totalCount = forms.size();
+        forms.sort(Comparator.comparing(FormResult::getCreateDate).reversed());
         //Paging
         int startIndex = (page-1)*10;
         if (startIndex >= forms.size()) {

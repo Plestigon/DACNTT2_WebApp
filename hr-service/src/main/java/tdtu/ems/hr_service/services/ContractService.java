@@ -7,6 +7,7 @@ import tdtu.ems.hr_service.utils.Logger;
 import tdtu.ems.hr_service.models.Contract;
 import tdtu.ems.hr_service.models.ContractResult;
 import tdtu.ems.hr_service.repositories.ContractRepository;
+import tdtu.ems.hr_service.utils.PagedResponse;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -38,10 +39,9 @@ public class ContractService implements IContractService{
     }
 
     @Override
-    public List<ContractResult> getContractsByEmployeeId(int id) throws ExecutionException, InterruptedException {
+    public PagedResponse getContractsByEmployeeId(int id, int page) throws ExecutionException, InterruptedException {
         try {
-            List<ContractResult> result = _contractRepository.getContractsByEmployeeId(id);
-            result.sort(Comparator.comparing(ContractResult::getTimeStart).reversed());
+            PagedResponse result = _contractRepository.getContractsByEmployeeId(id, page);
             return result;
         }
         catch (Exception e) {

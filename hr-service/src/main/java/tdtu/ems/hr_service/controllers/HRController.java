@@ -32,13 +32,13 @@ public class HRController {
     }
 
     @GetMapping("hr/contracts/{id}")
-    public BaseResponse getContractsByEmployeeId(@PathVariable int id) {
+    public PagedResponse getContractsByEmployeeId(@PathVariable int id, @RequestParam int page) {
         try {
-            List<ContractResult> res = _contractService.getContractsByEmployeeId(id);
-            return new BaseResponse(res, 200, "OK");
+            PagedResponse result = _contractService.getContractsByEmployeeId(id, page);
+            return result;
         }
         catch (Exception e) {
-            return new BaseResponse(null, 500, e.getMessage());
+            return new PagedResponse(null, 500, e.getMessage(), 0, page, 10);
         }
     }
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useEffect, useState } from 'react';
 import { dateTimeFormat } from "../../utils/DateHelper";
@@ -11,6 +11,7 @@ import { Button } from "react-bootstrap";
 import { useAuthentication } from "../system/Authentication";
 import AddEmpModal from "./AddEmpModal";
 import { useNavigate } from "react-router-dom";
+import Pagination from "../../utils/Pagination";
  
 function EmpList() {
     const auth = useAuthentication();
@@ -21,6 +22,8 @@ function EmpList() {
         id: 0,
         name: ''
     });
+	const [page, setPage] = useState(1);
+	const [totalCount, setTotalCount] = useState(0);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -37,9 +40,9 @@ function EmpList() {
         fetchEmployees();
     }, [])
 
-    function fetchEmployees() {
+    const fetchEmployees = useCallback(() => {
         const toastId = loading("Loading employees...");
-        fetch(process.env.REACT_APP_API_URI + "/hr/employees?token=" + auth.token,{
+        fetch(process.env.REACT_APP_API_URI + "/hr/employees/paged?page=" + page + "&token=" + auth.token,{
             method:"GET",
             headers: { "ngrok-skip-browser-warning" : "true" }
         })
@@ -48,6 +51,7 @@ function EmpList() {
             dismiss(toastId);
             if (result.statusCode === 200) {
                 setEmployees(result.data);
+                setTotalCount(result.totalCount);
             }
             else {
                 error("Load employees failed");
@@ -57,7 +61,7 @@ function EmpList() {
             console.log("ERROR_fetchEmployees: " + e);
             error("Load employees failed");
         })
-    }
+    }, [auth.token, page]);
     
     function deleteBtnClick(e, id, name) {
         e.stopPropagation();
@@ -91,12 +95,12 @@ function EmpList() {
         <TopBar/>
         <div class="content container">
             <AddEmpModal show={addEmpModalShow} onHide={() => setAddEmpModalShow(false)} reload={fetchEmployees}/>
-            <div class="row mb-2 px-5">
+            <div class="row mb-2 px-5 mt-2">
                 <Button class="btn btn-primary" onClick={() => setAddEmpModalShow(true)}>
                     <i class="bi bi-plus-circle me-2"></i>Add New Employee
                 </Button>
             </div>
-            <div class="card table-card table-responsive">
+            <div class="card table-card table-responsive mt-3">
                 <table class="table-clickable table table-hover table-collapsed" id="project-table" style={{width:'100%'}}>
                 <thead class="table-primary">
                     <tr>
@@ -131,6 +135,7 @@ function EmpList() {
                 </tbody>
                 </table>
             </div>
+            <Pagination page={page} setPage={setPage} totalCount={totalCount} />
         </div>
         <DeleteConfirmModal show={showDeleteModal} onHide={() => {setShowDeleteModal(false); setDeleteTarget({'id': 0, 'name': ''})}} 
         message={"Delete employee \"" + deleteTarget.name + "\"?"} delete={deleteEmployee}/>

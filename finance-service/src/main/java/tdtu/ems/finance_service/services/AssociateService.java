@@ -6,6 +6,7 @@ import tdtu.ems.finance_service.models.*;
 import tdtu.ems.finance_service.repositories.AssociateRepository;
 import tdtu.ems.finance_service.repositories.ContactRepository;
 import tdtu.ems.finance_service.repositories.DealRepository;
+import tdtu.ems.finance_service.utils.PagedResponse;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -45,6 +46,35 @@ public class AssociateService implements IAssociateService {
         }
         catch (Exception e) {
             _logger.Error("getAssociates", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Override
+    public PagedResponse getAssociatesPaged(int page) throws ExecutionException, InterruptedException {
+        try {
+            List<AssociateResult> results = new ArrayList<>();
+            List<Associate> associates = _associateRepository.getAssociates();
+            for (Associate associate : associates) {
+                List<Integer> contactIds = associate.getContacts();
+                List<Contact> contacts = new ArrayList<>();
+                if (contactIds != null && !contactIds.isEmpty()) {
+                    contacts = _contactRepository.getContacts(contactIds);
+                    contacts.sort(Comparator.comparing(Contact::getName));
+                }
+                results.add(new AssociateResult(associate, contacts));
+            }
+            int totalCount = results.size();
+            results.sort(Comparator.comparing(AssociateResult::getId));//Paging
+            int startIndex = (page-1)*10;
+            if (startIndex >= results.size()) {
+                return new PagedResponse(new ArrayList<>(), 200, "OK", totalCount, page, 10);
+            }
+            var result = results.subList(startIndex, Math.min(startIndex + 10, results.size()));
+            return new PagedResponse(result, 200, "OK", totalCount, page, 10);
+        }
+        catch (Exception e) {
+            _logger.Error("getAssociatesPaged", e.getMessage());
             throw e;
         }
     }

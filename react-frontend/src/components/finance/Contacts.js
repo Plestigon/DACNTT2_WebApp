@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useEffect, useState } from 'react';
 import TopBar from "../TopBar";
 import SideBar from "../SideBar";
-import { success, error, loading, dismiss } from "../../utils/Notify";
+import { error, loading, dismiss } from "../../utils/Notify";
 import DeleteConfirmModal from "../../utils/DeleteConfirmModal";
 import { Button } from "react-bootstrap";
 import { useAuthentication } from "../system/Authentication";
 import NewContactModal from "./NewContactModal";
+import Pagination from "../../utils/Pagination";
 
 function Contacts() {
 	const auth = useAuthentication();
@@ -18,18 +19,16 @@ function Contacts() {
 		id: 0,
 		name: ''
 	});
+	const [page, setPage] = useState(1);
+	const [totalCount, setTotalCount] = useState(0);
 
 	useEffect(() => {
 		document.title = 'Contracts - TDTU EMS';
 	}, []);
 
-	useEffect(() => {
-		fetchContacts();
-	}, [])
-
-	function fetchContacts() {
+	const fetchContacts = useCallback(() => {
 		const toastId = loading("Loading contacts...");
-		fetch(process.env.REACT_APP_API_URI + "/finance/contacts?token=" + auth.token, {
+		fetch(process.env.REACT_APP_API_URI + "/finance/contacts/paged?page=" + page + "&token=" + auth.token, {
 			method: "GET",
 			headers: { "ngrok-skip-browser-warning": "true" }
 		})
@@ -38,7 +37,7 @@ function Contacts() {
 				dismiss(toastId);
 				if (result.statusCode === 200) {
 					setContacts(result.data);
-					console.log(result.data);
+					setTotalCount(result.totalCount);
 				}
 				else {
 					error("Load contacts failed");
@@ -49,7 +48,11 @@ function Contacts() {
 				dismiss(toastId);
 				error("Load contacts failed");
 			})
-	}
+	}, [auth.token, page]);
+
+	useEffect(() => {
+		fetchContacts();
+	}, [fetchContacts])
 
 	function deleteBtnClick(e, id, name) {
 
@@ -65,12 +68,12 @@ function Contacts() {
 			<TopBar />
 			<div class="content container">
 				<NewContactModal show={showNewModal} onHide={() => setShowNewModal(false)} reload={fetchContacts} token={auth.token} />
-				<div class="row mb-2 px-5">
+				<div class="row mb-2 px-5 mt-2">
 					<Button class="btn btn-primary" onClick={() => setShowNewModal(true)}>
 						<i class="bi bi-plus-circle me-2"></i>Add New Contact
 					</Button>
 				</div>
-				<div class="card table-card table-responsive">
+				<div class="card table-card table-responsive mt-3">
 					<table class="table-clickable table table-hover table-collapsed" style={{ width: '100%' }}>
 						<thead class="table-primary">
 							<tr>
@@ -95,6 +98,7 @@ function Contacts() {
 						</tbody>
 					</table>
 				</div>
+				<Pagination page={page} setPage={setPage} totalCount={totalCount} />
 			</div>
 			<DeleteConfirmModal show={showDeleteModal} onHide={() => { setShowDeleteModal(false); setDeleteTarget({ 'id': 0, 'name': '' }) }}
 				message={"Delete contact \"" + deleteTarget.name + "\"?"} delete={deleteAssociate} />

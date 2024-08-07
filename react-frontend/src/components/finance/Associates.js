@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useEffect, useState } from 'react';
 import TopBar from "../TopBar";
 import SideBar from "../SideBar";
@@ -9,6 +9,7 @@ import { useAuthentication } from "../system/Authentication";
 import AssignContactModal from "./AssignContactModal.js";
 import NewAssociateModal from "./NewAssociateModal.js";
 import { createSearchParams, useNavigate } from "react-router-dom";
+import Pagination from "../../utils/Pagination";
 
 function Associates() {
 	const auth = useAuthentication();
@@ -26,18 +27,16 @@ function Associates() {
 		id: 0,
 		contacts: []
 	});
+	const [page, setPage] = useState(1);
+	const [totalCount, setTotalCount] = useState(0);
 
 	useEffect(() => {
 		document.title = 'Associates - TDTU EMS';
 	}, []);
 
-	useEffect(() => {
-		fetchAssociates();
-	}, [])
-
-	function fetchAssociates() {
+	const fetchAssociates = useCallback(() => {
 		const toastId = loading("Loading associates...");
-		fetch(process.env.REACT_APP_API_URI + "/finance/associates?token=" + auth.token, {
+		fetch(process.env.REACT_APP_API_URI + "/finance/associates/paged?page=" + page + "&token=" + auth.token, {
 			method: "GET",
 			headers: { "ngrok-skip-browser-warning": "true" }
 		})
@@ -46,7 +45,7 @@ function Associates() {
 			dismiss(toastId);
 			if (result.statusCode === 200) {
 				setAssociates(result.data);
-				// console.log(result.data);
+				setTotalCount(result.totalCount);
 			}
 			else {
 				error("Load associates failed");
@@ -57,7 +56,11 @@ function Associates() {
 			dismiss(toastId);
 			error("Load associates failed");
 		})
-	}
+	}, [auth.token, page]);
+
+	useEffect(() => {
+		fetchAssociates();
+	}, [fetchAssociates])
 
 	function deleteBtnClick(id, name) {
 		setDeleteTarget({'id': id, 'name': name});
@@ -108,12 +111,12 @@ function Associates() {
 			<div class="content container">
 				{/* <NewProjectModal show={showNewModal} onHide={() => setShowNewModal(false)} reload={fetchProjectData} /> */}
 				<NewAssociateModal show={showNewModal} onHide={() => setShowNewModal(false)} reload={fetchAssociates} token={auth.token}  />
-				<div class="row mb-2 px-5">
+				<div class="row mb-2 px-5 mt-2">
 					<Button class="btn btn-primary" onClick={() => setShowNewModal(true)}>
 						<i class="bi bi-plus-circle me-2"></i>Add New Associate
 					</Button>
 				</div>
-				<div class="card table-card table-responsive">
+				<div class="card table-card table-responsive mt-3">
 					<table class="table-clickable table table-hover table-collapsed" style={{ width: '100%' }}>
 						<thead class="table-primary">
 							<tr>
@@ -153,6 +156,7 @@ function Associates() {
 						</tbody>
 					</table>
 				</div>
+				<Pagination page={page} setPage={setPage} totalCount={totalCount} />
 			</div>
 			<DeleteConfirmModal show={showDeleteModal} onHide={() => { setShowDeleteModal(false); setDeleteTarget({ 'id': 0, 'name': '' }) }}
 				message={"Delete associate \"" + deleteTarget.name + "\"?"} delete={deleteAssociate} />

@@ -2,6 +2,7 @@ package tdtu.ems.employee_service.repositories;
 
 import tdtu.ems.employee_service.models.*;
 import tdtu.ems.employee_service.utils.ChartData;
+import tdtu.ems.employee_service.utils.PagedResponse;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;

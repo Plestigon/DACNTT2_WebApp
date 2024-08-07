@@ -9,11 +9,9 @@ import tdtu.ems.employee_service.models.*;
 import tdtu.ems.employee_service.utils.ChartData;
 import tdtu.ems.employee_service.utils.Enums;
 import tdtu.ems.employee_service.utils.Logger;
+import tdtu.ems.employee_service.utils.PagedResponse;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 @Repository

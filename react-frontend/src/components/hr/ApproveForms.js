@@ -82,7 +82,7 @@ function ApproveForms() {
 				{/* <div class="row mb-2 px-5">
                 <Button onClick={() => navigate("/hr/submit-form")}><i class ="bi bi-pen"></i> Write a form</Button>
             </div> */}
-				<div class="card table-card table-responsive mt-5" style={{height: "calc(100vh - 170px)"}}>
+				<div class="card table-card table-responsive mt-5">
 					<table class="table-clickable table table-hover table-collapsed" id="project-table" style={{ width: '100%' }}>
 						<thead class="table-primary">
 							<tr>

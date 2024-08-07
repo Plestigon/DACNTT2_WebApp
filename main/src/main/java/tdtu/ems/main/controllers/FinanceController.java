@@ -11,6 +11,7 @@ import tdtu.ems.main.models.finance.AssociateDto;
 import tdtu.ems.main.models.finance.ContactDto;
 import tdtu.ems.main.models.finance.DealDto;
 import tdtu.ems.main.utils.BaseResponse;
+import tdtu.ems.main.utils.PagedResponse;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,14 +37,24 @@ public class FinanceController {
                     .block();
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
-//        catch (WebClientResponseException w) {
-//            if (w.getStatusCode() == HttpStatus.UNAUTHORIZED) {
-//                return new ResponseEntity<>(new BaseResponse(null, 401, w.getMessage()), HttpStatus.UNAUTHORIZED);
-//            }
-//            return new ResponseEntity<>(new BaseResponse(null, 500, w.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
         catch (Exception e) {
             return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("finance/associates/paged")
+    public ResponseEntity<PagedResponse> getAssociatesPaged(@RequestParam int page, @RequestParam String token) {
+        try {
+            PagedResponse result = _webClient.build().get()
+                    .uri("http://api-gateway/api/finance/associates/paged?page=" + page)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                    .retrieve()
+                    .bodyToMono(PagedResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(new PagedResponse(null, 500, e.getMessage(), 0, page, 10), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -97,18 +108,21 @@ public class FinanceController {
     }
 
     @GetMapping("finance/deals")
-    public ResponseEntity<BaseResponse> getDeals(@RequestParam(required = false) Integer associate, @RequestParam String token) {
+    public ResponseEntity<PagedResponse> getDeals(@RequestParam(required = false) Integer associate,
+                                                 @RequestParam int page,
+                                                 @RequestParam String token) {
         try {
-            BaseResponse result = _webClient.build().get()
-                    .uri("http://api-gateway/api/finance/deals" + (associate != null ? "?associate=" + associate : ""))
+            PagedResponse result = _webClient.build().get()
+                    .uri("http://api-gateway/api/finance/deals?page=" + page
+                            + (associate != null ? "&associate=" + associate : ""))
                     .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()
-                    .bodyToMono(BaseResponse.class)
+                    .bodyToMono(PagedResponse.class)
                     .block();
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
         catch (Exception e) {
-            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new PagedResponse(null, 500, e.getMessage(), 0, page, 10), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -244,6 +258,22 @@ public class FinanceController {
         }
         catch (Exception e) {
             return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("finance/contacts/paged")
+    public ResponseEntity<PagedResponse> getContactsPaged(@RequestParam int page, @RequestParam String token) {
+        try {
+            PagedResponse result = _webClient.build().get()
+                    .uri("http://api-gateway/api/finance/contacts/paged?page=" + page)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                    .retrieve()
+                    .bodyToMono(PagedResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(new PagedResponse(null, 500, e.getMessage(), 0, page, 10), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

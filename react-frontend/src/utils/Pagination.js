@@ -24,7 +24,7 @@ const Pagination = (props) => {
 	}
 
   return (
-    <div class="d-flex row table-page">
+    <div class="d-flex row table-page mt-2">
       <div class="page-nums">
         <div className={props?.page <= 1 ? "disabled" : ""} onClick={() => handlePageChange(props?.page <= 1 ? false : true, -1)}>{`< Previous`}</div>
         {pages.map((x) => (

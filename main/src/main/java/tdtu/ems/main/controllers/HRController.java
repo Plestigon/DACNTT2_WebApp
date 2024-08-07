@@ -119,18 +119,18 @@ public class HRController {
     }
 
     @GetMapping("hr/contracts/{id}")
-    public ResponseEntity<BaseResponse> getContracts(@PathVariable int id, @RequestParam String token) {
+    public ResponseEntity<PagedResponse> getContracts(@PathVariable int id, @RequestParam int page, @RequestParam String token) {
         try {
-            BaseResponse result = _webClient.build().get()
-                    .uri("http://api-gateway/api/hr/contracts/" + id)
+            PagedResponse result = _webClient.build().get()
+                    .uri("http://api-gateway/api/hr/contracts/" + id + "?page=" + page)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                     .retrieve()
-                    .bodyToMono(BaseResponse.class)
+                    .bodyToMono(PagedResponse.class)
                     .block();
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
         catch (Exception e) {
-            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new PagedResponse(null, 500, e.getMessage(), 0, page, 10), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -174,6 +174,22 @@ public class HRController {
         }
         catch (Exception e) {
             return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("hr/employees/paged")
+    public ResponseEntity<PagedResponse> getEmployeesPaged(@RequestParam int page, @RequestParam String token) {
+        try {
+            PagedResponse result = _webClient.build().get()
+                    .uri("http://api-gateway/api/employees/paged?page=" + page)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                    .retrieve()
+                    .bodyToMono(PagedResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(new PagedResponse(null, 500, e.getMessage(), 0, page, 10), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

@@ -5,15 +5,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import tdtu.ems.employee_service.utils.BaseResponse;
+import tdtu.ems.employee_service.utils.*;
 import tdtu.ems.employee_service.models.EmployeeResult;
 import tdtu.ems.employee_service.models.ProjectUpdateEmployeeDataResult;
 import tdtu.ems.employee_service.services.EmployeeService;
 import tdtu.ems.employee_service.services.IEmployeeService;
 import tdtu.ems.employee_service.models.Employee;
-import tdtu.ems.employee_service.utils.ChartData;
-import tdtu.ems.employee_service.utils.Enums;
-import tdtu.ems.employee_service.utils.SelectOptionsResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,22 +28,31 @@ public class EmployeeController {
 
     @GetMapping("/employees")
     public BaseResponse getEmployees(@RequestParam(required = false) List<Integer> ids) {
-        List<EmployeeResult> employees = null;
         try {
-            employees = _employeeService.getEmployees(ids);
-            return new BaseResponse(employees, 200, "OK");
+            List<EmployeeResult> result = _employeeService.getEmployees(ids);
+            return new BaseResponse(result, 200, "OK");
         }
         catch (Exception e) {
             return new BaseResponse(null, 500, e.getMessage());
         }
     }
 
+    @GetMapping("/employees/paged")
+    public PagedResponse getEmployeesPaged(@RequestParam int page) {
+        try {
+            PagedResponse result = _employeeService.getEmployeesPaged(page);
+            return result;
+        }
+        catch (Exception e) {
+            return new PagedResponse(null, 500, e.getMessage(), 0, page, 10);
+        }
+    }
+
     @GetMapping("/employees/except")
     public BaseResponse getEmployeesExcept(@RequestParam List<Integer> ids) {
-        List<EmployeeResult> employees = null;
         try {
-            employees = _employeeService.getEmployeesExcept(ids);
-            return new BaseResponse(employees, 200, "OK");
+            List<EmployeeResult> result = _employeeService.getEmployeesExcept(ids);
+            return new BaseResponse(result, 200, "OK");
         }
         catch (Exception e) {
             return new BaseResponse(null, 500, e.getMessage());

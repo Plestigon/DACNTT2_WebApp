@@ -10,11 +10,9 @@ import tdtu.ems.hr_service.utils.Enums;
 import tdtu.ems.hr_service.utils.Logger;
 import tdtu.ems.hr_service.models.Contract;
 import tdtu.ems.hr_service.models.Form;
+import tdtu.ems.hr_service.utils.PagedResponse;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 @Repository
@@ -55,18 +53,26 @@ public class ContractRepository implements IContractRepository {
     }
 
     @Override
-    public List<ContractResult> getContractsByEmployeeId(int id) throws ExecutionException, InterruptedException {
+    public PagedResponse getContractsByEmployeeId(int id, int page) throws ExecutionException, InterruptedException {
         CollectionReference contractsDb = _db.collection("contracts");
         CollectionReference departmentsDb = _db.collection("departments");
-        List<ContractResult> result = new ArrayList<>();
+        List<ContractResult> contracts = new ArrayList<>();
         for (DocumentSnapshot data : contractsDb.get().get().getDocuments()) {
             Contract c = data.toObject(Contract.class);
             if (c != null && c.getOwnerId() == id) {
                 String departmentLongName = departmentsDb.document(String.valueOf(c.getDepartment())).get().get().get("longName", String.class);
-                result.add(new ContractResult(c, departmentLongName));
+                contracts.add(new ContractResult(c, departmentLongName));
             }
         }
-        return result;
+        int totalCount = contracts.size();
+        contracts.sort(Comparator.comparing(ContractResult::getTimeStart).reversed());
+        //Paging
+        int startIndex = (page-1)*10;
+        if (startIndex >= contracts.size()) {
+            return new PagedResponse(new ArrayList<>(), 200, "OK", totalCount, page, 10);
+        }
+        var result = contracts.subList(startIndex, Math.min(startIndex + 10, contracts.size()));
+        return new PagedResponse(result, 200, "OK", totalCount, page, 10);
     }
 
     @Override

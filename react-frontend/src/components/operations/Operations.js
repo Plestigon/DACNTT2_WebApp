@@ -174,7 +174,7 @@ function Operations() {
 						<i class="bi bi-plus-circle me-2"></i>New Project
 					</button>
 				</div>
-				<div class="card table-card table-responsive">
+				<div class="card table-card table-responsive" style={{height: "calc(100vh - 205px)"}}>
 					<table class="table-clickable table table-hover">
 						<thead class="table-primary">
 							<tr>

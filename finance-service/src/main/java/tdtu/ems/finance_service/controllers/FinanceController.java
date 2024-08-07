@@ -6,7 +6,9 @@ import tdtu.ems.finance_service.models.*;
 import tdtu.ems.finance_service.services.AssociateService;
 import tdtu.ems.finance_service.services.ContactService;
 import tdtu.ems.finance_service.services.DealService;
+import tdtu.ems.finance_service.utils.PagedResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -30,6 +32,17 @@ public class FinanceController {
         }
         catch (Exception e) {
             return new BaseResponse(null, 500, e.getMessage());
+        }
+    }
+
+    @GetMapping("/finance/associates/paged")
+    public PagedResponse getAssociatesPaged(@RequestParam int page) {
+        try {
+            PagedResponse result = _associateService.getAssociatesPaged(page);
+            return result;
+        }
+        catch (Exception e) {
+            return new PagedResponse(null, 500, e.getMessage(), 0, page, 10);
         }
     }
 
@@ -77,6 +90,17 @@ public class FinanceController {
         }
     }
 
+    @GetMapping(value = "/finance/contacts/paged")
+    public PagedResponse getContactsPaged(@RequestParam int page) {
+        try {
+            PagedResponse result = _contactService.getContactsPaged(page);
+            return result;
+        }
+        catch (Exception e) {
+            return new PagedResponse(null, 500, e.getMessage(), 0, page, 10);
+        }
+    }
+
     @PostMapping("/finance/contacts")
     public BaseResponse addContact(@RequestBody Contact entry) {
         try {
@@ -100,15 +124,22 @@ public class FinanceController {
     }
 
     @GetMapping("/finance/deals")
-    public BaseResponse getDeals(@RequestParam(required = false) Integer associate) {
+    public PagedResponse getDeals(@RequestParam(required = false) Integer associate, @RequestParam int page) {
         try {
-            List<DealResult> result = associate == null ?
+            List<DealResult> deals = associate == null ?
                     _dealService.getDeals() :
                     _dealService.getDealsByAssociateId(associate);
-            return new BaseResponse(result, 200, "OK");
+            int totalCount = deals.size();
+            //Paging
+            int startIndex = (page-1)*10;
+            if (startIndex >= deals.size()) {
+                return new PagedResponse(new ArrayList<>(), 200, "OK", totalCount, page, 10);
+            }
+            var result = deals.subList(startIndex, Math.min(startIndex + 10, deals.size()));
+            return new PagedResponse(result, 200, "OK", totalCount, page, 10);
         }
         catch (Exception e) {
-            return new BaseResponse(null, 500, e.getMessage());
+            return new PagedResponse(null, 500, e.getMessage(), 0, page, 10);
         }
     }
 

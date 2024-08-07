@@ -4,7 +4,9 @@ import org.springframework.stereotype.Service;
 import tdtu.ems.finance_service.utils.Logger;
 import tdtu.ems.finance_service.models.Contact;
 import tdtu.ems.finance_service.repositories.ContactRepository;
+import tdtu.ems.finance_service.utils.PagedResponse;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -27,7 +29,26 @@ public class ContactService implements IContactService {
             return result;
         }
         catch (Exception e) {
-            _logger.Error("getContactsByIds", e.getMessage());
+            _logger.Error("getContacts", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Override
+    public PagedResponse getContactsPaged(int page) throws ExecutionException, InterruptedException {
+        try {
+            List<Contact> contacts = _contactRepository.getContacts(null);
+            int totalCount = contacts.size();
+            contacts.sort(Comparator.comparing(Contact::getId));//Paging
+            int startIndex = (page-1)*10;
+            if (startIndex >= contacts.size()) {
+                return new PagedResponse(new ArrayList<>(), 200, "OK", totalCount, page, 10);
+            }
+            var result = contacts.subList(startIndex, Math.min(startIndex + 10, contacts.size()));
+            return new PagedResponse(result, 200, "OK", totalCount, page, 10);
+        }
+        catch (Exception e) {
+            _logger.Error("getContactsPaged", e.getMessage());
             throw e;
         }
     }

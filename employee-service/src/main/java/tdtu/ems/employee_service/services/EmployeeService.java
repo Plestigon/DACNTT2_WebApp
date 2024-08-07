@@ -12,6 +12,7 @@ import tdtu.ems.employee_service.models.ProjectUpdateEmployeeDataResult;
 import tdtu.ems.employee_service.repositories.EmployeeRepository;
 import tdtu.ems.employee_service.models.Employee;
 import tdtu.ems.employee_service.repositories.IDepartmentRepository;
+import tdtu.ems.employee_service.utils.PagedResponse;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -72,6 +73,26 @@ public class EmployeeService implements IEmployeeService {
         }
         catch (Exception e) {
             _logger.Error("getEmployees", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Override
+    public PagedResponse getEmployeesPaged(int page) throws ExecutionException, InterruptedException {
+        try {
+            List<EmployeeResult> employees = _employeeRepository.getEmployees(null);
+            int totalCount = employees.size();
+            employees.sort(Comparator.comparing(EmployeeResult::getId));
+            //Paging
+            int startIndex = (page-1)*10;
+            if (startIndex >= employees.size()) {
+                return new PagedResponse(new ArrayList<>(), 200, "OK", totalCount, page, 10);
+            }
+            var result = employees.subList(startIndex, Math.min(startIndex + 10, employees.size()));
+            return new PagedResponse(result, 200, "OK", totalCount, page, 10);
+        }
+        catch (Exception e) {
+            _logger.Error("getEmployeesPaged", e.getMessage());
             throw e;
         }
     }
