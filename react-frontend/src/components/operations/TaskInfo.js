@@ -76,7 +76,7 @@ const TaskInfo = () => {
         .catch (e => {
             console.log("ERROR_loadTaskData: " + e);
         })
-    }, [params.id])
+    }, [auth.token, params.id])
 
     useEffect(() => {
         loadTaskData();
@@ -140,7 +140,7 @@ const TaskInfo = () => {
         .catch (e => {
             console.log("ERROR_loadMembers: " + e);
         })
-    }, [data.id, data.assignee])
+    }, [auth.token, data.id, data.assignee])
 
     const loadDiscussions = useCallback(() => {
         if (data.id <= 0) return;
@@ -157,7 +157,7 @@ const TaskInfo = () => {
         .catch (e => {
             console.log("ERROR_loadDiscussions: " + e);
         })
-    }, [data.id])
+    }, [auth.token, data.id])
 
     useEffect(() => {
         loadAssignees();
@@ -200,6 +200,7 @@ const TaskInfo = () => {
                 if (result.statusCode === 200) {
                     success("Task state updated");
                     loadTaskData();
+                    loadDiscussions();
                 }
             })
             .catch (e => {
@@ -290,12 +291,15 @@ const TaskInfo = () => {
 
     function handleSubmitComment() {
         // console.log(data);
+        if (comment === null || comment.trim().length <= 0) {
+            return;
+        }
         fetch(process.env.REACT_APP_API_URI + "/operations/tasks/discussions" + "?token=" + auth.token,{
             method:"POST",
             body: JSON.stringify({
                 'taskId': data.id,
                 'writerId': auth.id,
-                'content': comment,
+                'content': comment.trim(),
             }),
             headers: { 
                 "Content-type": "application/json; charset=UTF-8",
@@ -412,7 +416,7 @@ const TaskInfo = () => {
                 <div class="row d-flex justify-content-center my-1" key={d.id}>
                     <div class="card mx-3 p-2" style={{width: '90%'}}>
                         <div class="d-flex">
-                            <div class="fw-bold">{d.writerName} ({d.writerEmail})</div>
+                            <div class="fw-bold">{d.writerName} {d.writerEmail !== null ? "(" + d.writerEmail + ")" : ""}</div>
                             <div class="ms-auto fst-italic"><i class="bi bi-clock"></i> {dateTimeFormat(d.createDate)}</div>
                         </div>
                         <hr style={{marginTop: '1px', marginBottom: '3px'}}/>

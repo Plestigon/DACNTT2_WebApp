@@ -96,6 +96,13 @@ function NewProjectModal(props) {
         .then((result)=>{
             if (result.statusCode === 200) {
                 success("New project added successfully!");
+                setInputs({
+                    name: '',
+                    owner: 0,
+                    ownerName: '- Select project owner -',
+                    dueDate: getDefaultDueDate(),
+                    description: ''
+                })
                 props.onHide();
                 props.reload();
             }   

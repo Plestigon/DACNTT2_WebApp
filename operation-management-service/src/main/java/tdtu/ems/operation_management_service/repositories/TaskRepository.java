@@ -60,8 +60,11 @@ public class TaskRepository implements ITaskRepository {
             Task task = data.toObject(Task.class);
             if (task != null && task.getProjectId() == projectId) {
                 String assigneeName = "";
-                ProjectMember pm = projectMembersDb.document(String.valueOf(task.getAssigneeId())).get().get().toObject(ProjectMember.class);
-                if (pm != null) {
+                var query = projectMembersDb.whereEqualTo("projectId", projectId)
+                        .whereEqualTo("employeeId", task.getAssigneeId())
+                        .get().get().getDocuments();
+                if (!query.isEmpty()) {
+                    ProjectMember pm = query.get(0).toObject(ProjectMember.class);
                     assigneeName = employeeDb.document(String.valueOf(pm.getEmployeeId())).get().get().getString("name");
                 }
                 result.add(new TaskResult(task, assigneeName));
@@ -93,6 +96,12 @@ public class TaskRepository implements ITaskRepository {
         t.setState(newValue);
         t.setUpdateDate(new Date());
         ApiFuture<WriteResult> result = tasksDb.document(String.valueOf(id)).set(t);
+        TaskDiscussion taskUpdate = new TaskDiscussion();
+        taskUpdate.setWriterName("<SYSTEM>");
+        taskUpdate.setContent("Task state changed to \"" + Enums.TaskState.values()[newValue].name + "\"");
+        taskUpdate.setWriterId(0);
+        taskUpdate.setTaskId(id);
+        addDiscussion(taskUpdate);
         return result.get().getUpdateTime().toString();
     }
 
@@ -137,13 +146,19 @@ public class TaskRepository implements ITaskRepository {
         long id = Objects.requireNonNull(idTracer.get().get().getLong("id")) + 1;
         dis.setId((int) id);
         dis.setCreateDate(new Date());
-        var emp = employeesDb.document(String.valueOf(dis.getWriterId())).get().get();
-        dis.setWriterName(emp.getString("name"));
-        dis.setWriterEmail(emp.getString("email"));
-        Long role = emp.getLong("role");
-        if (role != null) {
-            dis.setWriterRole(Enums.Role.values()[role.intValue()].name);
+
+        if (dis.getWriterId() != 0) {
+            var emp = employeesDb.document(String.valueOf(dis.getWriterId())).get().get();
+            if (emp.exists()) {
+                dis.setWriterName(emp.getString("name"));
+                dis.setWriterEmail(emp.getString("email"));
+                Long role = emp.getLong("role");
+                if (role != null) {
+                    dis.setWriterRole(Enums.Role.values()[role.intValue()].name);
+                }
+            }
         }
+
         ApiFuture<WriteResult> result = taskDiscussionsDb.document(String.valueOf(id)).set(dis);
         ApiFuture<WriteResult> updateIdResult = idTracer.update("id", id);
 
@@ -153,7 +168,10 @@ public class TaskRepository implements ITaskRepository {
         if (!task.getDiscussions().contains((int) id)) {
             task.getDiscussions().add((int) id);
         }
-        task.setUpdateDate(new Date());
+        if (dis.getWriterId() != 0) {
+            task.setUpdateDate(new Date());
+        }
+
         ApiFuture<WriteResult> result2 = tasksDb.document(String.valueOf(taskId)).set(task);
         return (int) id;
     }
@@ -175,21 +193,14 @@ public class TaskRepository implements ITaskRepository {
     public List<TaskResult> getTasksFromMyProject(int projectId, int employeeId) throws ExecutionException, InterruptedException {
         CollectionReference tasksDb = _db.collection("tasks");
         CollectionReference employeeDb = _db.collection("employees");
-        CollectionReference projectMembersDb = _db.collection("projectMembers");
 
         List<TaskResult> result = new ArrayList<>();
-        var pmData = projectMembersDb.whereEqualTo("projectId", projectId).whereEqualTo("employeeId", employeeId).get().get().getDocuments();
-        if (!pmData.isEmpty()) {
-            ProjectMember pm = pmData.get(0).toObject(ProjectMember.class);
-            for (DocumentSnapshot data : tasksDb.get().get().getDocuments()) {
+        String name = employeeDb.document(String.valueOf(employeeId)).get().get().getString("name");
+        var query = tasksDb.whereEqualTo("projectId", projectId).whereEqualTo("assigneeId", employeeId).get().get().getDocuments();
+        if (!query.isEmpty()) {
+            for (var data : query) {
                 Task task = data.toObject(Task.class);
-                if (task != null && task.getProjectId() == projectId && task.getAssigneeId() == pm.getId()) {
-                    if (task.getState() == Enums.TaskState.ToDo.ordinal() ||
-                            task.getState() == Enums.TaskState.InProgress.ordinal()) {
-                        String name = employeeDb.document(String.valueOf(pm.getEmployeeId())).get().get().getString("name");
-                        result.add(new TaskResult(task, name));
-                    }
-                }
+                result.add(new TaskResult(task, name));
             }
         }
         return result;

@@ -107,7 +107,7 @@ function Operations() {
 			.catch(e => {
 				console.log("ERROR_getStatusCount: " + e);
 			})
-	}, [auth.token])
+	}, [auth.token, page, search, status])
 
 	useEffect(() => {
 		fetchStatusCount();
@@ -139,7 +139,7 @@ function Operations() {
 			<SideBar />
 			<TopBar />
 			<div class="content container">
-				<NewProjectModal show={newPrjModalShow} onHide={() => setNewPrjModalShow(false)} reload={fetchProjectData} />
+				<NewProjectModal show={newPrjModalShow} onHide={() => setNewPrjModalShow(false)} reload={() => {fetchProjectData(); fetchStatusCount()}} />
 				<div class="d-flex row mb-2 px-5">
 					<ul class="nav nav-tabs w-auto">
 						{/* <li class="nav-item">
@@ -197,7 +197,7 @@ function Operations() {
 									<td>{dateTimeFormat(p.dueDate)}</td>
 									<td>{p.description}</td>
 									<td><button type="button" class="btn btn-danger bi bi-trash delete-prj-btn"
-										onClick={(e) => deleteBtnClick(e, p.id, p.name)}></button></td>
+										onClick={(e) => deleteBtnClick(e, p.id, p.name)} title="Delete project"></button></td>
 								</tr>
 							))}
 						</tbody>

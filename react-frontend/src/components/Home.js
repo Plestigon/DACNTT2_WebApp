@@ -168,8 +168,9 @@ function Home() {
 					{/* Projects */}
 					<div className="col-6 chart-container">
 						<Card className="chart mx-2 my-2">
-							<CardTitle className="mt-3"><div>Projects</div>
-								<a href="#">See all</a>
+							<CardTitle className="mt-3">
+								<div>Projects</div>
+								<a href="/operations/projects">See all</a>
 							</CardTitle>
 							<CardBody>
 								<PieChart
@@ -193,7 +194,10 @@ function Home() {
 					{/* Employees */}
 					<div className="col-6 chart-container">
 						<Card className="chart mx-2 my-2">
-							<CardTitle className="mt-3 text-center">Employees</CardTitle>
+							<CardTitle className="mt-3 text-center">
+								<div>Employees</div>
+								<a href="/hr/employees">See all</a>
+							</CardTitle>
 							<CardBody>
 								<PieChart
 									series={[
@@ -218,7 +222,9 @@ function Home() {
 					{/* Deals */}
 					<div className="col-6 chart-container">
 						<Card className="chart mx-2 my-2">
-							<CardTitle className="mt-3 text-center">Deals</CardTitle>
+							<CardTitle className="mt-3 text-center">
+								<div>Deals</div>
+								<a href="/finance/deals">See all</a></CardTitle>
 							<CardBody style={{height: "90%"}}>
 								<LineChart
 									xAxis={[{ curve: "linear", data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] }]}
