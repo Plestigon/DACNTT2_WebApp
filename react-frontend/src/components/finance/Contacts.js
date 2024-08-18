@@ -23,7 +23,7 @@ function Contacts() {
 	const [totalCount, setTotalCount] = useState(0);
 
 	useEffect(() => {
-		document.title = 'Contracts - TDTU EMS';
+		document.title = 'Contacts - TDTU EMS';
 	}, []);
 
 	const fetchContacts = useCallback(() => {
