@@ -79,8 +79,12 @@ function SubmitForm() {
         if (name === 'startDate') {
             var startDate = new Date(value);
             var endDate = new Date(inputs.endDate);
-            var tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
+            var today = new Date();
+            today.setHours(0, 0, 0, 0);
+            if (startDate <= today) {
+                error("Start date must be after today");
+                return;
+            }
             if (endDate <= startDate) {
                 endDate = new Date(startDate);
                 endDate.setDate(endDate.getDate() + 1);

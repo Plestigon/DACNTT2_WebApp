@@ -32,6 +32,12 @@ function NewContract(props) {
 	useEffect(() => {
 		document.title = 'New Contract - TDTU EMS';
 	}, []);
+	
+	useEffect(() => {
+		if (auth.roleList?.length > 0 && !auth.checkRole(auth.role, "Human Resources")) {
+			navigate("/forbidden");
+		}
+	}, [auth.roleList])
 
 	useEffect(() => {
 		function loadContractTypes() {

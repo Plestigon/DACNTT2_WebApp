@@ -7,8 +7,6 @@ import tdtu.ems.hr_service.services.IFormService;
 import tdtu.ems.hr_service.utils.BaseResponse;
 import tdtu.ems.hr_service.utils.PagedResponse;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api")
 public class HRController {
@@ -39,6 +37,28 @@ public class HRController {
         }
         catch (Exception e) {
             return new PagedResponse(null, 500, e.getMessage(), 0, page, 10);
+        }
+    }
+
+    @GetMapping("hr/contracts/{id}/manage")
+    public PagedResponse getContractsForManaging(@PathVariable int id, @RequestParam int page) {
+        try {
+            PagedResponse result = _contractService.getContractsForManaging(id, page);
+            return result;
+        }
+        catch (Exception e) {
+            return new PagedResponse(null, 500, e.getMessage(), 0, page, 10);
+        }
+    }
+
+    @PutMapping("hr/contracts/{id}")
+    public BaseResponse updateContractStatus(@PathVariable int id, @RequestParam boolean value) {
+        try {
+            String result = _contractService.updateContractStatus(id, value);
+            return new BaseResponse(result, 200, "OK");
+        }
+        catch (Exception e) {
+            return new BaseResponse(null, 500, e.getMessage());
         }
     }
 

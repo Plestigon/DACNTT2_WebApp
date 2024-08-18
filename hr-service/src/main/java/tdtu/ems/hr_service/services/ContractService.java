@@ -5,13 +5,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 import tdtu.ems.hr_service.models.SummaryResult;
 import tdtu.ems.hr_service.utils.Logger;
 import tdtu.ems.hr_service.models.Contract;
-import tdtu.ems.hr_service.models.ContractResult;
 import tdtu.ems.hr_service.repositories.ContractRepository;
 import tdtu.ems.hr_service.utils.PagedResponse;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @Service
@@ -34,6 +30,7 @@ public class ContractService implements IContractService{
             return result;
         }
         catch (Exception e) {
+            _logger.Error("addContract", e.getMessage());
             throw e;
         }
     }
@@ -46,6 +43,30 @@ public class ContractService implements IContractService{
         }
         catch (Exception e) {
             _logger.Error("getContractsByEmployeeId", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Override
+    public PagedResponse getContractsForManaging(int id, int page) throws ExecutionException, InterruptedException {
+        try {
+            PagedResponse result = _contractRepository.getContractsForManaging(id, page);
+            return result;
+        }
+        catch (Exception e) {
+            _logger.Error("getContractsForApproval", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Override
+    public String updateContractStatus(int id, boolean value) throws ExecutionException, InterruptedException {
+        try {
+            String result = _contractRepository.updateContractStatus(id, value);
+            return result;
+        }
+        catch (Exception e) {
+            _logger.Error("updateContractStatus", e.getMessage());
             throw e;
         }
     }

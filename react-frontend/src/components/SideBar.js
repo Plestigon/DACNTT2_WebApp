@@ -67,7 +67,7 @@ function SideBar() {
             </div>
         </div>
         {/* <div class="w-100 mb-2" style={{borderBottom: '1px solid white'}}/> */}
-        <Nav.Link as={Link} to="/" class="home"><i class="bi bi-house"></i> Home</Nav.Link>
+        <Nav.Link as={Link} to="/" className="home"><i class="bi bi-house"></i> Home</Nav.Link>
 
 
         <div className="nav-dropdown-container">
@@ -94,6 +94,7 @@ function SideBar() {
                 : ""}
             <Nav.Link as={Link} to="/hr/submit-form"><i class ="bi bi-pen"></i> Submit Form</Nav.Link>
             <Nav.Link as={Link} to="/hr/contracts"><i class ="bi bi-newspaper"></i> My Contracts</Nav.Link>
+            <Nav.Link as={Link} to="/hr/approve-contracts" ><i class ="bi bi-newspaper"></i> Manage Contracts</Nav.Link>
             <Nav.Link as={Link} to="/hr/new-contract"><i class ="bi bi-newspaper"></i> Create Contract</Nav.Link>
             <Nav.Link as={Link} to="/hr/employees"><i class ="bi bi-person"></i> Employees</Nav.Link>
         

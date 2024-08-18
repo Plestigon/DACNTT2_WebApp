@@ -10,7 +10,6 @@ import SubmitForm from './components/hr/SubmitForm';
 import HRSummary from './components/hr/HRSummary';
 import MyContracts from './components/hr/MyContracts';
 import MyForms from './components/hr/MyForms';
-import NewTaskModal from './components/operations/NewTaskModal';
 import MyProjects from './components/operations/MyProjects';
 import TaskInfo from './components/operations/TaskInfo';
 import ProfilePage from './components/profile/ProfilePage';
@@ -18,7 +17,6 @@ import Login from './components/system/Login';
 import PrivateRoute from './components/system/PrivateRoute';
 import Authentication from './components/system/Authentication';
 import EmpList from './components/hr/EmpList';
-import NewPassword from './components/profile/NewPassword';
 import Associates from './components/finance/Associates';
 import Deals from './components/finance/Deals';
 import DealDetails from './components/finance/DealDetails';
@@ -26,6 +24,7 @@ import Contacts from './components/finance/Contacts';
 import NewContract from './components/hr/NewContract';
 import ApproveForms from './components/hr/ApproveForms';
 import Forbidden from './components/system/Forbidden';
+import ManageContracts from './components/hr/ManageContracts';
 
 function App() {
 
@@ -48,6 +47,7 @@ function App() {
             <Route path="/hr/my-forms" element={<MyForms/>}/>
             <Route path="/hr/summary" element={<HRSummary/>}/>
             <Route path="/hr/contracts" element={<MyContracts/>}/>
+            <Route path="/hr/approve-contracts" element={<ManageContracts/>}/>
             <Route path="/hr/new-contract" element={<NewContract/>}/>
             <Route path="/hr/employees" element={<EmpList/>}/>
             
@@ -71,6 +71,7 @@ function App() {
             <Route path="/hr/approve-forms" element={<PrivateRoute><ApproveForms/></PrivateRoute>}/>
             <Route path="/hr/summary" element={<PrivateRoute><HRSummary/></PrivateRoute>}/>
             <Route path="/hr/contracts" element={<PrivateRoute><MyContracts/></PrivateRoute>}/>
+            <Route path="/hr/approve-contracts" element={<PrivateRoute><ManageContracts/></PrivateRoute>}/>
             <Route path="/hr/new-contract" element={<PrivateRoute><NewContract/></PrivateRoute>}/>
             <Route path="/hr/employees" element={<PrivateRoute><EmpList/></PrivateRoute>}/>
             

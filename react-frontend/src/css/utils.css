@@ -84,6 +84,11 @@
 }
 /* Ended */
 .card.status-card.contract-status-3 {
+    background-color: orange;
+    color: white;
+}
+/* Rejected */
+.card.status-card.contract-status-4 {
     background-color: red;
     color: white;
 }

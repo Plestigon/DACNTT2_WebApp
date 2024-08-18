@@ -8,6 +8,7 @@ public class ContractResult {
     private int id;
     private String code;
     private int ownerId;
+    private String ownerName;
     private int type;   //ContractType
     private String typeName;
     private int department;
@@ -17,13 +18,14 @@ public class ContractResult {
     private int status; //ContractStatus
     private String statusName;
 
-    public ContractResult(Contract c, String departmentName) {
+    public ContractResult(Contract c, String ownerName, String departmentName) {
         this.id = c.getId();
         this.code = c.getCode();
         this.type = c.getType();
         this.typeName = Enums.ContractType.values()[c.getType()].name;
         this.department = c.getDepartment();
         this.ownerId = c.getOwnerId();
+        this.ownerName = ownerName;
         this.departmentName = departmentName;
         this.timeStart = c.getTimeStart();
         this.timeEnd = c.getTimeEnd();
@@ -117,5 +119,13 @@ public class ContractResult {
 
     public void setOwnerId(int ownerId) {
         this.ownerId = ownerId;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
     }
 }

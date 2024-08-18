@@ -3,13 +3,11 @@ package tdtu.ems.hr_service.repositories;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
+import jakarta.ws.rs.NotFoundException;
 import org.springframework.stereotype.Repository;
-import tdtu.ems.hr_service.models.ContractResult;
-import tdtu.ems.hr_service.models.SummaryResult;
+import tdtu.ems.hr_service.models.*;
 import tdtu.ems.hr_service.utils.Enums;
 import tdtu.ems.hr_service.utils.Logger;
-import tdtu.ems.hr_service.models.Contract;
-import tdtu.ems.hr_service.models.Form;
 import tdtu.ems.hr_service.utils.PagedResponse;
 
 import java.util.*;
@@ -35,7 +33,7 @@ public class ContractRepository implements IContractRepository {
         entry.setStatus(Enums.ContractStatus.Inactive.ordinal());
 
         String departmentShortname = departmentsDb.document(String.valueOf(entry.getDepartment())).get().get().get("shortName", String.class);
-        String contractType = Enums.ContractType.values()[entry.getId()].name();
+        String contractType = Enums.ContractType.values()[entry.getType()].name();
         StringBuilder contractCode = new StringBuilder();
         for (int i = 0; i < contractType.length(); i++) {
             if (Character.isUpperCase(contractType.charAt(i))) {
@@ -61,7 +59,7 @@ public class ContractRepository implements IContractRepository {
             Contract c = data.toObject(Contract.class);
             if (c != null && c.getOwnerId() == id) {
                 String departmentLongName = departmentsDb.document(String.valueOf(c.getDepartment())).get().get().get("longName", String.class);
-                contracts.add(new ContractResult(c, departmentLongName));
+                contracts.add(new ContractResult(c, null, departmentLongName));
             }
         }
         int totalCount = contracts.size();
@@ -73,6 +71,59 @@ public class ContractRepository implements IContractRepository {
         }
         var result = contracts.subList(startIndex, Math.min(startIndex + 10, contracts.size()));
         return new PagedResponse(result, 200, "OK", totalCount, page, 10);
+    }
+
+    @Override
+    public PagedResponse getContractsForManaging(int id, int page) throws ExecutionException, InterruptedException {
+        CollectionReference contractsDb = _db.collection("contracts");
+        CollectionReference departmentsDb = _db.collection("departments");
+        CollectionReference employeesDb = _db.collection("employees");
+        List<ContractResult> contracts = new ArrayList<>();
+        for (DocumentSnapshot data : contractsDb.get().get().getDocuments()) {
+            Contract c = data.toObject(Contract.class);
+            if (c != null && c.getOwnerId() != id && c.getStatus() != Enums.ContractStatus.Ended.ordinal() && c.getStatus() != Enums.ContractStatus.Rejected.ordinal()) {
+                String departmentLongName = departmentsDb.document(String.valueOf(c.getDepartment())).get().get().get("longName", String.class);
+                String ownerName = employeesDb.document(String.valueOf(c.getOwnerId())).get().get().get("name", String.class);
+                contracts.add(new ContractResult(c, ownerName, departmentLongName));
+            }
+        }
+        int totalCount = contracts.size();
+        contracts.sort(Comparator.comparing(ContractResult::getId));
+        //Paging
+        int startIndex = (page-1)*10;
+        if (startIndex >= contracts.size()) {
+            return new PagedResponse(new ArrayList<>(), 200, "OK", totalCount, page, 10);
+        }
+        var result = contracts.subList(startIndex, Math.min(startIndex + 10, contracts.size()));
+        return new PagedResponse(result, 200, "OK", totalCount, page, 10);
+    }
+
+    @Override
+    public String updateContractStatus(int id, boolean value) throws ExecutionException, InterruptedException {
+        CollectionReference contractsDb = _db.collection("contracts");
+        Contract contract = contractsDb.document(String.valueOf(id)).get().get().toObject(Contract.class);
+        if (contract != null) {
+            if (contract.getStatus() == Enums.ContractStatus.Inactive.ordinal()) {
+                if (value) {
+                    contractsDb.document(String.valueOf(id)).update("status", Enums.ContractStatus.Active.ordinal());
+                    return "Contract Approved";
+                }
+                else {
+                    contractsDb.document(String.valueOf(id)).update("status", Enums.ContractStatus.Rejected.ordinal());
+                    return "Contract Rejected";
+                }
+            }
+            if (contract.getStatus() == Enums.ContractStatus.Active.ordinal()) {
+                if (value) {
+                    return "Nothing happened...";
+                }
+                else {
+                    contractsDb.document(String.valueOf(id)).update("status", Enums.ContractStatus.Ended.ordinal());
+                    return "Contract Ended";
+                }
+            }
+        }
+        throw new NotFoundException("Contract with id " + id + "not found");
     }
 
     @Override

@@ -161,6 +161,38 @@ public class HRController {
         }
     }
 
+    @GetMapping("hr/contracts/{id}/manage")
+    public ResponseEntity<PagedResponse> getContractsForManaging(@PathVariable int id, @RequestParam int page, @RequestParam String token) {
+        try {
+            PagedResponse result = _webClient.build().get()
+                    .uri("http://api-gateway/api/hr/contracts/" + id + "/manage?page=" + page)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                    .retrieve()
+                    .bodyToMono(PagedResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(new PagedResponse(null, 500, e.getMessage(), 0, page, 10), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("hr/contracts/{id}")
+    public ResponseEntity<BaseResponse> updateContractStatus(@PathVariable int id, @RequestParam boolean value, @RequestParam String token) {
+        try {
+            BaseResponse result = _webClient.build().put()
+                    .uri("http://api-gateway/api/hr/contracts/" + id + "?value=" + value)
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                    .retrieve()
+                    .bodyToMono(BaseResponse.class)
+                    .block();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(new BaseResponse(null, 500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping("hr/employees")
     public ResponseEntity<BaseResponse> getEmployees(@RequestParam String token) {
         try {

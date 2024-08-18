@@ -64,9 +64,9 @@ public class FormService implements IFormService {
     }
 
     @Override
-    public String approveForm(int id, boolean approve) throws ExecutionException, InterruptedException {
+    public String approveForm(int id, boolean value) throws ExecutionException, InterruptedException {
         try {
-            return _formRepository.approveForm(id, approve);
+            return _formRepository.approveForm(id, value);
         }
         catch (Exception e) {
             _logger.Error("approveForm", e.getMessage());

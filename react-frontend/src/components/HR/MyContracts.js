@@ -56,7 +56,7 @@ function MyContracts() {
         <TopBar/>
         <div class="content container">
             <div class="row mb-2 px-5 mt-2">
-                <Button onClick={() => navigate("/hr/new-contract")}><i class="bi bi-file-earmark-text"></i> Create New Contract</Button>
+                <Button onClick={() => navigate("/hr/new-contract")} disabled={auth.checkRole(auth.role, "Human Resources") ? false : true}><i class="bi bi-file-earmark-text"></i> Create New Contract</Button>
             </div>
             <div class="card table-card table-responsive mt-3">
                 <table class="table-clickable table table-hover table-collapsed" id="project-table" style={{width:'100%'}}>

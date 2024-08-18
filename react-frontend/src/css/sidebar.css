@@ -141,3 +141,7 @@ div.content {
   background-color: #538ae2;
   color: white;
 }
+
+a.nav-link:not(.home) {
+  font-size: 15px;
+}

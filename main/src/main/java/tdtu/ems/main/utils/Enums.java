@@ -63,7 +63,8 @@ public class Enums {
         None,
         Inactive,
         Active,
-        Ended
+        Ended,
+        Rejected
     }
 
     public enum FormStatus {

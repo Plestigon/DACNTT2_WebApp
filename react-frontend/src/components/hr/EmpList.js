@@ -36,10 +36,6 @@ function EmpList() {
         }
     }, [auth.roleList])
 
-    useEffect(()=>{
-        fetchEmployees();
-    }, [])
-
     const fetchEmployees = useCallback(() => {
         const toastId = loading("Loading employees...");
         fetch(process.env.REACT_APP_API_URI + "/hr/employees/paged?page=" + page + "&token=" + auth.token,{
@@ -62,6 +58,10 @@ function EmpList() {
             error("Load employees failed");
         })
     }, [auth.token, page]);
+
+    useEffect(()=>{
+        fetchEmployees();
+    }, [fetchEmployees])
     
     function deleteBtnClick(e, id, name) {
         e.stopPropagation();
@@ -96,7 +96,7 @@ function EmpList() {
         <div class="content container">
             <AddEmpModal show={addEmpModalShow} onHide={() => setAddEmpModalShow(false)} reload={fetchEmployees}/>
             <div class="row mb-2 px-5 mt-2">
-                <Button class="btn btn-primary" onClick={() => setAddEmpModalShow(true)}>
+                <Button class="btn btn-primary" onClick={() => setAddEmpModalShow(true)} disabled={auth.checkRole(auth.role, "Human Resources") ? false : true}>
                     <i class="bi bi-plus-circle me-2"></i>Add New Employee
                 </Button>
             </div>

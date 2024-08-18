@@ -54,8 +54,8 @@ function ApproveForms() {
 		loadFormData();
 	}, [loadFormData])
 
-	function approveForm(id, value) {
-		fetch(process.env.REACT_APP_API_URI + "/hr/forms/" + id + "?approve=" + value + "&token=" + auth.token, {
+	function approveForm(id, approve) {
+		fetch(process.env.REACT_APP_API_URI + "/hr/forms/" + id + "?approve=" + approve + "&token=" + auth.token, {
 			method: "PUT",
 			headers: { "ngrok-skip-browser-warning": "true" }
 		})
@@ -94,7 +94,7 @@ function ApproveForms() {
 								<th scope="col">End Date</th>
 								<th scope="col">Reason</th>
 								{/* <th scope="col" style={{width:'100px'}}>Status</th> */}
-								<th scope="col" style={{ width: '100px' }}></th>
+								<th scope="col" style={{width:'100px'}}></th>
 							</tr>
 						</thead>
 						<tbody>
