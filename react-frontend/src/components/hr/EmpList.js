@@ -30,12 +30,6 @@ function EmpList() {
 		document.title = 'Employees - TDTU EMS';
 	}, []);
 
-    useEffect(()=>{
-        if (auth.roleList?.length > 0 && !auth.checkRole(auth.role, "Human Resources")) {
-            navigate("/forbidden");
-        }
-    }, [auth.roleList])
-
     const fetchEmployees = useCallback(() => {
         const toastId = loading("Loading employees...");
         fetch(process.env.REACT_APP_API_URI + "/hr/employees/paged?page=" + page + "&token=" + auth.token,{

@@ -87,15 +87,19 @@ function SideBar() {
             </div>
         </div>
         <div className={`nav-dropdown-content ${isHRMenuOpen ? 'active' : ''}`}>
-            <Nav.Link as={Link} to="/hr/summary"><i class ="bi bi-building"></i> HR Summary</Nav.Link>
+            {/* <Nav.Link as={Link} to="/hr/summary"><i class ="bi bi-building"></i> HR Summary</Nav.Link> */}
             <Nav.Link as={Link} to="/hr/my-forms"><i class="bi bi-file-earmark-text"></i> My Forms</Nav.Link>
             {auth.checkRole(auth.role, "Human Resources")
                 ? <Nav.Link as={Link} to="/hr/approve-forms"><i class="bi bi-file-earmark-text"></i> Approve Forms</Nav.Link>
                 : ""}
             <Nav.Link as={Link} to="/hr/submit-form"><i class ="bi bi-pen"></i> Submit Form</Nav.Link>
             <Nav.Link as={Link} to="/hr/contracts"><i class ="bi bi-newspaper"></i> My Contracts</Nav.Link>
-            <Nav.Link as={Link} to="/hr/approve-contracts" ><i class ="bi bi-newspaper"></i> Manage Contracts</Nav.Link>
-            <Nav.Link as={Link} to="/hr/new-contract"><i class ="bi bi-newspaper"></i> Create Contract</Nav.Link>
+            {auth.checkRole(auth.role, "Human Resources")
+                ? <Nav.Link as={Link} to="/hr/approve-contracts" ><i class ="bi bi-newspaper"></i> Manage Contracts</Nav.Link>
+                : ""}
+            {auth.checkRole(auth.role, "Human Resources")
+                ? <Nav.Link as={Link} to="/hr/new-contract"><i class ="bi bi-newspaper"></i> Create Contract</Nav.Link>
+                : ""}
             <Nav.Link as={Link} to="/hr/employees"><i class ="bi bi-person"></i> Employees</Nav.Link>
         
         </div>
