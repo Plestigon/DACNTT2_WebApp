@@ -53,7 +53,7 @@ function TopBar() {
 
 
   return (
-    <Navbar data-bs-theme="dark" position="static" className="topbar bg-secondary" >
+    <Navbar data-bs-theme="dark" position="static" className="topbar" >
       
       <Notify/>
 

@@ -1,6 +1,6 @@
 .topbar {
     position: static;
-    background: rgb(230, 230, 230);
+    background: rgb(240, 240, 240) !important;
     margin-left: 200px;
     height: 50px;
     width: auto;
