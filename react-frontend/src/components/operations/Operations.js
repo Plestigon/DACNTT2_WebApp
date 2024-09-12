@@ -122,11 +122,21 @@ function Operations() {
 	function handleSearch(e) {
 		if (e.type === 'keydown') {
 			if (e.key === 'Enter') {
-				fetchProjectData();
+				if (page !== 1) {
+					setPage(1);
+				}
+				else {
+					fetchProjectData();
+				}
 			}
 			return;
 		}
-		fetchProjectData();
+		if (page !== 1) {
+			setPage(1);
+		}
+		else {
+			fetchProjectData();
+		}
 	}
 
 	const handleChangeStatus = (value) => {
@@ -168,7 +178,7 @@ function Operations() {
 				</div>
 				<div class="d-flex row mb-2 px-5 align-items-center">
 					<input type="text" class="form-control" style={{ width: '400px', height: '35px' }} placeholder="Search project"
-						value={search} onChange={e => setSearch(e.target.value)} onKeyDown={handleSearch} />
+						value={search} onChange={e => {setSearch(e.target.value);setPage(1)}} onKeyDown={handleSearch} />
 					<button type="button" class="btn btn-primary btn-search" onClick={handleSearch}><i class="bi bi-search"></i></button>
 					<button class="btn btn-primary ms-auto me-3" style={{ width: '150px', height: '35px' }} onClick={() => setNewPrjModalShow(true)}>
 						<i class="bi bi-plus-circle me-2"></i>New Project

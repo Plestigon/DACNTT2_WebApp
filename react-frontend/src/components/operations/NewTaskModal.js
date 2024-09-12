@@ -33,7 +33,7 @@ function NewTaskModal(props) {
         function loadAssignees() {
             var a = [];
             props.members.forEach(e => {
-                a.push({label: e.employeeName, value: e.id})
+                a.push({label: e.employeeName, value: e.employeeId})
             });
             setAssigneeOptions(a);
         }

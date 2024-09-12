@@ -180,6 +180,7 @@ const ProjectInfo = () => {
             if (result.statusCode === 200) {
                 success("Project status updated");
                 loadProjectData();
+                loadProjectUpdates();
             }
         })
         .catch (e => {
@@ -376,7 +377,7 @@ const ProjectInfo = () => {
                         }}>
                             <div class="d-flex">
                                 <div class="">
-                                    {t.name} - {t.assigneeName}
+                                    [{t.name}] {t.assigneeName}
                                 </div>
                                 <div class="ms-auto">
                                     <div class={"card status-card project-status-" + t.state} style={{width: '100px'}}>{t.stateName}</div>
